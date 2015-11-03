@@ -35,7 +35,7 @@ class Agama_model extends CI_Model {
 		$data['value']=$this->input->post('value');
 
 		if($this->db->insert($this->tabel, $data)){
-			$id= mysql_insert_id();
+			//$id= mysql_insert_id();
 			return true;
 		}else{
 			return mysql_error();
@@ -56,7 +56,7 @@ class Agama_model extends CI_Model {
 
 	function delete_entry($kode)
 	{
-		$this->db->where(array('kode' => $kode));
+		$this->db->where('kode',$kode);
 
 		return $this->db->delete($this->tabel);
 	}

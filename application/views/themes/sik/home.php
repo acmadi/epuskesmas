@@ -4,15 +4,40 @@
     <meta charset="UTF-8">
     <title>{title}</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="<?php echo base_url()?>public/themes/disbun/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />    
-    <link href="<?php echo base_url()?>public/themes/disbun/bootstrap/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url()?>public/themes/disbun/bootstrap/css/ionicons.min.css" rel="stylesheet" type="text/css" />    
-    <link href="<?php echo base_url()?>public/themes/disbun/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url()?>public/themes/disbun/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url()?>public/themes/disbun/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url()?>public/themes/disbun/dist/css/sik.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url()?>public/themes/disbun/dist/css/skins/skin-green.min.css" rel="stylesheet" type="text/css" />
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/jQuery/jQuery-2.1.3.min.js"></script>
+    <style type="text/css">
+        @import url(<?php echo base_url()?>public/themes/sik/bootstrap/css/bootstrap.min.css);
+        @import url(<?php echo base_url()?>public/themes/sik/bootstrap/css/font-awesome.min.css);
+        @import url(<?php echo base_url()?>public/themes/sik/bootstrap/css/ionicons.min.css);
+        @import url(<?php echo base_url()?>public/themes/sik/dist/css/sik.css);
+        @import url(<?php echo base_url()?>public/themes/sik/dist/css/skins/skin-green.min.css);
+        @import url(<?php echo base_url()?>plugins/js/jqwidgets/styles/jqx.base.css);
+        @import url(<?php echo base_url()?>plugins/js/jqwidgets/styles/jqx.bootstrap.css);
+    </style>
+    <script src="<?php echo base_url()?>plugins/js/jQuery-2.1.3.min.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdata.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.selection.js"></script>    
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.edit.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.filter.js"></script>   
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.sort.js"></script>     
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.pager.js"></script>        
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.columnsresize.js"></script>        
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcalendar.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/globalization/globalize.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxnumberinput.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxmaskedinput.js"></script>
+    <script type="text/javascript">
+        var theme = "bootstrap";
+    </script>
   </head>
   <body class="skin-green sidebar-mini wysihtml5-supported fixed">
 
@@ -164,19 +189,14 @@
       </footer>
     </div><!-- ./wrapper -->
 
-    <script src="<?php echo base_url()?>public/themes/disbun/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src='<?php echo base_url()?>public/themes/disbun/plugins/fastclick/fastclick.min.js'></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/dist/js/app.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/jvectormap/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
-    <script src="<?php echo base_url()?>public/themes/disbun/dist/js/demo.js" type="text/javascript"></script>  </body>
+    <script src="<?php echo base_url()?>public/themes/sik/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src='<?php echo base_url()?>public/themes/sik/plugins/fastclick/fastclick.min.js'></script>
+    <script src="<?php echo base_url()?>public/themes/sik/dist/js/app.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 
   </body>
 </html>

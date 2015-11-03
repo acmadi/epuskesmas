@@ -1,5 +1,5 @@
 <?php
-class Kepegawaian_model extends CI_Model {
+class Sms_model extends CI_Model {
 
     var $tabel    = '';
 	var $lang	  = '';

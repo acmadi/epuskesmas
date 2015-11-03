@@ -1,5 +1,5 @@
 <?php
-class Inventory extends CI_Controller {
+class Sms extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
@@ -7,9 +7,9 @@ class Inventory extends CI_Controller {
 	}
 	
 	function index(){
-		$this->authentication->verify('inventory','show');
+		$this->authentication->verify('sms','show');
 
-		$data['content'] = $this->parser->parse("inventory/show",$data,true);
+		$data['content'] = $this->parser->parse("sms/show",$data,true);
 		$this->template->show($data,'home');
 	}
 }

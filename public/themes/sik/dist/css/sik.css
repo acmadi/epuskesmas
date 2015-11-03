@@ -1,4 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+@font-face{
+  font-family: Verdana;
+    src: url('../fonts/verdana.ttf');
+}
+
+@font-face{
+  font-family: Calibri;
+    src: url('../fonts/calibri.ttf');
+}
 /*!
  *   AdminLTE v2.1.0
  *   Author: Almsaeed Studio
@@ -36,6 +45,33 @@ body {
   border-bottom: 1px solid #fefefe; 
   background: url('../img/bg-header.png') repeat-x;
   z-index: 999;
+}
+#pus_name{
+  width: 500px;
+  color: white;
+  font-family: Calibri;
+  font-size: 19px;
+  font-style: italic;
+  text-shadow: 1px 1px 1px #1d3a02;
+  margin:13px;
+  padding-left: 77px;
+  line-height: 1.2;
+  position: fixed;
+}
+#logo_epus {
+  width: 200px;
+  max-height: 70px;
+  padding: 15px;
+  float: right;
+  margin-right: 15px;
+  margin-top: 4px;
+}
+#logo_pus {
+  max-height: 70px;
+  padding: 10px;
+  float: left;
+  margin-left: 20px;
+  position: fixed;
 }
 /* Layout */
 .wrapper {

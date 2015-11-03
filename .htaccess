@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
 
 RewriteEngine on
-RewriteBase /epuskesmas_prog/dev/
+RewriteBase /epuskesmas_prog/deploy/
 
 # Protect application and system files from being viewed when the index.php is missing
 RewriteCond $1 ^(application|system|private|logs)
