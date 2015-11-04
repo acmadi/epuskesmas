@@ -4,7 +4,7 @@ class Admin_menu extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
-		$this->load->model('admin_menu_model');
+		$this->load->model('admin/admin_menu_model');
 	}
 	
 	function index()
@@ -28,8 +28,11 @@ class Admin_menu extends CI_Controller {
 		$data['position'] = (isset($_SEGS['position']) ? $_SEGS['position'] : 99);
 		$data['position_option']=$this->admin_menu_model->get_position($data['id_theme']);
 
-		$data['menu_tree'] = $this->render_tabel($data['position']);
+		#$data['menu_tree'] = $this->render_tabel($data['position']);
 
+		$data['menu_data'] = $this->admin_menu_model->get_data_lv1($data['id_theme'], $data['position'] );
+		$data['submenu_data'] = $this->admin_menu_model->get_data_lv2($data['id_theme'], $data['position']);
+		
 		$data['content'] = $this->parser->parse("admin/menus/show",$data,true);
 
 		$data['panel']= $this->parser->parse("admin/menu_lock",$data,true);
@@ -92,6 +95,38 @@ class Admin_menu extends CI_Controller {
 		}elseif($position = $this->admin_menu_model->insert_entry($data)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
 			redirect(base_url()."index.php/admin_menu/index/id_theme/".$data['id_theme']."/position/".$position);
+		}else{
+			$this->session->set_flashdata('alert_form', 'Save data failed...');
+			redirect(base_url()."index.php/admin_menu/add/id_theme/".$data['id_theme']."/position/".$data['position']);
+		}
+	}
+	
+	
+	function dosort(){
+		
+		$this->authentication->verify('admin','add');		
+				
+		if(!empty($this->input->post('item'))){
+			$sort = 0;
+			foreach ($this->input->post('item') as $value) {
+				//id#posisi
+				$dataExplode = explode('#',$value);
+				$this->admin_menu_model->update_sort($dataExplode[0], $dataExplode[1], $sort);																
+				$sort++;
+				$this->session->set_flashdata('alert_form', 'Save data successful...');
+			}
+		}	
+		
+	}
+	
+	
+	
+	function dodelete(){
+		$this->authentication->verify('admin','del');	
+		$data = $this->uri->ruri_to_assoc();	
+		if($position = $this->admin_menu_model->delete_entry($data['position'],$data['delete_id'])){
+			$this->session->set_flashdata('alert_form', 'Save data successful...');
+			redirect(base_url()."index.php/admin_menu/index/id_theme/".$data['id_theme']."/position/".$data['position']);
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."index.php/admin_menu/add/id_theme/".$data['id_theme']."/position/".$data['position']);
