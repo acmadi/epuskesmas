@@ -209,59 +209,9 @@
   </div><!-- /.form-box -->
 </div><!-- /.register-box -->
 
-<script src="<?php echo base_url()?>public/themes/morganisasi/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>public/themes/morganisasi/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>public/themes/morganisasi/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
     $("#menu_dashboard").addClass("active");
     $("#menu_dashboard_profile").addClass("active");
-
-    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
-
-    $("select[name='propinsi']").change(function() {
-      $("select[name='kota']").html("<option>-</option>");
-      $("select[name='kecamatan']").html("<option>-</option>");
-      $("select[name='desa']").html("<option>-</option>");
-      $.get('<?php echo base_url()?>morganisasi/kota/' + $('select[name=propinsi]').val()+'/0', function(response) {
-        var data = eval(response);
-        $("select[name='kota']").html(data.kota);
-      }, "json");
-    });
-
-    $("select[name='kota']").change(function() {
-      $("select[name='kecamatan']").html("<option>-</option>");
-      $("select[name='desa']").html("<option>-</option>");
-      $.get('<?php echo base_url()?>morganisasi/kecamatan/' + $('select[name=kota]').val()+'/0', function(response) {
-        var data = eval(response);
-        $("select[name='kecamatan']").html(data.kecamatan);
-      }, "json");
-    });
-
-    $("select[name='kecamatan']").change(function() {
-      $("select[name='desa']").html("<option>-</option>");
-      $.get('<?php echo base_url()?>morganisasi/desa/' + $('select[name=kecamatan]').val()+'/0', function(response) {
-        var data = eval(response);
-        $("select[name='desa']").html(data.desa);
-      }, "json");
-    });
-
-
-
-    $.get('<?php echo base_url()?>morganisasi/kota/{propinsi}/{kota}', function(response) {
-      var data = eval(response);
-      $("select[name='kota']").html(data.kota);
-    }, "json");
-
-    $.get('<?php echo base_url()?>morganisasi/kecamatan/{kota}/{kecamatan}', function(response) {
-      var data = eval(response);
-      $("select[name='kecamatan']").html(data.kecamatan);
-    }, "json");
-
-    $.get('<?php echo base_url()?>morganisasi/desa/{kecamatan}/{desa}', function(response) {
-      var data = eval(response);
-      $("select[name='desa']").html(data.desa);
-    }, "json");
-
   });
 </script>
