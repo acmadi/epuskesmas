@@ -145,7 +145,7 @@
         <div class="col-md-6 col-md-offset-1">
              <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa" style="width:20px"></i>
+                <i class="fa fa-qrcode" style="width:20px"></i>
               </span>
               <input type="text" class="form-control" placeholder="** Kode" name="code" readonly value="<?php 
                       if(set_value('code')=="" && isset($code)){

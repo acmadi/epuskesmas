@@ -70,12 +70,21 @@
           <div style="width:80px">Level Akses</div>
         </span>
         <select class="form-control" name="level"/>
-          <option value="member" <?php 
-                if(isset($level) && $level=="member")  echo "selected";
-                ?>>Member</option>
           <option value="administrator" <?php 
                 if(isset($level) && $level=="administrator")  echo "selected";
                 ?>>Administrator</option>
+          <option value="guest" <?php 
+                if(isset($level) && $level=="guest")  echo "selected";
+                ?>>Guest</option>
+          <option value="inventory" <?php 
+                if(isset($level) && $level=="inventory")  echo "selected";
+                ?>>Inventory</option>
+          <option value="kepegewaian" <?php 
+                if(isset($level) && $level=="kepegewaian")  echo "selected";
+                ?>>Kepegawaian</option>
+          <option value="keuangan" <?php 
+                if(isset($level) && $level=="keuangan")  echo "selected";
+                ?>>Keuangan</option>
         </select>
       </div>
       <br>

@@ -35,11 +35,6 @@ class Admin_users_model extends CI_Model {
 		$this->db->where('app_users_list.username <>','admin');
 		$this->db->order_by($this->tabel.'.username','ASC');
 		$this->db->join($this->tabel2, $this->tabel.'.username='.$this->tabel2.'.username', 'inner');
-		$this->db->join("mas_propinsi","mas_propinsi.id_propinsi=app_users_profile.propinsi","left");
-		$this->db->join("mas_kota","mas_kota.id_kota=app_users_profile.kota","left");
-		$this->db->join("mas_kecamatan","mas_kecamatan.id_kecamatan=app_users_profile.kecamatan","left");
-		$this->db->join("mas_desa","mas_desa.id_desa=app_users_profile.desa","left");
-		$this->db->select('mas_propinsi.nama_propinsi as propinsi, mas_kota.nama_kota as kota, mas_kecamatan.nama_kecamatan as kecamatan, mas_desa.nama_desa as desa, app_users_list.username, app_users_list.level, app_users_list.last_login, app_users_list.last_active, app_users_profile.jenis, app_users_profile.email, app_users_profile.nama, app_users_profile.address, app_users_profile.birthdate, app_users_profile.birthplace, app_users_profile.jabatan, app_users_profile.perusahaan, app_users_profile.phone_number');
 		$query = $this->db->get($this->tabel);
         return $query->result_array();
     }
@@ -227,12 +222,14 @@ class Admin_users_model extends CI_Model {
     }
 
 
-	function delete_entry($username)
+	function delete_entry($username,$puskesmas)
 	{
-		$this->db->where(array('username' => $username));
+		$this->db->where('username',$username);
+    	$this->db->where('code',$puskesmas);
 		$this->db->delete("app_users_profile");
 
-		$this->db->where(array('username' => $username));
+		$this->db->where('username',$username);
+    	$this->db->where('code',$puskesmas);
 		return $this->db->delete($this->tabel);
 	}
 
@@ -258,9 +255,11 @@ class Admin_users_model extends CI_Model {
     }
     
     function get_user_id($username=0){
-        $options = array('app_users_list.username'=>$username);
+        $options = array('app_users_list.username'=>$username,'app_users_list.code'=>$this->session->userdata('puskesmas'));
         $this->db->select("app_users_profile.*,app_users_list.level");
         $this->db->join($this->tabel,"app_users_list.username=app_users_profile.username","inner");
+        // $this->db->where('username',$username);
+    	// $this->db->where('code',$code);
         $query = $this->db->get_where($this->tabel2,$options,1);
         if($query->num_rows() > 0){
             $data=$query->row_array();
@@ -298,15 +297,13 @@ class Admin_users_model extends CI_Model {
     	$profile['email']=$this->input->post('email');
     	$profile['nama']=$this->input->post('nama');
     	$profile['phone_number']=$this->input->post('phone_number');
-    	$profile['kota']=$this->input->post('kota');
-    	$profile['code']=$this->input->post('code');
 
-
-    	$check = $this->db->get_where('app_users_profile', array('username' => $username));
+    	$check = $this->db->get_where('app_users_profile', array('username' => $username,'code'=>$this->session->userdata('puskesmas')));
 		$check = $check->num_rows();
 
     	if($check>0){
     		$this->db->where('username',$username);
+    		$this->db->where('code',$this->session->userdata('puskesmas'));
 	    	return $this->db->update('app_users_profile',  $profile);
 	    } else {
 	    	return 0;
@@ -314,9 +311,10 @@ class Admin_users_model extends CI_Model {
     }
         
     function update_account($username){
-        $val['username']=$this->input->post('username');
         $val['level']=$this->input->post('level');
         if($this->input->post('password')!="password" && $this->input->post('password2')!="password"){
+        	$this->db->where('username',$this->session->userdata('username'));
+    		$this->db->where('code',$this->session->userdata('puskesmas'));
             $val['password']=$this->encrypt->sha1($this->input->post('password').$this->config->item('encryption_key'));
         }
         //$val['status_active']=number_format($this->input->post('status_active'));

@@ -11,7 +11,7 @@
         $('#btn_updatePassword').click(function(){
           $.ajax({ 
             type: "POST",
-            url: "<?php echo base_url()?>disbun/profile_dopasswd",
+            url: "<?php echo base_url()?>morganisasi/profile_dopasswd",
             data: $('#updatePassword').serialize(),
             success: function(response){
               console.log(response);
@@ -38,7 +38,7 @@
         $('#btn_updateProfile').click(function(){
           $.ajax({ 
             type: "POST",
-            url: "<?php echo base_url()?>disbun/profile_doupdate",
+            url: "<?php echo base_url()?>morganisasi/profile_doupdate",
             data: $('#updateProfile').serialize(),
             success: function(response){
               $('#notification').html('<div id="information" class="alert alert-warning alert-dismissable"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button><h4>  <i class="icon fa fa-check"></i> Information!</h4><span></span></div>');
@@ -84,7 +84,7 @@
 
 
       <div class="tab-pane " id="tab_2">    
-        <!-- <form action="<?php echo base_url()?>disbun/profile_dopasswd" method="post"> -->
+        <!-- <form action="<?php echo base_url()?>morganisasi/profile_dopasswd" method="post"> -->
         <form name="updatePassword" id="updatePassword">
         <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -113,7 +113,7 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-xs-4">
+              <div class="col-xs-5">
                 <button type="button" id="btn_updatePassword" class="btn btn-primary btn-block btn-flat">Ubah Password</button>
               </div><!-- /.col -->
             </div>
@@ -124,7 +124,7 @@
 
 
       <div class="tab-pane active" id="tab_1">    
-        <!-- <form action="<?php echo base_url()?>disbun/profile_doupdate" method="post"> -->
+        <!-- <form action="<?php echo base_url()?>morganisasi/profile_doupdate" method="post"> -->
         <form name="updateProfile" id="updateProfile">
         <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -209,9 +209,9 @@
   </div><!-- /.form-box -->
 </div><!-- /.register-box -->
 
-<script src="<?php echo base_url()?>public/themes/disbun/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>public/themes/disbun/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>public/themes/disbun/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>public/themes/morganisasi/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>public/themes/morganisasi/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>public/themes/morganisasi/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
     $("#menu_dashboard").addClass("active");
@@ -223,7 +223,7 @@ $(function(){
       $("select[name='kota']").html("<option>-</option>");
       $("select[name='kecamatan']").html("<option>-</option>");
       $("select[name='desa']").html("<option>-</option>");
-      $.get('<?php echo base_url()?>disbun/kota/' + $('select[name=propinsi]').val()+'/0', function(response) {
+      $.get('<?php echo base_url()?>morganisasi/kota/' + $('select[name=propinsi]').val()+'/0', function(response) {
         var data = eval(response);
         $("select[name='kota']").html(data.kota);
       }, "json");
@@ -232,7 +232,7 @@ $(function(){
     $("select[name='kota']").change(function() {
       $("select[name='kecamatan']").html("<option>-</option>");
       $("select[name='desa']").html("<option>-</option>");
-      $.get('<?php echo base_url()?>disbun/kecamatan/' + $('select[name=kota]').val()+'/0', function(response) {
+      $.get('<?php echo base_url()?>morganisasi/kecamatan/' + $('select[name=kota]').val()+'/0', function(response) {
         var data = eval(response);
         $("select[name='kecamatan']").html(data.kecamatan);
       }, "json");
@@ -240,7 +240,7 @@ $(function(){
 
     $("select[name='kecamatan']").change(function() {
       $("select[name='desa']").html("<option>-</option>");
-      $.get('<?php echo base_url()?>disbun/desa/' + $('select[name=kecamatan]').val()+'/0', function(response) {
+      $.get('<?php echo base_url()?>morganisasi/desa/' + $('select[name=kecamatan]').val()+'/0', function(response) {
         var data = eval(response);
         $("select[name='desa']").html(data.desa);
       }, "json");
@@ -248,17 +248,17 @@ $(function(){
 
 
 
-    $.get('<?php echo base_url()?>disbun/kota/{propinsi}/{kota}', function(response) {
+    $.get('<?php echo base_url()?>morganisasi/kota/{propinsi}/{kota}', function(response) {
       var data = eval(response);
       $("select[name='kota']").html(data.kota);
     }, "json");
 
-    $.get('<?php echo base_url()?>disbun/kecamatan/{kota}/{kecamatan}', function(response) {
+    $.get('<?php echo base_url()?>morganisasi/kecamatan/{kota}/{kecamatan}', function(response) {
       var data = eval(response);
       $("select[name='kecamatan']").html(data.kecamatan);
     }, "json");
 
-    $.get('<?php echo base_url()?>disbun/desa/{kecamatan}/{desa}', function(response) {
+    $.get('<?php echo base_url()?>morganisasi/desa/{kecamatan}/{desa}', function(response) {
       var data = eval(response);
       $("select[name='desa']").html(data.desa);
     }, "json");

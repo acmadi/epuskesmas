@@ -57,8 +57,40 @@ class Admin_user extends CI_Controller {
 		$TBS->Show(OPENTBS_DOWNLOAD, $output_file_name);
 
 	}
+
+	function add()
+	{
+		$this->load->model('morganisasi_model');
+		$this->authentication->verify('admin','add');
+
+        $this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_username2');
+        $this->form_validation->set_rules('email', 'Email Pendaftar', 'trim|required|callback_check_email2');
+        $this->form_validation->set_rules('nama', 'Nama Pendaftar', 'trim|required');
+        $this->form_validation->set_rules('code', 'code', 'trim|required');
+        $this->form_validation->set_rules('phone_number', 'No Telepon', 'trim');
+
+		if($this->form_validation->run()== FALSE){
+
+			$data = $this->morganisasi_model->get_profile();
+			$data['title_group']	= "Admin Panel";
+			$data['title_form']		= "Tambah User";
+
+
+			$data['username']		= $this->session->userdata('username');
+			$data['code']			= $this->session->userdata('puskesmas');
+			$data['content'] = $this->parser->parse("admin/users/form",$data,true);
+        	$this->template->show($data,"home");
+		}elseif($username=$this->admin_users_model->insert_entry()){
+			$this->session->set_flashdata('alert', 'Save data successful...');
+			redirect(base_url()."admin_user");
+		}else{
+			$this->session->set_flashdata('alert_form', 'Save data failed...');
+			redirect(base_url()."admin_user/add");
+		}
+	}
     
-    function edit($id=0){
+    function edit($username=0){
+		$this->load->model('morganisasi_model');
         $this->authentication->verify('admin','edit');
 
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
@@ -67,8 +99,10 @@ class Admin_user extends CI_Controller {
       
         $this->form_validation->set_rules('name','Full Name','trim|required');
 
-        $data = $this->admin_users_model->get_user_id($id);
-        $data['id'] = $id;
+        $data = $this->admin_users_model->get_user_id($username);
+        // $data = $this->admin_users_model->get_user_profile($username);
+		$data['code']			= $this->session->userdata('puskesmas');
+        $data['username']		= $username;
 		$data['title_group']	= "Admin Panel";
 		$data['title_form']		= "User Profile";
 		$data['level']			= "";
@@ -77,13 +111,15 @@ class Admin_user extends CI_Controller {
 		<option value='guest' ".($data['level']=="guest" ? "selected" : "").">Guest</option>
 		<option value='inventory' ".($data['level']=="inventory" ? "selected" : "").">Inventory</option>
 		<option value='kepegawaian' ".($data['level']=="kepegewaian" ? "selected" : "").">Kepegawaian</option>
+		<option value='keuangan' ".($data['level']=="keuangan" ? "selected" : "").">Keuangan</option>
 		";
         
         $data['content'] = $this->parser->parse("admin/users/user_profile",$data,true);
         $this->template->show($data,"home");
     }
 
-    function update_profile($username=0){
+    function update_profile($username){
+    	$this->load->model('morganisasi_model');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|callback_check_email2');
         $this->form_validation->set_rules('nama', 'Nama Lengkap', 'trim|required');
         $this->form_validation->set_rules('phone_number', 'Nama Pendaftar', 'trim');
@@ -99,52 +135,28 @@ class Admin_user extends CI_Controller {
     }
 
     function update_password($username=""){
+
     	$this->load->model('morganisasi_model');
         $this->form_validation->set_rules('level', 'Level', 'trim|required');
+        $this->form_validation->set_rules('password', 'Password Lama', 'trim|required');
 		$this->form_validation->set_rules('npassword','Password Baru','trim|required|min_length[5]|matches[cpassword]|callback_check_pass2');
 		$this->form_validation->set_rules('cpassword', 'Konfirmasi Password', 'trim|required');
         
 		if($this->form_validation->run()== FALSE){
 			echo validation_errors();
 		}else{
-			if(md5($this->morganisasi_model->check_password())){
+			if($this->morganisasi_model->check_password()){
 				if(!$this->admin_users_model->update_account($username)) {
 					echo "Save data failed...";
-				} else {
-					echo "1";
-					$this->session->set_flashdata('alert', 'Password berhasil disimpan');
+				} elseif($username=$this->morganisasi_model->update_password($username))
+				{
+					echo "password berhasil diubah";
 				}
 			}else{
 				echo "Password lama salah...";
 			}
 		}
     }
-    
-    function add()
-	{
-		$this->authentication->verify('admin','add');
-
-        $this->form_validation->set_rules('username', 'Username', 'trim|required|callback_check_username2');
-        $this->form_validation->set_rules('email', 'Email Pendaftar', 'trim|required|callback_check_email2');
-        $this->form_validation->set_rules('nama', 'Nama Pendaftar', 'trim|required');
-        $this->form_validation->set_rules('code', 'code', 'trim|required');
-        $this->form_validation->set_rules('phone_number', 'No Telepon', 'trim');
-
-		if($this->form_validation->run()== FALSE){
-
-			$data['title_group']	= "Admin Panel";
-			$data['title_form']		= "Tambah User";
-
-			$data['content'] = $this->parser->parse("admin/users/form",$data,true);
-        	$this->template->show($data,"home");
-		}elseif($username=$this->admin_users_model->insert_entry()){
-			$this->session->set_flashdata('alert', 'Save data successful...');
-			redirect(base_url()."admin_user/edit/".$username);
-		}else{
-			$this->session->set_flashdata('alert_form', 'Save data failed...');
-			redirect(base_url()."admin_user/add");
-		}
-	}
 	
     function update_set_account($id=0){
         $this->authentication->verify('admin','edit');
@@ -292,10 +304,10 @@ class Admin_user extends CI_Controller {
 
 	
 	
-	function dodel($id=0){
+	function dodel($username,$puskesmas){
 		$this->authentication->verify('admin','del');
 
-		if($this->admin_users_model->delete_entry($id)){
+		if($this->admin_users_model->delete_entry($username,$puskesmas)){
 			$this->session->set_flashdata('alert', 'Delete data successful...');
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data failed...');

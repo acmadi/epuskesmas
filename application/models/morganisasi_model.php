@@ -12,10 +12,10 @@ class Morganisasi_model extends CI_Model {
 		if($username!=""){
 			$options = array('app_users_list.username' => $username);
 		}else{
-			$options = array('app_users_list.username' => $this->session->userdata('username'));
+   		     $options = array('app_users_list.username'=>$this->session->userdata('username'), 'app_users_list.code'=>$this->session->userdata('puskesmas'));
 		}
 		
-		$this->db->join("app_users_profile","app_users_profile.username=app_users_list.username","INNER");
+		$this->db->join("app_users_profile","app_users_profile.username=app_users_list.username AND app_users_profile.code=app_users_list.code","INNER");
 
 		$this->db->where($options);
 		
@@ -61,8 +61,18 @@ class Morganisasi_model extends CI_Model {
 	}
 
 	function check_password(){
+		// $uid = ($this->session->userdata('username')!="") ? $this->session->userdata('username') : "";
+        $this->db->where('password',$this->encrypt->sha1($this->input->post('password').$this->config->item('encryption_key')));
+		$this->db->where('code', $this->session->userdata('puskesmas'));
+		$this->db->where('username', $this->input->post('username'));
+        $query = $this->db->get('app_users_list');
+		return $query->num_rows();
+	}
+
+	function check_password2(){
 		$uid = ($this->session->userdata('username')!="") ? $this->session->userdata('username') : "";
         $this->db->where('password',$this->encrypt->sha1($this->input->post('password').$this->config->item('encryption_key')));
+		$this->db->where('code', $this->session->userdata('puskesmas'));
 		$this->db->where('username', $uid);
         $query = $this->db->get('app_users_list');
 		return $query->num_rows();
@@ -96,17 +106,7 @@ class Morganisasi_model extends CI_Model {
 		if ($query->num_rows() > 0) {
 			$profile['email']=$this->input->post('email');
 			$profile['nama']=$this->input->post('nama');
-			$profile['jabatan']=$this->input->post('jabatan');
-			$profile['address']=$this->input->post('address');
 			$profile['phone_number']=$this->input->post('phone_number');
-			$profile['birthdate']=$this->input->post('birthdate');
-			$profile['birthplace']=$this->input->post('birthplace');
-			$profile['perusahaan']=$this->input->post('perusahaan');
-			$profile['propinsi']=$this->input->post('propinsi');
-			$profile['kota']=$this->input->post('kota');
-			$profile['kecamatan']=$this->input->post('kecamatan');
-			$profile['desa']=$this->input->post('desa');
-			$profile['jenis']=$this->input->post('jenis');
 			if($this->db->update('app_users_profile',  $profile, array('username' => $this->input->post('username')))){
 				return $this->input->post('username');
 			}
@@ -118,17 +118,7 @@ class Morganisasi_model extends CI_Model {
 				$profile['username']=$this->input->post('username');
 				$profile['email']=$this->input->post('email');
 				$profile['nama']=$this->input->post('nama');
-				$profile['jabatan']=$this->input->post('jabatan');
-				$profile['address']=$this->input->post('address');
 				$profile['phone_number']=$this->input->post('phone_number');
-				$profile['birthdate']=$this->input->post('birthdate');
-				$profile['birthplace']=$this->input->post('birthplace');
-				$profile['perusahaan']=$this->input->post('perusahaan');
-				$profile['propinsi']=$this->input->post('propinsi');
-				$profile['kota']=$this->input->post('kota');
-				$profile['kecamatan']=$this->input->post('kecamatan');
-				$profile['desa']=$this->input->post('desa');
-				$profile['jenis']=$this->input->post('jenis');
 				if($this->db->insert("app_users_profile", $profile)){
 					return $this->input->post('username');
 				}
@@ -138,26 +128,18 @@ class Morganisasi_model extends CI_Model {
 		}
     }
 
-    function update_profile() {
+    function update_profile() 
+    {
     	$profile['email']=$this->input->post('email');
     	$profile['nama']=$this->input->post('nama');
-    	$profile['jabatan']=$this->input->post('jabatan');
-    	$profile['address']=$this->input->post('address');
     	$profile['phone_number']=$this->input->post('phone_number');
-    	$profile['birthdate']=$this->input->post('birthdate');
-    	$profile['birthplace']=$this->input->post('birthplace');
-    	$profile['perusahaan']=$this->input->post('perusahaan');
-    	$profile['propinsi']=$this->input->post('propinsi');
-    	$profile['kota']=$this->input->post('kota');
-    	$profile['kecamatan']=$this->input->post('kecamatan');
-    	$profile['desa']=$this->input->post('desa');
-		$profile['jenis']=$this->input->post('jenis');
 
-    	$check = $this->db->get_where('app_users_profile', array('username' => $this->session->userdata('username')));
+    	$check = $this->db->get_where('app_users_profile', array('username' => $this->session->userdata('username'),'code'=>$this->session->userdata('puskesmas')));
 		$check = $check->num_rows();
 
     	if($check>0){
     		$this->db->where('username',$this->session->userdata('username'));
+    		$this->db->where('code',$this->session->userdata('puskesmas'));
 	    	return $this->db->update('app_users_profile',  $profile);
 	    } else {
 	    	return 0;
@@ -167,12 +149,9 @@ class Morganisasi_model extends CI_Model {
 	function update_profile2()
     {
 		$profile['nama']=$this->input->post('nama');
-		$profile['trup']=$this->input->post('trup');
-		$profile['address']=$this->input->post('address');
 		$profile['phone_number']=$this->input->post('phone_number');
 		$profile['no_hp']=$this->input->post('no_hp');
 		$profile['email']=$this->input->post('email');
-		$profile['jabatan']=$this->input->post('jabatan');
 
 		$check = $this->db->get_where('app_users_profile', array('username' => $this->session->userdata('username')));
 		$check = $check->num_rows();
@@ -213,7 +192,7 @@ class Morganisasi_model extends CI_Model {
     function update_entry()
     {
 		$options['username']		= $this->session->userdata('username');
-		$options['username']=$this->session->userdata('username');
+		$options['username']		= $this->session->userdata('username');
 
 		if($this->input->post('password')!="password" && $this->input->post('password2')!="password"){
 			$data['password']=$this->encrypt->sha1($this->input->post('password').$this->config->item('encryption_key'));
@@ -231,9 +210,18 @@ class Morganisasi_model extends CI_Model {
 		
     }
 
-    function update_password() {
+    function update_password($username) {
+    	// $options['username']=$this->session->userdata('username');
+    	$this->db->where('username',$username);
+    	$this->db->where('code',$this->session->userdata('puskesmas'));
+    	$data['password']=$this->encrypt->sha1($this->input->post('npassword').$this->config->item('encryption_key'));
+    	return $this->db->update('app_users_list', $data);
+    }
+
+    function update_password2() {
     	// $options['username']=$this->session->userdata('username');
     	$this->db->where('username',$this->session->userdata('username'));
+    	$this->db->where('code',$this->session->userdata('puskesmas'));
     	$data['password']=$this->encrypt->sha1($this->input->post('npassword').$this->config->item('encryption_key'));
     	return $this->db->update('app_users_list', $data);
     }

@@ -52,14 +52,8 @@
 						<td><?php  echo date("d-m-Y h:i:s",$row->last_login)?><br><?php  echo date("d-m-Y h:i:s",$row->last_active)?></td>
 						<td align="center"><img src="<?php  echo base_url()?>media/images/status_<?php  echo intval($row->status_active)?>.gif"></td>
 						<td align="center"><img src="<?php  echo base_url()?>media/images/status_<?php  echo intval($row->online)?>.gif"></td>
-						<td align="center"><a href="<?php  echo base_url()?>index.php/admin_user/edit/<?php  echo $row->username?>" title="Detail Account"><img src="<?php  echo base_url()?>media/images/16_edit.gif" /></a></td>
-		                <td align="center">
-						<?php 
-							$linkData="index.php/admin_user/dodel/".$row->username;
-							$testLink=$this->verifikasi_icon->del_icon('users',$linkData);
-							echo $testLink;
-						?>
-						</td>
+						<td align="center"><a href="<?php  echo base_url()?>index.php/admin_user/edit/<?php  echo $row->username?>/<?php  echo $row->code?>" title="Detail Account"><img src="<?php  echo base_url()?>media/images/16_edit.gif" /></a></td>
+		                <td align="center"><a href="<?php  echo base_url()?>index.php/admin_user/dodel/<?php  echo $row->username?>/<?php  echo $row->code?>" title="Delete Account" onclick="return confirm_delete()" ><img src="<?php  echo base_url()?>media/images/16_del.gif"></a></td>
 					</tr>
 				<?php endforeach;?>                   
 				</tbody>
@@ -90,4 +84,7 @@
 		$("#menu_admin_user").addClass("active");
 		$("#menu_admin").addClass("active");
 	});
+	function confirm_delete() {
+	  return confirm('Apakah yakin data akan dihapus?');
+	}
 </script>
