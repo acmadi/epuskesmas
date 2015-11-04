@@ -73,7 +73,7 @@ class Agama extends CI_Controller {
 		
 			$data['content'] = $this->parser->parse("mst/agama/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($id=$this->agama_model->insert_entry()){
+		}elseif($this->agama_model->insert_entry()==1){
 			$this->session->set_flashdata('alert', 'Save data successful...');
 			redirect(base_url()."mst/agama/");
 		}else{

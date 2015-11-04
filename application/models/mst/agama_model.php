@@ -28,17 +28,24 @@ class Agama_model extends CI_Model {
 		$query->free_result();    
 		return $data;
 	}
-
+	public function getSelectedData($table,$data)
+    {
+        return $this->db->get_where($table, array('kode'=>$data));
+    }
    function insert_entry()
     {
 		$data['kode']=$this->input->post('kode');
 		$data['value']=$this->input->post('value');
 
-		if($this->db->insert($this->tabel, $data)){
-			//$id= mysql_insert_id();
-			return true;
+		if($this->getSelectedData($this->tabel,$data['kode'])->num_rows() > 0) {
+			return 0;
 		}else{
-			return mysql_error();
+			if($this->db->insert($this->tabel, $data)){
+			//$id= mysql_insert_id();
+				return 1;
+			}else{
+				return mysql_error();
+			}
 		}
     }
 

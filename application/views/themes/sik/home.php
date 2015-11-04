@@ -185,13 +185,9 @@
               </a>
               <ul class="treeview-menu">
                 <li id="menu_mst_puskesmas"><a href="<?php echo base_url()?>mst/puskesmas"><i class="fa fa-circle-o"></i> Puskesmas</a></li>
-                <li id="menu_mst_kel"><a href="<?php echo base_url()?>mst/kelurahan"><i class="fa fa-circle-o"></i> Desa / Kelurahan</a></li>
-                <li id="menu_mst_kec"><a href="<?php echo base_url()?>mst/kecamatan"><i class="fa fa-circle-o"></i> Kecamatan</a></li>
-                <li id="menu_mst_kota"><a href="<?php echo base_url()?>mst/kota"><i class="fa fa-circle-o"></i> Kota / Kabupaten</a></li>
-                <li id="menu_mst_prov"><a href="<?php echo base_url()?>mst/provinsi"><i class="fa fa-circle-o"></i> Provinsi</a></li>
                 <li id="menu_mst_agama"><a href="<?php echo base_url()?>mst/agama"><i class="fa fa-circle-o"></i> Agama</a></li>
-                <li id="menu_mst_desa"><a href="<?php echo base_url()?>mst/desa"><i class="fa fa-circle-o"></i> Desa</a></li>
-                <li id="menu_mst_kabupatenkota"><a href="<?php echo base_url()?>mst/kabupatenkota"><i class="fa fa-circle-o"></i> Kabupaten Kota</a></li>
+                <li id="menu_mst_desa"><a href="<?php echo base_url()?>mst/desa"><i class="fa fa-circle-o"></i> Desa / Kelurahan</a></li>
+                <li id="menu_mst_kabupatenkota"><a href="<?php echo base_url()?>mst/kabupatenkota"><i class="fa fa-circle-o"></i>Kota / Kabupaten</a></li>
                 <li id="menu_mst_kecamatan"><a href="<?php echo base_url()?>mst/kecamatan"><i class="fa fa-circle-o"></i> Kecamatan</a></li>
                 <li id="menu_mst_provinsi"><a href="<?php echo base_url()?>mst/provinsi"><i class="fa fa-circle-o"></i> Porvinsi</a></li>
               </ul>

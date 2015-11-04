@@ -29,16 +29,24 @@ class Provinsi_model extends CI_Model {
 		return $data;
 	}
 
+	public function getSelectedData($table,$data)
+    {
+        return $this->db->get_where($table, array('code'=>$data));
+    }
    function insert_entry()
     {
 		$data['code']=$this->input->post('kode');
 		$data['value']=$this->input->post('value');
 
-		if($this->db->insert($this->tabel, $data)){
-			//$id= mysql_insert_id();
-			return true;
+		if($this->getSelectedData($this->tabel,$data['code'])->num_rows() > 0) {
+			return 0;
 		}else{
-			return mysql_error();
+			if($this->db->insert($this->tabel, $data)){
+			//$id= mysql_insert_id();
+				return 1;
+			}else{
+				return mysql_error();
+			}
 		}
     }
 

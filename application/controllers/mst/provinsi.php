@@ -72,7 +72,7 @@ class Provinsi extends CI_Controller {
 		
 			$data['content'] = $this->parser->parse("mst/provinsi/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($id=$this->provinsi_model->insert_entry()){
+		}elseif($this->provinsi_model->insert_entry()== 1){
 			$this->session->set_flashdata('alert', 'Save data successful...');
 			redirect(base_url()."mst/provinsi/");
 		}else{

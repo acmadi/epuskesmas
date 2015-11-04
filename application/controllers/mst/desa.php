@@ -72,7 +72,7 @@ class Desa extends CI_Controller {
 		
 			$data['content'] = $this->parser->parse("mst/desa/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($id=$this->desa_model->insert_entry()){
+		}elseif($this->desa_model->insert_entry()==1){
 			$this->session->set_flashdata('alert', 'Save data successful...');
 			redirect(base_url()."mst/desa/");
 		}else{

@@ -62,23 +62,24 @@ class Puskesmas extends CI_Controller {
 
         $this->form_validation->set_rules('code', 'Kode Puskesmas', 'trim|required');
         $this->form_validation->set_rules('value', 'Nama Puskesmas', 'trim|required');
+        
+			if($this->form_validation->run()== FALSE){
+				$data['title_group'] = "Parameter";
+				$data['title_form']="Tambah Puskesmas";
+				$data['action']="add";
+				$data['code']="";
 
-		if($this->form_validation->run()== FALSE){
-			$data['title_group'] = "Parameter";
-			$data['title_form']="Tambah Puskesmas";
-			$data['action']="add";
-			$data['code']="";
+			
+				$data['content'] = $this->parser->parse("mst/puskesmas/form",$data,true);
+				$this->template->show($data,"home");
+			}elseif($this->puskesmas_model->insert_entry() == 1){
+				$this->session->set_flashdata('alert', 'Save data successful...');
+				redirect(base_url()."mst/puskesmas/");
+			}else{
+				$this->session->set_flashdata('alert_form', 'Save data failed...');
+				redirect(base_url()."mst/puskesmas/add");
+			}
 
-		
-			$data['content'] = $this->parser->parse("mst/puskesmas/form",$data,true);
-			$this->template->show($data,"home");
-		}elseif($id=$this->puskesmas_model->insert_entry()){
-			$this->session->set_flashdata('alert', 'Save data successful...');
-			redirect(base_url()."mst/puskesmas/");
-		}else{
-			$this->session->set_flashdata('alert_form', 'Save data failed...');
-			redirect(base_url()."mst/puskesmas/add");
-		}
 	}
 
 	function edit($kode=0)

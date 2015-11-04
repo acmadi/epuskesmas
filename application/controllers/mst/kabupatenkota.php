@@ -72,7 +72,7 @@ class Kabupatenkota extends CI_Controller {
 		
 			$data['content'] = $this->parser->parse("mst/kabupatenkota/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($id=$this->kabupatenkota_model->insert_entry()){
+		}elseif($this->kabupatenkota_model->insert_entry()== 1){
 			$this->session->set_flashdata('alert', 'Save data successful...');
 			redirect(base_url()."mst/kabupatenkota/");
 		}else{

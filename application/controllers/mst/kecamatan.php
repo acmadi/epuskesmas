@@ -72,7 +72,7 @@ class Kecamatan extends CI_Controller {
 		
 			$data['content'] = $this->parser->parse("mst/kecamatan/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($id=$this->kecamatan_model->insert_entry()){
+		}elseif($this->kecamatan_model->insert_entry()== 1){
 			$this->session->set_flashdata('alert', 'Save data successful...');
 			redirect(base_url()."mst/kecamatan/");
 		}else{
