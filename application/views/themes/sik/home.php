@@ -40,14 +40,14 @@
         var theme = "bootstrap";
     </script>
   </head>
-  <body class="skin-green sidebar-mini wysihtml5-supported fixed">
+  <body class="skin-green sidebar-mini wysihtml5-supported">
 
+    <div class="wrapper">
     <div id="top">
       <img id="logo_pus" src="<?php echo base_url()?>public/themes/sik/dist/img/logo.gif">
       <div id="pus_name">PUSKESMAS {puskesmas}<br>Dinas Kesehatan {district}</div>
       <img id="logo_epus" class="hidden-xs" src="<?php echo base_url()?>public/themes/sik/dist/img/epuskesmas2.png">
     </div>
-    <div class="wrapper">
       
       <header class="main-header">
         <!-- Logo -->
@@ -190,6 +190,10 @@
                 <li id="menu_mst_kota"><a href="<?php echo base_url()?>mst/kota"><i class="fa fa-circle-o"></i> Kota / Kabupaten</a></li>
                 <li id="menu_mst_prov"><a href="<?php echo base_url()?>mst/provinsi"><i class="fa fa-circle-o"></i> Provinsi</a></li>
                 <li id="menu_mst_agama"><a href="<?php echo base_url()?>mst/agama"><i class="fa fa-circle-o"></i> Agama</a></li>
+                <li id="menu_mst_desa"><a href="<?php echo base_url()?>mst/desa"><i class="fa fa-circle-o"></i> Desa</a></li>
+                <li id="menu_mst_kabupatenkota"><a href="<?php echo base_url()?>mst/kabupatenkota"><i class="fa fa-circle-o"></i> Kabupaten Kota</a></li>
+                <li id="menu_mst_kecamatan"><a href="<?php echo base_url()?>mst/kecamatan"><i class="fa fa-circle-o"></i> Kecamatan</a></li>
+                <li id="menu_mst_provinsi"><a href="<?php echo base_url()?>mst/provinsi"><i class="fa fa-circle-o"></i> Porvinsi</a></li>
               </ul>
             </li>
             <?php }?>
