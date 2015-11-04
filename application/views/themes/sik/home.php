@@ -40,14 +40,14 @@
         var theme = "bootstrap";
     </script>
   </head>
-  <body class="skin-green sidebar-mini wysihtml5-supported fixed">
+  <body class="skin-green sidebar-mini wysihtml5-supported">
 
+    <div class="wrapper">
     <div id="top">
       <img id="logo_pus" src="<?php echo base_url()?>public/themes/sik/dist/img/logo.gif">
       <div id="pus_name">PUSKESMAS {puskesmas}<br>Dinas Kesehatan {district}</div>
       <img id="logo_epus" class="hidden-xs" src="<?php echo base_url()?>public/themes/sik/dist/img/epuskesmas2.png">
     </div>
-    <div class="wrapper">
       
       <header class="main-header">
         <!-- Logo -->
