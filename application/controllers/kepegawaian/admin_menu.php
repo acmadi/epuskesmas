@@ -24,6 +24,7 @@ class Admin_menu extends CI_Controller {
 		$data['id_theme']=(!isset($_SEGS['id_theme'])) ? $this->session->userdata('id_theme') : $_SEGS['id_theme'];
 		$data['theme_option']=$this->admin_menu_model->get_theme();
 
+
 		$data['position'] = (isset($_SEGS['position']) ? $_SEGS['position'] : 99);
 		$data['position_option']=$this->admin_menu_model->get_position($data['id_theme']);
 
