@@ -168,11 +168,11 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li id="menu_admin_config"><a href="<?php echo base_url()?>admin_config"><i class="fa fa-circle-o"></i> Configuration</a></li>
-                <li id="menu_admin_user"><a href="<?php echo base_url()?>admin_user"><i class="fa fa-circle-o"></i> User Management</a></li>
-                <li id="menu_admin_file"><a href="<?php echo base_url()?>admin_file"><i class="fa fa-circle-o"></i> File Management</a></li>
-                <li id="menu_admin_role"><a href="<?php echo base_url()?>admin_role"><i class="fa fa-circle-o"></i> Group Role</a></li>
-                <li id="menu_admin_menu"><a href="<?php echo base_url()?>admin_menu"><i class="fa fa-circle-o"></i> Menu Management</a></li>
+                <li id="menu_admin_config"><a href="<?php echo base_url()?>admin/admin_config"><i class="fa fa-circle-o"></i> Configuration</a></li>
+                <li id="menu_admin_user"><a href="<?php echo base_url()?>admin/admin_user"><i class="fa fa-circle-o"></i> User Management</a></li>
+                <li id="menu_admin_file"><a href="<?php echo base_url()?>admin/admin_file"><i class="fa fa-circle-o"></i> File Management</a></li>
+                <li id="menu_admin_role"><a href="<?php echo base_url()?>admin/admin_role"><i class="fa fa-circle-o"></i> Group Role</a></li>
+                <li id="menu_admin_menu"><a href="<?php echo base_url()?>admin/admin_menu"><i class="fa fa-circle-o"></i> Menu Management</a></li>
                 <li id="menu_admin_config"><a href="<?php echo base_url()?>sms_setting"><i class="fa fa-circle-o"></i> SMS Setting</a></li>
               </ul>
             </li>
