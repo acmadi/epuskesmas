@@ -7,14 +7,7 @@
 </div>
 <?php } ?>
 <div class="clear">&nbsp;</div>
-<?php
-$data = $this->uri->ruri_to_assoc();
-$x = "";
-if(!empty($data['parent_id'])){
-	$x="/parent_id/".$data['parent_id'];	
-}
-?>
-<form action="<?php echo base_url()?>index.php/admin_menu/doadd/id_theme/{id_theme}/position/{position}/sub_id/{sub_id}<?=$x?> " method="POST" name="frmFiles">
+<form action="<?php echo base_url()?>index.php/admin_menu/doadd/id_theme/{id_theme}/position/{position}/sub_id/{sub_id}" method="POST" name="frmFiles">
 	<button type="submit" class=btn>Simpan</button>
 	<button type="reset" class=btn>Ulang</button>
 	<button type="button" class=btn onclick="document.location.href='<?php echo base_url()?>index.php/admin_menu/index/id_theme/{id_theme}/position/{position}';">Kembali</button>

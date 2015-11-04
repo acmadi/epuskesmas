@@ -145,6 +145,19 @@
         <div class="col-md-6 col-md-offset-1">
              <div class="input-group">
               <span class="input-group-addon">
+                <i class="fa fa" style="width:20px"></i>
+              </span>
+              <input type="text" class="form-control" placeholder="** Kode" name="code" readonly value="<?php 
+                      if(set_value('code')=="" && isset($code)){
+                        echo $code;
+                      }else{
+                        echo  set_value('code');
+                      }
+                      ?>"/>
+            </div>
+            <br>
+             <div class="input-group">
+              <span class="input-group-addon">
                 <i class="fa fa-envelope" style="width:20px"></i>
               </span>
               <input type="text" class="form-control" placeholder="Email" name="email" value="<?php 
@@ -152,19 +165,6 @@
                         echo $email;
                       }else{
                         echo  set_value('email');
-                      }
-                      ?>"/>
-            </div>
-            <br>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa" style="width:20px"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="** Kode" name="code" value="<?php 
-                      if(set_value('code')=="" && isset($code)){
-                        echo $code;
-                      }else{
-                        echo  set_value('code');
                       }
                       ?>"/>
             </div>

@@ -6,12 +6,51 @@ class Agama extends CI_Controller {
 		$this->load->model('mst/agama_model');
 	}
 	
+	function json(){
+		$this->authentication->verify('mst','show');
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				$this->db->like($field,$value);
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+
+		$rows = $this->agama_model->get_data();
+		$data = array();
+		foreach($rows as $act) {
+			$data[] = array(
+				'kode'		=> $act->kode,
+				'value'		=> $act->value,
+				'edit'		=> 1,
+				'delete'	=> 1
+			);
+		}
+
+		$size = sizeof($data);
+		$json = array(
+			'TotalRows' => (int) $size,
+			'Rows' => $data
+		);
+
+		echo json_encode(array($json));
+	}
+
 	function index(){
 		$this->authentication->verify('mst','edit');
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Agama";
 
-		$data['query'] = $this->agama_model->get_data(); 
 		$data['content'] = $this->parser->parse("mst/agama/show",$data,true);
 
 		$this->template->show($data,"home");
@@ -63,7 +102,7 @@ class Agama extends CI_Controller {
 			$this->template->show($data,"home");
 		}elseif($this->agama_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
-			redirect(base_url()."mst/agama/edit/".$kode);
+			redirect(base_url()."mst/agama/edit/".$this->input->post('kode'));
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."mst/agama/edit/".$kode);
@@ -80,20 +119,5 @@ class Agama extends CI_Controller {
 			$this->session->set_flashdata('alert', 'Delete data error');
 			redirect(base_url()."mst/agama");
 		}
-	}
-
-	function dodel_multi(){
-		$this->authentication->verify('mst','del');
-
-		if(is_array($this->input->post('id'))){
-			foreach($this->input->post('id') as $data){
-				$this->agama_model->delete_entry($data);
-			}
-			$this->session->set_flashdata('alert', 'Delete ('.count($this->input->post('id')).') data successful...');
-		}else{
-			$this->session->set_flashdata('alert', 'Nothing to delete.');
-		}
-
-		redirect(base_url()."mst/agama");
 	}
 }

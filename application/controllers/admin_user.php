@@ -112,6 +112,7 @@ class Admin_user extends CI_Controller {
 					echo "Save data failed...";
 				} else {
 					echo "1";
+					$this->session->set_flashdata('alert', 'Password berhasil disimpan');
 				}
 			}else{
 				echo "Password lama salah...";
