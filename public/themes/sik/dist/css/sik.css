@@ -45,7 +45,7 @@ body {
   z-index: 999;
 }
 #pus_name{
-  width: 500px;
+  width: 440px;
   color: white;
   font-family: Calibri;
   font-size: 19px;
@@ -383,6 +383,9 @@ a:focus {
 .main-header #navbar-search-input::-webkit-input-placeholder {
   color: #ccc;
 }
+.main-header .navbar-custom-menu{
+  margin-right:-220px;
+}
 .main-header .navbar-custom-menu,
 .main-header .navbar-right {
   float: right;
@@ -662,7 +665,7 @@ a:focus {
   margin-right: 3px;
 }
 .sidebar{
-  margin-top:11px;
+  margin-top:56px;
 }
 
 .sidebar-menu {
@@ -1276,7 +1279,7 @@ a:focus {
   font-size: 12px;
 }
 .navbar-nav > .user-menu > .dropdown-menu > .user-body {
-  padding: 1]5px;
+  padding: 15px;
   border-bottom: 1px solid #f4f4f4;
   border-top: 1px solid #dddddd;
 }
