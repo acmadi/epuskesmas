@@ -58,7 +58,17 @@ class Morganisasi extends CI_Controller {
 	function profile_doupdate() {
 		        $this->form_validation->set_rules('email', 'Email', 'trim|required|callback_check_email2');
 		        $this->form_validation->set_rules('nama', 'Nama Lengkap', 'trim|required');
+		        $this->form_validation->set_rules('birthdate', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('birthplace', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('perusahaan', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('jabatan', 'Nama Pendaftar', 'trim');
 		        $this->form_validation->set_rules('phone_number', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('address', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('propinsi', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('kota', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('kecamatan', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('desa', 'Nama Pendaftar', 'trim');
+   			    $this->form_validation->set_rules('jenis', 'Jenis Usaha', 'trim');
 
 				if($this->form_validation->run()== FALSE){
 					// echo "0";

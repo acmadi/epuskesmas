@@ -79,6 +79,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#tab_1" data-toggle="tab">Profil Pengguna</a></li>
       <li><a href="#tab_2" data-toggle="tab">Akun Pengguna</a></li>
+      <li><a href="#tab_3" data-toggle="tab">Galeri Foto</a></li>
     </ul>
     <div class="tab-content">
 
@@ -131,19 +132,6 @@
           <p class="login-box-msg">Silahkan periksa kembali kelengkapan data profil anda :</p>
              <div class="input-group">
               <span class="input-group-addon">
-                <i class="fa fa-qrcode" style="width:20px"></i>
-              </span>
-              <input type="text" class="form-control" placeholder="Kode" name="code" readonly value="<?php 
-                      if(set_value('code')=="" && isset($code)){
-                        echo $code;
-                      }else{
-                        echo  set_value('code');
-                      }
-                      ?>"/>
-            </div>
-            <br>
-             <div class="input-group">
-              <span class="input-group-addon">
                 <i class="fa fa-envelope" style="width:20px"></i>
               </span>
               <input type="text" class="form-control" placeholder="Email" name="email" value="<?php 
@@ -170,6 +158,58 @@
             <br>
             <div class="input-group">
               <span class="input-group-addon">
+                <i class="fa fa-map-marker" style="width:20px"></i>
+              </span>
+              <input type="text" class="form-control" placeholder="Tempat Lahir" name="birthplace" value="<?php 
+                      if(set_value('birthplace')=="" && isset($birthplace)){
+                        echo $birthplace;
+                      }else{
+                        echo  set_value('birthplace');
+                      }
+                      ?>"/>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-calendar" style="width:20px"></i>
+              </span>
+              <input type="text" class="form-control" placeholder="Tanggal Lahir" id="datemask" name="birthdate" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask value="<?php 
+                      if(set_value('birthdate')=="" && isset($birthdate)){
+                        echo $birthdate;
+                      }else{
+                        echo  set_value('birthdate');
+                      }
+                      ?>"/>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-sun-o" style="width:20px"></i>
+              </span>
+              <input type="text" class="form-control" placeholder="Nama Jenis Usaha / Perusahaan" name="perusahaan" value="<?php 
+                      if(set_value('perusahaan')=="" && isset($perusahaan)){
+                        echo $perusahaan;
+                      }else{
+                        echo  set_value('perusahaan');
+                      }
+                      ?>"/>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-puzzle-piece" style="width:20px"></i>
+              </span>
+              <input type="text" class="form-control" placeholder="Posisi / Jabatan" name="jabatan" value="<?php 
+                      if(set_value('jabatan')=="" && isset($jabatan)){
+                        echo $jabatan;
+                      }else{
+                        echo  set_value('jabatan');
+                      }
+                      ?>"/>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
                 <i class="fa fa-phone" style="width:20px"></i>
               </span>
               <input type="text" class="form-control" placeholder="** No. Tlp" name="phone_number" value="<?php 
@@ -179,6 +219,62 @@
                         echo  set_value('phone_number');
                       }
                       ?>"/>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-envelope" style="width:20px"></i>
+              </span>
+              <textarea class="form-control" placeholder="Alamat" name="address" rows="2"/><?php 
+                      if(set_value('address')=="" && isset($address)){
+                        echo $address;
+                      }else{
+                        echo  set_value('address');
+                      }
+                      ?></textarea>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <div style="width:80px">Jenis User</div>
+              </span>
+              <select class="form-control" name="jenis" disabled/>
+                  <option value="{jenis}"><?php 
+                      if(set_value('jenis')=="" && isset($jenis)){
+                        echo ucfirst($jenis);
+                      }else{
+                        echo  set_value('jenis');
+                      }
+                      ?></option>
+              </select>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <div style="width:80px">Provinsi</div>
+              </span>
+              <select class="form-control" name="propinsi"/>{provinsi_option}</select>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <div style="width:80px">Kota / Kab</div>
+              </span>
+              <select class="form-control" name="kota"/></select>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <div style="width:80px">Kecamatan</div>
+              </span>
+              <select class="form-control" name="kecamatan"/></select>
+            </div>
+            <br>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <div style="width:80px">Desa</div>
+              </span>
+              <select class="form-control" name="desa"/></select>
             </div>
             <br>
             <div class="row">

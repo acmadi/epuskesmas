@@ -10,117 +10,75 @@
 <form action="<?php echo base_url()?>mst/agama/dodel_multi" method="POST" name="">
   <div class="row">
     <!-- left column -->
-    <div class="col-md-12">
+    <div class="col-md-10">
       <!-- general form elements -->
       <div class="box box-primary">
         <div class="box-header">
           <h3 class="box-title">{title_form}</h3>
+        </div><!-- /.box-header -->
+
+        <div class="box-body">
+          <div class="box-footer">
+		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/agama/add'">Tambah</button>
+            <button type="submit" class="btn btn-danger" onClick="if(!confirm('Hapus semua data yang dipilih?'))return false;">Hapus</button>
+         </div>
 	    </div>
 
-	      <div class="box-footer">
-		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/agama/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
-		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
-	     </div>
         <div class="box-body">
-		    <div class="div-grid">
-		        <div id="jqxgrid"></div>
-			</div>
+                  <table id="dataTable" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+						<th>&nbsp;</th>
+						<th>NO</font></th>
+						<th>Kode</font></th>
+						<th>Value</th>
+						<th>Ubah</th>
+						<th>Hapus</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<?php 
+					$start=0;
+					foreach($query as $row):?>
+						<tr>
+							<td><input type="checkbox" name="id[]" value="<?php echo $row->kode?>" /></td>
+							<td><?php $start++; echo ($start<10 ? "0":"").$start; ?>&nbsp;</td>
+							<td><?php echo $row->kode?>&nbsp;</td>
+							<td><?php echo $row->value?>&nbsp;</td>
+							<td align="center"><a href="<?php echo base_url()?>mst/agama/edit/<?php echo $row->kode?>" title="Ubah"><img src="<?php echo base_url()?>media/images/16_edit.gif" /></a></td>
+							<td align="center">
+							<?php 
+								$linkData="mst/agama/dodel/".$row->kode;
+								$testLink=$this->verifikasi_icon->del_icon('mst',$linkData);
+								echo $testLink;
+								?>
+							</td>
+						</tr>
+					<?php endforeach;?>                   
+				</tbody>
+                    <tfoot>
+                      <tr>
+						<th>&nbsp;</th>
+						<th>NO</font></th>
+						<th>Kode</font></th>
+						<th>Nama</th>
+						<th>Ubah</th>
+						<th>Hapus</th>
+                      </tr>
+                    </tfoot>
+                  </table>
 	    </div>
+
 	  </div>
 	</div>
   </div>
 </form>
 </section>
 
-<script type="text/javascript">
+<script>
 	$(function () {	
+        $("#dataTable").dataTable();
 		$("#menu_mst_agama").addClass("active");
 		$("#menu_parameter").addClass("active");
 	});
-
-	   var source = {
-			datatype: "json",
-			type	: "POST",
-			datafields: [
-			{ name: 'kode', type: 'string'},
-			{ name: 'value', type: 'string'},
-			{ name: 'edit', type: 'number'},
-			{ name: 'delete', type: 'number'}
-        ],
-		url: "<?php echo site_url('mst/agama/json'); ?>",
-		cache: false,
-		updaterow: function (rowid, rowdata, commit) {
-			},
-		filter: function(){
-			$("#jqxgrid").jqxGrid('updatebounddata', 'filter');
-		},
-		sort: function(){
-			$("#jqxgrid").jqxGrid('updatebounddata', 'sort');
-		},
-		root: 'Rows',
-        pagesize: 10,
-        beforeprocessing: function(data){		
-			if (data != null){
-				source.totalrecords = data[0].TotalRows;					
-			}
-		}
-		};		
-		var dataadapter = new $.jqx.dataAdapter(source, {
-			loadError: function(xhr, status, error){
-				alert(error);
-			}
-		});
-     
-		$('#btn-refresh').click(function () {
-			$("#jqxgrid").jqxGrid('clearfilters');
-		});
-
-		$("#jqxgrid").jqxGrid(
-		{		
-			width: '50%',
-			selectionmode: 'singlerow',
-			source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100'],
-			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
-			rendergridrows: function(obj)
-			{
-				return obj.data;    
-			},
-			columns: [
-				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.kode+"\");'></a></div>";
-					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
-					}
-                 }
-                },
-				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.kode+"\");'></a></div>";
-					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
-					}
-                 }
-                },
-				{ text: 'Kode', datafield: 'kode', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
-				{ text: 'Value', datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '50%' }
-            ]
-		});
-
-	function edit(id){
-		document.location.href="<?php echo base_url().'mst/agama/edit';?>/" + id;
-	}
-
-	function del(id){
-		var confirms = confirm("Hapus Data ?");
-		if(confirms == true){
-			$.post("<?php echo base_url().'mst/agama/dodel' ?>/" + id,  function(){
-				alert('data berhasil dihapus');
-
-				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-			});
-		}
-	}
 </script>

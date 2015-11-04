@@ -25,14 +25,14 @@
   <div class="col-md-6">
     <p class="login-box-msg">Silahkan tentukan data login:</p>
       <div class="form-group has-feedback">
-         <input type="text" class="form-control" placeholder="Kode" name="code" readonly value="<?php 
-                      if(set_value('code')=="" && isset($code)){
-                        echo $code;
-                      }else{
-                        echo  set_value('code');
-                      }
-                      ?>"/>
-        <span class="glyphicon glyphicon-qrcode form-control-feedback"></span>
+        <input type="text" class="form-control" placeholder="Email" name="email" value="<?php 
+                if(set_value('email')=="" && isset($email)){
+                  echo $email;
+                }else{
+                  echo  set_value('email');
+                }
+                ?>"/>
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="Username" name="username" value="<?php 
@@ -104,13 +104,13 @@
       <br>
       <div class="input-group">
         <span class="input-group-addon">
-          <i class="fa fa-envelope" style="width:20px"></i>
+          <i class="fa fa" style="width:20px"></i>
         </span>
-        <input type="text" class="form-control" placeholder="** Email" name="email" value="<?php 
-                if(set_value('email')=="" && isset($email)){
-                  echo $email;
+        <input type="text" class="form-control" placeholder="** Kode" name="code" value="<?php 
+                if(set_value('code')=="" && isset($code)){
+                  echo $code;
                 }else{
-                  echo  set_value('email');
+                  echo  set_value('code');
                 }
                 ?>"/>
       </div>
