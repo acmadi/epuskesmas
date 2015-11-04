@@ -8,6 +8,7 @@
         @import url(<?php echo base_url()?>public/themes/sik/bootstrap/css/bootstrap.min.css);
         @import url(<?php echo base_url()?>public/themes/sik/bootstrap/css/font-awesome.min.css);
         @import url(<?php echo base_url()?>public/themes/sik/bootstrap/css/ionicons.min.css);
+        @import url(<?php echo base_url()?>public/themes/sik/plugins/datatables/dataTables.bootstrap.css);
         @import url(<?php echo base_url()?>public/themes/sik/dist/css/sik.css);
         @import url(<?php echo base_url()?>public/themes/sik/dist/css/skins/skin-green.min.css);
         @import url(<?php echo base_url()?>plugins/js/jqwidgets/styles/jqx.base.css);
@@ -226,6 +227,8 @@
     </div><!-- ./wrapper -->
 
     <script src="<?php echo base_url()?>public/themes/sik/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="<?php echo base_url()?>public/themes/sik/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     <script src='<?php echo base_url()?>public/themes/sik/plugins/fastclick/fastclick.min.js'></script>
     <script src="<?php echo base_url()?>public/themes/sik/dist/js/app.min.js" type="text/javascript"></script>
     <script src="<?php echo base_url()?>public/themes/sik/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
