@@ -92,7 +92,7 @@ class Admin_menu_model extends CI_Model {
 		if(isset($not)) $this->db->where_not_in('id',$not);
  		$this->db->where("id_theme" , $id_theme);
         $query = $this->db->get('app_files');
-		$data=array();
+		$data = array();
         foreach($query->result_array() as $key=>$dt){
 			$data[$dt['id']]=ucfirst($dt['filename']." | ".$dt['module']);
 		}

@@ -15,28 +15,36 @@ if(!empty($data['parent_id'])){
 }
 ?>
 <form action="<?php echo base_url()?>index.php/admin_menu/doadd/id_theme/{id_theme}/position/{position}/sub_id/{sub_id}<?=$x?> " method="POST" name="frmFiles">
-	<button type="submit" class=btn>Simpan</button>
-	<button type="reset" class=btn>Ulang</button>
-	<button type="button" class=btn onclick="document.location.href='<?php echo base_url()?>index.php/admin_menu/index/id_theme/{id_theme}/position/{position}';">Kembali</button>
-	<br />
-	<br />
-	<table border="0" cellpadding="0" cellspacing="8" class="panel">
-		<tr>
-			<td>
 
-				<table border="0" cellpadding="3" cellspacing="2">
-					<tr>
-						<td>Filename</td>
-						<td>:</td>
-						<td><?php echo form_dropdown('file_id', $file_option, $file_id," class=input");?></td>
-					</tr>
-				</table>
+	<div class="col-md-12">
+		
+		<div class="box box-primary">
+		<div class="box-header">
+		  <h3 class="box-title">Select Filename</h3>
+		</div><!-- /.box-header -->		
+		
+		  <div class="box-body">
+			<div class="form-group">
+				<button type="submit" class="btn btn-success btn-sm">Simpan</button>
+				<button type="reset" class="btn btn-warning btn-sm">Ulang</button>
+				<button type="button" class="btn btn-primary btn-sm" onclick="document.location.href='<?php echo base_url()?>index.php/admin_menu/index/id_theme/{id_theme}/position/{position}';">Kembali</button>
+			</div> 
+			<div class="form-group">
+			  <label for="exampleInputEmail1">Email address</label>
+			  
+			  <?php echo form_dropdown('file_id', $file_option, $file_id," class=form-control id=exampleInputEmail1");?>
+			</div>   
+			<div class="form-group">
+				<button type="submit" class="btn btn-success btn-sm">Simpan</button>
+				<button type="reset" class="btn btn-warning btn-sm">Ulang</button>
+				<button type="button" class="btn btn-primary btn-sm" onclick="document.location.href='<?php echo base_url()?>index.php/admin_menu/index/id_theme/{id_theme}/position/{position}';">Kembali</button>
+			</div>  					
+		
+		</div><!-- /.box -->                                
+		</div><!-- /.box-body -->
+	</div><!-- /.box -->
 
-			</td>
-		</tr>
-	</table>
-	<br />
-	<button type="submit" class=btn>Simpan</button>
-	<button type="reset" class=btn>Ulang</button>
-	<button type="button" class=btn onclick="document.location.href='<?php echo base_url()?>index.php/admin_menu/index/id_theme/{id_theme}/position/{position}';">Kembali</button>
+            
+	
+	
 </form>

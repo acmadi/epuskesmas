@@ -96,18 +96,7 @@
                 </div><!-- /.box-body -->
 
       	<div class="box-body">
-			<table cellpadding="0" cellspacing="0" border="0" width="100%" class="tbl" id="menus_tbl">
-				<thead>
-					<tr class="nodrop nodrag">
-						<th  width=90%  colspan="3">Menu</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{#menu_tree}</td>
-					</tr>
-				</tbody>
-			</table>
+			
 		</div><!-- /.box -->
 
   	</div><!-- /.box -->

@@ -69,6 +69,7 @@ class Admin_menu extends CI_Controller {
 
 		$data = $this->uri->ruri_to_assoc();
 		$data['title_form']="Menus &raquo; Tambah";
+		$data['title_group']="Admin Panel";
 		$data['action']="doadd";
 		$data['file_id']="";
 		if(!isset($data['sub_id'])) $data['sub_id']=0;
