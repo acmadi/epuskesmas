@@ -190,6 +190,7 @@
                 <li id="menu_mst_kabupatenkota"><a href="<?php echo base_url()?>mst/kabupatenkota"><i class="fa fa-circle-o"></i> Kota / Kabupaten</a></li>
                 <li id="menu_mst_kecamatan"><a href="<?php echo base_url()?>mst/kecamatan"><i class="fa fa-circle-o"></i> Kecamatan</a></li>
                 <li id="menu_mst_provinsi"><a href="<?php echo base_url()?>mst/provinsi"><i class="fa fa-circle-o"></i> Porvinsi</a></li>
+                <li id="menu_mst_inv_ruangan"><a href="<?php echo base_url()?>mst/inv_ruangan"><i class="fa fa-circle-o"></i> Inventory Ruangan</a></li>
               </ul>
             </li>
             <?php }?>
