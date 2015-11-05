@@ -96,7 +96,8 @@
         <section class="sidebar">
           <!-- Sidebar user panel -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
-          <ul class="sidebar-menu">
+          <?php /* 
+		  <ul class="sidebar-menu">
             <li id="menu_dashboard" class="treeview">
               <a href="#">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -190,11 +191,18 @@
                 <li id="menu_mst_kabupatenkota"><a href="<?php echo base_url()?>mst/kabupatenkota"><i class="fa fa-circle-o"></i> Kota / Kabupaten</a></li>
                 <li id="menu_mst_kecamatan"><a href="<?php echo base_url()?>mst/kecamatan"><i class="fa fa-circle-o"></i> Kecamatan</a></li>
                 <li id="menu_mst_provinsi"><a href="<?php echo base_url()?>mst/provinsi"><i class="fa fa-circle-o"></i> Porvinsi</a></li>
+<<<<<<< HEAD
                 <li id="menu_mst_inv_ruangan"><a href="<?php echo base_url()?>mst/inv_ruangan"><i class="fa fa-circle-o"></i> Inventory Ruangan</a></li>
+=======
+                <li id="menu_mst_invbarang"><a href="<?php echo base_url()?>mst/invbarang"><i class="fa fa-circle-o"></i> Inv Barang</a></li>
+                <li id="menu_mst_invkondisibarang"><a href="<?php echo base_url()?>mst/invkondisibarang"><i class="fa fa-circle-o"></i> Inv Kondisi Barang</a></li>
+>>>>>>> b2a0863d40e5cbe86d9781618c8e4571de9457d6
               </ul>
             </li>
             <?php }?>
-          </ul>
+          </ul> */ ?>
+		  
+		  {menu}
         </section>
         <!-- /.sidebar -->
       </aside>
