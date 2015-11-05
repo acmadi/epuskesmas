@@ -19,8 +19,84 @@
 			}
 
 		}
-
-		function create_menu($position,$class,$sub_id=0){
+		function have_child($id){
+			$query=$this->obj->db->query("select count(id) as n from ".$this->app_menus." where sub_id=".$id);			
+			$x=0;
+			foreach($query->result() as $q){
+				$x = $q->n;
+			}
+			
+			if($x > 0){
+				return true;
+			}else{
+				return false;
+			}
+			
+			
+			
+		}
+		function create_menu($posisi, $subid){
+			$query=$this->obj->db->query("select app_menus.id, app_files.id as idmenu, filename, module from ".$this->app_menus." inner join ".$this->app_files." on ".$this->app_menus.".file_id = ".$this->app_files.".id inner join ".$this->app_users_access." using(file_id) where level_id='".$this->obj->session->userdata('level')."' and position = ".$posisi." and sub_id =".$subid." and lang = '".$_SESSION['lang']."' order by sort asc");
+			$icon = array(
+				"menus" => "fa fa-cogs",
+				"submenu" => "fa fa-circle-o",
+				"39" => "fa fa-dashboard",
+				"74" => "fa fa-users",
+				"55" => "fa fa-money",
+				"57" => "fa fa-dropbox",
+				"59" => "fa fa-envelope",
+				"41" => "fa fa-bar-chart-o",
+				"49" => "fa fa-asterisk",
+				"6" => "fa fa-table"				
+			);
+			
+			$text="";
+			if($subid==0){
+				$text=$text."<ul class=\"sidebar-menu\">";
+			}else{				
+				$text=$text."<ul class=\"treeview-menu\">";
+			}
+			
+			if($this->obj->session->userdata('level')=='administrator'){
+				$lvl = 'admin';
+			}else{
+				$lvl = $this->obj->session->userdata('level');
+			}
+			
+			foreach($query->result() as $q){				
+				if(!empty($icon[$q->idmenu])){
+					$ico = $icon[$q->idmenu];
+				}else{
+					$ico = "fa fa-circle-o";
+				}
+				if($this->have_child($q->id)){	
+					
+					
+					
+					$text=$text."<li class=\"treeview\" id=\"menu_".$q->module."\">
+						<a href=\" ".base_url().$q->module." \">
+							<i class=\" ".$ico." \"></i> <span> ".$q->filename." </span> <i class=\"fa fa-angle-left pull-right\"></i>
+						</a>";
+					$text=$text.$this->create_menu($posisi, $q->id);
+					 				
+				}else{
+					
+					
+					$text=$text."<li id=\"menu_".$q->module."\">
+						<a href=\" ".base_url().$q->module." \">
+							<i class=\" ".$ico."\"></i> <span> ".$q->filename." </span> <i class=\"pull-right\"></i>
+						</a>";
+					
+				}
+				
+				
+				$text=$text."</li>";
+			}
+			$text=$text."</ul>";
+			return $text;
+		}
+		
+		function create_menux($position,$class,$sub_id=0){
 			if($this->obj->session->userdata('level') == "super administrator"){
 				$query = $this->obj->db-> query("SELECT a.id,a.file_id,c.filename,c.module FROM ".$this->app_menus." AS a,".$this->app_files." as c WHERE a.file_id=c.id AND a.`position`=".$position." AND a.sub_id='".$sub_id."' AND c.lang='".$_SESSION['lang']."' GROUP BY a.position,a.id ORDER BY sort");
 			}

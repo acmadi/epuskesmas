@@ -96,7 +96,8 @@
         <section class="sidebar">
           <!-- Sidebar user panel -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
-          <ul class="sidebar-menu">
+          <?php /* 
+		  <ul class="sidebar-menu">
             <li id="menu_dashboard" class="treeview">
               <a href="#">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -195,7 +196,9 @@
               </ul>
             </li>
             <?php }?>
-          </ul>
+          </ul> */ ?>
+		  
+		  {menu}
         </section>
         <!-- /.sidebar -->
       </aside>

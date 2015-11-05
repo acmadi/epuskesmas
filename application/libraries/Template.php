@@ -131,9 +131,9 @@ class Template {
 		$data = array_merge($this->data,$data);
 
 			//Menus
-			$menu_config_file = BASEPATH.'../application/views/'.$this->template.'menu.config.php';
+			//$menu_config_file = BASEPATH.'../application/views/'.$this->template.'menu.config.php';
 			
-			if(file_exists($menu_config_file)){
+			/*if(file_exists($menu_config_file)){
 				include_once($menu_config_file);
 				foreach($menu as $x){
 					$name = $x['name'];
@@ -147,8 +147,11 @@ class Template {
 					}
 					$data[$name]=$this->obj->menu->menus[$position];
 				}
-			}
-
+			}*/
+			#disini
+			$data['menu']=$this->obj->menu->create_menu(1,0);
+			
+			
 			//Login
 			if($this->obj->session->userdata('username')!="" && $this->obj->session->userdata('logged_in') || $nologin==1){
 				if($nologin==1){

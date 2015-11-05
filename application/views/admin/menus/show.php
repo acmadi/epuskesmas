@@ -76,7 +76,7 @@
 										</span>                      
 										  <!-- submenu text -->
 										<span class="text"><?=$s['filename']?></span>
-										<span class="text"><?=$m['filename']?></span>
+										
 										<div class="pull-right">
 											
 											<a href="<?php echo base_url()?>admin_menu/dodelete/id_theme/{id_theme}/position/{position}/sub_id/{sub_id}/delete_id/<?=$s['id']?>" onclick="return confirm('Anda yakin ingin menghapus menu ini ?')" class="glyphicon glyphicon-trash"></a>

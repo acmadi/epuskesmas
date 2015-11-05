@@ -31,6 +31,7 @@ class Admin_menu_model extends CI_Model {
 			$this->db->where('sub_id',0);
 			$this->db->where('position', $id_position);
 			$this->db->where('app_menus.id_theme', $id_theme);
+			$this->db->where('app_files.lang', $_SESSION['lang']);
 			$this->db->distinct();			
 			$this->db->order_by('sort','asc');
 			$query = $this->db->get($this->tabel);
@@ -44,7 +45,8 @@ class Admin_menu_model extends CI_Model {
 		$this->db->join('app_files','app_files.id=app_menus.file_id');
 		$this->db->where('sub_id !=',0);
 		$this->db->where('position', $id_position);
-			$this->db->where('app_menus.id_theme', $id_theme);
+		$this->db->where('app_menus.id_theme', $id_theme);
+		$this->db->where('app_files.lang', $_SESSION['lang']);
 		$this->db->distinct();
 		$this->db->order_by('sort','asc');
 		$query = $this->db->get($this->tabel);
@@ -55,7 +57,7 @@ class Admin_menu_model extends CI_Model {
     {
 		$options['position'] = $position;
 		$options['sub_id'] = $sub_id;
-		$options['lang'] = $this->lang;
+		$options['lang'] = $_SESSION['lang'];
 
 		$this->db->select('app_menus.*,app_files.filename,app_files.module');
 		$this->db->join('app_files','app_files.id=app_menus.file_id');
@@ -175,6 +177,7 @@ class Admin_menu_model extends CI_Model {
 		$data['file_id']=$this->input->post('file_id');
 		$data['id']=$this->get_last_id($data['position']);
 		$data['sort']=$this->get_last_sort($data['position'],$data['sub_id']);
+		
 		if(!empty($data['sub_id'])){
 			$data['sub_id']=$data['sub_id'];
 		}
