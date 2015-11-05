@@ -35,10 +35,10 @@
             <div class="form-group">
               <label>Kode</label>
               <input type="text" class="form-control" name="kode" placeholder="Kode" value="<?php 
-                if(set_value('kode')=="" && isset($kode)){
+                if(set_value('code')=="" && isset($code)){
                   echo $kode;
                 }else{
-                  echo  set_value('kode');
+                  echo  set_value('code');
                 }
                 ?>">
             </div>

@@ -1,9 +1,9 @@
 <?php
-class Invbarang extends CI_Controller {
+class Invkondisibarang extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
-		$this->load->model('mst/invbarang_model');
+		$this->load->model('mst/invkondisibarang_model');
 	}
 	function json(){
 		$this->authentication->verify('mst','show');
@@ -25,7 +25,7 @@ class Invbarang extends CI_Controller {
 			}
 		}
 
-		$rows_all = $this->invbarang_model->get_data();
+		$rows_all = $this->invkondisibarang_model->get_data();
 
 
 		if($_POST) {
@@ -44,12 +44,13 @@ class Invbarang extends CI_Controller {
 			}
 		}
 
-		$rows = $this->invbarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->invkondisibarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
-				'kode'		=> $act->kode,
-				'uraian'		=> $act->uraian,
+				'id_keadaan_barang'		=> $act->id_keadaan_barang,
+				'nama'		=> $act->nama,
+				'deskripsi'		=> $act->deskripsi,
 				'edit'		=> 1,
 				'delete'	=> 1
 			);
@@ -67,9 +68,9 @@ class Invbarang extends CI_Controller {
 	function index(){
 		$this->authentication->verify('mst','edit');
 		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Inv Barang";
+		$data['title_form'] = "Master Data - Inv Kondisi Barang";
 
-		$data['content'] = $this->parser->parse("mst/barang/show",$data,true);
+		$data['content'] = $this->parser->parse("mst/inv_kondisi_barang/show",$data,true);
 
 		$this->template->show($data,"home");
 	}
@@ -79,24 +80,24 @@ class Invbarang extends CI_Controller {
 		$this->authentication->verify('mst','add');
 
 
-        $this->form_validation->set_rules('kode', 'Kode Barang', 'trim|required');
-        $this->form_validation->set_rules('uraian', 'Nama Barang', 'trim|required');
+        $this->form_validation->set_rules('nama', 'Kondisi Barang', 'trim|required');
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
         
 			if($this->form_validation->run()== FALSE){
 				$data['title_group'] = "Parameter";
-				$data['title_form']="Tambah Inventroy Barang";
+				$data['title_form']="Tambah Inventroy Kondisi Barang";
 				$data['action']="add";
 				$data['kode']="";
 
 			
-				$data['content'] = $this->parser->parse("mst/barang/form",$data,true);
+				$data['content'] = $this->parser->parse("mst/inv_kondisi_barang/form",$data,true);
 				$this->template->show($data,"home");
-			}elseif($this->invbarang_model->insert_entry() == 1){
+			}elseif($this->invkondisibarang_model->insert_entry() == 1){
 				$this->session->set_flashdata('alert', 'Save data successful...');
-				redirect(base_url()."mst/invbarang/");
+				redirect(base_url()."mst/invkondisibarang/");
 			}else{
 				$this->session->set_flashdata('alert_form', 'Save data failed...');
-				redirect(base_url()."mst/invbarang/add");
+				redirect(base_url()."mst/invkondisibarang/add");
 			}
 
 	}
@@ -105,38 +106,38 @@ class Invbarang extends CI_Controller {
 	{
 		$this->authentication->verify('mst','add');
 
-        $this->form_validation->set_rules('uraian', 'Nama Barang', 'trim|required');
-        $this->form_validation->set_rules('kode', 'Kode Barang', 'trim|required');
+        $this->form_validation->set_rules('nama', 'Kondisi Barang', 'trim|required');
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data = $this->invbarang_model->get_data_row($kode); 
+			$data = $this->invkondisibarang_model->get_data_row($kode); 
 
 			$data['title_group'] = "Parameter";
-			$data['title_form']="Ubah Inventroy Barang";
+			$data['title_form']="Ubah Inv Kondisi Barang";
 			$data['action']="edit";
 			$data['kode']=$kode;
 
 		
-			$data['content'] = $this->parser->parse("mst/barang/form",$data,true);
+			$data['content'] = $this->parser->parse("mst/inv_kondisi_barang/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($this->invbarang_model->update_entry($kode)){
+		}elseif($this->invkondisibarang_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
-			redirect(base_url()."mst/invbarang/edit/".$this->input->post('kode'));
+			redirect(base_url()."mst/invkondisibarang/edit/".$kode);
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
-			redirect(base_url()."mst/invbarang/edit/".$kode);
+			redirect(base_url()."mst/invkondisibarang/edit/".$kode);
 		}
 	}
 
 	function dodel($kode=0){
 		$this->authentication->verify('mst','del');
 
-		if($this->invbarang_model->delete_entry($kode)){
+		if($this->invkondisibarang_model->delete_entry($kode)){
 			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
-			redirect(base_url()."mst/invbarang");
+			redirect(base_url()."mst/invkondisibarang");
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
-			redirect(base_url()."mst/invbarang");
+			redirect(base_url()."mst/invkondisibarang");
 		}
 	}
 }

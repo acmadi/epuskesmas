@@ -48,7 +48,7 @@ class Invbarang extends CI_Controller {
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
-				'kode'		=> $act->kode,
+				'code'		=> $act->code,
 				'uraian'		=> $act->uraian,
 				'edit'		=> 1,
 				'delete'	=> 1
@@ -69,7 +69,7 @@ class Invbarang extends CI_Controller {
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Inv Barang";
 
-		$data['content'] = $this->parser->parse("mst/barang/show",$data,true);
+		$data['content'] = $this->parser->parse("mst/inv_barang/show",$data,true);
 
 		$this->template->show($data,"home");
 	}
@@ -89,7 +89,7 @@ class Invbarang extends CI_Controller {
 				$data['kode']="";
 
 			
-				$data['content'] = $this->parser->parse("mst/barang/form",$data,true);
+				$data['content'] = $this->parser->parse("mst/inv_barang/form",$data,true);
 				$this->template->show($data,"home");
 			}elseif($this->invbarang_model->insert_entry() == 1){
 				$this->session->set_flashdata('alert', 'Save data successful...');
@@ -117,7 +117,7 @@ class Invbarang extends CI_Controller {
 			$data['kode']=$kode;
 
 		
-			$data['content'] = $this->parser->parse("mst/barang/form",$data,true);
+			$data['content'] = $this->parser->parse("mst/inv_barang/form",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->invbarang_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
