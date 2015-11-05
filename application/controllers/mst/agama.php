@@ -26,7 +26,26 @@ class Agama extends CI_Controller {
 			}
 		}
 
-		$rows = $this->agama_model->get_data();
+		$rows_all = $this->agama_model->get_data();
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				$this->db->like($field,$value);
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+
+		$rows = $this->agama_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -37,7 +56,7 @@ class Agama extends CI_Controller {
 			);
 		}
 
-		$size = sizeof($data);
+		$size = sizeof($rows_all);
 		$json = array(
 			'TotalRows' => (int) $size,
 			'Rows' => $data
