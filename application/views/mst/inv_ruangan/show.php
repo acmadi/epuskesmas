@@ -79,7 +79,7 @@
 
 		$("#jqxgrid").jqxGrid(
 		{		
-			width: '70%',
+			width: '100%',
 			selectionmode: 'singlerow',
 			source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100'],
 			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
@@ -91,7 +91,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -100,7 +100,7 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -109,18 +109,18 @@
 				{ text: 'Id', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
 				{ text: 'Nama Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
-				{ text: 'Kode', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'Nama Puskesmas', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
             ]
 		});
 
-	function edit(id){
-		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id;
+	function edit(id_mst_inv_ruangan){
+		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id_mst_inv_ruangan;
 	}
 
-	function del(id){
+	function del(id_mst_inv_ruangan){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id,  function(){
+			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id_mst_inv_ruangan,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
