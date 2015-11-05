@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2015-11-05 12:51:15
+Date: 2015-11-05 14:37:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -67,3 +67,4 @@ INSERT INTO `app_menus` VALUES ('1', '31', '26', '5', '70', '2');
 INSERT INTO `app_menus` VALUES ('1', '32', '26', '6', '71', '2');
 INSERT INTO `app_menus` VALUES ('1', '33', '26', '7', '72', '2');
 INSERT INTO `app_menus` VALUES ('1', '34', '26', '8', '73', '2');
+INSERT INTO `app_menus` VALUES ('1', '35', '26', '9', '76', '2');

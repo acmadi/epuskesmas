@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2015-11-05 12:51:01
+Date: 2015-11-05 14:37:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,12 +26,12 @@ CREATE TABLE `app_files` (
   `module` varchar(100) DEFAULT NULL,
   `id_theme` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`,`lang`)
-) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of app_files
 -- ----------------------------
-INSERT INTO `app_files` VALUES ('1', 'ina', 'Home', 'disbun', '2');
+INSERT INTO `app_files` VALUES ('1', 'ina', 'Home', 'morganisasi', '2');
 INSERT INTO `app_files` VALUES ('3', 'ina', 'Permohonan', 'permohonan', '2');
 INSERT INTO `app_files` VALUES ('2', 'en', 'Users', 'user', '2');
 INSERT INTO `app_files` VALUES ('4', 'en', 'Pemeriksaan', 'pemeriksaan', '2');
@@ -42,7 +42,7 @@ INSERT INTO `app_files` VALUES ('5', 'ina', 'Sertifikat', 'sertifikat', '2');
 INSERT INTO `app_files` VALUES ('6', 'ina', 'Master Data', 'prm', '2');
 INSERT INTO `app_files` VALUES ('6', 'en', 'Master Data', 'prm', '2');
 INSERT INTO `app_files` VALUES ('2', 'ina', 'Users', 'user', '2');
-INSERT INTO `app_files` VALUES ('1', 'en', 'Home', 'disbun', '2');
+INSERT INTO `app_files` VALUES ('1', 'en', 'Home', 'index.php', '2');
 INSERT INTO `app_files` VALUES ('31', 'ina', 'Admin', 'admin', '3');
 INSERT INTO `app_files` VALUES ('31', 'en', 'Admin', 'admin', '3');
 INSERT INTO `app_files` VALUES ('36', 'ina', 'Menu', 'admin_menu', '2');
@@ -53,8 +53,8 @@ INSERT INTO `app_files` VALUES ('38', 'ina', 'Hak Akses', 'admin_role', '2');
 INSERT INTO `app_files` VALUES ('38', 'en', 'Role', 'admin_role', '2');
 INSERT INTO `app_files` VALUES ('39', 'ina', 'Dashboard', '#', '2');
 INSERT INTO `app_files` VALUES ('39', 'en', 'Dashboard', '#', '2');
-INSERT INTO `app_files` VALUES ('40', 'ina', 'Profil', 'profile', '2');
-INSERT INTO `app_files` VALUES ('40', 'en', 'Profile', 'profile', '2');
+INSERT INTO `app_files` VALUES ('40', 'ina', 'Profil', 'morganisasi/profile', '2');
+INSERT INTO `app_files` VALUES ('40', 'en', 'Profile', 'morganisasi/profile', '2');
 INSERT INTO `app_files` VALUES ('41', 'ina', 'Laporan', '#', '2');
 INSERT INTO `app_files` VALUES ('41', 'en', 'Report', '#', '2');
 INSERT INTO `app_files` VALUES ('42', 'ina', 'Daftar Produsen Benih', 'lap_penangkar', '2');
@@ -125,3 +125,5 @@ INSERT INTO `app_files` VALUES ('74', 'ina', 'Kepegawaian', '#', '2');
 INSERT INTO `app_files` VALUES ('74', 'en', 'Employee Affair', '#', '2');
 INSERT INTO `app_files` VALUES ('75', 'ina', 'SMS Setting', 'sms_setting', '2');
 INSERT INTO `app_files` VALUES ('75', 'en', 'SMS Setting', 'sms_setting', '2');
+INSERT INTO `app_files` VALUES ('76', 'ina', 'Inventaris Ruangan', 'mst/inv_ruangan', '2');
+INSERT INTO `app_files` VALUES ('76', 'en', 'Room Inventory', 'mst/inv_ruangan', '2');
