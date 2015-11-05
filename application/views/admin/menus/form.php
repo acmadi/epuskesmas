@@ -30,7 +30,7 @@ if(!empty($data['parent_id'])){
 				<button type="button" class="btn btn-primary btn-sm" onclick="document.location.href='<?php echo base_url()?>index.php/admin_menu/index/id_theme/{id_theme}/position/{position}';">Kembali</button>
 			</div> 
 			<div class="form-group">
-			  <label for="exampleInputEmail1">Email address</label>
+			  <label for="exampleInputEmail1">Filename</label>
 			  
 			  <?php echo form_dropdown('file_id', $file_option, $file_id," class=form-control id=exampleInputEmail1");?>
 			</div>   
