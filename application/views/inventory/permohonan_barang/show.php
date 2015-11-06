@@ -131,8 +131,12 @@
 	function edit(id){
 		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id;
 	}
+	function view(id){
+		document.location.href="<?php echo base_url().'inventory/permohonanbarang/view';?>/" + id;
+	}
 
 	function del(id){
+		alert(id);
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
 			$.post("<?php echo base_url().'inventory/permohonanbarang/dodel' ?>/" + id,  function(){

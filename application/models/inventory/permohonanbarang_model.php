@@ -87,7 +87,7 @@ class Permohonanbarang_model extends CI_Model {
 
 	function delete_entry($kode)
 	{
-		$this->db->where('code',$kode);
+		$this->db->where('id_inv_permohonan_barang',$kode);
 
 		return $this->db->delete($this->tabel);
 	}
