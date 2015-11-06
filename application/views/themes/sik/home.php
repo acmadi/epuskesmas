@@ -14,15 +14,20 @@
         @import url(<?php echo base_url()?>plugins/js/jqwidgets/styles/jqx.base.css);
         @import url(<?php echo base_url()?>plugins/js/jqwidgets/styles/jqx.bootstrap.css);
     </style>
+	
     <script src="<?php echo base_url()?>plugins/js/jQuery-2.1.3.min.js"></script>
+	<?php /* ?>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxbuttons.js"></script>
+	
+	<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdatatable.js"></script>
+	<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtreegrid.js"></script>
+	
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdropdownlist.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcombobox.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxgrid.js"></script>
@@ -37,6 +42,21 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxnumberinput.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxmaskedinput.js"></script>
+     */?>
+	 
+	 
+	
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdatatable.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtreegrid.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxlistbox.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdropdownlist.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdata.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtooltip.js"></script> 
+    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxinput.js"></script>
+	 
     <script type="text/javascript">
         var theme = "bootstrap";
     </script>
@@ -136,7 +156,6 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-              <li id="menu_permohonan_barang"><a href="<?php echo base_url()?>inventory/permohonanbarang"><i class="fa fa-circle-o"></i> Daftar Permohonan Barang</a></li>
                 <li id="menu_chart_penangkar"><a href="<?php echo base_url()?>"><i class="fa fa-circle-o"></i> Aset</a></li>
               </ul>
             </li>
