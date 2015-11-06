@@ -86,10 +86,10 @@ class Inv_ruangan extends CI_Controller {
         $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-        $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
+        $this->form_validation->set_rules('username', 'Nama', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data['code']		 		= $this->session->userdata('puskesmas');
+			$data['code_cl_phc']	 	= $this->session->userdata('username');
 			$data['id_mst_inv_ruangan']	= $this->inv_ruangan_model->get_ruangan_id();
 			$data['title_group'] 		= "Parameter";
 			$data['title_form']  		= "Tambah Inventori Ruangan";
@@ -114,22 +114,23 @@ class Inv_ruangan extends CI_Controller {
         $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-        $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
+        $this->form_validation->set_rules('code_cl_phc', 'Nama Puskesmas', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
 			$data = $this->inv_ruangan_model->get_data_row($kode); 
-
+			// var_dump($data);
+			// exit();
+			
 			$data['title_group'] = "Parameter";
 			$data['title_form']="Ubah Inventory Ruangan";
 			$data['action']="edit";
 			$data['kode']=$kode;
 
-		
 			$data['content'] = $this->parser->parse("mst/inv_ruangan/form",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->inv_ruangan_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
-			redirect(base_url()."mst/inv_ruangan/edit/".$this->input->post('kode'));
+			redirect(base_url()."mst/inv_ruangan/");
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."mst/inv_ruangan/edit/".$kode);
