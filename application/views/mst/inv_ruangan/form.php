@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/inv_ruangan/{action}/{code}" method="POST" name="">
+<form action="<?php echo base_url()?>mst/inv_ruangan/{action}/{kode}" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -63,12 +63,12 @@
                 ?>">
             </div>
             <div class="form-group">
-              <label>Kode</label>
-              <input type="text" class="form-control" name="code_cl_phc" placeholder="Kode" readonly value="<?php 
-                if(set_value('code')=="" && isset($code)){
-                  echo $code;
+              <label>Kode Puskesmas</label>
+              <input type="text" class="form-control" name="code_cl_phc" placeholder="Nama Puskesmas" readonly value="<?php 
+                if(set_value('code_cl_phc')=="" && isset($code_cl_phc)){
+                  echo $code_cl_phc;
                 }else{
-                  echo  set_value('code');
+                  echo  set_value('code_cl_phc');
                 }
                 ?>">
             </div>

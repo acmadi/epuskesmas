@@ -20,6 +20,13 @@
 	      <div class="box-footer">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+	     	<select id="jqxcombobox">
+	     		<option value="-">Pilih Puskesmas</option>
+					<?php foreach ($puskesmas as $row ) { ;?>
+				<option value="<?php echo $row->value; ?>"><?php echo $row->value; ?></option>
+				<?php	} ;?>
+	     	</select>
+
 	     </div>
         <div class="box-body">
 		    <div class="div-grid">
@@ -79,7 +86,7 @@
 
 		$("#jqxgrid").jqxGrid(
 		{		
-			width: '70%',
+			width: '100%',
 			selectionmode: 'singlerow',
 			source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100'],
 			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
@@ -91,7 +98,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -100,7 +107,7 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -109,22 +116,72 @@
 				{ text: 'Id', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
 				{ text: 'Nama Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
-				{ text: 'Kode', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'Nama Puskesmas', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
             ]
 		});
 
-	function edit(id){
-		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id;
+	function edit(id_mst_inv_ruangan){
+		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id_mst_inv_ruangan;
 	}
 
-	function del(id){
+	function del(id_mst_inv_ruangan){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id,  function(){
+			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id_mst_inv_ruangan,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 			});
 		}
 	}
+
+	$(document).ready(function () {            
+            // prepare the data
+            var source = {
+			datatype: "json",
+			type	: "POST",
+			datafields: [
+			{ name: 'code', type: 'string'},
+			{ name: 'nama', type: 'string'},
+			{ name: 'edit', type: 'number'},
+			{ name: 'delete', type: 'number'}
+	        ],
+			url: "<?php echo site_url('mst/kecamatan/json'); ?>",
+			cache: false,
+                data: {
+                    featureClass: "P",
+                    style: "full",
+                    maxRows: 50,
+                    username: "jqwidgets"
+                }
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            $("#jqxcombobox").jqxComboBox(
+            {
+                width: 200,
+                height: 25,
+                source: dataAdapter,
+                selectedIndex: 0,
+                displayMember: "value",
+                valueMember: "Nama Kecamatan"
+            });
+
+            $("#jqxcombobox").on('select', function (event) {
+                if (event.args) {
+                    var item = event.args.item;
+                    if (item) {
+                        var valueelement = $("<div></div>");
+                        valueelement.text("Value: " + item.value);
+                        var labelelement = $("<div></div>");
+                        labelelement.text("Label: " + item.label);
+
+                        $("#selectionlog").children().remove();
+                        $("#selectionlog").append(labelelement);
+                        $("#selectionlog").append(valueelement);
+                    }
+                }
+            });
+        });
 </script>
