@@ -3,12 +3,19 @@ class Inv_ruangan extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
-		$this->load->model('mst/inv_ruangan_model');
+		$this->load->model('inventory/inv_ruangan_model');
+	}
+
+	function filter(){
+		if($_POST) {
+			if($this->input->post('code_cl_phc') != '') {
+				$this->session->set_userdata('filter_code_cl_phc',$this->input->post('code_cl_phc'));
+			}
+		}
 	}
 
 	function json(){
-		$this->authentication->verify('mst','show');
-
+		$this->authentication->verify('inventory','show');
 
 		if($_POST) {
 			$fil = $this->input->post('filterscount');
@@ -26,6 +33,9 @@ class Inv_ruangan extends CI_Controller {
 			}
 		}
 
+		if($this->session->userdata('filter_code_cl_phc') != '') {
+			$this->db->where('code_cl_phc',$this->session->userdata('filter_code_cl_phc'));
+		}
 		$rows_all = $this->inv_ruangan_model->get_data();
 
 
@@ -45,6 +55,9 @@ class Inv_ruangan extends CI_Controller {
 			}
 		}
 
+		if($this->session->userdata('filter_code_cl_phc') != '') {
+			$this->db->where('code_cl_phc',$this->session->userdata('filter_code_cl_phc'));
+		}
 		$rows = $this->inv_ruangan_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
@@ -70,9 +83,9 @@ class Inv_ruangan extends CI_Controller {
 
 
 	function index(){
-		$this->authentication->verify('mst','edit');
-		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Inventory Ruangan";
+		$this->authentication->verify('inventory','edit');
+		$data['title_group'] = "Inventory";
+		$data['title_form'] = "Inventaris Ruangan";
 
 		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
 
@@ -84,7 +97,7 @@ class Inv_ruangan extends CI_Controller {
 		}
 
 		$data['puskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
-		$data['content'] = $this->parser->parse("mst/inv_ruangan/show",$data,true);
+		$data['content'] = $this->parser->parse("inventory/inv_ruangan/show",$data,true);
 		// var_dump($data['puskesmas']);
 		// exit();
 		$this->template->show($data,"home");
@@ -92,72 +105,79 @@ class Inv_ruangan extends CI_Controller {
 
 
 	function add(){
-		$this->authentication->verify('mst','add');
+		$this->authentication->verify('inventory','add');
 
         $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
+
         $this->form_validation->set_rules('code_cl_phc', 'Nama', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
 			$data['code_cl_phc']	 	= $this->session->userdata('puskesmas');
+
+        $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			$data['code']		 		= $this->session->userdata('puskesmas');
 			$data['id_mst_inv_ruangan']	= $this->inv_ruangan_model->get_ruangan_id();
-			$data['title_group'] 		= "Parameter";
-			$data['title_form']  		= "Tambah Inventori Ruangan";
+			$data['title_group'] 		= "Inventory";
+			$data['title_form']  		= "Tambah Inventaris Ruangan";
 			$data['action']      		= "add";
 			$data['kode']				= "";
 
 		
-			$data['content'] = $this->parser->parse("mst/inv_ruangan/form",$data,true);
+			$data['content'] = $this->parser->parse("inventory/inv_ruangan/form",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->inv_ruangan_model->insert_entry()){
 			$this->session->set_flashdata('alert', 'Save data successful...');
-			redirect(base_url()."mst/inv_ruangan/");
+			redirect(base_url()."inventory/inv_ruangan/");
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
-			redirect(base_url()."mst/inv_ruangan/add");
+			redirect(base_url()."inventory/inv_ruangan/add");
 		}
 	}
 
+}
+
 	function edit($kode=0)
 	{
-		$this->authentication->verify('mst','add');
+		$this->authentication->verify('inventory','add');
 
         $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-        $this->form_validation->set_rules('code_cl_phc', 'Nama Puskesmas', 'trim|required');
+        $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
 			$data = $this->inv_ruangan_model->get_data_row($kode); 
-			// var_dump($data);
-			// exit();
-			
-			$data['title_group'] = "Parameter";
+
+			$data['title_group'] = "Inventory";
 			$data['title_form']="Ubah Inventory Ruangan";
 			$data['action']="edit";
 			$data['kode']=$kode;
 
-			$data['content'] = $this->parser->parse("mst/inv_ruangan/form",$data,true);
+		
+			$data['content'] = $this->parser->parse("inventory/inv_ruangan/form",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->inv_ruangan_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
-			redirect(base_url()."mst/inv_ruangan/");
+			redirect(base_url()."inventory/inv_ruangan/edit/".$this->input->post('kode'));
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
-			redirect(base_url()."mst/inv_ruangan/edit/".$kode);
+			redirect(base_url()."inventory/inv_ruangan/edit/".$kode);
 		}
 	}
 
 	function dodel($kode=0){
-		$this->authentication->verify('mst','del');
+		$this->authentication->verify('inventory','del');
 
 		if($this->inv_ruangan_model->delete_entry($kode)){
 			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
-			redirect(base_url()."mst/inv_ruangan");
+			redirect(base_url()."inventory/inv_ruangan");
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
-			redirect(base_url()."mst/inv_ruangan");
+			redirect(base_url()."inventory/inv_ruangan");
 		}
 	}
 }
