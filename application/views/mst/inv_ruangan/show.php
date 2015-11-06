@@ -20,12 +20,13 @@
 	      <div class="box-footer">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
-	     	<?php if ('code'.$this->session->userdata('puskesmas'))
-	     	{
-	     	 echo "<select id='jqxgrid-combobox'></select>";
-	     	}else{
-	     		echo "";
-	     	}?>
+	     	<select id="jqxcombobox">
+	     		<option value="-">Pilih Puskesmas</option>
+					<?php foreach ($puskesmas as $row ) { ;?>
+				<option value="<?php echo $row->value; ?>"><?php echo $row->value; ?></option>
+				<?php	} ;?>
+	     	</select>
+
 	     </div>
         <div class="box-body">
 		    <div class="div-grid">
@@ -133,4 +134,54 @@
 			});
 		}
 	}
+
+	$(document).ready(function () {            
+            // prepare the data
+            var source = {
+			datatype: "json",
+			type	: "POST",
+			datafields: [
+			{ name: 'code', type: 'string'},
+			{ name: 'nama', type: 'string'},
+			{ name: 'edit', type: 'number'},
+			{ name: 'delete', type: 'number'}
+	        ],
+			url: "<?php echo site_url('mst/kecamatan/json'); ?>",
+			cache: false,
+                data: {
+                    featureClass: "P",
+                    style: "full",
+                    maxRows: 50,
+                    username: "jqwidgets"
+                }
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            $("#jqxcombobox").jqxComboBox(
+            {
+                width: 200,
+                height: 25,
+                source: dataAdapter,
+                selectedIndex: 0,
+                displayMember: "value",
+                valueMember: "Nama Kecamatan"
+            });
+
+            $("#jqxcombobox").on('select', function (event) {
+                if (event.args) {
+                    var item = event.args.item;
+                    if (item) {
+                        var valueelement = $("<div></div>");
+                        valueelement.text("Value: " + item.value);
+                        var labelelement = $("<div></div>");
+                        labelelement.text("Label: " + item.label);
+
+                        $("#selectionlog").children().remove();
+                        $("#selectionlog").append(labelelement);
+                        $("#selectionlog").append(valueelement);
+                    }
+                }
+            });
+        });
 </script>

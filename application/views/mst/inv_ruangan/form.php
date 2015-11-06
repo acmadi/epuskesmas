@@ -63,7 +63,7 @@
                 ?>">
             </div>
             <div class="form-group">
-              <label>Nama Puskesmas</label>
+              <label>Kode Puskesmas</label>
               <input type="text" class="form-control" name="code_cl_phc" placeholder="Nama Puskesmas" readonly value="<?php 
                 if(set_value('code_cl_phc')=="" && isset($code_cl_phc)){
                   echo $code_cl_phc;

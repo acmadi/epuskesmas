@@ -1,8 +1,9 @@
 <?php
 class Inv_ruangan_model extends CI_Model {
 
-    var $tabel    = 'mst_inv_ruangan';
-	var $lang	  = '';
+    var $tabel     = 'mst_inv_ruangan';
+    var $t_puskesmas = 'cl_phc';
+	var $lang	   = '';
 
     function __construct() {
         parent::__construct();
@@ -14,6 +15,14 @@ class Inv_ruangan_model extends CI_Model {
     {
 		$this->db->order_by('nama_ruangan','asc');
         $query = $this->db->get($this->tabel,$limit,$start);
+        return $query->result();
+    }
+
+    function get_data_puskesmas($start=0,$limit=999999,$options=array())
+    {
+    	$this->db->order_by('value','asc');
+    	// $this->db->where(code)
+        $query = $this->db->get($this->t_puskesmas,$limit,$start);
         return $query->result();
     }
 
@@ -57,7 +66,7 @@ class Inv_ruangan_model extends CI_Model {
     	$data['id_mst_inv_ruangan'] = $this->input->post('id_mst_inv_ruangan');
 		$data['nama_ruangan']		= $this->input->post('nama_ruangan');
 		$data['keterangan']			= $this->input->post('keterangan');
-		$data['code_cl_phc']		= $this->input->post('username');
+		$data['code_cl_phc']		= $this->input->post('code_cl_phc');
 
 		if($this->getSelectedData($this->tabel,$data['id_mst_inv_ruangan'])->num_rows() > 0) {
 			return 0;
