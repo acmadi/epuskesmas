@@ -48,7 +48,6 @@ class Morganisasi extends CI_Controller {
 		$data['title_form']			="Profil Pengguna";
 
 		$data['username']			= $this->session->userdata('username');
-		$data['code']				= $this->session->userdata('puskesmas');
 		$data['provinsi_option']	= $this->crud->provinsi_option();
 		$data['content']			= $this->parser->parse("sik/profile",$data,true);
 
@@ -59,7 +58,17 @@ class Morganisasi extends CI_Controller {
 	function profile_doupdate() {
 		        $this->form_validation->set_rules('email', 'Email', 'trim|required|callback_check_email2');
 		        $this->form_validation->set_rules('nama', 'Nama Lengkap', 'trim|required');
+		        $this->form_validation->set_rules('birthdate', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('birthplace', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('perusahaan', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('jabatan', 'Nama Pendaftar', 'trim');
 		        $this->form_validation->set_rules('phone_number', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('address', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('propinsi', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('kota', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('kecamatan', 'Nama Pendaftar', 'trim');
+		        $this->form_validation->set_rules('desa', 'Nama Pendaftar', 'trim');
+   			    $this->form_validation->set_rules('jenis', 'Jenis Usaha', 'trim');
 
 				if($this->form_validation->run()== FALSE){
 					// echo "0";
@@ -85,6 +94,7 @@ class Morganisasi extends CI_Controller {
 		$this->form_validation->set_rules('email','Email','trim|required|valid_email');
         $this->form_validation->set_rules('password','Password','trim|required|min_length[5]|matches[passconf]|callback_check_pass2');
  		$this->form_validation->set_rules('nama','Nama Lengkap Penanggung Jawab','trim|required');
+		$this->form_validation->set_rules('jabatan','Jabatan Penanggung Jawab','trim|required');
 		$this->form_validation->set_rules('phone_number','Nomor Telepon Penanggung Jawab','trim|required');
 		$this->form_validation->set_rules('no_hp','No Handphone','trim|required');
        
@@ -285,7 +295,7 @@ class Morganisasi extends CI_Controller {
 	}
 
 	function profile_dopasswd(){
-		$this->form_validation->set_rules('npassword','Password Baru','trim|required|min_length[5]|matches[cpassword]');
+		$this->form_validation->set_rules('npassword','Password Baru','trim|required|min_length[5]|matches[cpassword]|callback_check_pass2');
 		$this->form_validation->set_rules('cpassword', 'Konfirmasi Password', 'trim|required');
         
 		if($this->form_validation->run()== FALSE){
@@ -293,12 +303,11 @@ class Morganisasi extends CI_Controller {
 			echo validation_errors();
 			// redirect(base_url()."sik/profile");
 		}else{
-			if($this->morganisasi_model->check_password2()){
-				if(!$this->morganisasi_model->update_password2()) {
+			if($this->morganisasi_model->check_password()){
+				if(!$this->morganisasi_model->update_password()) {
 					// $this->session->set_flashdata('alert', 'Save data failed...');
 					echo "Save data failed...";
-				} elseif($username=$this->morganisasi_model->update_password2())
-				{
+				} else {
 					// echo "Password berhasil disimpan";
 					echo "1";
 					// $this->session->set_flashdata('alert', 'Password berhasil disimpan');
