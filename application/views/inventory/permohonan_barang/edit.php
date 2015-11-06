@@ -16,7 +16,6 @@
 <div class="row">
   <form action="<?php echo base_url()?>inventory/permohonanbarang/add" method="post">
   <div class="col-md-6">
-  <input type="hidden" name="userdata" value="<?php echo $userdata; ?>">
             <div class="form-group">
               <label>Tanggal</label>
               <div id='tgl' class="form-control" name="tgl" value="<?php
