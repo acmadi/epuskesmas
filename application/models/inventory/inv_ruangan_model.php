@@ -1,5 +1,5 @@
 <?php
-class Inv_ruangan_model extends CI_Model {
+class inv_ruangan_model extends CI_Model {
 
     var $tabel     = 'mst_inv_ruangan';
     var $t_puskesmas = 'cl_phc';
