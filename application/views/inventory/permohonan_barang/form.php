@@ -16,47 +16,54 @@
 <div class="row">
   <form action="<?php echo base_url()?>inventory/permohonanbarang/add" method="post">
   <div class="col-md-6">
-  <input type="hidden" name="userdata" value="<?php echo $userdata; ?>">
-            <div class="form-group">
-              <label>Tanggal</label>
-              <div id='tgl' class="form-control" name="tgl" value="<?php
-                  echo (set_value('tgl')!="") ? date("m-d-Y",strtotime(set_value('tgl'))) : date("m-d-Y");
-                ?>"></div>
-
-            </div>
-            <div class="form-group">
-              <label>Keterangan</label>
-              <textarea class="form-control" name="keterangan" placeholder="Keterangan"><?php 
-                  if(set_value('keterangan')=="" && isset($keterangan)){
-                    echo $keterangan;
-                  }else{
-                    echo  set_value('keterangan');
-                  }
-                  ?></textarea>
-            </div>
+    <div class="box box-primary">
+      <div class="box-body">
+        <div class="form-group">
+          <label>Tanggal</label>
+          <div id='tgl' name="tgl" value="<?php
+              echo (set_value('tgl')!="") ? date("d-m-Y",strtotime(set_value('tgl'))) : date("d-m-Y");
+            ?>"></div>
+        </div>
+        <div class="form-group">
+          <label>Keterangan</label>
+          <textarea class="form-control" name="keterangan" placeholder="Keterangan"><?php 
+              if(set_value('keterangan')=="" && isset($keterangan)){
+                echo $keterangan;
+              }else{
+                echo  set_value('keterangan');
+              }
+              ?></textarea>
+        </div>
+      </div>
+    </div>
   </div><!-- /.form-box -->
 
   <div class="col-md-6">
-    <div class="form-group">
-        <label>Puskesmas<h1></h1></label>
-            <select  name="codepus" id="puskesmas" class="form-control">
-                <option value="">
-                </option>
-                <?php foreach($kodepuskesmas as $pus) : ?>
-                  <?php $select = $pus->code == $codepuskes ? 'selected' : '' ?>
-                  <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
-                <?php endforeach ?>
-            </select>
+    <div class="box box-warning">
+      <div class="box-body">
+        <div class="form-group">
+          <label>Puskesmas<h1></h1></label>
+          <select  name="codepus" id="puskesmas" class="form-control">
+              <option value="">
+              </option>
+              <?php foreach($kodepuskesmas as $pus) : ?>
+                <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
+                <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
+              <?php endforeach ?>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ruangan</label>
+          <select name="ruangan" id="ruangan"  class="form-control">
+              <option value="">Pilih Ruangan</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Ruangan</label>
-            <select name="ruangan" id="ruangan"  class="form-control">
-                <option value="">Pilih Ruangan</option>
-            </select>
+      <div class="box-footer">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="submit" class="btn btn-warning">Kembali</button>
       </div>
-          <div class="box-footer pull-right">
-            <button type="submit" class="btn btn-primary">Tambah</button>
-          </div>
+      </div>
     </form>        
 
   </div><!-- /.form-box -->
@@ -68,39 +75,24 @@ $(function(){
         window.location.href="<?php echo base_url()?>admin_user";
     });
 
-    $("#menu_permohonan_barang").addClass("active");
     $("#menu_inventory").addClass("active");
+    $("#menu_inventory_permohonanbarang").addClass("active");
+
     $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme});
     $('#puskesmas').change(function(){
-      var data = $(this).val();
-     // alert(data);
+      var code = $(this).val();
+      var id_ruang = '<?php echo set_value('ruangan')?>';
       $.ajax({
-        url : '<?php echo site_url('program/update/get_ruangan') ?>',
+        url : '<?php echo site_url('inventory/permohonanbarang/get_ruangan') ?>',
         type : 'POST',
-        data : 'unit=' + data,
+        data : 'code=' + code+'&id_ruang=' + id_ruang,
         success : function(data) {
           $('#ruangan').html(data);
         }
       });
 
       return false;
-    });
-
-    <?php if(isset($coderuangan)) ?>
-    var data = <?php echo $coderuangan ?>;
-   // alert(data);
-   // var lab = '<?php echo set_value('lab') ?>';
-      $.ajax({
-        url : '<?php echo site_url('program/update/get_ruangan') ?>',
-        type : 'POST',
-        data : 'unit=' + data,
-        success : function(data) {
-          $('#ruangan').html(data);
-        }
-      });
-
-      return false;
-    <?php  ?>
+    }).change();
 
   });
 </script>

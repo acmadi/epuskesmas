@@ -34,8 +34,8 @@
 
 <script type="text/javascript">
 	$(function () {	
-		$("#menu_permohonan_barang").addClass("active");
-		$("#menu_inventory").addClass("active");
+	    $("#menu_inventory").addClass("active");
+	    $("#menu_inventory_permohonanbarang").addClass("active");
 	});
 
 	   var source = {
