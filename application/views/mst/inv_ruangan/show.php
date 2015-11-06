@@ -20,10 +20,10 @@
 	      <div class="box-footer">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
-	     	<select id="jqxcombobox">
+	     	<select id="jqxcombobox" onchange="get_ruangan_puskesmas()" >
 	     		<option value="-">Pilih Puskesmas</option>
 					<?php foreach ($puskesmas as $row ) { ;?>
-				<option value="<?php echo $row->value; ?>"><?php echo $row->value; ?></option>
+				<option value="<?php echo $row->value; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
 	     	</select>
 
@@ -98,7 +98,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -107,7 +107,7 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -120,14 +120,14 @@
             ]
 		});
 
-	function edit(id_mst_inv_ruangan){
-		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id_mst_inv_ruangan;
+	function edit(id){
+		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id;
 	}
 
-	function del(id_mst_inv_ruangan){
+	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id_mst_inv_ruangan,  function(){
+			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
@@ -184,4 +184,10 @@
                 }
             });
         });
+
+		function get_ruangan_puskesmas()
+		{
+			
+		}
+
 </script>
