@@ -38,7 +38,7 @@ class Inv_ruangan_model extends CI_Model {
  	function get_data_row($id){
 		$data = array();
 		$options = array('code_cl_phc' => $id);
-		$query = $this->db->get_where($this->tabel,$options);
+		$query = $this->db->get_where($this->table,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
 		}

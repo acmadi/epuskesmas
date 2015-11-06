@@ -19,7 +19,11 @@ class Permohonanbarang_model extends CI_Model {
 
  	function get_data_row($id){
 		$data = array();
-		$options = array('id_inv_permohonan_barang' => $id);
+		$options = array('a.id_inv_permohonan_barang' => $id);
+		$this->db->select("$this->tabel.*,b.value,c.nama_ruangan");
+		$this->db->from("$this->tabel a");
+		$this->db->join('cl_phc b', "a.code_cl_phc = b.code");
+		$this->db->join('mst_inv_ruangan c', "a.id_mst_inv_ruangan = c.id_mst_inv_ruangan");
 		$query = $this->db->get_where($this->tabel,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -34,21 +38,20 @@ class Permohonanbarang_model extends CI_Model {
     }
    function insert_entry()
     {
-		$data['code']=$this->input->post('kode');
-		$data['uraian']=$this->input->post('uraian');
+    	$data['tanggal_permohonan']=date("Y-m-d",strtotime($this->input->post('tgl')));
+		$data['keterangan']=$this->input->post('keterangan');
+		$data['code_cl_phc']=$this->input->post('codepus');
+		$data['id_mst_inv_ruangan']=$this->input->post('ruangan');
+		$data['app_users_list_username']=$this->input->post('userdata'); 
+		$data['waktu_dibuat']=date('Y-m-d');
+		$data['jumlah_unit']=0;
 
-		if($this->getSelectedData($this->tabel,$data['code'])->num_rows() > 0) {
-			return 0;
-		}else{
+		
 			if($this->db->insert($this->tabel, $data)){
-			//$id= mysql_insert_id();
-				return 1; 
+				return $this->db->insert_id();
 			}else{
 				return mysql_error();
 			}
-			
-		}
-
 		/*
 		*/
 

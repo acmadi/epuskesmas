@@ -5,6 +5,7 @@ class Permohonanbarang extends CI_Controller {
 		parent::__construct();
 		$this->load->model('inventory/permohonanbarang_model');
 		$this->load->model('mst/puskesmas_model');
+		$this->load->model('mst/inv_ruangan_model');
 	}
 	function json(){
 		$this->authentication->verify('inventory','show');
@@ -75,7 +76,6 @@ class Permohonanbarang extends CI_Controller {
 		$this->authentication->verify('inventory','edit');
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Daftar Permohonan Barang";
-
 		$data['content'] = $this->parser->parse("inventory/permohonan_barang/show",$data,true);
 
 		$this->template->show($data,"home");
@@ -85,21 +85,26 @@ class Permohonanbarang extends CI_Controller {
 	function add(){
 		$this->authentication->verify('inventory','add');
 
-        $this->form_validation->set_rules('kode', 'Kode Barang', 'trim|required');
-        $this->form_validation->set_rules('uraian', 'Nama Barang', 'trim|required');
+        $this->form_validation->set_rules('tgl', 'Tanggal Permohonan', 'trim|required');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
+        $this->form_validation->set_rules('codepus', 'Puskesmas', 'trim|required');
+        $this->form_validation->set_rules('ruangan', 'Ruangan', 'trim|required');
         
+
 			if($this->form_validation->run()== FALSE){
 				$data['title_group'] = "Parameter";
 				$data['title_form']="Tambah Inventory Barang";
 				$data['action']="add";
 				$data['kode']="";
-				$data['puskesmas'] = $this->puskesmas_model->get_data(0, 10);
+				$this->db->like('code','P'.$this->session->userdata(substr('puskesmas',6)));
+				$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
+				$data['userdata'] = 'P'.$this->session->userdata('puskesmas');
 			
 				$data['content'] = $this->parser->parse("inventory/permohonan_barang/form",$data,true);
 				$this->template->show($data,"home");
-			}elseif($this->invbarang_model->insert_entry() == 1){
+			}elseif($id = $this->permohonanbarang_model->insert_entry()){
 				$this->session->set_flashdata('alert', 'Save data successful...');
-				redirect(base_url()."inventory/permohonanbarang/");
+				redirect(base_url().'inventory/permohonanbarang/edit/'. $id);
 			}else{
 				$this->session->set_flashdata('alert_form', 'Save data failed...');
 				redirect(base_url()."inventory/permohonanbarang/add");
@@ -111,21 +116,29 @@ class Permohonanbarang extends CI_Controller {
 	{
 		$this->authentication->verify('inventory','add');
 
-        $this->form_validation->set_rules('uraian', 'Nama Barang', 'trim|required');
-        $this->form_validation->set_rules('kode', 'Kode Barang', 'trim|required');
+        $this->form_validation->set_rules('tgl', 'Tanggal Permohonan', 'trim|required');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
+        $this->form_validation->set_rules('codepus', 'Puskesmas', 'trim|required');
+        $this->form_validation->set_rules('ruangan', 'Ruangan', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data = $this->invbarang_model->get_data_row($kode); 
+			$data = $this->permohonanbarang_model->get_data_row($kode); 
+			$cekpus = $this->puskesmas_model->get_data_row($kode);
+			$cekruang = $this->inv_ruangan_model->get_data_row($kode);
 
 			$data['title_group'] = "Parameter";
 			$data['title_form']="Ubah inventory Barang";
 			$data['action']="edit";
 			$data['kode']=$kode;
-
+			$this->db->like('code','P'.$this->session->userdata(substr('puskesmas',6)));
+			$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
+			$data['userdata'] = 'P'.$this->session->userdata('puskesmas');
+			$data['codepuskes']	= !empty($cekpus) ? $cekpus->code : $data['code_cl_phc'];
+			$data['coderuangan']	= !empty($cekruang) ? $cekruang->id_mst_inv_ruangan : $data['id_mst_inv_ruangan'];
 		
-			$data['content'] = $this->parser->parse("inventory/permohonanbarang/form",$data,true);
+			$data['content'] = $this->parser->parse("inventory/permohonan_barang/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($this->invbarang_model->update_entry($kode)){
+		}elseif($this->permohonanbarang_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
 			redirect(base_url()."inventory/permohonanbarang/edit/".$this->input->post('kode'));
 		}else{

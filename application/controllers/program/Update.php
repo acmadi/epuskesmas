@@ -6,26 +6,21 @@ class Update extends CI_Controller {
 		parent::__construct();
 		
 
-		$this->load->model('modules/users/user_model');
-		$this->load->model('modules/employee/employee_model');
-		$this->load->model('modules/program/program_model');
-		$this->load->model('modules/project/project_model');
-		$this->load->model('modules/researcher/researcher_model');
-		$this->load->model('idec_model');
+		$this->load->model('mst/inv_ruangan_model');
 	}
 
 	
 	public function get_ruangan()
 	{
 		if($this->input->is_ajax_request()) {
-			echo $idUnit = $this->input->post('unit');
+			$idUnit = $this->input->post('unit');
 			//$idLab  = $this->input->post('lab');
-			$labs 	= $this->employee_model->organization(array('id_organization_item_parent' => $idUnit, 'level' => 'lab'));
+			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$idUnit)->result();
 
-			echo '<option value="">-</option>';
-			foreach($labs as $lab) :
-				$select = $lab->id_organization_item == $idLab ? 'selected' : '';
-				echo '<option value="'.$lab->id_organization_item.'" '.$select.'>' . $lab->org_name . '</option>';
+			echo '<option value="">Pilih Ruangan</option>';
+			foreach($kode as $kode) :
+				$select = $kode->id_mst_inv_ruangan == $coderuangan ? 'selected' : '';
+				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
 			endforeach;
 
 			return FALSE;
