@@ -44,9 +44,9 @@
 			datafields: [
 			{ name: 'no', type: 'number'},
 			{ name: 'id_inv_permohonan_barang', type: 'number'},
-			{ name: 'tanggal', type: 'string'},
-			{ name: 'jumlah', type: 'string'},
-			{ name: 'ruangan', type: 'string'},
+			{ name: 'tanggal_permohonan', type: 'date'},
+			{ name: 'jumlah_unit', type: 'string'},
+			{ name: 'nama_ruangan', type: 'string'},
 			{ name: 'keterangan', type: 'text'},
 			{ name: 'status', type: 'number'},
 			{ name: 'detail', type: 'number'},
@@ -120,9 +120,9 @@
                  }
                 },
                 { text: 'No', datafield: 'no',sortable: false, filtertype: 'none', width: '5%' },
-				{ text: 'Tanggal Permohonan', datafield: 'tanggal', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
-				{ text: 'Puskesmas-Ruangan', datafield: 'ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
-				{ text: 'Jumlah Barang', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Tanggal Permohonan', datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
+				{ text: 'Puskesmas-Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
+				{ text: 'Jumlah Barang', datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Status', datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '10%' }
             ]

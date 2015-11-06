@@ -53,9 +53,9 @@ class Permohonanbarang extends CI_Controller {
 			$data[] = array(
 				'no'		=> $no++,
 				'id_inv_permohonan_barang' => $act->id_inv_permohonan_barang,
-				'tanggal'	=> $act->tanggal_permohonan,
-				'jumlah'	=> $act->jumlah_unit,
-				'ruangan'	=> $act->nama_ruangan,
+				'tanggal_permohonan'	=> $act->tanggal_permohonan,
+				'jumlah_unit'	=> $act->jumlah_unit,
+				'nama_ruangan'	=> $act->nama_ruangan,
 				'keterangan'=> $act->keterangan,
 				'status'	=> 1,
 				'detail'	=> 1,
