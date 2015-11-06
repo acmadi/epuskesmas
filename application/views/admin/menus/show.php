@@ -1,4 +1,4 @@
-<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jquery-ui.js"></script>
+<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jquery-ui.min.js"></script>
 
 
 <?php if($this->session->flashdata('alert_form')!=""){ ?>
