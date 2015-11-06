@@ -4,8 +4,6 @@ class Update extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
-
 		$this->load->model('mst/inv_ruangan_model');
 	}
 
@@ -17,9 +15,9 @@ class Update extends CI_Controller {
 			//$idLab  = $this->input->post('lab');
 			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$idUnit)->result();
 
-			echo '<option value="">Pilih Ruangan</option>';
+			'<option value="">Pilih Ruangan</option>';
 			foreach($kode as $kode) :
-				$select = $kode->id_mst_inv_ruangan == $coderuangan ? 'selected' : '';
+				echo $select = $kode->id_mst_inv_ruangan == $idUnit ? 'selected' : '';
 				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
 			endforeach;
 

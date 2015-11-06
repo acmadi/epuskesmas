@@ -11,12 +11,17 @@ class Permohonanbarang_model extends CI_Model {
     
 
     function get_data($start=0,$limit=999999,$options=array())
-    {
-		$this->db->order_by('id_inv_permohonan_barang','desc');
-        $query = $this->db->get($this->tabel,$limit,$start);
+    {	
+    	$this->db->select("$this->tabel.*,c.nama_ruangan");
+		$this->db->join('mst_inv_ruangan c', "inv_permohonan_barang.id_mst_inv_ruangan = c.id_mst_inv_ruangan and inv_permohonan_barang.code_cl_phc = c.code_cl_phc ",'inner');
+		$this->db->order_by('inv_permohonan_barang.id_inv_permohonan_barang','desc');
+		$query =$this->db->get($this->tabel,$limit,$start);
         return $query->result();
     }
-
+    public function getItem($table,$data)
+    {
+        return $this->db->get_where($table, $data);
+    }
  	function get_data_row($id){
 		$data = array();
 		$options = array('a.id_inv_permohonan_barang' => $id);

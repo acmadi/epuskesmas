@@ -43,11 +43,12 @@
 			type	: "POST",
 			datafields: [
 			{ name: 'no', type: 'number'},
+			{ name: 'id_inv_permohonan_barang', type: 'number'},
 			{ name: 'tanggal', type: 'string'},
 			{ name: 'jumlah', type: 'string'},
 			{ name: 'ruangan', type: 'string'},
-			{ name: 'keterangan', type: 'string'},
-			{ name: 'status', type: 'string'},
+			{ name: 'keterangan', type: 'text'},
+			{ name: 'status', type: 'number'},
 			{ name: 'detail', type: 'number'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
@@ -94,7 +95,7 @@
 				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='detail(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='detail(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -103,7 +104,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -112,7 +113,7 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -122,19 +123,19 @@
 				{ text: 'Tanggal Permohonan', datafield: 'tanggal', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Puskesmas-Ruangan', datafield: 'ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Jumlah Barang', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Ketarangan', datafield: 'ketarangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
+				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Status', datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '10%' }
             ]
 		});
 
 	function edit(id){
-		document.location.href="<?php echo base_url().'mst/invbarang/edit';?>/" + id;
+		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id;
 	}
 
 	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'mst/invbarang/dodel' ?>/" + id,  function(){
+			$.post("<?php echo base_url().'inventory/permohonanbarang/dodel' ?>/" + id,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');

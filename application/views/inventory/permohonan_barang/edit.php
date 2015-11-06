@@ -61,7 +61,15 @@
 
   </div><!-- /.form-box -->
 </div><!-- /.register-box -->
+  <div class="box-body">
+        <div class="div-grid">
+            <div id="jqxTabs">
 
+              <?php echo $document;?>
+              
+            </div>
+      </div>
+      </div>
 <script type="text/javascript">
 $(function(){
     $('#btn_back').click(function(){
@@ -86,10 +94,8 @@ $(function(){
       return false;
     });
 
-    <?php if(isset($coderuangan)) ?>
-    var data = <?php echo $coderuangan ?>;
-   // alert(data);
-   // var lab = '<?php echo set_value('lab') ?>';
+    <?php if(isset($coderuangan)){ ?>
+      data = $( "#puskesmas" ).val();
       $.ajax({
         url : '<?php echo site_url('program/update/get_ruangan') ?>',
         type : 'POST',
@@ -100,7 +106,8 @@ $(function(){
       });
 
       return false;
-    <?php  ?>
-
+    <?php } ?>
+     $('#jqxTabs').jqxTabs({ width: '100%', height: '250', position: 'top', theme: theme });
   });
+
 </script>

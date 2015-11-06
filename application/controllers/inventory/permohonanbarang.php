@@ -52,11 +52,12 @@ class Permohonanbarang extends CI_Controller {
 		foreach($rows as $act) {
 			$data[] = array(
 				'no'		=> $no++,
-				'tanggal'	=> $act->tanggal,
-				'jumlah'	=> $act->jumlah,
-				'ruangan'	=> $act->ruangan,
-				'keterangan'	=> $act->keterangan,
-				'status'	=> $act->status,
+				'id_inv_permohonan_barang' => $act->id_inv_permohonan_barang,
+				'tanggal'	=> $act->tanggal_permohonan,
+				'jumlah'	=> $act->jumlah_unit,
+				'ruangan'	=> $act->nama_ruangan,
+				'keterangan'=> $act->keterangan,
+				'status'	=> 1,
 				'detail'	=> 1,
 				'edit'		=> 1,
 				'delete'	=> 1
@@ -134,9 +135,9 @@ class Permohonanbarang extends CI_Controller {
 			$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
 			$data['userdata'] = 'P'.$this->session->userdata('puskesmas');
 			$data['codepuskes']	= !empty($cekpus) ? $cekpus->code : $data['code_cl_phc'];
-			$data['coderuangan']	= !empty($cekruang) ? $cekruang->id_mst_inv_ruangan : $data['id_mst_inv_ruangan'];
-		
-			$data['content'] = $this->parser->parse("inventory/permohonan_barang/form",$data,true);
+			$data['coderuangan']	= !empty($cekruang) ? $cekruang->id_mst_inv_ruangan : $data['code_cl_phc'];
+			$data['document']	  = $this->load->view('inventory/permohonan_barang/document', $data, TRUE);
+			$data['content'] = $this->parser->parse("inventory/permohonan_barang/edit",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->permohonanbarang_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
@@ -157,5 +158,52 @@ class Permohonanbarang extends CI_Controller {
 			$this->session->set_flashdata('alert', 'Delete data error');
 			redirect(base_url()."inventory/permohonanbarang");
 		}
+	}
+	public function document($id = 0)
+	{
+		$data	  	= array();
+		$filter 	= array();
+		$filterLike = array();
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'date_received' || $field == 'date_accepted') {
+					$value = date("Y-m-d",strtotime($value));
+
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		$activity = $this->permohonanbarang_model->getItem('inv_permohonan_barang_item', array('id_inv_permohonan_barang'=>$id))->result();
+
+		foreach($activity as $act) {
+			$data[] = array(
+				'id_inv_permohonan_barang_item'   				=> $act->id_inv_permohonan_barang_item,
+				'nama_barang'   		=> $act->nama_barang,
+				'jumlah'		=> $act->jumlah,
+				'keterangan'		=> $act->keterangan,
+				'id_inv_permohonan_barang'		=> $act->id_inv_permohonan_barang,
+				'code_mst_inv_barang'	=> $act->code_mst_inv_barang
+			);
+		}
+
+		$json = array(
+			'TotalRows' => sizeof($data),
+			'Rows' => $data
+		);
+
+		echo json_encode(array($json));
 	}
 }
