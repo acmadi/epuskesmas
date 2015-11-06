@@ -7,7 +7,7 @@
 <?php } ?>
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/inv_ruangan/dodel_multi" method="POST" name="">
+<form action="<?php echo base_url()?>inventory/inv_ruangan/dodel_multi" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -18,15 +18,18 @@
 	    </div>
 
 	      <div class="box-footer">
-		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
-		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
-	     	<select id="jqxcombobox" onchange="get_ruangan_puskesmas()" >
-	     		<option value="-">Pilih Puskesmas</option>
+    		<div class="col-md-9">
+			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+			 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+			 </div>
+    		<div class="col-md-3">
+	     		<select name="code_cl_phc" class="form-control">
+	     			<option value="-">Pilih Puskesmas</option>
 					<?php foreach ($puskesmas as $row ) { ;?>
-				<option value="<?php echo $row->value; ?>" onchange="" ><?php echo $row->value; ?></option>
+					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
 	     	</select>
-
+			</div>
 	     </div>
         <div class="box-body">
 		    <div class="div-grid">
@@ -41,8 +44,8 @@
 
 <script type="text/javascript">
 	$(function () {	
-		$("#menu_mst_inv_ruangan").addClass("active");
-		$("#menu_parameter").addClass("active");
+		$("#menu_inventory").addClass("active");
+		$("#menu_inventory_inv_ruangan").addClass("active");
 	});
 
 	   var source = {
@@ -56,7 +59,7 @@
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('mst/inv_ruangan/json'); ?>",
+		url: "<?php echo site_url('inventory/inv_ruangan/json'); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -121,13 +124,13 @@
 		});
 
 	function edit(id){
-		document.location.href="<?php echo base_url().'mst/inv_ruangan/edit';?>/" + id;
+		document.location.href="<?php echo base_url().'inventory/inv_ruangan/edit';?>/" + id;
 	}
 
 	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'mst/inv_ruangan/dodel' ?>/" + id,  function(){
+			$.post("<?php echo base_url().'inventory/inv_ruangan/dodel' ?>/" + id,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
@@ -156,38 +159,11 @@
                 }
             };
 
-            var dataAdapter = new $.jqx.dataAdapter(source);
-
-            $("#jqxcombobox").jqxComboBox(
-            {
-                width: 200,
-                height: 25,
-                source: dataAdapter,
-                selectedIndex: 0,
-                displayMember: "value",
-                valueMember: "Nama Kecamatan"
-            });
-
-            $("#jqxcombobox").on('select', function (event) {
-                if (event.args) {
-                    var item = event.args.item;
-                    if (item) {
-                        var valueelement = $("<div></div>");
-                        valueelement.text("Value: " + item.value);
-                        var labelelement = $("<div></div>");
-                        labelelement.text("Label: " + item.label);
-
-                        $("#selectionlog").children().remove();
-                        $("#selectionlog").append(labelelement);
-                        $("#selectionlog").append(valueelement);
-                    }
-                }
+            $("select[name='code_cl_phc']").change(function(){
+				$.post("<?php echo base_url().'inventory/inv_ruangan/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
+					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+				});
             });
         });
-
-		function get_ruangan_puskesmas()
-		{
-			
-		}
 
 </script>
