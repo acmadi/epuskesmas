@@ -4,6 +4,8 @@ class Inv_ruangan extends CI_Controller {
     public function __construct(){
 		parent::__construct();
 		$this->load->model('inventory/inv_ruangan_model');
+		$this->load->model('inventory/permohonanbarang_model');
+		$this->load->model('mst/puskesmas_model');
 	}
 
 	function filter(){
@@ -96,7 +98,7 @@ class Inv_ruangan extends CI_Controller {
 			$this->db->like('code','P'.$kodepuskesmas);
 		}
 
-		$data['puskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
+		$data['datapuskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
 		$data['content'] = $this->parser->parse("inventory/inv_ruangan/show",$data,true);
 		// var_dump($data['puskesmas']);
 		// exit();
@@ -105,18 +107,28 @@ class Inv_ruangan extends CI_Controller {
 
 
 	function add(){
+		$this->load->model('inventory/inv_ruangan_model');
+
 		$this->authentication->verify('inventory','add');
 
         $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
 
-        $this->form_validation->set_rules('code_cl_phc', 'Nama', 'trim|required');
+        $this->form_validation->set_rules('codepus', 'Nama', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
 			$data['code_cl_phc']	 	= $this->session->userdata('puskesmas');
 
         $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
+
+		$kodepuskesmas = $this->session->userdata('puskesmas');
+		if(substr($kodepuskesmas, -2)=="01"){
+			$this->db->like('code','P'.substr($kodepuskesmas,0,7));
+		}else{
+			$this->db->like('code','P'.$kodepuskesmas);
+		}
+		$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
 
 		if($this->form_validation->run()== FALSE){
 			$data['code']		 		= $this->session->userdata('puskesmas');

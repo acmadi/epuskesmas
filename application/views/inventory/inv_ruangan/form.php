@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/inv_ruangan/{action}/{code}" method="POST" name="">
+<form action="<?php echo base_url()?>inventory/inv_ruangan/add" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -63,14 +63,14 @@
                 ?>">
             </div>
             <div class="form-group">
-              <label>Nama Puskesmas</label>
-              <input type="text" class="form-control" name="code_cl_phc" placeholder="Nama Puskesmas" readonly value="<?php 
-                if(set_value('code_cl_phc')=="" && isset($code_cl_phc)){
-                  echo $code_cl_phc;
-                }else{
-                  echo  set_value('code_cl_phc');
-                }
-                ?>">
+              <label>Puskesmas<h1></h1></label>
+              <select  name="codepus" id="puskesmas" class="form-control">
+                  <option value="">-- Pilih Puskesmas --</option>
+                  <?php foreach($kodepuskesmas as $pus) : ?>
+                    <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
+                    <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
+                  <?php endforeach ?>
+              </select>
             </div>
           </div>
           </div><!-- /.box-body -->

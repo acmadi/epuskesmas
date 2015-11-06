@@ -25,7 +25,7 @@
     		<div class="col-md-3">
 	     		<select name="code_cl_phc" class="form-control">
 	     			<option value="-">Pilih Puskesmas</option>
-					<?php foreach ($puskesmas as $row ) { ;?>
+					<?php foreach ($datapuskesmas as $row ) { ;?>
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
 	     	</select>
