@@ -181,7 +181,7 @@ class Permohonanbarang extends CI_Controller {
 	function dodel($kode=0){
 		$this->authentication->verify('inventory','del');
 
-		if($this->invbarang_model->delete_entry($kode)){
+		if($this->permohonanbarang_model->delete_entry($kode)){
 			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
 			redirect(base_url()."inventory/permohonanbarang");
 		}else{
