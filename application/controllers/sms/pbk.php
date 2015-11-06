@@ -1,5 +1,5 @@
 <?php
-class Sms extends CI_Controller {
+class Pbk extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
@@ -8,10 +8,10 @@ class Sms extends CI_Controller {
 	
 	function index(){
 		$this->authentication->verify('sms','show');
-		$data['title_group'] = "SMS";
-		$data['title_form'] = "Dashboard";
+		$data['title_group'] = "Buku Telepon";
+		$data['title_form'] = "Nomor Terdaftar";
 
-		$data['content'] = $this->parser->parse("sms/show",$data,true);
+		$data['content'] = $this->parser->parse("sms/pbk/show",$data,true);
 		$this->template->show($data,'home');
 	}
 }

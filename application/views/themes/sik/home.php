@@ -16,14 +16,14 @@
     </style>
 	
     <script src="<?php echo base_url()?>plugins/js/jQuery-2.1.3.min.js"></script>
-	<?php /* ?>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtooltip.js"></script>
 	
-	<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdatatable.js"></script>
-	<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtreegrid.js"></script>
+	  <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdatatable.js"></script>
+	  <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtreegrid.js"></script>
 	
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxlistbox.js"></script>
@@ -42,20 +42,6 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxnumberinput.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxmaskedinput.js"></script>
-     */?>
-	 
-	 
-	
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcore.js"></script>
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxbuttons.js"></script>
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxscrollbar.js"></script>
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdatatable.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtreegrid.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxlistbox.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdropdownlist.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxdata.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtooltip.js"></script> 
-    <script type="text/javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxinput.js"></script>
 	 
     <script type="text/javascript">
         var theme = "bootstrap";
