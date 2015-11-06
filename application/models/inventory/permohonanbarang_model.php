@@ -22,14 +22,15 @@ class Permohonanbarang_model extends CI_Model {
     {
         return $this->db->get_where($table, $data);
     }
- 	function get_data_row($id){
+
+ 	function get_data_row($code_cl_phc,$kode){
 		$data = array();
-		$options = array('a.id_inv_permohonan_barang' => $id);
-		$this->db->select("$this->tabel.*,b.value,c.nama_ruangan");
-		$this->db->from("$this->tabel a");
-		$this->db->join('cl_phc b', "a.code_cl_phc = b.code");
-		$this->db->join('mst_inv_ruangan c', "a.id_mst_inv_ruangan = c.id_mst_inv_ruangan");
-		$query = $this->db->get_where($this->tabel,$options);
+		$this->db->where("inv_permohonan_barang.code_cl_phc",$code_cl_phc);
+		$this->db->where("inv_permohonan_barang.id_inv_permohonan_barang",$kode);
+		$this->db->select("inv_permohonan_barang.*,cl_phc.value,mst_inv_ruangan.nama_ruangan");
+		$this->db->join('cl_phc', "inv_permohonan_barang.code_cl_phc = cl_phc.code");
+		$this->db->join('mst_inv_ruangan', "inv_permohonan_barang.id_mst_inv_ruangan = mst_inv_ruangan.id_mst_inv_ruangan");
+		$query = $this->db->get("inv_permohonan_barang");
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
 		}
@@ -41,25 +42,35 @@ class Permohonanbarang_model extends CI_Model {
     {
         return $this->db->get_where($table, array('id_inv_permohonan_barang'=>$data));
     }
+
+    function get_permohonan_id($puskesmas="")
+    {
+    	$this->db->select('MAX(id_inv_permohonan_barang)+1 as id');
+    	$this->db->where('code_cl_phc',$puskesmas);
+    	$permohonan = $this->db->get('inv_permohonan_barang')->row();
+    	if (empty($permohonan->id)) {
+    		return 1;
+    	}else {
+    		return $permohonan->id;
+    	}
+	}
+
    function insert_entry()
     {
-    	$data['tanggal_permohonan']=date("Y-m-d",strtotime($this->input->post('tgl')));
-		$data['keterangan']=$this->input->post('keterangan');
-		$data['code_cl_phc']=$this->input->post('codepus');
-		$data['id_mst_inv_ruangan']=$this->input->post('ruangan');
-		$data['app_users_list_username']=$this->input->post('userdata'); 
-		$data['waktu_dibuat']=date('Y-m-d');
-		$data['jumlah_unit']=0;
+    	$data['tanggal_permohonan']	= date("Y-m-d",strtotime($this->input->post('tgl')));
+		$data['keterangan']			= $this->input->post('keterangan');
+		$data['code_cl_phc']		= $this->input->post('codepus');
+		$data['id_mst_inv_ruangan']	= $this->input->post('ruangan');
 
-		
-			if($this->db->insert($this->tabel, $data)){
-				return $this->db->insert_id();
-			}else{
-				return mysql_error();
-			}
-		/*
-		*/
-
+		$data['waktu_dibuat']		= date('Y-m-d');
+		$data['jumlah_unit']      	= 0;
+		$data['app_users_list_username'] 	= $this->session->userdata('username'); 
+		$data['id_inv_permohonan_barang']	= $this->get_permohonan_id($this->input->post('codepus'));
+		if($this->db->insert($this->tabel, $data)){
+			return $data['id_inv_permohonan_barang'];
+		}else{
+			return mysql_error();
+		}
     }
 
     function update_entry($kode)

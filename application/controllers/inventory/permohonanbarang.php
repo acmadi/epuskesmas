@@ -127,7 +127,7 @@ class Permohonanbarang extends CI_Controller {
 			$data['content'] = $this->parser->parse("inventory/permohonan_barang/form",$data,true);
 		}elseif($id = $this->permohonanbarang_model->insert_entry()){
 			$this->session->set_flashdata('alert', 'Save data successful...');
-			redirect(base_url().'inventory/permohonanbarang/edit/'. $id);
+			redirect(base_url().'inventory/permohonanbarang/edit/'.$this->input->post('codepus').'/'. $id);
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."inventory/permohonanbarang/add");
@@ -136,9 +136,9 @@ class Permohonanbarang extends CI_Controller {
 		$this->template->show($data,"home");
 	}
 
-	function edit($kode=0)
+	function edit($code_cl_phc="",$kode=0)
 	{
-		$this->authentication->verify('inventory','add');
+		$this->authentication->verify('inventory','edit');
 
         $this->form_validation->set_rules('tgl', 'Tanggal Permohonan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
@@ -146,9 +146,9 @@ class Permohonanbarang extends CI_Controller {
         $this->form_validation->set_rules('ruangan', 'Ruangan', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data = $this->permohonanbarang_model->get_data_row($kode); 
+			$data = $this->permohonanbarang_model->get_data_row($code_cl_phc,$kode); 
+			
 			$cekpus = $this->puskesmas_model->get_data_row($kode);
-			$cekruang = $this->inv_ruangan_model->get_data_row($kode);
 
 			$data['title_group'] = "Inventory";
 			$data['title_form']="Ubah Permohonan Barang";

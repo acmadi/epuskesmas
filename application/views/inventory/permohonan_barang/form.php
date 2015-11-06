@@ -21,7 +21,7 @@
         <div class="form-group">
           <label>Tanggal</label>
           <div id='tgl' name="tgl" value="<?php
-              echo (set_value('tgl')!="") ? date("d-m-Y",strtotime(set_value('tgl'))) : date("d-m-Y");
+              echo (set_value('tgl')!="") ? date("Y-m-d",strtotime(set_value('tgl'))) : "";
             ?>"></div>
         </div>
         <div class="form-group">
@@ -79,6 +79,7 @@ $(function(){
     $("#menu_inventory_permohonanbarang").addClass("active");
 
     $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme});
+
     $('#puskesmas').change(function(){
       var code = $(this).val();
       var id_ruang = '<?php echo set_value('ruangan')?>';
