@@ -11,7 +11,7 @@ class Morganisasi extends CI_Controller {
 	}
 	
 	function index(){
-		$this->authentication->verify('disbun','show');		
+		$this->authentication->verify('morganisasi','show');		
 		$data = array();
 		$data['title_group'] = "Dashboard";
 		$data['title_form'] = "Home";
@@ -42,7 +42,7 @@ class Morganisasi extends CI_Controller {
 	
 	function profile()
 	{
-		$this->authentication->verify('disbun','edit');		
+		$this->authentication->verify('morganisasi','edit');		
 		$data = $this->morganisasi_model->get_profile(); 
 		$data['title_group']		="Dashboard";
 		$data['title_form']			="Profil Pengguna";

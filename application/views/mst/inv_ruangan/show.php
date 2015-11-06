@@ -20,6 +20,12 @@
 	      <div class="box-footer">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+	     	<?php if ('code'.$this->session->userdata('puskesmas'))
+	     	{
+	     	 echo "<select id='jqxgrid-combobox'></select>";
+	     	}else{
+	     		echo "";
+	     	}?>
 	     </div>
         <div class="box-body">
 		    <div class="div-grid">
