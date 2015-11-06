@@ -5,7 +5,7 @@ class Permohonanbarang extends CI_Controller {
 		parent::__construct();
 		$this->load->model('inventory/permohonanbarang_model');
 		$this->load->model('mst/puskesmas_model');
-		$this->load->model('mst/inv_ruangan_model');
+		$this->load->model('inventory/inv_ruangan_model');
 	}
 	function json(){
 		$this->authentication->verify('inventory','show');
