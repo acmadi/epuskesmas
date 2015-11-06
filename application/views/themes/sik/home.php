@@ -136,6 +136,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
+              <li id="menu_permohonan_barang"><a href="<?php echo base_url()?>inventory/permohonanbarang"><i class="fa fa-circle-o"></i> Daftar Permohonan Barang</a></li>
                 <li id="menu_chart_penangkar"><a href="<?php echo base_url()?>"><i class="fa fa-circle-o"></i> Aset</a></li>
               </ul>
             </li>

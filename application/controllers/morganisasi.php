@@ -42,7 +42,7 @@ class Morganisasi extends CI_Controller {
 	
 	function profile()
 	{
-		$this->authentication->verify('morganisasi','edit');		
+		$this->authentication->verify('disbun','edit');		
 		$data = $this->morganisasi_model->get_profile(); 
 		$data['title_group']		="Dashboard";
 		$data['title_form']			="Profil Pengguna";

@@ -69,11 +69,11 @@
 				}else{
 					$ico = "fa fa-circle-o";
 				}
+				if($q->module=="#") $id_menu = str_replace(" ", "_",str_replace("/", "_", strtolower($q->filename)));
+				else $id_menu = str_replace("/", "_", $q->module);
+
 				if($this->have_child($q->id)){	
-					
-					
-					
-					$text=$text."<li class=\"treeview\" id=\"menu_".$q->module."\">
+					$text=$text."<li class=\"treeview\" id=\"menu_".$id_menu."\">
 						<a href=\" ".base_url().$q->module." \">
 							<i class=\" ".$ico." \"></i> <span> ".$q->filename." </span> <i class=\"fa fa-angle-left pull-right\"></i>
 						</a>";
@@ -82,7 +82,7 @@
 				}else{
 					
 					
-					$text=$text."<li id=\"menu_".$q->module."\">
+					$text=$text."<li id=\"menu_".$id_menu."\">
 						<a href=\" ".base_url().$q->module." \">
 							<i class=\" ".$ico."\"></i> <span> ".$q->filename." </span> <i class=\"pull-right\"></i>
 						</a>";
