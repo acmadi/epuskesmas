@@ -63,6 +63,6 @@
 <script>
 	$(function () {	
     $("#menu_mst_kecamatan").addClass("active");
-    $("#menu_parameter").addClass("active");
+    $("#menu_master_data").addClass("active");
 	});
 </script>

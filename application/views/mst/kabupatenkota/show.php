@@ -35,7 +35,7 @@
 <script type="text/javascript">
 	$(function () {	
 		$("#menu_mst_kabupatenkota").addClass("active");
-		$("#menu_parameter").addClass("active");
+		$("#menu_master_data").addClass("active");
 	});
 
 	   var source = {

@@ -64,6 +64,6 @@
 <script>
 	$(function () {	
     $("#menu_mst_invkondisibarang").addClass("active");
-    $("#menu_parameter").addClass("active");
+    $("#menu_master_data").addClass("active");
 	});
 </script>

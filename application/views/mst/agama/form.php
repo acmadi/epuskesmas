@@ -62,7 +62,7 @@
 
 <script>
 	$(function () {	
+    $("#menu_master_data").addClass("active");
     $("#menu_mst_agama").addClass("active");
-    $("#menu_parameter").addClass("active");
 	});
 </script>
