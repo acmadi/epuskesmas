@@ -56,11 +56,11 @@ class Template {
 			$query = $this->obj->db->get();
 			$result = $query->row_array();
 			$query->free_result();    
-			if($this->obj->session->userdata('level')!="" && $this->obj->session->userdata('level')!="guest" && $this->obj->session->userdata('level')!="member"){
-				$data['panel']= $this->obj->parser->parse("admin/menu",$data,true);
-			}else{
+			//if($this->obj->session->userdata('level')!="" && $this->obj->session->userdata('level')!="guest" && $this->obj->session->userdata('level')!="member"){
+			//	$data['panel']= $this->obj->parser->parse("admin/menu",$data,true);
+			//}else{
 				$data['panel']= "";
-			}
+			//}
 
 			$this->set_theme($result['id_theme'],$result['folder'],$result['name']);
 		}

@@ -210,7 +210,7 @@
 
 <script type="text/javascript">
 $(function(){
-    $("#menu_admin").addClass("active");
+    $("#menu_admin_panel").addClass("active");
     $("#menu_admin_user").addClass("active");
 
   });

@@ -43,8 +43,10 @@ if(!empty($data['parent_id'])){
 		</div><!-- /.box -->                                
 		</div><!-- /.box-body -->
 	</div><!-- /.box -->
-
-            
-	
-	
 </form>
+<script>
+	$(function () {	
+		$("#menu_admin_menu").addClass("active");
+		$("#menu_admin_panel").addClass("active");
+	});
+</script>

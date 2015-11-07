@@ -82,6 +82,6 @@
 	$(function () {	
         $("#dataTable").dataTable();
 		$("#menu_admin_file").addClass("active");
-		$("#menu_admin").addClass("active");
+		$("#menu_admin_panel").addClass("active");
 	});
 </script>

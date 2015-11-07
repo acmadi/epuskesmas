@@ -95,6 +95,6 @@
 <script>
 	$(function () {	
 		$("#menu_admin_config").addClass("active");
-		$("#menu_admin").addClass("active");
+		$("#menu_admin_panel").addClass("active");
 	});
 </script>

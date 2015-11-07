@@ -147,7 +147,7 @@ $(function(){
         window.location.href="<?php echo base_url()?>admin_user";
     });
 
-    $("#menu_admin").addClass("active");
+    $("#menu_admin_panel").addClass("active");
     $("#menu_admin_user").addClass("active");
 
   });

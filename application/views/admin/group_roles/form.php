@@ -118,7 +118,7 @@
           "bAutoWidth": false
         });
 		$("#menu_admin_role").addClass("active");
-		$("#menu_admin").addClass("active");
+		$("#menu_admin_panel").addClass("active");
 	});
 </script>
 

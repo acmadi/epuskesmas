@@ -108,7 +108,7 @@
 <script>
 	$(function () {	
 		$("#menu_admin_menu").addClass("active");
-		$("#menu_admin").addClass("active");		
+		$("#menu_admin_panel").addClass("active");		
 		$('#drag_menu ul').sortable({
 			axis: 'y',
 			update: function (event, ui) {

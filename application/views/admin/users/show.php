@@ -82,7 +82,7 @@
 	$(function () {	
         $("#dataTable").dataTable();
 		$("#menu_admin_user").addClass("active");
-		$("#menu_admin").addClass("active");
+		$("#menu_admin_panel").addClass("active");
 	});
 	function confirm_delete() {
 	  return confirm('Apakah yakin data akan dihapus?');

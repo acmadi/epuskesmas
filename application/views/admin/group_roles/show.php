@@ -62,7 +62,7 @@
 <script>
 	$(function () {	
         $("#dataTable").dataTable({"bPaginate": false});
-		$("#menu_admin").addClass("active");
+		$("#menu_admin_panel").addClass("active");
 		$("#menu_admin_role").addClass("active");
 	});
 </script>

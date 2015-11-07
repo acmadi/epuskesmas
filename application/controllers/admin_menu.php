@@ -35,7 +35,7 @@ class Admin_menu extends CI_Controller {
 		
 		$data['content'] = $this->parser->parse("admin/menus/show",$data,true);
 
-		$data['panel']= $this->parser->parse("admin/menu_lock",$data,true);
+		//$data['panel']= $this->parser->parse("admin/menu_lock",$data,true);
 		$this->template->show($data,"home");
 	}
 
