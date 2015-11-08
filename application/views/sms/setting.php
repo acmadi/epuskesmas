@@ -11,7 +11,7 @@
 <form action="<?php echo base_url()?>admin_config/doupdate" method="POST" name="frmUsers">
   <div class="row">
     <!-- left column -->
-    <div class="col-md-6">
+    <div class="col-md-4">
       <!-- general form elements -->
       <div class="box box-primary">
         <div class="box-header">
@@ -39,7 +39,7 @@
           </div>
       </div><!-- /.box -->
   	</div><!-- /.box -->
-    <div class="col-md-6">
+    <div class="col-md-8">
       <!-- general form elements -->
       <div class="box box-warning">
         <div class="box-header">
