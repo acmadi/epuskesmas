@@ -25,23 +25,6 @@
             ?>"></div>
         </div>
         <div class="form-group">
-          <label>Keterangan</label>
-          <textarea class="form-control" name="keterangan" placeholder="Keterangan"><?php 
-              if(set_value('keterangan')=="" && isset($keterangan)){
-                echo $keterangan;
-              }else{
-                echo  set_value('keterangan');
-              }
-              ?></textarea>
-        </div>
-      </div>
-    </div>
-  </div><!-- /.form-box -->
-
-  <div class="col-md-6">
-    <div class="box box-warning">
-      <div class="box-body">
-        <div class="form-group">
           <label>Puskesmas<h1></h1></label>
           <select  name="codepus" id="puskesmas" class="form-control">
               <option value="">
@@ -59,9 +42,26 @@
           </select>
         </div>
       </div>
+    </div>
+  </div><!-- /.form-box -->
+
+  <div class="col-md-6">
+    <div class="box box-warning">
+      <div class="box-body">
+        <div class="form-group">
+          <label>Keterangan</label>
+          <textarea class="form-control" name="keterangan" placeholder="Keterangan"><?php 
+              if(set_value('keterangan')=="" && isset($keterangan)){
+                echo $keterangan;
+              }else{
+                echo  set_value('keterangan');
+              }
+              ?></textarea>
+        </div>
+      </div>
       <div class="box-footer">
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <button type="submit" class="btn btn-warning">Kembali</button>
+        <button type="button" id="btn-kembali" class="btn btn-warning">Kembali</button>
       </div>
       </div>
     </form>        
@@ -71,8 +71,8 @@
 
 <script type="text/javascript">
 $(function(){
-    $('#btn_back').click(function(){
-        window.location.href="<?php echo base_url()?>admin_user";
+    $('#btn-kembali').click(function(){
+        window.location.href="<?php echo base_url()?>inventory/permohonanbarang";
     });
 
     $("#menu_inventory").addClass("active");
@@ -81,12 +81,12 @@ $(function(){
     $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme});
 
     $('#puskesmas').change(function(){
-      var code = $(this).val();
-      var id_ruang = '<?php echo set_value('ruangan')?>';
+      var code_cl_phc = $(this).val();
+      var id_mst_inv_ruangan = '<?php echo set_value('ruangan')?>';
       $.ajax({
         url : '<?php echo site_url('inventory/permohonanbarang/get_ruangan') ?>',
         type : 'POST',
-        data : 'code=' + code+'&id_ruang=' + id_ruang,
+        data : 'code_cl_phc=' + code_cl_phc+'&id_mst_inv_ruangan=' + id_mst_inv_ruangan,
         success : function(data) {
           $('#ruangan').html(data);
         }
