@@ -43,6 +43,7 @@
 			type	: "POST",
 			datafields: [
 			{ name: 'no', type: 'number'},
+			{ name: 'code_cl_phc', type: 'string'},
 			{ name: 'id_inv_permohonan_barang', type: 'number'},
 			{ name: 'tanggal_permohonan', type: 'date'},
 			{ name: 'jumlah_unit', type: 'string'},
@@ -95,7 +96,7 @@
 				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='detail(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='detail(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.code_cl_phc+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lockdo.gif'></a></div>";
 					}
@@ -104,7 +105,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.code_cl_phc+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -113,7 +114,7 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.code_cl_phc+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -128,17 +129,22 @@
             ]
 		});
 
-	function edit(id){
-		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id;
-	}
-	function view(id){
-		document.location.href="<?php echo base_url().'inventory/permohonanbarang/view';?>/" + id;
+	function detail(id,code_cl_phc){
+		document.location.href="<?php echo base_url().'inventory/permohonanbarang/detail';?>/" + id + "/" + code_cl_phc;
 	}
 
-	function del(id){
+	function edit(id,code_cl_phc){
+		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id + "/" + code_cl_phc;
+	}
+
+	function view(id,code_cl_phc){
+		document.location.href="<?php echo base_url().'inventory/permohonanbarang/view';?>/" + id + "/" + code_cl_phc;
+	}
+
+	function del(id,code_cl_phc){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'inventory/permohonanbarang/dodel' ?>/" + id,  function(){
+			$.post("<?php echo base_url().'inventory/permohonanbarang/dodel' ?>/" + id + "/" + code_cl_phc,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
