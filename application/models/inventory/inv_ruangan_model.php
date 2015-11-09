@@ -29,7 +29,7 @@ class inv_ruangan_model extends CI_Model {
         return $query->result();
     }
 
-    function get_ruangan_id($puskesmas)
+    function get_ruangan_id($puskesmas="")
     {
     	$this->db->select('max(id_mst_inv_ruangan) as id');
     	$this->db->where('code_cl_phc',$puskesmas);
@@ -43,10 +43,11 @@ class inv_ruangan_model extends CI_Model {
 
 	}
 
- 	function get_data_row($kode){
+ 	function get_data_row($kode,$id){
 		$data = array();
-		$options = array('code_cl_phc' => $kode);
-		$query = $this->db->get_where($this->tabel,$options);
+		$this->db->where("code_cl_phc",$kode);
+		$this->db->where("id_mst_inv_ruangan",$id);
+		$query = $this->db->get_where($this->tabel);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
 		}
@@ -79,24 +80,27 @@ class inv_ruangan_model extends CI_Model {
 		}
     }
 
-    function update_entry($kode)
+    function update_entry($kode,$id)
     {
-		// $data['id_mst_inv_ruangan'] = $this->input->post('id_mst_inv_ruangan');
+		// $data['id_mst_inv_ruangan'] = $this->input->post($this->input->post('code_cl_phc'));
 		$data['nama_ruangan']		= $this->input->post('nama_ruangan');
 		$data['keterangan']		= $this->input->post('keterangan');
 		$data['code_cl_phc']		= $this->input->post('codepus');
 
-		if($this->db->update($this->tabel, $data, array("code_cl_phc"=>$kode))){
+		$this->db->where('code_cl_phc',$kode);
+		$this->db->where('id_mst_inv_ruangan',$id);
+
+		if($this->db->update($this->tabel, $data)){
 			return true;
 		}else{
 			return mysql_error();
 		}
     }
 
-	function delete_entry($kode)
+	function delete_entry($kode,$id)
 	{
 		$this->db->where('code_cl_phc',$kode);
-		$this->db->where('id_mst_inv_ruangan',$kode);
+		$this->db->where('id_mst_inv_ruangan',$id);
 
 		return $this->db->delete($this->tabel);
 	}

@@ -142,7 +142,7 @@ class Inv_ruangan extends CI_Controller {
 
 }
 
-	function edit($kode,$id)
+	function edit($kode=0,$id="")
 	{
 		$this->authentication->verify('inventory','add');
 
@@ -158,7 +158,9 @@ class Inv_ruangan extends CI_Controller {
 			$data['title_form']="Ubah Inventory Ruangan";
 			$data['action']="edit";
 			$data['kode']= $kode;
-
+			$data['id'] = $id;
+			// var_dump($data);
+			// exit();
 			$kodepuskesmas = $this->session->userdata('puskesmas');
 			if(substr($kodepuskesmas, -2)=="01"){
 				$this->db->like('code','P'.substr($kodepuskesmas,0,7));
@@ -179,10 +181,10 @@ class Inv_ruangan extends CI_Controller {
 		}
 	}
 
-	function dodel($kode=0){
+	function dodel($kode=0,$id=""){
 		$this->authentication->verify('inventory','del');
 
-		if($this->inv_ruangan_model->delete_entry($kode)){
+		if($this->inv_ruangan_model->delete_entry($kode,$id)){
 			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
 			redirect(base_url()."inventory/inv_ruangan");
 		}else{
