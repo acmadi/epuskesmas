@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/invkondisibarang/{action}/{kode}" method="POST" name="">
+<form action="<?php echo base_url()?>mst/invpilihan/{action}/{kode}" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -29,27 +29,39 @@
           <div class="box-footer pull-right">
             <button type="submit" class="btn btn-primary">Simpan</button>
             <button type="reset" class="btn btn-warning">Ulang</button>
-            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/invkondisibarang'">Kembali</button>
+            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/invpilihan'">Kembali</button>
           </div>
           <div class="box-body">
             <div class="form-group">
-              <label>Kondisi barang</label>
-              <input type="text" class="form-control" name="nama" placeholder="Nama" value="<?php 
-                if(set_value('nama')=="" && isset($nama)){
-                  echo $nama;
+              <label>Pilihan Tipe</label>
+              <select name="tipe" class="form-control">
+                <?php for($i=0;$i<count($tipe) ;$i++)  { ?>
+                  <?php $select =$tipe[$i] == $tipe ? 'selected' : '' ?>
+                  <option value="<?php echo $tipe[$i]; ?>" <?php echo $select ?>><?php echo $tipe[$i]; ?></option> 
+                <?php
+                }
+                ?>
+              </select>
+                
+            </div>
+            <div class="form-group">
+              <label>Kode</label>
+              <input type="text" class="form-control" name="kode" placeholder="Nama" value="<?php 
+                if(set_value('code')=="" && isset($code)){
+                  echo $code;
                 }else{
-                  echo  set_value('nama');
+                  echo  set_value('code');
                 }
                 ?>">
                 
             </div>
             <div class="form-group">
-              <label>Deskripsi</label>
-              <input type="text" class="form-control" name="deskripsi" placeholder="Deskripsi" value="<?php 
-                if(set_value('deskripsi')=="" && isset($deskripsi)){
-                  echo $deskripsi;
+              <label>Value</label>
+              <input type="text" class="form-control" name="value" placeholder="Deskripsi" value="<?php 
+                if(set_value('value')=="" && isset($value)){
+                  echo $value;
                 }else{
-                  echo  set_value('deskripsi');
+                  echo  set_value('value');
                 }
                 ?>">
             </div>
@@ -63,7 +75,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_invkondisibarang").addClass("active");
+    $("#menu_mst_invpilihan").addClass("active");
     $("#menu_master_data").addClass("active");
 	});
 </script>
