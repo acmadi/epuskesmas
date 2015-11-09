@@ -11,23 +11,65 @@ class Master_sts extends CI_Controller {
 	}
 
 	function api_data(){
-		$data['ambildata'] = $this->sts_model->get_data();
-		foreach($data['ambildata'] as $d){
-			$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \n";
-			
-			echo $txt;
+		$this->authentication->verify('keuangan','edit');		
+		
+		if(!empty($this->session->userdata('tipe'))){
+			$data['ambildata'] = $this->sts_model->get_data_type_filter($this->session->userdata('tipe'));
+			foreach($data['ambildata'] as $d){
+				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \n";				
+				echo $txt;
+			}
 		}
+		
+	}
+	
+	function api_data_tarif(){
+		$this->authentication->verify('keuangan','edit');		
+		
+		if(!empty($this->session->userdata('puskes')) and  $this->session->userdata('puskes') != '0'){
+			$data['ambildata'] = $this->sts_model->get_data_puskesmas_filter($this->session->userdata('puskes'));
+			foreach($data['ambildata'] as $d){
+				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \t".$d["id"]." \t".$d["id_keu_anggaran"]." \t".$d["tarif"]." \t".$d["code_cl_phc"]." \n";				
+				echo $txt;
+			}
+		}
+		
+	}
+	
+	function set_type(){
+		$this->authentication->verify('keuangan','edit');
+		$this->session->set_userdata('tipe',$this->input->post('tipe'));
+	}
+	
+	function set_puskes(){
+		$this->authentication->verify('keuangan','edit');
+		$this->session->set_userdata('puskes',$this->input->post('puskes'));		
 	}
 	function anggaran(){
 		$this->authentication->verify('keuangan','edit');
 		$data['title_group'] = "Anggaran";
-		$data['title_form'] = "Master Data - Keuangan";
+		$data['title_form'] = "Master Data - Anggaran";
 		$data['ambildata'] = $this->sts_model->get_data();
 		$data['content'] = $this->parser->parse("keuangan/anggaran",$data,true);		
 						
 		
 		$this->template->show($data,"home");
 	}
+	function anggaran_tarif(){
+		$this->authentication->verify('keuangan','edit');
+		$data['title_group'] = "Tarif Anggaran";
+		$data['title_form'] = "Master Data - Tarif Anggaran ";
+		$data['ambildata'] = $this->sts_model->get_data();
+		$data['data_puskesmas']	= $this->sts_model->get_data_puskesmas();
+		$data['content'] = $this->parser->parse("keuangan/anggaran_tarif",$data,true);					
+		$this->template->show($data,"home");
+	}
+	
+	function add_tarif(){
+		$this->authentication->verify('keuangan','add');
+		$this->sts_model->add_tarif();				
+	}
+	
 	function anggaran_add(){
 		$this->authentication->verify('keuangan','add');
 		$this->sts_model->add_anggaran();				

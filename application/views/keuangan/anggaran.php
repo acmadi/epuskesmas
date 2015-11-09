@@ -1,3 +1,69 @@
+<?php if($this->session->flashdata('alert')!=""){ ?>
+<div class="alert alert-success alert-dismissable">
+	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+	<h4>	<i class="icon fa fa-check"></i> Information!</h4>
+	<?php echo $this->session->flashdata('alert')?>
+</div>
+<?php } ?>
+
+<section class="content">
+
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">{title_form}</h3>
+	    </div>
+		
+	    <div class="box-body">
+			<div class="">
+				<div class="col-md-2 pull-left">
+					<button class="btn btn-block btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Tambah Induk</button>					
+				</div>
+				<div class="col-md-2 pull-left">
+					<a href="<?php echo base_url(); ?>keuangan/master_sts/anggaran_tarif" class="btn btn-block btn-warning btn-sm" >Ubah Tarif</a>	
+				</div>
+				
+				<div class="col-md-3 pull-right">
+				<select class="form-control" name="pilih_type">
+					<option >Select Type</option>
+					<?php 
+						if($this->session->userdata('tipe') == 'kec'){
+					?>
+						<option selected value="kec">Kecamatan</option>
+						<option value="kel">Kelurahan</option>
+					<?php
+						}elseif($this->session->userdata('tipe') == 'kel'){
+					?>
+						<option value="kec">Kecamatan</option>
+						<option selected value="kel">Kelurahan</option>
+					<?php
+						}else{
+					?>
+						<option value="kec">Kecamatan</option>
+						<option value="kel">Kelurahan</option>
+					<?php						
+						}
+					?>
+					
+				</select>
+				</div>
+			</div>
+	    </div>
+		
+        <div class="box-body">
+			<div class="default">
+				<div id="treeGrid"></div>
+			</div>
+	    </div>
+	  </div>
+	</div>
+  </div>
+
+</section>
+
 
 	<script type="text/javascript">
 		function getDemoTheme() {
@@ -95,7 +161,14 @@
 	<script type="text/javascript">
         $(document).ready(function () {           
             var newRowID = null;
-
+			
+			
+			$("select[name='pilih_type']").change(function(){
+				$.post( '<?php echo base_url()?>keuangan/master_sts/set_type', {tipe:$(this).val()},function( data ) {
+					$("#treeGrid").jqxTreeGrid('updateBoundData');
+				});
+            });
+			
             // prepare the data
             var source =
             {
@@ -134,27 +207,24 @@
                     commit(true);
 					var arr = $.map(rowData, function(el) { return el });															
 																				
-					alert(arr);
 					
 					
-					if(arr.length == 9){
-						var arr2 = $.map(arr[2], function(el) { return el });
+					alert(typeof(arr[1]));
+					//number = update
+					//object = insert
+					if(typeof(arr[1]) === 'object'){
+						var arr2 = $.map(arr[1], function(el) { return el });
 						alert(arr2);
-						if(arr[3]>0){
-							alert('child '+arr);
-							$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[5], kode_anggaran:arr[6], uraian : arr[7], type : arr[8]},function( data ) {
-								alert( "input" );
-							});
-							if(arr2[0] == null){
-								alert("parent");
-							}
-						}else{
-							alert('parent '+arr);
-						}
-					}else{
-						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_update', {id_anggaran_awal:rowID, id_anggaran:arr[0],sub_id:arr[1], kode_rekening:arr[2], kode_anggaran:arr[3], uraian : arr[4], type : arr[5]},function( data ) {
-							alert( "update" );
+						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[4], kode_anggaran:arr[5], uraian : arr[6], type : arr[8]},function( data ) {
+								alert("input");
 						});
+					}else{												
+						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_update', {id_anggaran_awal:rowID, id_anggaran:arr[0],sub_id:arr[1], kode_rekening:arr[2], kode_anggaran:arr[3], uraian : arr[4], type : arr[5]},function( data ) {
+							alert("update");
+						});
+						
+						
+						
 					}
                  },
                  deleteRow: function (rowID, commit) {
@@ -164,13 +234,13 @@
 					if( Object.prototype.toString.call( rowID ) === '[object Array]' ) {
 						for(var i=0; i< rowID.length; i++){
 							$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_delete', {id_anggaran:rowID[i]},function( data ) {
-								alert( "delete" );
+								
 							});
 						}
 						
 					}else{
 						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_delete', {id_anggaran:rowID},function( data ) {
-							alert( "delete" );
+							
 						});
 					}
 					 
@@ -186,7 +256,7 @@
 
             $("#treeGrid").jqxTreeGrid(
             {
-                width: 850,
+                width: '100%',
                 source: dataAdapter, 
                 pageable: true,
                 editable: true,
@@ -212,9 +282,8 @@
                     var editButton = $(buttonTemplate);
                     var deleteButton = $(buttonTemplate);
                     var cancelButton = $(buttonTemplate);
-                    var updateButton = $(buttonTemplate);
-                    var addParentButton = $(buttonTemplate);
-                    container.append(addParentButton);
+                    var updateButton = $(buttonTemplate);                    
+                    
                     container.append(addButton);
                     container.append(editButton);
                     container.append(deleteButton);
@@ -222,13 +291,11 @@
                     container.append(updateButton);
 
                     toolBar.append(container);
-					addParentButton.jqxButton({cursor: "pointer", enableDefault: false, disabled: false, height: 25, width: 25 });
-                    addParentButton.find('div:first').addClass(toTheme('jqx-icon-plus'));
-                    addParentButton.jqxTooltip({ position: 'bottom', content: "Add Parent"});
+					
 					
                     addButton.jqxButton({cursor: "pointer", enableDefault: false, disabled: true, height: 25, width: 25 });
                     addButton.find('div:first').addClass(toTheme('jqx-icon-plus'));
-                    addButton.jqxTooltip({ position: 'bottom', content: "Add Child"});
+                    addButton.jqxTooltip({ position: 'bottom', content: "Tambah Cabang"});
 
                     editButton.jqxButton({ cursor: "pointer", disabled: true, enableDefault: false,  height: 25, width: 25 });
                     editButton.find('div:first').addClass(toTheme('jqx-icon-edit'));
@@ -296,20 +363,7 @@
                         updateButtons('Edit');
                     });
 					
-					addParentButton.click(function (event) {
-                        if (!addButton.jqxButton('disabled')) {
-							//$("#treeGrid").jqxTreeGrid('clearSelection');
-                            $("#treeGrid").jqxTreeGrid('expandRow', rowKey);
-                            // add new empty row.
-                            $("#treeGrid").jqxTreeGrid('addRow', null, {}, 'first', rowKey);
-                            // select the first row and clear the selection.
-                            $("#treeGrid").jqxTreeGrid('clearSelection');
-                            $("#treeGrid").jqxTreeGrid('selectRow', newRowID);
-                            // edit the new row.
-                            $("#treeGrid").jqxTreeGrid('beginRowEdit', newRowID);
-                            updateButtons('add');
-                        }
-                    });
+					
 					
                     addButton.click(function (event) {
                         if (!addButton.jqxButton('disabled')) {
@@ -373,46 +427,57 @@
                     { name: "KodeAnggaran", type: "string" },
                     { name: "Uraian", type: "string" },
                     { name: "Type", type: "string" }
-				*/
-                  { text: 'ID Anggaran', dataField: "Id", align: 'center', width: '20%' },				
-                  { text: 'Kode Rekening', dataField: "KodeRekening", align: 'center', width: '20%' },
-                  { text: 'Kode Anggaran', dataField: "KodeAnggaran", align: 'center', width: '20%' },
-                  { text: 'Uraian', dataField: "Uraian", align: 'center', width: '20%' },
-                  { text: 'Type', dataField: "Type", align: 'center', width: '20%' },
-                  
+				*/                                   
+                  { text: 'Kode Anggaran', dataField: "KodeAnggaran", align: 'center', width: '30%' },
+                  { text: 'Uraian', dataField: "Uraian", align: 'center', width: '40%' },
+				  { text: 'Kode Rekening', dataField: "KodeRekening", align: 'center', width: '30%' },                                    
                 ]
             });
+			
+			
         });
+		
+		function addParent(){
+			var sub_id = 0;
+			var kode_rekening = document.getElementById("kode_rekening").value;
+			var kode_anggaran = document.getElementById("kode_anggaran").value;
+			var uraian = document.getElementById("uraian").value;
+			$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {sub_id:sub_id, kode_rekening:kode_rekening, kode_anggaran:kode_anggaran, uraian:uraian},function( data ) {
+					$("#treeGrid").jqxTreeGrid('updateBoundData');
+					document.getElementById("kode_rekening").value='';
+					document.getElementById("kode_anggaran").value='';
+					document.getElementById("uraian").value = '';
+				});
+		}
     </script>
-
-<?php if($this->session->flashdata('alert')!=""){ ?>
-<div class="alert alert-success alert-dismissable">
-	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-	<h4>	<i class="icon fa fa-check"></i> Information!</h4>
-	<?php echo $this->session->flashdata('alert')?>
-</div>
-<?php } ?>
-
-<section class="content">
-<form action="<?php echo base_url()?>" method="POST" name="">
-  <div class="row">
-    <!-- left column -->
-    <div class="col-md-12">
-      <!-- general form elements -->
-      <div class="box box-primary">
-        <div class="box-header">
-          <h3 class="box-title">{title_form}</h3>
-	    </div>
-
-	      
-        <div class="box-body">
-			<div class="default">
-				<div  id="treeGrid"></div>
-			</div>
-	    </div>
-	  </div>
-	</div>
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add New Parent</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+		  <label for="exampleInputEmail1">Kode Rekening</label>
+		  <input type="text" required id="kode_rekening" name="kode_rekening"  class="form-control" id="exampleInputEmail1" placeholder="Kode Rekening">
+		</div>
+		<div class="form-group">
+		  <label for="exampleInputEmail1">Kode Anggaran</label>
+		  <input type="text" required id="kode_anggaran" class="form-control" name="kode_anggaran" id="exampleInputEmail1" placeholder="Kode Anggaran">
+		</div>
+		<div class="form-group">
+		  <label for="exampleInputEmail1">Uraian</label>
+		  <input type="text" required id="uraian" class="form-control" name="uraian" id="exampleInputEmail1" placeholder="Uraian">
+		</div>
+		<input type="hidden" name="type" value="<?php echo $this->session->userdata('tipe')?>"/>
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" onclick="addParent()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
-</form>
-</section>
-
+</div>
