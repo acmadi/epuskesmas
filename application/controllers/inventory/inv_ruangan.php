@@ -4,7 +4,7 @@ class Inv_ruangan extends CI_Controller {
     public function __construct(){
 		parent::__construct();
 		$this->load->model('inventory/inv_ruangan_model');
-		$this->load->model('inventory/permohonanbarang_model');
+		//$this->load->model('inventory/permohonanbarang_model');
 		$this->load->model('mst/puskesmas_model');
 	}
 
@@ -82,8 +82,6 @@ class Inv_ruangan extends CI_Controller {
 		echo json_encode(array($json));
 	}
 
-
-
 	function index(){
 		$this->authentication->verify('inventory','edit');
 		$data['title_group'] = "Inventory";
@@ -100,8 +98,7 @@ class Inv_ruangan extends CI_Controller {
 
 		$data['datapuskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
 		$data['content'] = $this->parser->parse("inventory/inv_ruangan/show",$data,true);
-		// var_dump($data['puskesmas']);
-		// exit();
+
 		$this->template->show($data,"home");
 	}
 
@@ -111,14 +108,10 @@ class Inv_ruangan extends CI_Controller {
 
 		$this->authentication->verify('inventory','add');
 
-        // $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
-        $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
+        $this->form_validation->set_rules('nama_ruangan', 'Nama Ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-        $this->form_validation->set_rules('codepus', 'Nama', 'trim|required');
+        $this->form_validation->set_rules('codepus', 'Puskesmas', 'trim|required');
 
-        $this->form_validation->set_rules('codepus', 'Kode', 'trim|required');
-
-			// echo "string";
 		$kodepuskesmas = $this->session->userdata('puskesmas');
 		if(substr($kodepuskesmas, -2)=="01"){
 			$this->db->like('code','P'.substr($kodepuskesmas,0,7));
@@ -129,7 +122,6 @@ class Inv_ruangan extends CI_Controller {
 
 		if($this->form_validation->run()== FALSE){
 			$data['code']		 		= $this->session->userdata('puskesmas');
-			// $data['id_mst_inv_ruangan']	= $this->inv_ruangan_model->get_ruangan_id();
 			$data['title_group'] 		= "Inventory";
 			$data['title_form']  		= "Tambah Inventaris Ruangan";
 			$data['action']      		= "add";

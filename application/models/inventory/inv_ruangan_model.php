@@ -31,18 +31,14 @@ class inv_ruangan_model extends CI_Model {
 
     function get_ruangan_id($puskesmas)
     {
-    	
+    	$this->db->select('max(id_mst_inv_ruangan) as id');
     	$this->db->where('code_cl_phc',$puskesmas);
-    	$query  = $this->db->query("SELECT max(id_mst_inv_ruangan) as id from mst_inv_ruangan ");
-
+    	$jum = $this->db->get('mst_inv_ruangan')->row();
     	
-    	if (empty($query->result()))
-    	{
+    	if (empty($jum)){
     		return 1;
     	}else {
-    		foreach ($query->result() as $jum ) {
-    			return $jum->id+1;
-    		}
+			return $jum->id+1;
     	}
 
 	}
