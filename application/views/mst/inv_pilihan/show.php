@@ -25,10 +25,12 @@
     		<div class="col-md-3">
 	     		<select name="tipepilihan" class="form-control">
 	     			<option value="0">Pilih Tipe</option>
-	                <?php for($i=0;$i<count($tipe) ;$i++)  { ?>
-	                  <option value="<?php echo $tipe[$i]; ?>"><?php echo $tipe[$i]; ?></option> 
-	                <?php
-	                } ?>
+	     			<?php  
+						$array = array_values($tipe);
+						foreach ($array as $v1) {
+							echo "<option value=".$v1.">" .$v1."</option>";
+						}
+					?>
 	            </select>
 	     	</select>
 			</div>

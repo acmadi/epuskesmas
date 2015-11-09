@@ -12,9 +12,14 @@ class Invpilihan extends CI_Controller {
 			}
 		}
 	}
-	function tipearray(){
+	/*function tipearray(){
+		$query = $this->db->query("SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='mst_inv_pilihan' AND COLUMN_NAME='tipe'")->result();
+		foreach ($query as $key) {
+			$tipepilihan = $key->COLUMN_TYPE ;
+		}
+		$sub_pilihan = substr($tipepilihan,5,-1);
 		return $arrayName = array('komponen','status_pengadaan','status_inventaris','satuan','status_hak','keadaan_barang','status_barang','asal_usul','bahan','kons_tingkat','kons_beton','penggunaan');
-	}
+	}*/
 	function json(){
 		$this->authentication->verify('mst','show');
 
@@ -85,8 +90,10 @@ class Invpilihan extends CI_Controller {
 		$this->authentication->verify('mst','edit');
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Inv Pilihan";
-		$data['tipe'] =$this->tipearray();
+		//$data['tipe'] =$this->tipearray();
+		$data['tipe'] = $this->invpilihan_model->pilihan_enums('mst_inv_pilihan','tipe');
 		$data['content'] = $this->parser->parse("mst/inv_pilihan/show",$data,true);
+
 
 		$this->template->show($data,"home");
 	}	
@@ -104,7 +111,8 @@ class Invpilihan extends CI_Controller {
 				$data['action']="add";
 				$data['kode']="";
 
-				$data['tipe'] =$this->tipearray();
+				//$data['tipe'] =$this->tipearray();
+				$data['tipe'] = $this->invpilihan_model->pilihan_enums('mst_inv_pilihan','tipe');
 				$data['content'] = $this->parser->parse("mst/inv_pilihan/form",$data,true);
 				$this->template->show($data,"home");
 			}elseif($this->invpilihan_model->insert_entry() == 1){
@@ -116,7 +124,6 @@ class Invpilihan extends CI_Controller {
 			}
 
 	}
-
 	function edit($kode=0)
 	{
 		$this->authentication->verify('mst','add');
@@ -133,7 +140,8 @@ class Invpilihan extends CI_Controller {
 			$data['action']="edit";
 			$data['kode']=$kode;
 
-			$data['tipe'] =$this->tipearray();
+			//$data['tipe'] =$this->tipearray();
+			$data['tipe'] = $this->invpilihan_model->pilihan_enums('mst_inv_pilihan','tipe');
 			$data['content'] = $this->parser->parse("mst/inv_pilihan/form",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->invpilihan_model->update_entry($kode)){
