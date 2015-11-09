@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>inventory/inv_ruangan/add" method="POST" name="">
+<form action="<?php echo base_url()?>inventory/inv_ruangan/{action}/{kode}" method="POST" >
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -29,7 +29,7 @@
           <div class="box-footer pull-right">
             <button type="submit" class="btn btn-primary">Simpan</button>
             <button type="reset" class="btn btn-warning">Ulang</button>
-            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/inv_ruangan'">Kembali</button>
+            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan'">Kembali</button>
           </div>
           <div class="box-body">
             <div class="form-group">
@@ -65,7 +65,7 @@
             <div class="form-group">
               <label>Puskesmas<h1></h1></label>
               <select  name="codepus" id="puskesmas" class="form-control">
-                  <option value="">-- Pilih Puskesmas --</option>
+                  <!-- <option value=""> Pilih Puskesmas </option> -->
                   <?php foreach($kodepuskesmas as $pus) : ?>
                     <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
                     <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>

@@ -67,7 +67,7 @@ class Inv_ruangan extends CI_Controller {
 				'id_mst_inv_ruangan'	=> $act->id_mst_inv_ruangan,
 				'nama_ruangan'			=> $act->nama_ruangan,
 				'keterangan'			=> $act->keterangan,
-				'code_cl_phc'			=> $act->code_cl_phc,
+				'value'					=> $act->value,
 				'edit'					=> 1,
 				'delete'				=> 1
 			);
@@ -111,17 +111,14 @@ class Inv_ruangan extends CI_Controller {
 
 		$this->authentication->verify('inventory','add');
 
-        $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
+        // $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-
         $this->form_validation->set_rules('codepus', 'Nama', 'trim|required');
 
-		if($this->form_validation->run()== FALSE){
-			$data['code_cl_phc']	 	= $this->session->userdata('puskesmas');
+        $this->form_validation->set_rules('codepus', 'Kode', 'trim|required');
 
-        $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
-
+			// echo "string";
 		$kodepuskesmas = $this->session->userdata('puskesmas');
 		if(substr($kodepuskesmas, -2)=="01"){
 			$this->db->like('code','P'.substr($kodepuskesmas,0,7));
@@ -132,7 +129,7 @@ class Inv_ruangan extends CI_Controller {
 
 		if($this->form_validation->run()== FALSE){
 			$data['code']		 		= $this->session->userdata('puskesmas');
-			$data['id_mst_inv_ruangan']	= $this->inv_ruangan_model->get_ruangan_id();
+			// $data['id_mst_inv_ruangan']	= $this->inv_ruangan_model->get_ruangan_id();
 			$data['title_group'] 		= "Inventory";
 			$data['title_form']  		= "Tambah Inventaris Ruangan";
 			$data['action']      		= "add";
@@ -148,7 +145,7 @@ class Inv_ruangan extends CI_Controller {
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."inventory/inv_ruangan/add");
 		}
-	}
+	
 
 }
 
@@ -159,7 +156,7 @@ class Inv_ruangan extends CI_Controller {
         $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
-        $this->form_validation->set_rules('code_cl_phc', 'Kode', 'trim|required');
+        $this->form_validation->set_rules('codepus', 'Kode', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
 			$data = $this->inv_ruangan_model->get_data_row($kode); 
@@ -169,12 +166,20 @@ class Inv_ruangan extends CI_Controller {
 			$data['action']="edit";
 			$data['kode']=$kode;
 
+			$kodepuskesmas = $this->session->userdata('puskesmas');
+			if(substr($kodepuskesmas, -2)=="01"){
+				$this->db->like('code','P'.substr($kodepuskesmas,0,7));
+			}else{
+				$this->db->like('code','P'.$kodepuskesmas);
+			}
+			$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
+
 		
 			$data['content'] = $this->parser->parse("inventory/inv_ruangan/form",$data,true);
 			$this->template->show($data,"home");
 		}elseif($this->inv_ruangan_model->update_entry($kode)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
-			redirect(base_url()."inventory/inv_ruangan/edit/".$this->input->post('kode'));
+			redirect(base_url()."inventory/inv_ruangan/".$this->input->post('kode'));
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."inventory/inv_ruangan/edit/".$kode);

@@ -24,7 +24,7 @@
 			 </div>
     		<div class="col-md-3">
 	     		<select name="code_cl_phc" class="form-control">
-	     			<option value="-">Pilih Puskesmas</option>
+	     			<option value="">Pilih Puskesmas</option>
 					<?php foreach ($datapuskesmas as $row ) { ;?>
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
@@ -55,7 +55,7 @@
 			{ name: 'id_mst_inv_ruangan', type: 'string'},
 			{ name: 'nama_ruangan', type: 'string'},
 			{ name: 'keterangan', type: 'string'},
-			{ name: 'code_cl_phc', type: 'string'},
+			{ name: 'value', type: 'string'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
@@ -101,7 +101,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -110,7 +110,7 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_mst_inv_ruangan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -119,7 +119,7 @@
 				{ text: 'Id', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
 				{ text: 'Nama Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
-				{ text: 'Nama Puskesmas', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'Nama Puskesmas', datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
             ]
 		});
 
