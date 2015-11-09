@@ -44,10 +44,10 @@
         <div class="form-group">
           <label>Puskesmas<h1></h1></label>
           <select  name="codepus" id="puskesmas" class="form-control">
-              <option value="">
+              <option value=""
               </option>
               <?php foreach($kodepuskesmas as $pus) : ?>
-                <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
+                <?php $select = $pus->code == $codepuskes/*set_value('codepuskes')*/ ? 'selected' : '' ?>
                 <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
               <?php endforeach ?>
           </select>

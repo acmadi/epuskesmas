@@ -75,13 +75,13 @@
 	function edit_document(id, id_dokumen){
 		var offset = $("#jqxgrid_document").offset();
 		$("#popup_document #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo site_url('smt_rekam_kegiatan/document/uploads');?>","id=" + id + '&id_dokumen='+id_dokumen, function(response) {
-				$("#popup_document #popup_content").html(response);
-			});
+		/*$.get("<?php echo site_url('inventory/permohonanbarang/tambahbarang');?>",{id : id , id_dokumen:id_dokumen}, function(data) {
+				$("#popup_document #popup_content").html(data);
+			});*/
 		$("#popup_document").jqxWindow({
 			theme: theme, resizable: false,
-			width: 600,
-			height: 220,
+			width: 400,
+			height: 500,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup_document").jqxWindow('open');
