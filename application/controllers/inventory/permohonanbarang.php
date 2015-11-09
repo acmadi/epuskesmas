@@ -6,6 +6,7 @@ class Permohonanbarang extends CI_Controller {
 		$this->load->model('inventory/permohonanbarang_model');
 		$this->load->model('mst/puskesmas_model');
 		$this->load->model('inventory/inv_ruangan_model');
+		$this->load->model('mst/invbarang_model');
 	}
 	function json(){
 		$this->authentication->verify('inventory','show');
@@ -94,6 +95,24 @@ class Permohonanbarang extends CI_Controller {
 			foreach($kode as $kode) :
 				echo $select = $kode->id_mst_inv_ruangan == $id_ruang ? 'selected' : '';
 				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
+			endforeach;
+
+			return FALSE;
+		}
+
+		show_404();
+	}
+	public function get_nama()
+	{
+		if($this->input->is_ajax_request()) {
+			$code = $this->input->post('code');
+
+			$kode 	= $this->invbarang_model->getSelectedData('mst_inv_barang',$code)->result();
+
+			'<option value="">Pilih Ruangan</option>';
+			foreach($kode as $kode) :
+				echo $select = $kode->code == $code ? 'selected' : '';
+				echo '<option value="'.$kode->uraian.'" '.$select.'>' . $kode->uraian . '</option>';
 			endforeach;
 
 			return FALSE;
@@ -216,7 +235,7 @@ class Permohonanbarang extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		$activity = $this->permohonanbarang_model->getItem('inv_permohonan_barang_item', array('id_inv_permohonan_barang'=>$id))->result();
+		$activity = $this->permohonanbarang_model->getItem('inv_permohonan_barang_item', array('id_inv_permohonan_barang'=>16))->result();
 
 		foreach($activity as $act) {
 			$data[] = array(
@@ -235,5 +254,63 @@ class Permohonanbarang extends CI_Controller {
 		);
 
 		echo json_encode(array($json));
+	}
+	public function tambahbarang()
+	{
+		if($_POST) {
+
+			$values = array(
+				'keterangan' => $this->input->post('keterangan'),
+				'jumlah' => $this->input->post('jumlah'),
+				'nama_barang' => $this->input->post('nama_barang'),
+				'id_inv_permohonan_barang' => $this->input->post('id_inv_permohonan_barang'),
+				'code_mst_inv_barang' => $this->input->post('code_mst_inv_barang'),
+				'id_inv_permohonan_barang_item'=>$this->permohonanbarang_model->get_permohonanbarangitem_id(),
+			);
+
+
+			if($this->input->post('id_dokumen_file') == 0) {
+				$this->db->insert('inv_permohonan_barang_item', $values);
+			} else {
+				$this->db->where('id_dokumen_file', $this->input->post('id_dokumen_file'));
+				$this->db->update('smt_rekam_file', $values);
+			}
+
+			$datas['notice'] = 'Data berhasil disimpan';
+			$datas['error']	 = 0;
+
+			echo json_encode($datas);
+
+			return FALSE;
+		}
+
+		if($this->input->is_ajax_request()) {
+			$data['title']		 	 = $this->input->get('id') == 0 ? 'Add' : 'Edit';
+			$data['id_dokumen']  	 = $this->input->get('id_dokumen') == 0 ? 0 : $this->input->get('id_dokumen');
+			$data['id_dokumen_file'] = $this->input->get('id') == 0 ? 0 : $this->input->get('id');
+			$data['kodebarang']		 = $this->permohonanbarang_model->get_databarang();
+			$this->load->view('inventory/permohonan_barang/document_form', $data);
+		}
+	}
+	public function search()
+	{
+		// tangkap variabel keyword dari URL
+		$keyword = $this->uri->segment(3);
+
+		// cari di database
+		$data = $this->db->from('mts_inv_barang')->like('uraian',$keyword)->get();	
+
+		// format keluaran di dalam array
+		foreach($data->result() as $row)
+		{
+			$arr['query'] = $keyword;
+			$arr['suggestions'][] = array(
+				'code'	=>$row->code,
+				'uraian'	=>$row->uraian,
+
+			);
+		}
+		// minimal PHP 5.2
+		echo json_encode($arr);
 	}
 }

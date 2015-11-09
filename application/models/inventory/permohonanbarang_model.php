@@ -54,7 +54,19 @@ class Permohonanbarang_model extends CI_Model {
     		return $permohonan->id;
     	}
 	}
+	function get_permohonanbarangitem_id()
+    {
+    	$query  = $this->db->query("SELECT max(id_inv_permohonan_barang_item) as id from inv_permohonan_barang_item ");
+    	if (empty($query->result()))
+    	{
+    		return 1;
+    	}else {
+    		foreach ($query->result() as $jum ) {
+    			return $jum->id+1;
+    		}
+    	}
 
+	}
    function insert_entry()
     {
     	$data['tanggal_permohonan']	= date("Y-m-d",strtotime($this->input->post('tgl')));
@@ -91,4 +103,10 @@ class Permohonanbarang_model extends CI_Model {
 
 		return $this->db->delete($this->tabel);
 	}
+	function get_databarang($start=0,$limit=999999)
+    {
+		$this->db->order_by('uraian','asc');
+        $query = $this->db->get('mst_inv_barang',$limit,$start);
+        return $query->result();
+    }
 }
