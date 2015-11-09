@@ -1,7 +1,7 @@
 <?php
-class Invkondisibarang_model extends CI_Model {
+class Invpilihan_model extends CI_Model {
 
-    var $tabel    = 'mst_inv_keadaan_barang';
+    var $tabel    = 'mst_inv_pilihan';
 	var $lang	  = '';
 
     function __construct() {
@@ -12,14 +12,14 @@ class Invkondisibarang_model extends CI_Model {
 
     function get_data($start=0,$limit=999999,$options=array())
     {
-		$this->db->order_by('nama','asc');
+		$this->db->order_by('value','asc');
         $query = $this->db->get($this->tabel,$limit,$start);
         return $query->result();
     }
 
  	function get_data_row($id){
 		$data = array();
-		$options = array('id_keadaan_barang' => $id);
+		$options = array('id_pilihan' => $id);
 		$query = $this->db->get_where($this->tabel,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -30,14 +30,18 @@ class Invkondisibarang_model extends CI_Model {
 	}
 	public function getSelectedData($table,$data)
     {
-        return $this->db->get_where($table, array('id_keadaan_barang'=>$data));
+        return $this->db->get_where($table, array('id_pilihan'=>$data));
     }
+
+
    function insert_entry()
     {
-		$data['nama']=$this->input->post('nama');
-		$data['deskripsi']=$this->input->post('deskripsi');
+		$data['tipe']=$this->input->post('tipe');
+		$data['code']=$this->input->post('kode');
+		$data['value']=$this->input->post('value');
+		$data['jumlah_muncul']=0;
 
-		if($this->getSelectedData($this->tabel,$data['id_keadaan_barang'])->num_rows() > 0) {
+		if($this->getSelectedData($this->tabel,$data['id_pilihan'])->num_rows() > 0) {
 			return 0;
 		}else{
 			if($this->db->insert($this->tabel, $data)){
@@ -56,10 +60,12 @@ class Invkondisibarang_model extends CI_Model {
 
     function update_entry($kode)
     {	
-		echo $data['nama']=$this->input->post('nama');
-		echo $data['deskripsi']=$this->input->post('deskripsi');
-
-		if($this->db->update($this->tabel, $data, array("id_keadaan_barang"=>$kode))){
+		$data['tipe']=$this->input->post('tipe');
+		$data['code']=$this->input->post('kode');
+		$data['value']=$this->input->post('value');
+		$data['jumlah_muncul']=0;
+		
+		if($this->db->update($this->tabel, $data, array("id_pilihan"=>$kode))){
 			return true;
 		}else{
 			return mysql_error();
@@ -68,7 +74,7 @@ class Invkondisibarang_model extends CI_Model {
 
 	function delete_entry($kode)
 	{
-		$this->db->where('id_keadaan_barang',$kode);
+		$this->db->where('id_pilihan',$kode);
 
 		return $this->db->delete($this->tabel);
 	}

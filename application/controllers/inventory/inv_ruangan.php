@@ -67,6 +67,7 @@ class Inv_ruangan extends CI_Controller {
 				'id_mst_inv_ruangan'	=> $act->id_mst_inv_ruangan,
 				'nama_ruangan'			=> $act->nama_ruangan,
 				'keterangan'			=> $act->keterangan,
+				'code_cl_phc'			=> $act->code_cl_phc,
 				'value'					=> $act->value,
 				'edit'					=> 1,
 				'delete'				=> 1
@@ -141,22 +142,22 @@ class Inv_ruangan extends CI_Controller {
 
 }
 
-	function edit($kode=0)
+	function edit($kode,$id)
 	{
 		$this->authentication->verify('inventory','add');
 
-        $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
+        // $this->form_validation->set_rules('id_mst_inv_ruangan', 'Id', 'trim|required');
         $this->form_validation->set_rules('nama_ruangan', 'Nama ruangan', 'trim|required');
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
         $this->form_validation->set_rules('codepus', 'Kode', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data = $this->inv_ruangan_model->get_data_row($kode); 
+			$data = $this->inv_ruangan_model->get_data_row($kode,$id); 
 
 			$data['title_group'] = "Inventory";
 			$data['title_form']="Ubah Inventory Ruangan";
 			$data['action']="edit";
-			$data['kode']=$kode;
+			$data['kode']= $kode;
 
 			$kodepuskesmas = $this->session->userdata('puskesmas');
 			if(substr($kodepuskesmas, -2)=="01"){
@@ -169,7 +170,7 @@ class Inv_ruangan extends CI_Controller {
 		
 			$data['content'] = $this->parser->parse("inventory/inv_ruangan/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($this->inv_ruangan_model->update_entry($kode)){
+		}elseif($this->inv_ruangan_model->update_entry($kode,$id)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
 			redirect(base_url()."inventory/inv_ruangan/".$this->input->post('kode'));
 		}else{

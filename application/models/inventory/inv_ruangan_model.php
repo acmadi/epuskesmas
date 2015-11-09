@@ -45,7 +45,7 @@ class inv_ruangan_model extends CI_Model {
 
  	function get_data_row($kode){
 		$data = array();
-		$options = array('id_mst_inv_ruangan' => $kode);
+		$options = array('code_cl_phc' => $kode);
 		$query = $this->db->get_where($this->tabel,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -81,12 +81,12 @@ class inv_ruangan_model extends CI_Model {
 
     function update_entry($kode)
     {
-		$data['id_mst_inv_ruangan'] = $this->input->post('id_mst_inv_ruangan');
+		// $data['id_mst_inv_ruangan'] = $this->input->post('id_mst_inv_ruangan');
 		$data['nama_ruangan']		= $this->input->post('nama_ruangan');
-		$data['keterangan']			= $this->input->post('keterangan');
+		$data['keterangan']		= $this->input->post('keterangan');
 		$data['code_cl_phc']		= $this->input->post('codepus');
 
-		if($this->db->update($this->tabel, $data, array("id_mst_inv_ruangan"=>$kode))){
+		if($this->db->update($this->tabel, $data, array("code_cl_phc"=>$kode))){
 			return true;
 		}else{
 			return mysql_error();
