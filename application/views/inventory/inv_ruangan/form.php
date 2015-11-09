@@ -33,14 +33,14 @@
           </div>
           <div class="box-body">
             <div class="form-group">
-              <label>Id</label>
-              <input type="text" class="form-control" name="id_mst_inv_ruangan" placeholder="Id" readonly value="<?php 
-                if(set_value('id_mst_inv_ruangan')=="" && isset($id_mst_inv_ruangan)){
-                  echo $id_mst_inv_ruangan;
-                }else{
-                  echo  set_value('id_mst_inv_ruangan');
-                }
-                ?>">
+              <label>Puskesmas<h1></h1></label>
+              <select  name="codepus" id="puskesmas" class="form-control">
+                  <!-- <option value=""> Pilih Puskesmas </option> -->
+                  <?php foreach($kodepuskesmas as $pus) : ?>
+                    <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
+                    <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
+                  <?php endforeach ?>
+              </select>
             </div>
             <div class="form-group">
               <label>Nama Ruangan</label>
@@ -62,16 +62,7 @@
                 }
                 ?>">
             </div>
-            <div class="form-group">
-              <label>Puskesmas<h1></h1></label>
-              <select  name="codepus" id="puskesmas" class="form-control">
-                  <!-- <option value=""> Pilih Puskesmas </option> -->
-                  <?php foreach($kodepuskesmas as $pus) : ?>
-                    <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
-                    <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
-                  <?php endforeach ?>
-              </select>
-            </div>
+            
           </div>
           </div><!-- /.box-body -->
       </div><!-- /.box -->

@@ -52,7 +52,6 @@
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id_mst_inv_ruangan', type: 'string'},
 			{ name: 'nama_ruangan', type: 'string'},
 			{ name: 'keterangan', type: 'string'},
 			{ name: 'value', type: 'string'},
@@ -116,10 +115,9 @@
 					}
                  }
                 },
-				{ text: 'Id', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
 				{ text: 'Nama Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
-				{ text: 'Nama Puskesmas', datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'Nama Puskesmas', datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '25%' }
             ]
 		});
 

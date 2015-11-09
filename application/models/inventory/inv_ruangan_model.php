@@ -18,9 +18,7 @@ class inv_ruangan_model extends CI_Model {
 	    $this->db->join('cl_phc', 'mst_inv_ruangan.code_cl_phc = cl_phc.code', 'inner'); 
 	    $query = $this->db->get();
     	return $query->result();
-		// $this->db->order_by('nama_ruangan','asc');
-  //       $query = $this->db->get($this->tabel,$limit,$start);
-  //       return $query->result();
+	
     }
 
     function get_data_puskesmas($start=0,$limit=999999,$options=array())
@@ -31,10 +29,10 @@ class inv_ruangan_model extends CI_Model {
         return $query->result();
     }
 
-    function get_ruangan_id()
+    function get_ruangan_id($puskesmas)
     {
-    	$this->db->where('id_mst_inv_ruangan'.$this->input->post('id_mst_inv_ruangan'));
-    	$this->db->where('code_cl_phc'.$this->input->post('codepus'));
+    	
+    	$this->db->where('code_cl_phc',$puskesmas);
     	$query  = $this->db->query("SELECT max(id_mst_inv_ruangan) as id from mst_inv_ruangan ");
 
     	
@@ -68,7 +66,7 @@ class inv_ruangan_model extends CI_Model {
 
     function insert_entry()
     {
-    	$data['id_mst_inv_ruangan']  = $this->input->post('id_mst_inv_ruangan');
+    	$data['id_mst_inv_ruangan']  = $this->get_ruangan_id($this->input->post('codepus'));
 		$data['nama_ruangan']		 = $this->input->post('nama_ruangan');
 		$data['keterangan']			 = $this->input->post('keterangan');
 		$data['code_cl_phc']	 	 = $this->input->post('codepus');
@@ -77,8 +75,8 @@ class inv_ruangan_model extends CI_Model {
 			return 0;
 		}else{
 			if($this->db->insert($this->tabel, $data)){
-			//$id= mysql_insert_id();
-				return 1;
+			 return 1;
+
 			}else{
 				return mysql_error();
 			}
