@@ -109,6 +109,13 @@ class Permohonanbarang_model extends CI_Model {
 
 		return $this->db->delete($this->tabel);
 	}
+	function delete_entryitem($kode,$kode_item)
+	{
+		$this->db->where('id_inv_permohonan_barang',$kode);
+		$this->db->where('id_inv_permohonan_barang_item',$kode_item);
+
+		return $this->db->delete('inv_permohonan_barang_item');
+	}
 	function get_databarang($start=0,$limit=999999)
     {
 		$this->db->order_by('uraian','asc');

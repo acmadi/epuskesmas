@@ -49,24 +49,24 @@
 				return obj.data;    
 			},
 			columns: [
-				/*{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_inv_permohonan_barang_item+"\",\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.id_inv_permohonan_barang_item+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
-                },*/
+                },
 				{ text: 'No', datafield: 'no', columntype: 'textbox', filtertype: 'none', width: '5%' },
 				{ text: 'Nama Barang', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
 				{ text: 'Jumlah ', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
@@ -83,7 +83,7 @@
 		});
 
  		$('#btn_add_barang').click(function () {
-			edit_barang(1,<?php echo $kode ?>);
+			edit_barang(0,<?php echo $kode ?>);
 		});
 
 	});
@@ -96,7 +96,7 @@
 	function edit_barang(id, id_inv_permohonan_barang){
 		var offset = $("#jqxgrid_barang").offset();
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo site_url('inventory/permohonanbarang/tambahbarang');?>",{id_inv_permohonan_barang:id_inv_permohonan_barang,id : id }, function(data) {
+		$.get("<?php echo site_url('inventory/permohonanbarang/tambahbarang');?>",{id : id,id_inv_permohonan_barang:id_inv_permohonan_barang }, function(data) {
 				$("#popup_barang #popup_content").html(data);
 			});
 		$("#popup_barang").jqxWindow({
@@ -110,10 +110,11 @@
 	function edit(id,code_cl_phc){
 		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id + "/" + code_cl_phc;
 	}
-	function del_document(id){
-		var confirms = confirm("Delete File?");
+	function del(id_inv_permohonan_barang,id_inv_permohonan_barang_item){
+		alert(id_inv_permohonan_barang);
+		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post('<?php echo site_url('smt_rekam_kegiatan/document/delete') ?>', 'id=' + id, function(){
+			$.post("<?php echo base_url().'inventory/permohonanbarang/dodelpermohonan' ?>/" + id_inv_permohonan_barang + "/" + id_inv_permohonan_barang_item,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
