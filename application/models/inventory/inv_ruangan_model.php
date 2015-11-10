@@ -85,7 +85,7 @@ class inv_ruangan_model extends CI_Model {
 		// $data['id_mst_inv_ruangan'] = $this->input->post($this->input->post('code_cl_phc'));
 		$data['nama_ruangan']		= $this->input->post('nama_ruangan');
 		$data['keterangan']		= $this->input->post('keterangan');
-		$data['code_cl_phc']		= $this->input->post('codepus');
+		// $data['code_cl_phc']		= $this->input->post('codepus');
 
 		$this->db->where('code_cl_phc',$kode);
 		$this->db->where('id_mst_inv_ruangan',$id);

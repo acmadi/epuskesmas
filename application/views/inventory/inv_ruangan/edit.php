@@ -26,7 +26,7 @@
 					<h3 class="box-title">{title_form}</h3>
 				</div><!-- /.box-header -->
 
-					<div class="box-footer pull-right">
+					<div class="box-footer pull-right" style="width:100%">
 						<button type="submit" class="btn btn-primary">Simpan</button>
 						<button type="reset" class="btn btn-warning">Ulang</button>
 						<button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan'">Kembali</button>
@@ -34,13 +34,9 @@
 					<div class="box-body">
 						<div class="form-group">
 							<label>Puskesmas<h1></h1></label>
-							<select  name="codepus" id="puskesmas" class="form-control" >
-									<!-- <option value=""> Pilih Puskesmas </option> -->
-									<?php foreach($kodepuskesmas as $pus) : ?>
-										<?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
-										<option value="<?php echo $pus->code ?>" <?php echo $select ?>  ><?php echo $pus->value ?></option>
-									<?php endforeach ?>
-							</select>
+							<?php foreach($kodepuskesmas as $pus) : ?>
+								<?php echo $pus->code == $code_cl_phc ? $pus->value : '' ?>
+							<?php endforeach ?>
 						</div>
 						<div class="form-group">
 							<label>Nama Ruangan</label>
