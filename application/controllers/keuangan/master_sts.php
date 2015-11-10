@@ -13,12 +13,14 @@ class Master_sts extends CI_Controller {
 	function api_data(){
 		$this->authentication->verify('keuangan','edit');		
 		
-		if(!empty($this->session->userdata('tipe'))){
-			$data['ambildata'] = $this->sts_model->get_data_type_filter($this->session->userdata('tipe'));
-			foreach($data['ambildata'] as $d){
-				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \n";				
-				echo $txt;
-			}
+		if(empty($this->session->userdata('tipe'))){
+			$this->session->userdata('tipe','kec');
+		}
+		
+		$data['ambildata'] = $this->sts_model->get_data_type_filter($this->session->userdata('tipe'));
+		foreach($data['ambildata'] as $d){
+			$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["code"]."-".$d["rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \n";				
+			echo $txt;
 		}
 		
 	}
@@ -28,8 +30,9 @@ class Master_sts extends CI_Controller {
 		
 		if(!empty($this->session->userdata('puskes')) and  $this->session->userdata('puskes') != '0'){
 			$data['ambildata'] = $this->sts_model->get_data_puskesmas_filter($this->session->userdata('puskes'));
+			$i=0;
 			foreach($data['ambildata'] as $d){
-				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \t".$d["id"]." \t".$d["id_keu_anggaran"]." \t".$d["tarif"]." \t".$d["code_cl_phc"]." \n";				
+				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \t".$i++." \t".$d["id_keu_anggaran"]." \t".$d["tarif"]." \t".$d["code_cl_phc"]." \n";				
 				echo $txt;
 			}
 		}
@@ -50,8 +53,8 @@ class Master_sts extends CI_Controller {
 		$data['title_group'] = "Anggaran";
 		$data['title_form'] = "Master Data - Anggaran";
 		$data['ambildata'] = $this->sts_model->get_data();
+		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
 		$data['content'] = $this->parser->parse("keuangan/anggaran",$data,true);		
-						
 		
 		$this->template->show($data,"home");
 	}
@@ -72,7 +75,14 @@ class Master_sts extends CI_Controller {
 	
 	function anggaran_add(){
 		$this->authentication->verify('keuangan','add');
-		$this->sts_model->add_anggaran();				
+		$this->form_validation->set_rules('sub_id','sub_id','trim|required');
+		$this->form_validation->set_rules('kode_anggaran','Kode Anggaran','trim|required');
+		$this->form_validation->set_rules('kode_rekening','Kode Rekening','trim|required');
+		
+		if($this->form_validation->run()== TRUE){
+			$this->sts_model->add_anggaran();
+		}		
+		
 	}
 	function anggaran_update(){
 		$this->authentication->verify('keuangan','edit');
