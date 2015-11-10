@@ -492,7 +492,7 @@
 			<?php 
 				foreach($kode_rekening as $kr){
 			?>
-					<option value="<?=$kr['code']?>"><?=$kr['uraian']?></option>
+					<option value="<?=$kr['code']?>"><?=$kr['code']."-".$kr['uraian']?></option>
 			<?php
 				}
 			?>

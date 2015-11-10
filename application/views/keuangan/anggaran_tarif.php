@@ -238,7 +238,7 @@
                     commit(true);
 					var arr = $.map(rowData, function(el) { return el });															
 																				
-					alert(arr);
+					
 					//0,7
 					$.post( '<?php echo base_url()?>keuangan/master_sts/add_tarif', {id_anggaran:arr[0],tarif:arr[8]},function( data ) {
 						
@@ -285,7 +285,7 @@
                   { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '20%' },
                   { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '25%' },
 				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '35%' },                                    
-				  { text: 'Tarif', dataField: "Tarif", align: 'center', width: '20%' },                                    
+				  { text: 'Tarif', dataField: "Tarif", align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '20%' },                                    
                 ]
             });
 			
