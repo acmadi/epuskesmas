@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(function(){
     
-        $('#code_mst_inv_barang').change(function(){
+      /*  $('#code_mst_inv_barang').change(function(){
           var code = $(this).val();
           $.ajax({
             url : '<?php echo site_url('inventory/permohonanbarang/get_nama') ?>',
@@ -14,7 +14,7 @@
 
           return false;
         });
-        
+        */
         $('#form-ss').submit(function(){
             var data = new FormData();
             $('.notice').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
@@ -76,15 +76,22 @@
                   </option>
                   <?php foreach($kodebarang as $barang) : ?>
                     <?php $select = $barang->code == set_value('kodebarang') ? 'selected' : '' ?>
-                    <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code ?></option>
+                    <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code.' - '.$barang->uraian ?></option>
                   <?php endforeach ?>
               </select>
             </div>
             <div class="form-group">
               <label>Nama Baranga</label>
-              <select name="nama_barang" id="nama_barang"  class="form-control">
+              <input type="text" class="form-control" name="nama_barang" value="<?php
+              if(set_value('nama_barang')=="" && isset($nama_barang)){
+                  echo $nama_barang;
+                }else{
+                  echo  set_value('nama_barang');
+                }
+                ?>">
+              <!--<select name="nama_barang" id="nama_barang"  class="form-control">
                   <option value="">Pilih Nama Barang</option>
-              </select>
+              </select>-->
             </div>
             <div class="form-group">
               <label>Jumlah</label>
