@@ -111,7 +111,6 @@
 		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id + "/" + code_cl_phc;
 	}
 	function del(id_inv_permohonan_barang,id_inv_permohonan_barang_item){
-		alert(id_inv_permohonan_barang);
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
 			$.post("<?php echo base_url().'inventory/permohonanbarang/dodelpermohonan' ?>/" + id_inv_permohonan_barang + "/" + id_inv_permohonan_barang_item,  function(){
