@@ -12,6 +12,10 @@ class Invpilihan extends CI_Controller {
 			}
 		}
 	}
+	function check(){
+		 $id['code'] = $_POST['kode_pilihan'];  
+		 echo $find = $this->invpilihan_model->getChecking('mst_inv_pilihan',$id)->num_rows();
+    }
 	/*function tipearray(){
 		$query = $this->db->query("SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='mst_inv_pilihan' AND COLUMN_NAME='tipe'")->result();
 		foreach ($query as $key) {

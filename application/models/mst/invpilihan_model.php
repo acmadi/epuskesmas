@@ -9,7 +9,10 @@ class Invpilihan_model extends CI_Model {
 		$this->lang	  = $this->config->item('language');
     }
     
-
+    public function getChecking($table,$data)
+    {
+        return $this->db->get_where($table, $data);
+    }
     function get_data($start=0,$limit=999999,$options=array())
     {
 		$this->db->order_by('value','asc');

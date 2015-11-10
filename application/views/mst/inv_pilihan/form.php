@@ -46,13 +46,13 @@
             </div>
             <div class="form-group">
               <label>Kode</label>
-              <input type="text" class="form-control" name="kode" placeholder="Nama" value="<?php 
+              <input type="text" class="form-control" name="kode" id="kode_pilihan" placeholder="Nama" value="<?php 
                 if(set_value('code')=="" && isset($code)){
                   echo $code;
                 }else{
                   echo  set_value('code');
                 }
-                ?>">
+                ?>"><span id="pesan"></span>
                 
             </div>
             <div class="form-group">
@@ -77,5 +77,23 @@
 	$(function () {	
     $("#menu_mst_invpilihan").addClass("active");
     $("#menu_master_data").addClass("active");
+    $("#kode_pilihan").change(function(){
+            $('#pesan').html("<i class='icon-refresh'></i>checking...");
+            var kode_pilihan = $("#kode_pilihan").val();
+            
+            $.ajax({
+                type: "POST",
+                url : "<?php echo base_url('mst/invpilihan/check'); ?>",
+                data: "kode_pilihan="+kode_pilihan,
+                cache:false,
+                success: function(data){
+                    if(data==0){
+                        $('#pesan').html("<i class='icon-ok'></i><span style=color:green;margin-left:10px;> Kode tersedia</span>")
+                    }else{
+                        $('#pesan').html("<i class='icon-remove'></i><span style=color:red;margin-left:10px;> Ganti kode! Karena kode tidak tersedia</span>")
+                    }
+                }
+            });
+        });
 	});
 </script>
