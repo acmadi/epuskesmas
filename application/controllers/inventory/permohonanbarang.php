@@ -27,7 +27,9 @@ class Permohonanbarang extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-
+		if($this->session->userdata('filter_code_cl_phc') != '') {
+			$this->db->where('inv_permohonan_barang.code_cl_phc',$this->session->userdata('filter_code_cl_phc'));
+		}
 		$rows_all = $this->permohonanbarang_model->get_data();
 
 
@@ -46,7 +48,9 @@ class Permohonanbarang extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-
+		if($this->session->userdata('filter_code_cl_phc') != '') {
+			$this->db->where('inv_permohonan_barang.code_cl_phc',$this->session->userdata('filter_code_cl_phc'));
+		}
 		$rows = $this->permohonanbarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		$no=1;
@@ -74,12 +78,28 @@ class Permohonanbarang extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-
+	function filter(){
+		if($_POST) {
+			if($this->input->post('code_cl_phc') != '') {
+				$this->session->set_userdata('filter_code_cl_phc',$this->input->post('code_cl_phc'));
+			}
+		}
+	}
 	function index(){
 		$this->authentication->verify('inventory','edit');
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Daftar Permohonan Barang";
+		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
+
+		$kodepuskesmas = $this->session->userdata('puskesmas');
+		if(substr($kodepuskesmas, -2)=="01"){
+			$this->db->like('code','P'.substr($kodepuskesmas, 0,7));
+		}else {
+			$this->db->like('code','P'.$kodepuskesmas);
+		}
+		$data['datapuskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
 		$data['content'] = $this->parser->parse("inventory/permohonan_barang/show",$data,true);
+
 
 		$this->template->show($data,"home");
 	}
