@@ -24,7 +24,7 @@
 				<button id="doExpand" class="btn btn-block btn-warning btn-sm" >Expand All</button>	
 			</div>
 			<div class="col-md-2 pull-left">
-				<button id="doCollapse" onclick="doCollapse()" class="btn btn-block btn-warning btn-sm" >Collapse All</button>	
+				<button id="doCollapse" onclick="" class="btn btn-block btn-warning btn-sm" >Collapse All</button>	
 			</div>
 			
 			<div class="">		
@@ -173,13 +173,25 @@
         $(document).ready(function () {   
         
             var newRowID = null;
-			$('#doExpand').click(function () {
-			   $("#jqxTree").jqxTree('expandAll')
-			});
+			
+			
+			$("#doExpand").click(function(){
+				$.post( '<?php echo base_url()?>keuangan/master_sts/set_puskes', {puskes:'<?php echo $this->session->userdata('puskes');?>'},function( data ) {
+					$("#treeGrid").jqxTreeGrid('expandAll');										
+				});
+            });
+			
+			$("#doCollapse").click(function(){
+				$.post( '<?php echo base_url()?>keuangan/master_sts/set_puskes', {puskes:'<?php echo $this->session->userdata('puskes');?>'},function( data ) {
+					$("#treeGrid").jqxTreeGrid('collapseAll');										
+				});
+            });
+			
 			$("select[name='pilih_type']").change(function(){
 				$.post( '<?php echo base_url()?>keuangan/master_sts/set_puskes', {puskes:$(this).val()},function( data ) {
 					
 					$("#treeGrid").jqxTreeGrid('updateBoundData');
+
 					
 				});
             });
@@ -271,8 +283,8 @@
                     { name: "Type", type: "string" }
 				*/                                   
                   { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '20%' },
-                  { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '40%' },
-				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '20%' },                                    
+                  { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '25%' },
+				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '35%' },                                    
 				  { text: 'Tarif', dataField: "Tarif", align: 'center', width: '20%' },                                    
                 ]
             });

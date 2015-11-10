@@ -159,7 +159,9 @@
 		}
 	</script>
 	<script type="text/javascript">
-        $(document).ready(function () {           
+        $(document).ready(function () {
+
+			
             var newRowID = null;
 			
 			
@@ -202,25 +204,21 @@
                      // call commit with parameter true if the synchronization with the server is successful 
                      // and with parameter false if the synchronization failed.					
 					
-					
-					
                     commit(true);
-					var arr = $.map(rowData, function(el) { return el });															
-																				
-					
-					
-					alert(typeof(arr[1]));
-					//number = update
-					//object = insert
+					var arr = $.map(rowData, function(el) { return el });																														
+					//cek tipe inputan 
+					//object -> input
+					//number -> update
 					if(typeof(arr[1]) === 'object'){
 						var arr2 = $.map(arr[1], function(el) { return el });
-						alert(arr2);
-						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[4], kode_anggaran:arr[5], uraian : arr[6], type : arr[8]},function( data ) {
-								alert("input");
+						//input data
+						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[6], kode_anggaran:arr[5], uraian : arr[4], type : arr[8]},function( data ) {
+								$("#treeGrid").jqxTreeGrid('updateBoundData');
 						});
-					}else{												
+					}else{			
+						//update data
 						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_update', {id_anggaran_awal:rowID, id_anggaran:arr[0],sub_id:arr[1], kode_rekening:arr[2], kode_anggaran:arr[3], uraian : arr[4], type : arr[5]},function( data ) {
-							alert("update");
+							$("#treeGrid").jqxTreeGrid('updateBoundData');
 						});
 						
 						
@@ -234,13 +232,13 @@
 					if( Object.prototype.toString.call( rowID ) === '[object Array]' ) {
 						for(var i=0; i< rowID.length; i++){
 							$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_delete', {id_anggaran:rowID[i]},function( data ) {
-								
+								$("#treeGrid").jqxTreeGrid('updateBoundData');
 							});
 						}
 						
 					}else{
 						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_delete', {id_anggaran:rowID},function( data ) {
-							
+							$("#treeGrid").jqxTreeGrid('updateBoundData');
 						});
 					}
 					 
@@ -264,7 +262,8 @@
                 altRows: true,
                 ready: function()
                 {
-                    // called when the DatatreeGrid is loaded.         
+                    // called when the DatatreeGrid is loaded.   
+					$("#treeGrid").jqxTreeGrid('expandAll');						
                 },
                 pagerButtonsCount: 8,
                 toolbarHeight: 35,
@@ -366,8 +365,7 @@
 					
 					
                     addButton.click(function (event) {
-                        if (!addButton.jqxButton('disabled')) {
-							
+                        if (!addButton.jqxButton('disabled')) {							
                             $("#treeGrid").jqxTreeGrid('expandRow', rowKey);
                             // add new empty row.
                             $("#treeGrid").jqxTreeGrid('addRow', null, {}, 'first', rowKey);
@@ -428,9 +426,28 @@
                     { name: "Uraian", type: "string" },
                     { name: "Type", type: "string" }
 				*/                                   
-                  { text: 'Kode Anggaran', dataField: "KodeAnggaran", align: 'center', width: '30%' },
-                  { text: 'Uraian', dataField: "Uraian", align: 'center', width: '40%' },
-				  { text: 'Kode Rekening', dataField: "KodeRekening", align: 'center', width: '30%' },                                    
+                  { text: 'Kode Anggaran', dataField: "KodeAnggaran", align: 'center', width: '25%' },
+                  { text: 'Uraian', dataField: "Uraian", align: 'center', width: '30%' },				  
+				  {
+                   text: 'Kode Rekening', dataField: 'KodeRekening', width: "45%", columnType: "template",
+                   createEditor: function (row, cellvalue, editor, cellText, width, height) {
+                       // construct the editor.
+						var source=[<?php foreach($kode_rekening as $kr){?>
+							"<?=$kr['code']."-".$kr['uraian']?>",
+						<?php } ?>]; 					   
+						
+						
+                       editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });
+                   },
+                   initEditor: function (row, cellvalue, editor, celltext, width, height) {
+                       // set the editor's current value. The callback is called each time the editor is displayed.
+                       editor.jqxDropDownList('selectItem', cellvalue);
+                   },
+                   getEditorValue: function (row, cellvalue, editor) {
+                       // return the editor's value.
+                       return editor.val();
+                   }
+				}			
                 ]
             });
 			
@@ -459,10 +476,7 @@
         <h4 class="modal-title" id="myModalLabel">Add New Parent</h4>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-		  <label for="exampleInputEmail1">Kode Rekening</label>
-		  <input type="text" required id="kode_rekening" name="kode_rekening"  class="form-control" id="exampleInputEmail1" placeholder="Kode Rekening">
-		</div>
+        
 		<div class="form-group">
 		  <label for="exampleInputEmail1">Kode Anggaran</label>
 		  <input type="text" required id="kode_anggaran" class="form-control" name="kode_anggaran" id="exampleInputEmail1" placeholder="Kode Anggaran">
@@ -470,6 +484,21 @@
 		<div class="form-group">
 		  <label for="exampleInputEmail1">Uraian</label>
 		  <input type="text" required id="uraian" class="form-control" name="uraian" id="exampleInputEmail1" placeholder="Uraian">
+		</div>
+		<div class="form-group">
+		  <label for="exampleInputEmail1">Kode Rekening</label>
+		  <select id="kode_rekening" name="kode_rekening"  class="form-control" id="exampleInputEmail1">
+		  <option>Select Rekening</option>
+			<?php 
+				foreach($kode_rekening as $kr){
+			?>
+					<option value="<?=$kr['code']?>"><?=$kr['uraian']?></option>
+			<?php
+				}
+			?>
+			
+		  </select>
+		  
 		</div>
 		<input type="hidden" name="type" value="<?php echo $this->session->userdata('tipe')?>"/>
 		

@@ -80,7 +80,7 @@ $(function(){
         window.location.href="<?php echo base_url()?>inventory/permohonanbarang";
     });
 
-    $("#menu_permohonan_barang").addClass("active");
+    $("#menu_inventory_permohonanbarang").addClass("active");
     $("#menu_inventory").addClass("active");
 
     $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme});

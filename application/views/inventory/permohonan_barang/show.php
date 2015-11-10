@@ -18,9 +18,18 @@
 	    </div>
 
 	      <div class="box-footer">
+	      <div class="col-md-9">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/permohonanbarang/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
 	     </div>
+	     <div class="col-md-3">
+	     		<select name="code_cl_phc" class="form-control">
+	     			<option value="">Pilih Puskesmas</option>
+					<?php foreach ($datapuskesmas as $row ) { ;?>
+					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
+				<?php	} ;?>
+	     	</select>
+		</div>
         <div class="box-body">
 		    <div class="div-grid">
 		        <div id="jqxgrid"></div>
@@ -121,7 +130,7 @@
                  }
                 },
                 { text: 'No', datafield: 'no',sortable: false, filtertype: 'none', width: '5%' },
-				{ text: 'Tanggal Permohonan', datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'yyyy-MM-dd', width: '20%' },
+				{ text: 'Tanggal Permohonan', datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
 				{ text: 'Puskesmas-Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Jumlah Barang', datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
@@ -151,4 +160,9 @@
 			});
 		}
 	}
+	$("select[name='code_cl_phc']").change(function(){
+				$.post("<?php echo base_url().'inventory/permohonanbarang/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
+					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+				});
+            });
 </script>

@@ -15,11 +15,18 @@ class Sts_model extends CI_Model {
 		$query = $this->db->get($this->tb);		
 		return $query->result_array();
     }	
-	
-	function get_data_type_filter($type)
+	function get_data_kode_rekening()
     {
  		$this->db->select('*');		
-		$this->db->where('type', $type);
+		$query = $this->db->get("mst_keu_rekening");		
+		return $query->result_array();
+    }	
+	
+	function get_data_type_filter($type)
+    {		
+ 		$this->db->select('id_anggaran, sub_id, mst_keu_rekening.code as code, mst_keu_rekening.uraian as rekening, kode_anggaran, keu_anggaran.uraian, type');		
+		$this->db->join('mst_keu_rekening','mst_keu_rekening.code = keu_anggaran.kode_rekening');
+		$this->db->where('type', $type);		
 		$this->db->order_by('kode_anggaran','asc');
 		$query = $this->db->get($this->tb);		
 		return $query->result_array();
@@ -88,11 +95,12 @@ class Sts_model extends CI_Model {
 	}
 	
 	function add_anggaran(){
-					
+		$dataExplode = explode("-",$this->input->post('kode_rekening'));
+		
 		$data = array(
 		   'id_anggaran' => $this->get_new_id_keu_anggaran(),
 		   'sub_id' => $this->input->post('sub_id') ,
-		   'kode_rekening' => $this->input->post('kode_rekening'),
+		   'kode_rekening' => $dataExplode[0],
 		   'kode_anggaran' => $this->input->post('kode_anggaran'),
 		   'uraian' => $this->input->post('uraian'),
 		   'type' => $this->session->userdata('tipe')
@@ -102,7 +110,7 @@ class Sts_model extends CI_Model {
 	}
 	
 	function cek_tarif($id_anggaran){
-		$this->db->select('count(id) as n, id');
+		$this->db->select('count(id_keu_anggaran) as n, id_keu_anggaran');
 		$this->db->where('id_keu_anggaran',$id_anggaran);
 		$this->db->where('code_cl_phc',$this->session->userdata('puskes'));
 		$query = $this->db->get('keu_anggaran_tarif');
@@ -117,8 +125,7 @@ class Sts_model extends CI_Model {
 	}
 	
 	function add_tarif(){
-		$data = array(
-		   'id' => $this->get_new_id_keu_anggaran_tarif(),		   		   
+		$data = array(		   
 		   'id_keu_anggaran' => $this->input->post('id_anggaran'),
 		   'tarif' => $this->input->post('tarif'),
 		   'code_cl_phc' => $this->session->userdata('puskes')
@@ -133,14 +140,14 @@ class Sts_model extends CI_Model {
 	}
 	
 	function update_anggaran(){
-		
+		$dataExplode = explode("-",$this->input->post('kode_rekening'));
 		$data = array(
 		   'id_anggaran' => $this->input->post('id_anggaran') ,
 		   'sub_id' => $this->input->post('sub_id') ,
-		   'kode_rekening' => $this->input->post('kode_rekening'),
+		   'kode_rekening' => $dataExplode[0],
 		   'kode_anggaran' => $this->input->post('kode_anggaran'),
 		   'uraian' => $this->input->post('uraian'),
-		   'type' => $this->input->post('type')
+		   'type' => $this->session->userdata('tipe')
 		);
 		$this->db->where('id_anggaran', $this->input->post('id_anggaran_awal'));
 		return $this->db->update($this->tb, $data);				

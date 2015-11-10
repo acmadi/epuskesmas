@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(function(){
+
     
       /*  $('#code_mst_inv_barang').change(function(){
           var code = $(this).val();
@@ -16,11 +17,6 @@
         });
         */
         $('#form-ss').submit(function(){
-            var data = new FormData();
-            $('.notice').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
-            $.each($('#file')[0].files, function(i, file){
-                data.append('userfile', file);
-            });
             data.append('idbarang', $('input[name="idbarang"]').val());
             data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
             data.append('keterangan', $('input[name="keterangan"]').val());
@@ -50,17 +46,11 @@
 
             return false;
         });
-     /*   var sites = "<?php echo site_url();?>";
-        $('.autocomplete').autocomplete({
-                // serviceUrl berisi URL ke controller/fungsi yang menangani request kita
-                serviceUrl: sites+'/inventory/permohonanbarang/search',
-                // fungsi ini akan dijalankan ketika user memilih salah satu hasil request
-                onSelect: function (suggestion) {
-                    $('#v_nama').val(''+suggestion.nim); // membuat id 'v_nim' untuk ditampilkan\
-                }
-            });*/
+        
     });
+
 </script>
+    
 <div class="notice"></div>
 	<div class="row">
     <?php echo form_open(current_url(), 'id="form-ss"') ?>
@@ -70,8 +60,8 @@
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>
-               <!-- <input placeholder=" kodebarang" name="kodebarang" size="20" class="input ac_input"  type="text" class='autocomplete nama' id="autocomplete1"> -->
-                <select  name="code_mst_inv_barang" id="code_mst_inv_barang" class="form-control">
+               <!--  <input placeholder="Ketik Nama atau Kode barang" name="code_mst_inv_barang" class="form-control"  type="text" id="autocomplete"> -->
+               <select  name="code_mst_inv_barang" id="code_mst_inv_barang" class="form-control">
                   <option value=""
                   </option>
                   <?php foreach($kodebarang as $barang) : ?>
