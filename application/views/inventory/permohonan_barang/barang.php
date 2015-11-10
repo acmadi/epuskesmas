@@ -4,12 +4,15 @@
 			datatype: "json",
 			type	: "POST",
 			datafields: [
+			{ name: 'no', type: 'number' },
 			{ name: 'id_inv_permohonan_barang_item', type: 'number' },
 			{ name: 'nama_barang', type: 'string' },
 			{ name: 'jumlah', type: 'number' },
 			{ name: 'keterangan', type: 'string' },
 			{ name: 'id_inv_permohonan_barang', type: 'number' },
-			{ name: 'code_mst_inv_barang', type: 'string' }
+			{ name: 'code_mst_inv_barang', type: 'string' },
+			{ name: 'edit', type: 'number'},
+			{ name: 'delete', type: 'number'}
         ],
 		url: "<?php echo site_url('inventory/permohonanbarang/barang/'.$kode); ?>",
 		cache: false,
@@ -46,9 +49,26 @@
 				return obj.data;    
 			},
 			columns: [
-		   	
+				/*{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
+				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+				    if(dataRecord.edit==1){
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+					}else{
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
+					}
+                 }
+                },
+				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '10%', cellsrenderer: function (row) {
+				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+				    if(dataRecord.delete==1){
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+					}else{
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
+					}
+                 }
+                },*/
 				{ text: 'No', datafield: 'no', columntype: 'textbox', filtertype: 'none', width: '5%' },
-				{ text: 'Nama Barang', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '40%' },
+				{ text: 'Nama Barang', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
 				{ text: 'Jumlah ', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Keterangan',datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '40%'}
            ]
@@ -63,7 +83,7 @@
 		});
 
  		$('#btn_add_barang').click(function () {
-			edit_barang(0,<?php echo $kode ?>);
+			edit_barang(1,<?php echo $kode ?>);
 		});
 
 	});
@@ -72,12 +92,13 @@
 		$("#popup_barang").jqxWindow('close');
 	}
 
-	function edit_barang(id, id_dokumen){
+//
+	function edit_barang(id, id_inv_permohonan_barang){
 		var offset = $("#jqxgrid_barang").offset();
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		/*$.get("<?php echo site_url('inventory/permohonanbarang/tambahbarang');?>",{id : id , id_dokumen:id_dokumen}, function(data) {
+		$.get("<?php echo site_url('inventory/permohonanbarang/tambahbarang');?>",{id_inv_permohonan_barang:id_inv_permohonan_barang,id : id }, function(data) {
 				$("#popup_barang #popup_content").html(data);
-			});*/
+			});
 		$("#popup_barang").jqxWindow({
 			theme: theme, resizable: false,
 			width: 400,
@@ -86,16 +107,18 @@
 		});
 		$("#popup_barang").jqxWindow('open');
 	}
-
+	function edit(id,code_cl_phc){
+		document.location.href="<?php echo base_url().'inventory/permohonanbarang/edit';?>/" + id + "/" + code_cl_phc;
+	}
 	function del_document(id){
-		/*var confirms = confirm("Delete File?");
+		var confirms = confirm("Delete File?");
 		if(confirms == true){
 			$.post('<?php echo site_url('smt_rekam_kegiatan/document/delete') ?>', 'id=' + id, function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
 			});
-		}*/
+		}
 	}
 
 </script>

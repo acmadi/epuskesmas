@@ -21,11 +21,11 @@
             $.each($('#file')[0].files, function(i, file){
                 data.append('userfile', file);
             });
-
+            data.append('idbarang', $('input[name="idbarang"]').val());
+            data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
             data.append('keterangan', $('input[name="keterangan"]').val());
             data.append('jumlah', $('input[name="jumlah"]').val());
             data.append('nama_barang', $('input[name="nama_barang"]').val());
-            data.append('id_inv_permohonan_barang', $('input[name="id_dokumen"]').val());
             data.append('code_mst_inv_barang', $('input[name="code_mst_inv_barang"]').val());
 
             $.ajax({
@@ -62,11 +62,11 @@
     });
 </script>
 <div class="notice"></div>
-<input type="text" name="id_dokumen" value="<?php echo $id_dokumen ?>" />
-<input type="text" name="id_dokumen_file" value="<?php echo $id_dokumen_file ?>" />
 	<div class="row">
     <?php echo form_open(current_url(), 'id="form-ss"') ?>
            
+          <input type="text" name="idbarang" value="<?php echo $idbarang ?>" />
+          <input type="text" name="id_inv_permohonan_barang" value="<?php echo $id_inv_permohonan_barang?>" />
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>

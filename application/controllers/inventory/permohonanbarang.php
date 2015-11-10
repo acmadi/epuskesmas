@@ -148,7 +148,7 @@ class Permohonanbarang extends CI_Controller {
 			$data['content'] = $this->parser->parse("inventory/permohonan_barang/form",$data,true);
 		}elseif($id = $this->permohonanbarang_model->insert_entry()){
 			$this->session->set_flashdata('alert', 'Save data successful...');
-			redirect(base_url().'inventory/permohonanbarang/edit/'.$this->input->post('codepus').'/'. $id);
+			redirect(base_url().'inventory/permohonanbarang/edit/'. $id.'/'.$this->input->post('codepus'));
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."inventory/permohonanbarang/add");
@@ -229,16 +229,19 @@ class Permohonanbarang extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		$activity = $this->permohonanbarang_model->getItem('inv_permohonan_barang_item', array('id_inv_permohonan_barang'=>16))->result();
-
+		$activity = $this->permohonanbarang_model->getItem('inv_permohonan_barang_item', array('id_inv_permohonan_barang'=>$id))->result();
+		$no=1;
 		foreach($activity as $act) {
 			$data[] = array(
-				'id_inv_permohonan_barang_item'   				=> $act->id_inv_permohonan_barang_item,
-				'nama_barang'   		=> $act->nama_barang,
-				'jumlah'		=> $act->jumlah,
-				'keterangan'		=> $act->keterangan,
+				'no'							=> $no++,
+				'id_inv_permohonan_barang_item' => $act->id_inv_permohonan_barang_item,
+				'nama_barang'   				=> $act->nama_barang,
+				'jumlah'						=> $act->jumlah,
+				'keterangan'					=> $act->keterangan,
 				'id_inv_permohonan_barang'		=> $act->id_inv_permohonan_barang,
-				'code_mst_inv_barang'	=> $act->code_mst_inv_barang
+				'code_mst_inv_barang'			=> $act->code_mst_inv_barang,
+				'edit'		=> 1,
+				'delete'	=> 1
 			);
 		}
 
@@ -263,7 +266,7 @@ class Permohonanbarang extends CI_Controller {
 			);
 
 
-			if($this->input->post('id_dokumen_file') == 0) {
+			if($this->input->post('idbarang') == 0) {
 				$this->db->insert('inv_permohonan_barang_item', $values);
 			} else {
 				$this->db->where('id_dokumen_file', $this->input->post('id_dokumen_file'));
@@ -280,9 +283,9 @@ class Permohonanbarang extends CI_Controller {
 
 		if($this->input->is_ajax_request()) {
 			$data['title']		 	 = $this->input->get('id') == 0 ? 'Add' : 'Edit';
-			$data['id_dokumen']  	 = $this->input->get('id_dokumen') == 0 ? 0 : $this->input->get('id_dokumen');
-			$data['id_dokumen_file'] = $this->input->get('id') == 0 ? 0 : $this->input->get('id');
-			$data['kodebarang']		 = $this->permohonanbarang_model->get_databarang();
+			$data['id_inv_permohonan_barang']  	= 9;//$this->input->get('id_inv_permohonan_barang') == 0 ? 0: $this->input->get('id_inv_permohonan_barang'); 
+			$data['kodebarang']		 			= $this->permohonanbarang_model->get_databarang();
+			$data['idbarang']		 			= $this->input->get('id') == 0 ?0 : 1;
 			$this->load->view('inventory/permohonan_barang/barang_form', $data);
 		}
 	}
