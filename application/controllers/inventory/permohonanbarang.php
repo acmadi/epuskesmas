@@ -74,7 +74,7 @@ class Permohonanbarang extends CI_Controller {
 				'jumlah_unit'			=> $act->jumlah_unit,
 				'nama_ruangan'			=> $act->nama_ruangan,
 				'keterangan'			=> $act->keterangan,
-				'status'	=> 1,
+				'value'	=> $act->value,
 				'detail'	=> 1,
 				'edit'		=> 1,
 				'delete'	=> 1
