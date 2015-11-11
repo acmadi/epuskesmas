@@ -8,6 +8,7 @@ class Permohonanbarang extends CI_Controller {
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
 	}
+
 	function json(){
 		$this->authentication->verify('inventory','show');
 
@@ -338,6 +339,9 @@ class Permohonanbarang extends CI_Controller {
 			$data = $this->permohonanbarang_model->get_data_barang_edit($code_cl_phc, $kode, $id_inv_permohonan_barang_item); 
 			$data['kodebarang']		= $this->permohonanbarang_model->get_databarang();
 			$data['notice']			= validation_errors();
+			$data['action']			= "edit";
+			$data['kode']			= $kode;
+			$data['code_cl_phc']	= $code_cl_phc;
 
 			die($this->parser->parse('inventory/permohonan_barang/barang_form', $data));
 		}else{

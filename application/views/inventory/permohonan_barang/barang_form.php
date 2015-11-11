@@ -22,12 +22,11 @@
         $('#form-ss').submit(function(){
             var data = new FormData();
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
-            $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
             $('#notice').show();
 
             data.append('idbarang', $('input[name="idbarang"]').val());
             data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
-            data.append('keterangan', $('input[name="keterangan"]').val());
+            data.append('keterangan', $('textarea[name="keterangan"]').val());
             data.append('jumlah', $('input[name="jumlah"]').val());
             data.append('nama_barang', $('input[name="nama_barang"]').val());
             data.append('code_mst_inv_barang', $('input[name="code_mst_inv_barang"]').val());
@@ -81,7 +80,7 @@
                   <option value=""
                   </option>
                   <?php foreach($kodebarang as $barang) : ?>
-                    <?php if(isset($code_mst_inv_barang)){$select = $barang->code == $code_mst_inv_barang ? 'selected' : '';}else{$select ='';} ?>
+                    <?php if(isset($code_mst_inv_barang) && $code_mst_inv_barang==$barang->code){$select = $barang->code == $code_mst_inv_barang ? 'selected' : '';}else{$select ='';} ?>
                     <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code.' - '.$barang->uraian ?></option>
                   <?php endforeach ?>
               </select>
