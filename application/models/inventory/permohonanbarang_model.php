@@ -12,8 +12,10 @@ class Permohonanbarang_model extends CI_Model {
 
     function get_data($start=0,$limit=999999,$options=array())
     {	
-    	$this->db->select("$this->tabel.*,c.nama_ruangan");
-		$this->db->join('mst_inv_ruangan c', "inv_permohonan_barang.id_mst_inv_ruangan = c.id_mst_inv_ruangan and inv_permohonan_barang.code_cl_phc = c.code_cl_phc ",'inner');
+    	$this->db->select("$this->tabel.*,mst_inv_ruangan.nama_ruangan,mst_inv_pilihan.value");
+		$this->db->join('mst_inv_ruangan', "inv_permohonan_barang.id_mst_inv_ruangan = mst_inv_ruangan.id_mst_inv_ruangan and inv_permohonan_barang.code_cl_phc = mst_inv_ruangan.code_cl_phc ",'inner');
+		$this->db->join('mst_inv_pilihan', "inv_permohonan_barang.pilihan_status_pengadaan = mst_inv_pilihan.code AND mst_inv_pilihan.tipe='status_pengadaan'",'left');
+
 		$this->db->order_by('inv_permohonan_barang.id_inv_permohonan_barang','desc');
 		$query =$this->db->get($this->tabel,$limit,$start);
         return $query->result();
@@ -116,6 +118,24 @@ class Permohonanbarang_model extends CI_Model {
 			return mysql_error();
 		}
     }
+    function sum_jumlah_item($kode,$code_cl_phc){
+    	$this->db->select_sum('jumlah');
+    	$this->db->where('id_inv_permohonan_barang',$kode);
+		$this->db->where('code_cl_phc',$code_cl_phc);
+		$query=$this->db->get('inv_permohonan_barang_item');
+		if($query->num_rows()>0)
+        {
+            foreach($query->result() as $k)
+            {
+                $jumlah = $k->jumlah;
+            }
+        }
+        else
+        {
+            $jumlah = 0;
+        }
+        return  $jumlah;
+    }
 
 	function delete_entry($kode,$code_cl_phc)
 	{
@@ -124,11 +144,11 @@ class Permohonanbarang_model extends CI_Model {
 
 		return $this->db->delete($this->tabel);
 	}
-	function delete_entryitem($kode,$kode_item)
+	function delete_entryitem($kode,$code_cl_phc,$kode_item)
 	{
 		$this->db->where('id_inv_permohonan_barang',$kode);
 		$this->db->where('id_inv_permohonan_barang_item',$kode_item);
-
+		$this->db->where('code_cl_phc',$code_cl_phc);
 		return $this->db->delete('inv_permohonan_barang_item');
 	}
 	function get_databarang($start=0,$limit=999999)

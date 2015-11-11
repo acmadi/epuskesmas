@@ -63,7 +63,7 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang_item+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_inv_permohonan_barang_item+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -142,11 +142,9 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 
 <div>
 	<div style="width:100%;">
-	   <?php //if($is_admin == "1" ){ ?>
 		<div style="padding:5px" class="pull-right">
 			<button class="btn btn-success" id='btn_add_barang' type='button'><i class='icon-copy'></i> Tambah Barang</button>
 		</div>
-	   <?php // } ?>
         <div id="jqxgrid_barang"></div>
 	</div>
 </div>

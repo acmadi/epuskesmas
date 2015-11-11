@@ -59,7 +59,7 @@
 			{ name: 'jumlah_unit', type: 'string'},
 			{ name: 'nama_ruangan', type: 'string'},
 			{ name: 'keterangan', type: 'text'},
-			{ name: 'status', type: 'number'},
+			{ name: 'value', type: 'string'},
 			{ name: 'detail', type: 'number'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
@@ -132,10 +132,10 @@
                 },
                 { text: 'No', datafield: 'no',sortable: false, filtertype: 'none', width: '5%' },
 				{ text: 'Tanggal Permohonan', datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
-				{ text: 'Puskesmas-Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
+				{ text: 'Puskesmas-Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
 				{ text: 'Jumlah Barang', datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
-				{ text: 'Status', datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '10%' }
+				{ text: 'Status', datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '15%' }
             ]
 		});
 
