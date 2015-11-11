@@ -346,10 +346,10 @@ class Permohonanbarang extends CI_Controller {
 			die($this->parser->parse('inventory/permohonan_barang/barang_form', $data));
 		}else{
 			$values = array(
-				'code_mst_inv_barang' => $this->input->post('code_mst_inv_barang'),
-				'nama_barang' => $this->input->post('nama_barang'),
-				'jumlah' => $this->input->post('jumlah'),
-				'keterangan' => $this->input->post('keterangan'),
+				'code_mst_inv_barang' 	=> $this->input->post('code_mst_inv_barang'),
+				'nama_barang' 			=> $this->input->post('nama_barang'),
+				'jumlah' 				=> $this->input->post('jumlah'),
+				'keterangan' 			=> $this->input->post('keterangan')
 			);
 
 			if($this->db->update('inv_permohonan_barang_item', $values,array('id_inv_permohonan_barang_item' => $id_inv_permohonan_barang_item,'code_cl_phc'=>$code_cl_phc,'id_inv_permohonan_barang'=>$kode))){

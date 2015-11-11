@@ -24,12 +24,11 @@
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
             $('#notice').show();
 
-            data.append('idbarang', $('input[name="idbarang"]').val());
             data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
-            data.append('keterangan', $('textarea[name="keterangan"]').val());
             data.append('jumlah', $('input[name="jumlah"]').val());
             data.append('nama_barang', $('input[name="nama_barang"]').val());
-            data.append('code_mst_inv_barang', $('input[name="code_mst_inv_barang"]').val());
+            data.append('code_mst_inv_barang', $('select[name="code_mst_inv_barang"]').val());
+            data.append('keterangan', $('#keterangan').val());
             $.ajax({
                 cache : false,
                 contentType : false,
@@ -80,7 +79,15 @@
                   <option value=""
                   </option>
                   <?php foreach($kodebarang as $barang) : ?>
-                    <?php if(isset($code_mst_inv_barang) && $code_mst_inv_barang==$barang->code){$select = $barang->code == $code_mst_inv_barang ? 'selected' : '';}else{$select ='';} ?>
+                    <?php 
+                    if(isset($code_mst_inv_barang) && $code_mst_inv_barang==$barang->code){
+                      $select = $barang->code == $code_mst_inv_barang ? 'selected' : '';
+                    }elseif(set_value('code_mst_inv_barang')!=""){
+                      $select = $barang->code == set_value('code_mst_inv_barang') ? 'selected' : '';
+                    }else{
+                      $select ='';
+                    } 
+                    ?>
                     <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code.' - '.$barang->uraian ?></option>
                   <?php endforeach ?>
               </select>
@@ -110,7 +117,7 @@
             </div>
             <div class="form-group">
               <label>Keterangan</label>
-              <textarea class="form-control" name="keterangan" placeholder="Keterangan"><?php 
+              <textarea class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan"><?php 
                   if(set_value('keterangan')=="" && isset($keterangan)){
                     echo $keterangan;
                   }else{
