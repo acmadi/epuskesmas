@@ -8,6 +8,7 @@ class Permohonanbarang extends CI_Controller {
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
 	}
+
 	function json(){
 		$this->authentication->verify('inventory','show');
 
@@ -20,7 +21,12 @@ class Permohonanbarang extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				$this->db->like($field,$value);
+				if($field == 'tanggal_permohonan') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
 			}
 
 			if(!empty($ord)) {
@@ -41,7 +47,12 @@ class Permohonanbarang extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				$this->db->like($field,$value);
+				if($field == 'tanggal_permohonan') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
 			}
 
 			if(!empty($ord)) {
@@ -281,11 +292,11 @@ class Permohonanbarang extends CI_Controller {
 	}
 
 	public function add_barang($kode=0,$code_cl_phc="")
-	{
+	{	
 		$data['action']			= "add";
 		$data['kode']			= $kode;
 		$data['code_cl_phc']	= $code_cl_phc;
-
+		$data['id_inv_permohonan_barang_item']=0;
         $this->form_validation->set_rules('code_mst_inv_barang', 'Kode Barang', 'trim|required');
         $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
         $this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
@@ -306,7 +317,6 @@ class Permohonanbarang extends CI_Controller {
 				'code_cl_phc' => $code_cl_phc,
 				'id_inv_permohonan_barang' => $kode
 			);
-
 			if($this->db->insert('inv_permohonan_barang_item', $values)){
 				die("OK|");
 			}else{
@@ -314,43 +324,41 @@ class Permohonanbarang extends CI_Controller {
 			}
 		}
 	}
-
 	public function edit_barang($kode=0,$code_cl_phc="",$id_inv_permohonan_barang_item=0)
 	{
 		$data['action']			= "edit";
 		$data['kode']			= $kode;
 		$data['code_cl_phc']	= $code_cl_phc;
 		$data['id_inv_permohonan_barang_item']	= $id_inv_permohonan_barang_item;
+		$this->form_validation->set_rules('code_mst_inv_barang', 'Kode Barang', 'trim|required');
+        $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
+        $this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
 
-		if($_POST) {
+		if($this->form_validation->run()== FALSE){
+			$data = $this->permohonanbarang_model->get_data_barang_edit($code_cl_phc, $kode, $id_inv_permohonan_barang_item); 
+			$data['kodebarang']		= $this->permohonanbarang_model->get_databarang();
+			$data['notice']			= validation_errors();
+			$data['action']			= "edit";
+			$data['kode']			= $kode;
+			$data['code_cl_phc']	= $code_cl_phc;
 
+			die($this->parser->parse('inventory/permohonan_barang/barang_form', $data));
+		}else{
 			$values = array(
-				'code_mst_inv_barang' => $this->input->post('code_mst_inv_barang'),
-				'nama_barang' => $this->input->post('nama_barang'),
-				'jumlah' => $this->input->post('jumlah'),
-				'keterangan' => $this->input->post('keterangan')
+				'code_mst_inv_barang' 	=> $this->input->post('code_mst_inv_barang'),
+				'nama_barang' 			=> $this->input->post('nama_barang'),
+				'jumlah' 				=> $this->input->post('jumlah'),
+				'keterangan' 			=> $this->input->post('keterangan')
 			);
 
-				$this->db->where('id_inv_permohonan_barang', $kode);
-				$this->db->where('code_cl_phc', $code_cl_phc);
-				$this->db->where('id_inv_permohonan_barang_item', $id_inv_permohonan_barang_item);
-				$this->db->update('inv_permohonan_barang_item', $values);
-
-			$datas['notice'] = 'Data berhasil disimpan';
-			$datas['error']	 = 0;
-
-			echo json_encode($datas);
-
-			return FALSE;
+			if($this->db->update('inv_permohonan_barang_item', $values,array('id_inv_permohonan_barang_item' => $id_inv_permohonan_barang_item,'code_cl_phc'=>$code_cl_phc,'id_inv_permohonan_barang'=>$kode))){
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
 		}
-
-		if($this->input->is_ajax_request()) {
-			$data['title']		 	 	= $this->input->get('id') == 0 ? 'Add' : 'Edit';
-			$data['id_inv_permohonan_barang']  	= 9;//$this->input->get('id_inv_permohonan_barang');// == 0 ? 0: $this->input->get('id_inv_permohonan_barang'); 
-			$data['kodebarang']		 			= $this->permohonanbarang_model->get_databarang();
-			$data['idbarang']		 			= $this->input->get('id') == 0 ?0 : 1;
-			echo $this->parser->parse('inventory/permohonan_barang/barang_form', $data);
-		}
+		
 	}
 	
 	function dodel_barang($kode=0,$code_cl_phc="",$id_inv_permohonan_barang_item=0){

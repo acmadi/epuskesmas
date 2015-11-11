@@ -1,4 +1,5 @@
 <script>
+var code_cl_phc = '<?php echo $code_cl_phc?>';
 	$(function(){
 	   var source = {
 			datatype: "json",
@@ -48,11 +49,12 @@
 			{
 				return obj.data;    
 			},
+
 			columns: [
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_inv_permohonan_barang+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_inv_permohonan_barang+"\",\""+code_cl_phc+"\",\""+dataRecord.id_inv_permohonan_barang_item+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -106,7 +108,7 @@
 		$("#popup_barang").jqxWindow('open');
 	}
 
-	function edit_barang(id_inv_permohonan_barang_item){
+	function edit_barang(kode,code_cl_phc,id_inv_permohonan_barang_item){
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
 		$.get("<?php echo base_url().'inventory/permohonanbarang/edit_barang/'.$kode.'/'.$code_cl_phc.'/'; ?>" + id_inv_permohonan_barang_item, function(data) {
 			$("#popup_content").html(data);
