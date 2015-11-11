@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/peggolongan/{action}/{id_golongan}" method="POST" name="">
+<form action="<?php echo base_url()?>mst/peggolongan/{action}/{id}" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -63,7 +63,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_invbarang").addClass("active");
+    $("#menu_mst_peggolongan").addClass("active");
     $("#menu_master_data").addClass("active");
 	});
 </script>

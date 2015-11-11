@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/pegfungsional/{action}/{id}" method="POST" name="">
+<form action="<?php echo base_url()?>mst/pegpendidikanrumpun/{action}/{id}" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -33,25 +33,16 @@
           </div>
           <div class="box-body">
             <div class="form-group">
-              <label>Nama Fungsional</label>
-              <input type="text" class="form-control" name="nama" placeholder="Nama Fungsional" value="<?php 
-                if(set_value('tar_nama_fungsional')=="" && isset($tar_nama_fungsional)){
-                  echo $tar_nama_fungsional;
+              <label>Nama Rumpun Pendidikan</label>
+              <input type="text" class="form-control" name="nama_rumpun" placeholder="Nama Rumpun" value="<?php 
+                if(set_value('nama_rumpun')=="" && isset($nama_rumpun)){
+                  echo $nama_rumpun;
                 }else{
-                  echo  set_value('tar_nama_fungsional');
+                  echo  set_value('nama_rumpun');
                 }
                 ?>">
             </div>
-            <div class="form-group">
-              <label>Jenis Fungsional</label>
-              <input type="text" class="form-control" name="jenis" placeholder="Jenis Fungsional" value="<?php 
-                if(set_value('tar_jenis')=="" && isset($tar_jenis)){
-                  echo $tar_jenis;
-                }else{
-                  echo  set_value('tar_jenis');
-                }
-                ?>">
-            </div>
+
           </div>
           </div><!-- /.box-body -->
       </div><!-- /.box -->
@@ -62,7 +53,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_pegfungsional").addClass("active");
+    $("#menu_mst_pegpendidikanrumpun").addClass("active");
     $("#menu_master_data").addClass("active");
 	});
 </script>

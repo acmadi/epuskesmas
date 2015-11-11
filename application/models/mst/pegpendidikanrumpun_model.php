@@ -1,7 +1,7 @@
 <?php
-class Peggolongan_model extends CI_Model {
+class pegpendidikanrumpun_model extends CI_Model {
 
-    var $tabel    = 'mst_peg_golruang';
+    var $tabel    = 'mst_peg_rumpunpendidikan';
 	var $lang	  = '';
 
     function __construct() {
@@ -12,14 +12,14 @@ class Peggolongan_model extends CI_Model {
 
     function get_data($start=0,$limit=999999,$options=array())
     {
-		$this->db->order_by('id','asc');
+		$this->db->order_by('id_rumpun','asc');
         $query = $this->db->get($this->tabel,$limit,$start);
         return $query->result();
     }
 
  	function get_data_row($id){
 		$data = array();
-		$options = array('id' => $id);
+		$options = array('id_rumpun' => $id);
 		$query = $this->db->get_where($this->tabel,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -31,15 +31,14 @@ class Peggolongan_model extends CI_Model {
 
 	public function getSelectedData($table,$data)
     {
-        return $this->db->get_where($table, array('id'=>$data));
+        return $this->db->get_where($table, array('id_rumpun'=>$data));
     }
 
     function insert_entry()
     {
-		$data['id_golongan']=$this->input->post('id_golongan');
-		$data['ruang']=$this->input->post('ruang');
+		$data['nama_rumpun']=$this->input->post('nama_rumpun');
 
-		if($this->getSelectedData($this->tabel,$data['id'])->num_rows() > 0) {
+		if($this->getSelectedData($this->tabel,$data['id_rumpun'])->num_rows() > 0) {
 			return 0;
 		}else{
 			if($this->db->insert($this->tabel, $data)){
@@ -56,10 +55,9 @@ class Peggolongan_model extends CI_Model {
 
     function update_entry($id)
     {
-		$data['id_golongan']=$this->input->post('id_golongan');
-		$data['ruang']=$this->input->post('ruang');
+		$data['nama_rumpun']=$this->input->post('nama_rumpun');
 
-		if($this->db->update($this->tabel, $data, array("id_golongan"=>$id))){
+		if($this->db->update($this->tabel, $data, array("id_rumpun"=>$id))){
 			return true;
 		}else{
 			return mysql_error();
@@ -68,7 +66,7 @@ class Peggolongan_model extends CI_Model {
 
 	function delete_entry($id)
 	{
-		$this->db->where('id',$id);
+		$this->db->where('id_rumpun',$id);
 
 		return $this->db->delete($this->tabel);
 	}

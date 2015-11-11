@@ -73,7 +73,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_invbarang").addClass("active");
+    $("#menu_mst_pegstruktural").addClass("active");
     $("#menu_master_data").addClass("active");
 	});
 </script>

@@ -7,7 +7,7 @@
 <?php } ?>
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/peggolongan/dodel_multi" method="POST" name="">
+<form action="<?php echo base_url()?>mst/pegpendidikanrumpun/dodel_multi" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -18,7 +18,7 @@
 	    </div>
 
 	      <div class="box-footer">
-		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/peggolongan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>mst/pegpendidikanrumpun/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
 	     </div>
         <div class="box-body">
@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
 	$(function () {	
-		$("#menu_mst_peggolongan").addClass("active");
+		$("#menu_mst_pegpendidikanrumpun").addClass("active");
 		$("#menu_master_data").addClass("active");
 	});
 
@@ -42,13 +42,12 @@
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id', type: 'string'},
-			{ name: 'id_golongan', type: 'string'},
-			{ name: 'ruang', type: 'string'},
+			{ name: 'id_rumpun', type: 'string'},
+			{ name: 'nama_rumpun', type: 'string'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('mst/peggolongan/json'); ?>",
+		url: "<?php echo site_url('mst/pegpendidikanrumpun/json'); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -90,7 +89,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_rumpun+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -99,25 +98,24 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_rumpun+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'ID Golongan', datafield: 'id_golongan', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Ruang', datafield: 'ruang', columntype: 'textbox', filtertype: 'textbox', width: '75%' },
+				{ text: 'nama_rumpun', datafield: 'nama_rumpun', columntype: 'textbox', filtertype: 'textbox', width: '90%' },
             ]
 		});
 
 	function edit(id){
-		document.location.href="<?php echo base_url().'mst/peggolongan/edit';?>/" + id;
+		document.location.href="<?php echo base_url().'mst/pegpendidikanrumpun/edit';?>/" + id;
 	}
 
 	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'mst/peggolongan/dodel' ?>/" + id,  function(){
+			$.post("<?php echo base_url().'mst/pegpendidikanrumpun/dodel' ?>/" + id,  function(){
 				alert('data berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
