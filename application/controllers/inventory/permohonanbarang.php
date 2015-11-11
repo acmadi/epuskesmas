@@ -128,15 +128,12 @@ class Permohonanbarang extends CI_Controller {
 		if($this->input->is_ajax_request()) {
 			$code = $this->input->post('code');
 
-			$kode 	= $this->invbarang_model->getSelectedData('mst_inv_barang',$code)->result();
+			$this->db->where("code",$code);
+			$kode 	= $this->invbarang_model->getSelectedData('mst_inv_barang',$code)->row();
 
-			'<option value="">Pilih Ruangan</option>';
-			foreach($kode as $kode) :
-				echo $select = $kode->code == $code ? 'selected' : '';
-				echo '<option value="'.$kode->uraian.'" '.$select.'>' . $kode->uraian . '</option>';
-			endforeach;
+			if(!empty($kode)) echo $kode->uraian;
 
-			return FALSE;
+			return TRUE;
 		}
 
 		show_404();
@@ -282,26 +279,62 @@ class Permohonanbarang extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-	public function tambahbarang()
+
+	public function add_barang($kode=0,$code_cl_phc="")
 	{
+		$data['action']			= "add";
+		$data['kode']			= $kode;
+		$data['code_cl_phc']	= $code_cl_phc;
+
+        $this->form_validation->set_rules('code_mst_inv_barang', 'Kode Barang', 'trim|required');
+        $this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
+        $this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			$data['kodebarang']		= $this->permohonanbarang_model->get_databarang();
+			$data['notice']			= validation_errors();
+
+			die($this->parser->parse('inventory/permohonan_barang/barang_form', $data));
+		}else{
+			$values = array(
+				'id_inv_permohonan_barang_item'=>$this->permohonanbarang_model->get_permohonanbarangitem_id(),
+				'code_mst_inv_barang' => $this->input->post('code_mst_inv_barang'),
+				'nama_barang' => $this->input->post('nama_barang'),
+				'jumlah' => $this->input->post('jumlah'),
+				'keterangan' => $this->input->post('keterangan'),
+				'code_cl_phc' => $code_cl_phc,
+				'id_inv_permohonan_barang' => $kode
+			);
+
+			if($this->db->insert('inv_permohonan_barang_item', $values)){
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+		}
+	}
+
+	public function edit_barang($kode=0,$code_cl_phc="",$id_inv_permohonan_barang_item=0)
+	{
+		$data['action']			= "edit";
+		$data['kode']			= $kode;
+		$data['code_cl_phc']	= $code_cl_phc;
+		$data['id_inv_permohonan_barang_item']	= $id_inv_permohonan_barang_item;
+
 		if($_POST) {
 
 			$values = array(
-				'keterangan' => $this->input->post('keterangan'),
-				'jumlah' => $this->input->post('jumlah'),
-				'nama_barang' => $this->input->post('nama_barang'),
-				'id_inv_permohonan_barang' => $this->input->post('id_inv_permohonan_barang'),
 				'code_mst_inv_barang' => $this->input->post('code_mst_inv_barang'),
-				'id_inv_permohonan_barang_item'=>$this->permohonanbarang_model->get_permohonanbarangitem_id(),
+				'nama_barang' => $this->input->post('nama_barang'),
+				'jumlah' => $this->input->post('jumlah'),
+				'keterangan' => $this->input->post('keterangan')
 			);
 
-
-			if($this->input->post('id') == 0) {
-				$this->db->insert('inv_permohonan_barang_item', $values);
-			} else {
-				$this->db->where('id_dokumen_file', $this->input->post('id_dokumen_file'));
-				$this->db->update('smt_rekam_file', $values);
-			}
+				$this->db->where('id_inv_permohonan_barang', $kode);
+				$this->db->where('code_cl_phc', $code_cl_phc);
+				$this->db->where('id_inv_permohonan_barang_item', $id_inv_permohonan_barang_item);
+				$this->db->update('inv_permohonan_barang_item', $values);
 
 			$datas['notice'] = 'Data berhasil disimpan';
 			$datas['error']	 = 0;
@@ -316,9 +349,22 @@ class Permohonanbarang extends CI_Controller {
 			$data['id_inv_permohonan_barang']  	= 9;//$this->input->get('id_inv_permohonan_barang');// == 0 ? 0: $this->input->get('id_inv_permohonan_barang'); 
 			$data['kodebarang']		 			= $this->permohonanbarang_model->get_databarang();
 			$data['idbarang']		 			= $this->input->get('id') == 0 ?0 : 1;
-			$this->load->view('inventory/permohonan_barang/barang_form', $data);
+			echo $this->parser->parse('inventory/permohonan_barang/barang_form', $data);
 		}
 	}
+	
+	function dodel_barang($kode=0,$code_cl_phc="",$id_inv_permohonan_barang_item=0){
+		$this->authentication->verify('inventory','del');
+
+		if($this->permohonanbarang_model->delete_entry($kode,$code_cl_phc)){
+			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
+			redirect(base_url()."inventory/permohonanbarang");
+		}else{
+			$this->session->set_flashdata('alert', 'Delete data error');
+			redirect(base_url()."inventory/permohonanbarang");
+		}
+	}
+
 	public function search()
 	{
 		// tangkap variabel keyword dari URL
