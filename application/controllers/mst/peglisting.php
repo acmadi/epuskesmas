@@ -1,9 +1,9 @@
 <?php
-class Pegnikah extends CI_Controller {
+class Peglisting extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
-		$this->load->model('mst/pegnikah_model');
+		$this->load->model('mst/peglisting_model');
 	}
 	function json(){
 		$this->authentication->verify('mst','show');
@@ -25,7 +25,7 @@ class Pegnikah extends CI_Controller {
 			}
 		}
 
-		$rows_all = $this->pegnikah_model->get_data();
+		$rows_all = $this->peglisting_model->get_data();
 
 
 		if($_POST) {
@@ -44,12 +44,12 @@ class Pegnikah extends CI_Controller {
 			}
 		}
 
-		$rows = $this->pegnikah_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->peglisting_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
-				'kode'		=> $act->kode,
-				'value'		=> $act->value,
+				'id_listing'	=> $act->id_listing,
+				'nama_listing'	=> $act->nama_listing,
 				'edit'		=> 1,
 				'delete'	=> 1
 			);
@@ -67,12 +67,12 @@ class Pegnikah extends CI_Controller {
 	function index(){
 		$this->authentication->verify('mst','edit');
 		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Peg Nikah";
-		// $data= $this->pegnikah_model->get_data();
+		$data['title_form'] = "Master Data - Peg Listing";
+		// $data= $this->peglisting_model->get_data();
 		// var_dump($data);
 		// exit();
 
-		$data['content'] = $this->parser->parse("mst/pegnikah/show",$data,true);
+		$data['content'] = $this->parser->parse("mst/peglisting/show",$data,true);
 
 		$this->template->show($data,"home");
 	}
@@ -81,65 +81,63 @@ class Pegnikah extends CI_Controller {
 	function add(){
 		$this->authentication->verify('mst','add');
 
-        $this->form_validation->set_rules('kode', 'Kode Status', 'trim|required');
-        $this->form_validation->set_rules('value', 'Value', 'trim|required');
+        $this->form_validation->set_rules('nama_listing', 'Nama Listing', 'trim|required');
         
 			if($this->form_validation->run()== FALSE){
 				$data['title_group'] = "Parameter";
-				$data['title_form']="Tambah Status Perkawinan Pegawai";
+				$data['title_form']="Tambah Listing Pegawai";
 				$data['action']="add";
-				$data['kode']="";
+				$data['id']="";
 
 			
-				$data['content'] = $this->parser->parse("mst/pegnikah/form",$data,true);
+				$data['content'] = $this->parser->parse("mst/peglisting/form",$data,true);
 				$this->template->show($data,"home");
-			}elseif($this->pegnikah_model->insert_entry() == 1){
+			}elseif($this->peglisting_model->insert_entry() == 1){
 				$this->session->set_flashdata('alert', 'Save data successful...');
-				redirect(base_url()."mst/pegnikah/");
+				redirect(base_url()."mst/peglisting/");
 			}else{
 				$this->session->set_flashdata('alert_form', 'Save data failed...');
-				redirect(base_url()."mst/pegnikah/add");
+				redirect(base_url()."mst/peglisting/add");
 			}
 
 	}
 
-	function edit($kode=0)
+	function edit($id=0)
 	{
 		$this->authentication->verify('mst','add');
 
-        $this->form_validation->set_rules('kode', 'Kode Status', 'trim|required');
-        $this->form_validation->set_rules('value', 'Value', 'trim|required');
+         $this->form_validation->set_rules('nama_listing', 'Nama Listing', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data = $this->pegnikah_model->get_data_row($kode); 
+			$data = $this->peglisting_model->get_data_row($id); 
 			// var_dump($data);
 			// exit();
 			$data['title_group'] = "Parameter";
-			$data['title_form']="Ubah Data Penghargaan Pegawai";
+			$data['title_form']="Ubah Data Listing Pegawai";
 			$data['action']="edit";
-			$data['kode']=$kode;
+			$data['id']=$id;
 
 		
-			$data['content'] = $this->parser->parse("mst/pegnikah/form",$data,true);
+			$data['content'] = $this->parser->parse("mst/peglisting/form",$data,true);
 			$this->template->show($data,"home");
-		}elseif($this->pegnikah_model->update_entry($kode)){
+		}elseif($this->peglisting_model->update_entry($id)){
 			$this->session->set_flashdata('alert_form', 'Save data successful...');
-			redirect(base_url()."mst/pegnikah/");
+			redirect(base_url()."mst/peglisting/");
 		}else{
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
-			redirect(base_url()."mst/pegnikah/edit/".$kode);
+			redirect(base_url()."mst/peglisting/edit/".$id);
 		}
 	}
 
-	function dodel($kode=0){
+	function dodel($id=0){
 		$this->authentication->verify('mst','del');
 
-		if($this->pegnikah_model->delete_entry($kode)){
-			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
-			redirect(base_url()."mst/pegnikah");
+		if($this->peglisting_model->delete_entry($id)){
+			$this->session->set_flashdata('alert', 'Delete data ('.$id.')');
+			redirect(base_url()."mst/peglisting");
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
-			redirect(base_url()."mst/pegnikah");
+			redirect(base_url()."mst/peglisting");
 		}
 	}
 }
