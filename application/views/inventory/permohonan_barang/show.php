@@ -17,7 +17,7 @@
           <h3 class="box-title">{title_form}</h3>
 	    </div>
 
-	      <div class="box-footer">
+      	<div class="box-footer">
 	      <div class="col-md-9">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/permohonanbarang/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
@@ -29,6 +29,7 @@
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
 	     	</select>
+		  </div>
 		</div>
         <div class="box-body">
 		    <div class="div-grid">

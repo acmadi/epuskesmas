@@ -1,22 +1,30 @@
 <script type="text/javascript">
     $(function(){
 
-    
-      /*  $('#code_mst_inv_barang').change(function(){
+      $('#btn-close').click(function(){
+        close_popup();
+      });
+
+      $('#code_mst_inv_barang').change(function(){
           var code = $(this).val();
           $.ajax({
-            url : '<?php echo site_url('inventory/permohonanbarang/get_nama') ?>',
+            url : '<?php echo base_url().'inventory/permohonanbarang/get_nama' ?>',
             type : 'POST',
             data : 'code=' + code,
             success : function(data) {
-              $('#nama_barang').html(data);
+              $('input[name="nama_barang"]').val(data);
             }
           });
 
           return false;
         });
-        */
+
         $('#form-ss').submit(function(){
+            var data = new FormData();
+            $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
+            $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
+            $('#notice').show();
+
             data.append('idbarang', $('input[name="idbarang"]').val());
             data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
             data.append('keterangan', $('input[name="keterangan"]').val());
@@ -29,34 +37,45 @@
                 contentType : false,
                 processData : false,
                 type : 'POST',
-                url : '<?php echo current_url() ?>',
+                url : '<?php echo base_url()."inventory/permohonanbarang/".$action."_barang/".$kode."/".$code_cl_phc."/0" ?>',
                 data : data,
-                success : function(data){
-                var obj = $.parseJSON(data);
-                
-                $('.notice').html('<div class="alert">' + obj.notice + '</div>');
+                success : function(response){
+                  var res  = response.split("|");
+                  if(res[0]=="OK"){
+                      $('#notice').hide();
+                      $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
+                      $('#notice').show();
 
-                if(obj.error == 0) {
-                	alert(obj.notice);
-                	$("#popup_document").jqxWindow('close');
-                    $("#jqxgrid_document").jqxGrid('updatebounddata', 'cells');
-                }
-            }
+                      $("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+                      close_popup();
+                  }
+                  else if(res[0]=="Error"){
+                      $('#notice').hide();
+                      $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
+                      $('#notice').show();
+                  }
+                  else{
+                      $('#popup_content').html(response);
+                  }
+              }
             });
 
             return false;
         });
-        
     });
-
 </script>
     
-<div class="notice"></div>
+<div style="padding:15px">
+  <div id="notice" class="alert alert-success alert-dismissable" <?if ($notice==""){?> style="display:none"<?php }?>>
+    <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4>
+    <i class="icon fa fa-check"></i>
+    Information!
+    </h4>
+    <div id="notice-content">{notice}</div>
+  </div>
 	<div class="row">
     <?php echo form_open(current_url(), 'id="form-ss"') ?>
-           
-          <input type="text" name="idbarang" value="<?php echo $idbarang ?>" />
-          <input type="text" name="id_inv_permohonan_barang" value="<?php echo $id_inv_permohonan_barang?>" />
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>
@@ -72,7 +91,7 @@
             </div>
             <div class="form-group">
               <label>Nama Baranga</label>
-              <input type="text" class="form-control" name="nama_barang" value="<?php
+              <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" value="<?php
               if(set_value('nama_barang')=="" && isset($nama_barang)){
                   echo $nama_barang;
                 }else{
@@ -85,7 +104,7 @@
             </div>
             <div class="form-group">
               <label>Jumlah</label>
-              <input type="text" class="form-control" name="jumlah" placeholder="Nama" value="<?php 
+              <input type="text" class="form-control" name="jumlah" placeholder="Jumlah" value="<?php 
                 if(set_value('value')=="" && isset($value)){
                   echo $value;
                 }else{
@@ -106,7 +125,8 @@
         </div>
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Simpan</button>
-            <button type="submit" class="btn btn-warning">Kembali</button>
+            <button type="button" id="btn-close" class="btn btn-warning">Batal</button>
         </div>
     </div>
 </form>
+</div>
