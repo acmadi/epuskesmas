@@ -228,15 +228,16 @@ class Permohonanbarang extends CI_Controller {
 			redirect(base_url()."inventory/permohonanbarang");
 		}
 	}
-	function dodelpermohonan($kode=0,$kode_item=""){
+	function dodelpermohonan($kode=0,$code_cl_phc="",$kode_item=""){
 		$this->authentication->verify('inventory','del');
 
-		if($this->permohonanbarang_model->delete_entryitem($kode,$kode_item)){
+		if($this->permohonanbarang_model->delete_entryitem($kode,$code_cl_phc,$kode_item)){
+			$dataupdate['jumlah_unit']= $this->permohonanbarang_model->sum_jumlah_item( $kode,$code_cl_phc);
+			$key['id_inv_permohonan_barang'] = $kode;
+			$this->db->update("inv_permohonan_barang",$dataupdate,$key);
 			$this->session->set_flashdata('alert', 'Delete data ('.$kode_item.')');
-			redirect(base_url()."inventory/permohonanbarang/edit/".$kode."/".$code_cl_phc);
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
-			redirect(base_url()."inventory/permohonanbarang/edit/".$kode."/".$code_cl_phc);
 		}
 	}
 
@@ -318,6 +319,10 @@ class Permohonanbarang extends CI_Controller {
 				'id_inv_permohonan_barang' => $kode
 			);
 			if($this->db->insert('inv_permohonan_barang_item', $values)){
+				$dataupdate['jumlah_unit']= $this->permohonanbarang_model->sum_jumlah_item( $kode,$code_cl_phc);
+				$key['id_inv_permohonan_barang'] = $kode;
+        		$this->db->update("inv_permohonan_barang",$dataupdate,$key);
+
 				die("OK|");
 			}else{
 				die("Error|Proses data gagal");
@@ -342,7 +347,6 @@ class Permohonanbarang extends CI_Controller {
 			$data['action']			= "edit";
 			$data['kode']			= $kode;
 			$data['code_cl_phc']	= $code_cl_phc;
-
 			die($this->parser->parse('inventory/permohonan_barang/barang_form', $data));
 		}else{
 			$values = array(
@@ -353,6 +357,9 @@ class Permohonanbarang extends CI_Controller {
 			);
 
 			if($this->db->update('inv_permohonan_barang_item', $values,array('id_inv_permohonan_barang_item' => $id_inv_permohonan_barang_item,'code_cl_phc'=>$code_cl_phc,'id_inv_permohonan_barang'=>$kode))){
+				$dataupdate['jumlah_unit']= $this->permohonanbarang_model->sum_jumlah_item( $kode,$code_cl_phc);
+				$key['id_inv_permohonan_barang'] = $kode;
+        		$this->db->update("inv_permohonan_barang",$dataupdate,$key);
 				die("OK|");
 			}else{
 				die("Error|Proses data gagal");

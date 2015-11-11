@@ -116,6 +116,24 @@ class Permohonanbarang_model extends CI_Model {
 			return mysql_error();
 		}
     }
+    function sum_jumlah_item($kode,$code_cl_phc){
+    	$this->db->select_sum('jumlah');
+    	$this->db->where('id_inv_permohonan_barang',$kode);
+		$this->db->where('code_cl_phc',$code_cl_phc);
+		$query=$this->db->get('inv_permohonan_barang_item');
+		if($query->num_rows()>0)
+        {
+            foreach($query->result() as $k)
+            {
+                $jumlah = $k->jumlah;
+            }
+        }
+        else
+        {
+            $jumlah = 0;
+        }
+        return  $jumlah;
+    }
 
 	function delete_entry($kode,$code_cl_phc)
 	{
@@ -124,11 +142,11 @@ class Permohonanbarang_model extends CI_Model {
 
 		return $this->db->delete($this->tabel);
 	}
-	function delete_entryitem($kode,$kode_item)
+	function delete_entryitem($kode,$code_cl_phc,$kode_item)
 	{
 		$this->db->where('id_inv_permohonan_barang',$kode);
 		$this->db->where('id_inv_permohonan_barang_item',$kode_item);
-
+		$this->db->where('code_cl_phc',$code_cl_phc);
 		return $this->db->delete('inv_permohonan_barang_item');
 	}
 	function get_databarang($start=0,$limit=999999)
