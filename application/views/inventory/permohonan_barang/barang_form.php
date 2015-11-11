@@ -31,13 +31,12 @@
             data.append('jumlah', $('input[name="jumlah"]').val());
             data.append('nama_barang', $('input[name="nama_barang"]').val());
             data.append('code_mst_inv_barang', $('input[name="code_mst_inv_barang"]').val());
-
             $.ajax({
                 cache : false,
                 contentType : false,
                 processData : false,
                 type : 'POST',
-                url : '<?php echo base_url()."inventory/permohonanbarang/".$action."_barang/".$kode."/".$code_cl_phc."/0" ?>',
+                url : '<?php echo base_url()."inventory/permohonanbarang/".$action."_barang/".$kode."/".$code_cl_phc."/".$id_inv_permohonan_barang_item ?>',
                 data : data,
                 success : function(response){
                   var res  = response.split("|");
@@ -64,9 +63,8 @@
         });
     });
 </script>
-    
 <div style="padding:15px">
-  <div id="notice" class="alert alert-success alert-dismissable" <?if ($notice==""){?> style="display:none"<?php }?>>
+  <div id="notice" class="alert alert-success alert-dismissable" <?php if ($notice==""){ echo 'style="display:none"';} ?> >
     <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
     <h4>
     <i class="icon fa fa-check"></i>
@@ -79,12 +77,11 @@
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>
-               <!--  <input placeholder="Ketik Nama atau Kode barang" name="code_mst_inv_barang" class="form-control"  type="text" id="autocomplete"> -->
                <select  name="code_mst_inv_barang" id="code_mst_inv_barang" class="form-control">
                   <option value=""
                   </option>
                   <?php foreach($kodebarang as $barang) : ?>
-                    <?php $select = $barang->code == set_value('kodebarang') ? 'selected' : '' ?>
+                    <?php if(isset($code_mst_inv_barang)){$select = $barang->code == $code_mst_inv_barang ? 'selected' : '';}else{$select ='';} ?>
                     <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code.' - '.$barang->uraian ?></option>
                   <?php endforeach ?>
               </select>
@@ -104,11 +101,11 @@
             </div>
             <div class="form-group">
               <label>Jumlah</label>
-              <input type="text" class="form-control" name="jumlah" placeholder="Jumlah" value="<?php 
-                if(set_value('value')=="" && isset($value)){
-                  echo $value;
+              <input type="number" class="form-control" name="jumlah" placeholder="Jumlah" value="<?php 
+                if(set_value('jumlah')=="" && isset($jumlah)){
+                  echo $jumlah;
                 }else{
-                  echo  set_value('value');
+                  echo  set_value('jumlah');
                 }
                 ?>">
             </div>

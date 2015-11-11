@@ -38,6 +38,21 @@ class Permohonanbarang_model extends CI_Model {
 		$query->free_result();    
 		return $data;
 	}
+	function get_data_barang_edit($code_cl_phc, $permohonanbarang, $permohonanitem){
+		$data = array();
+		
+		$this->db->select("*");
+		$this->db->where("id_inv_permohonan_barang_item",$permohonanitem);
+		$this->db->where("code_cl_phc",$code_cl_phc);
+		$this->db->where("id_inv_permohonan_barang",$permohonanbarang);
+		$query = $this->db->get("inv_permohonan_barang_item");
+		if ($query->num_rows() > 0){
+			$data = $query->row_array();
+		}
+
+		$query->free_result();    
+		return $data;
+	}
 	public function getSelectedData($table,$data)
     {
         return $this->db->get_where($table, array('id_inv_permohonan_barang'=>$data));
