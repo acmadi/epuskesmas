@@ -68,7 +68,7 @@ class Peggolongan extends CI_Controller {
 	function index(){
 		$this->authentication->verify('mst','edit');
 		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Peg Golongan";
+		$data['title_form'] = "Master Data - Peg Golongan Ruang";
 		// $data= $this->peggolongan_model->get_data();
 		// var_dump($data);
 		// exit();
@@ -117,7 +117,7 @@ class Peggolongan extends CI_Controller {
 			// exit();
 			
 			$data['title_group'] = "Parameter";
-			$data['title_form']="Ubah Jabatan Struktural Pegawai";
+			$data['title_form']="Ubah Jabatan Golongan Ruang";
 			$data['action']="edit";
 			$data['id']=$id;
 			

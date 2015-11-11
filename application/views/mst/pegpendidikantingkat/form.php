@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>mst/pegstruktural/{action}/{id}" method="POST" name="">
+<form action="<?php echo base_url()?>mst/pegpendidikantingkat/{action}/{id}" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -29,40 +29,39 @@
           <div class="box-footer pull-right">
             <button type="submit" class="btn btn-primary">Simpan</button>
             <button type="reset" class="btn btn-warning">Ulang</button>
-            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/pegstruktural'">Kembali</button>
+            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/pegpendidikantingkat'">Kembali</button>
           </div>
           <div class="box-body">
             <div class="form-group">
-              <label>Nama Struktur</label>
-              <input type="text" class="form-control" name="nama" placeholder="Nama Struktur" value="<?php 
-                if(set_value('tar_nama_struktural')=="" && isset($tar_nama_struktural)){
-                  echo $tar_nama_struktural;
+                <label>ID Tingkat</label>
+                <input type="text" class="form-control" name="id_tingkat" placeholder="Id Pendidikan" value="<?php 
+                  if(set_value('id_tingkat')=="" && isset($id_tingkat)){
+                    echo $id_tingkat;
+                  }else{
+                    echo  set_value('id_tingkat');
+                  }
+                  ?>">
+            </div>
+            <div class="form-group">
+              <label>Tingkat Pendidikan</label>
+              <input type="text" class="form-control" name="deskripsi" placeholder="Deskripsi" value="<?php 
+                if(set_value('deskripsi')=="" && isset($deskripsi)){
+                  echo $deskripsi;
                 }else{
-                  echo  set_value('tar_nama_struktural');
+                  echo  set_value('deskripsi');
                 }
                 ?>">
             </div>
             <div class="form-group">
-              <label>Eselon</label>
-              <input type="text" class="form-control" name="eselon" placeholder="Eselon" value="<?php 
-                if(set_value('tar_eselon')=="" && isset($tar_eselon)){
-                  echo $tar_eselon;
+              <label>Tingkat</label>
+              <input type="text" class="form-control" name="tingkat" placeholder="Tingkat" value="<?php 
+                if(set_value('tingkat')=="" && isset($tingkat)){
+                  echo $tingkat;
                 }else{
-                  echo  set_value('tar_eselon');
+                  echo  set_value('tingkat');
                 }
                 ?>">
             </div>
-            <div class="form-group">
-              <label>Kelompok Eselon</label>
-              <input type="text" class="form-control" name="kel_eselon" placeholder="Kelompok Eselon" value="<?php 
-                if(set_value('tar_kelompok_eselon')=="" && isset($tar_kelompok_eselon)){
-                  echo $tar_kelompok_eselon;
-                }else{
-                  echo  set_value('tar_kelompok_eselon');
-                }
-                ?>">
-            </div>
-
           </div>
           </div><!-- /.box-body -->
       </div><!-- /.box -->
@@ -73,7 +72,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_pegstruktural").addClass("active");
+    $("#menu_mst_pegpendidikantingkat").addClass("active");
     $("#menu_master_data").addClass("active");
 	});
 </script>

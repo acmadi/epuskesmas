@@ -29,7 +29,7 @@
           <div class="box-footer pull-right">
             <button type="submit" class="btn btn-primary">Simpan</button>
             <button type="reset" class="btn btn-warning">Ulang</button>
-            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/invbarang'">Kembali</button>
+            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/pegfungsional'">Kembali</button>
           </div>
           <div class="box-body">
             <div class="form-group">
