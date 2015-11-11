@@ -14,9 +14,7 @@
 </div>
 <?php } ?>
 
-
 <section class="content">
-<form method="POST" id="form-ss">
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -28,64 +26,34 @@
 
           <div class="box-body">
             <div class="form-group">
+              <label>Tanggal</label>
+              <input readonly type="text" class="form-control" name="ReceivingDateTime" placeholder="ReceivingDateTime" value="<?php echo $ReceivingDateTime;?>">
+            </div>
+            <div class="form-group">
               <label>Pengirim</label>
               <input readonly type="text" class="form-control" name="SenderNumber" placeholder="SenderNumber" value="<?php echo $SenderNumber;?>">
             </div>
             <div class="form-group">
               <label>Pesan</label>
-              <textarea class="form-control" placeholder="Pesan" id="Pesan"></textarea>
+              <textarea readonly class="form-control" placeholder="TextDecoded"><?php echo ($TextDecoded);?></textarea>
             </div>
           </div>
           <div class="box-footer pull-right">
-            <button type="submit" class="btn btn-primary">Kirim</button>
-            <button type="reset" id="btn-close" class="btn btn-warning">Batal</button>
+            <button type="button" id="btn-reply" class="btn btn-primary">Reply</button>
+            <button type="button" id="btn-close" class="btn btn-warning">Tutup</button>
           </div>
       </div><!-- /.box -->
   	</div><!-- /.box -->
   </div><!-- /.box -->
-</form>
 </section>
 <script type="text/javascript">
   $(function () { 
+    $("#btn-reply").click(function(){
+      reply({id});
+    });
+
     $("#btn-close").click(function(){
       close_popup();
     });
-
-    $('#form-ss').submit(function(){
-        var data = new FormData();
-        $('#notice-content').html('<div class="alert">Mohon tunggu....</div>');
-        $('#notice').show();
-
-        data.append('TextDecoded', $('#Pesan').val());
-        $.ajax({
-            cache : false,
-            contentType : false,
-            processData : false,
-            type : 'POST',
-            url : '<?php echo base_url()."sms/inbox/reply/".$id?>',
-            data : data,
-            success : function(response){
-              var res  = response.split("|");
-              if(res[0]=="OK"){
-                  $('#notice').hide();
-                  $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
-                  $('#notice').show();
-
-                  $("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-                  close_popup();
-              }
-              else if(res[0]=="Error"){
-                  $('#notice').hide();
-                  $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
-                  $('#notice').show();
-              }
-              else{
-                  $('#popup_content').html(response);
-              }
-          }
-        });
-
-        return false;
-    });    
   });
 </script>

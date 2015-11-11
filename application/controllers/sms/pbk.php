@@ -165,10 +165,8 @@ class Pbk extends CI_Controller {
 
 		if($this->pbk_model->delete_entry($kode,$code_cl_phc)){
 			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
-			redirect(base_url()."sms/pbk");
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
-			redirect(base_url()."sms/pbk");
 		}
 	}
 

@@ -13,7 +13,7 @@ class Pbk_model extends CI_Model {
     {
 	    $this->db->select("sms_pbk.*,sms_grup.nama AS nama_grup");
 	    $this->db->join('sms_grup', 'sms_grup.id_grup = sms_pbk.id_sms_grup', 'inner'); 
-	    $query = $this->db->get($this->tabel);
+	    $query = $this->db->get($this->tabel,$limit,$start);
     	return $query->result();
 	
     }

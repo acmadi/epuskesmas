@@ -141,10 +141,8 @@ class Group extends CI_Controller {
 
 		if($this->grup_model->delete_entry($id)){
 			$this->session->set_flashdata('alert', 'Delete data ('.$id.')');
-			redirect(base_url()."sms/group");
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
-			redirect(base_url()."sms/group");
 		}
 	}
 }

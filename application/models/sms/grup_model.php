@@ -13,7 +13,7 @@ class Grup_model extends CI_Model {
     {
 		$this->db->select("sms_grup.*, anggota");
     	$this->db->join("(SELECT COUNT(*) AS anggota,id_sms_grup FROM sms_pbk GROUP BY id_sms_grup) AS pbk","pbk.id_sms_grup=sms_grup.id_grup","LEFT");
-	    $query = $this->db->get($this->tabel);
+	    $query = $this->db->get($this->tabel,$limit,$start);
     	return $query->result();
 	
     }

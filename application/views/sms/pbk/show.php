@@ -145,32 +145,4 @@
 		}
 	}
 
-	$(document).ready(function () {            
-            // prepare the data
-            var source = {
-			datatype: "json",
-			type	: "POST",
-			datafields: [
-			{ name: 'code', type: 'string'},
-			{ name: 'nama', type: 'string'},
-			{ name: 'edit', type: 'number'},
-			{ name: 'delete', type: 'number'}
-	        ],
-			url: "<?php echo site_url('mst/kecamatan/json'); ?>",
-			cache: false,
-                data: {
-                    featureClass: "P",
-                    style: "full",
-                    maxRows: 50,
-                    username: "jqwidgets"
-                }
-            };
-
-            $("select[name='code_cl_phc']").change(function(){
-				$.post("<?php echo base_url().'sms/pbk/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
-					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-				});
-            });
-        });
-
 </script>

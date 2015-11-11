@@ -7,7 +7,6 @@
 <?php } ?>
 
 <section class="content">
-<form action="<?php echo base_url()?>inventory/inv_ruangan/dodel_multi" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -30,8 +29,11 @@
 	  </div>
 	</div>
   </div>
-</form>
 </section>
+<div id="popup" style="display:none">
+	<div id="popup_title">SMS</div>
+	<div id="popup_content">&nbsp;</div>
+</div>
 
 <script type="text/javascript">
 	$(function () {	
@@ -39,18 +41,62 @@
 		$("#menu_sms_inbox").addClass("active");
 	});
 
+	function close_popup(){
+		$("#popup").jqxWindow('close');
+	}
+
+	function reply(id){
+		$("#popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo base_url().'sms/inbox/reply/'; ?>" + id , function(data) {
+			$("#popup_content").html(data);
+		});
+		$("#popup").jqxWindow({
+			theme: theme, resizable: false,
+			width: 420,
+			height: 420,
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup").jqxWindow('open');
+	}
+
+	function detail(id){
+		$("#popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo base_url().'sms/inbox/detail/'; ?>" + id , function(data) {
+			$("#popup_content").html(data);
+		});
+		$("#popup").jqxWindow({
+			theme: theme, resizable: false,
+			width: 420,
+			height: 440,
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup").jqxWindow('open');
+	}
+
+	function del(id){
+		var confirms = confirm("Hapus Data ?");
+		if(confirms == true){
+			$.post("<?php echo base_url().'sms/inbox/dodel' ?>/" + id,  function(){
+				alert('SMS berhasil dihapus');
+
+				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+			});
+		}
+	}
+
 	   var source = {
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id_mst_inv_ruangan', type: 'string'},
-			{ name: 'nama_ruangan', type: 'string'},
-			{ name: 'keterangan', type: 'string'},
-			{ name: 'code_cl_phc', type: 'string'},
+			{ name: 'ID', type: 'number'},
+			{ name: 'SenderNumber', type: 'string'},
+			{ name: 'TextDecoded', type: 'string'},
+			{ name: 'Processed', type: 'string'},
+			{ name: 'ReceivingDateTime', type: 'date'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('inventory/inv_ruangan/json'); ?>",
+		url: "<?php echo site_url('sms/inbox/json'); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -89,19 +135,19 @@
 				return obj.data;    
 			},
 			columns: [
-				{ text: 'Detail', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Reply', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_add.gif' onclick='reply(\""+dataRecord.ID+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Balas', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Detail', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_add.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='detail(\""+dataRecord.ID+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -110,59 +156,18 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.ID+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Nomor Pengirim', align: 'center', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
-				{ text: 'Isi Pesan', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '45%' },
-				{ text: 'Waktu', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'Nomor Tujuan', align: 'center', cellsalign: 'center', datafield: 'SenderNumber', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Isi Pesan', datafield: 'TextDecoded', columntype: 'textbox', filtertype: 'textbox', width: '45%' },
+				{ text: 'Processed', datafield: 'Processed', align: 'center', cellsalign: 'center', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Waktu Diterima', align: 'center', cellsalign: 'center', datafield: 'ReceivingDateTime', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy HH:mm:ss', width: '15%' }
             ]
 		});
 
-	function edit(id){
-		document.location.href="<?php echo base_url().'inventory/inv_ruangan/edit';?>/" + id;
-	}
-
-	function del(id){
-		var confirms = confirm("Hapus Data ?");
-		if(confirms == true){
-			$.post("<?php echo base_url().'inventory/inv_ruangan/dodel' ?>/" + id,  function(){
-				alert('data berhasil dihapus');
-
-				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-			});
-		}
-	}
-
-	$(document).ready(function () {            
-            // prepare the data
-            var source = {
-			datatype: "json",
-			type	: "POST",
-			datafields: [
-			{ name: 'code', type: 'string'},
-			{ name: 'nama', type: 'string'},
-			{ name: 'edit', type: 'number'},
-			{ name: 'delete', type: 'number'}
-	        ],
-			url: "<?php echo site_url('mst/kecamatan/json'); ?>",
-			cache: false,
-                data: {
-                    featureClass: "P",
-                    style: "full",
-                    maxRows: 50,
-                    username: "jqwidgets"
-                }
-            };
-
-            $("select[name='code_cl_phc']").change(function(){
-				$.post("<?php echo base_url().'inventory/inv_ruangan/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
-					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-				});
-            });
-        });
 
 </script>
