@@ -32,6 +32,15 @@ class Sts_model extends CI_Model {
 		return $query->result_array();
     }
 	
+	function get_data_keu_sts_general($puskes)
+    {		
+ 		$this->db->select('*');			
+		$this->db->where('code_cl_phc', $puskes);		
+		$this->db->order_by('tgl','desc');
+		$query = $this->db->get('keu_sts');		
+		return $query->result_array();
+    }
+	
 	function get_data_puskesmas_filter($pus)
     {				
  		$this->db->select('*');		
@@ -44,6 +53,25 @@ class Sts_model extends CI_Model {
 			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$this->session->userdata('puskes')."' where keu_anggaran.type='kel'",'left');
 			//kelurahan
 		}
+		$this->db->order_by('kode_anggaran','asc');
+		$query = $this->db->get('keu_anggaran');		
+		return $query->result_array();
+    }
+	
+	function get_data_puskesmas_isi_sts($id_puskesmas, $tgl)
+    {				
+ 		$this->db->select('*');		
+		
+		$kodepuskesmas = $this->session->userdata('puskesmas');
+		$this->db->join('keu_sts_hasil',"keu_sts_hasil.id_keu_anggaran = keu_anggaran.id_anggaran and keu_sts_hasil.code_cl_phc = '".$id_puskesmas."' and tgl='".$tgl."'",'left');
+		if(substr($kodepuskesmas, -2)=="01"){			
+			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$id_puskesmas."' where keu_anggaran.type='kec'",'left');			
+			//kecamatan
+		}else{
+			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$id_puskesmas."' where keu_anggaran.type='kel'",'left');
+			//kelurahan
+		}
+		
 		$this->db->order_by('kode_anggaran','asc');
 		$query = $this->db->get('keu_anggaran');		
 		return $query->result_array();
@@ -107,6 +135,29 @@ class Sts_model extends CI_Model {
 		);
 		
 		return $this->db->insert($this->tb, $data);				
+	}
+	function get_puskesmas_name($id){
+		$this->db->select('value');
+		$this->db->where('code', $id);
+		$query = $this->db->get("cl_phc");
+		if(!empty($query->result())){
+			foreach($query->result() as $q){
+				return $q->value;
+			}
+		}else{
+			return "";
+		}	
+	}
+	function add_sts(){
+		$datatgl = explode('/', $this->input->post('tgl'));
+		$tgl = $datatgl[2].'-'.$datatgl[1].'-'.$datatgl[0];
+		$data = array(		   
+		   'nomor' => $this->input->post('nomor') ,
+		   'tgl' => $tgl,		   		   
+		   'code_cl_phc' => $this->input->post('code_cl_phc') ,		  
+		);
+		
+		return $this->db->insert("keu_sts", $data);				
 	}
 	
 	function cek_tarif($id_anggaran){
