@@ -7,7 +7,6 @@
 <?php } ?>
 
 <section class="content">
-<form action="<?php echo base_url()?>inventory/inv_ruangan/dodel_multi" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -18,8 +17,8 @@
 	    </div>
 
 	      <div class="box-footer">
-    		<div class="col-md-9">
-			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+    		<div class="col-md-12">
+			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>sms/group/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
 			 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
 			 </div>
 	     </div>
@@ -31,27 +30,30 @@
 	  </div>
 	</div>
   </div>
-</form>
 </section>
 
 <script type="text/javascript">
 	$(function () {	
 		$("#menu_sms_gateway").addClass("active");
 		$("#menu_sms_group").addClass("active");
+
 	});
 
 	   var source = {
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id_mst_inv_ruangan', type: 'string'},
-			{ name: 'nama_ruangan', type: 'string'},
-			{ name: 'keterangan', type: 'string'},
-			{ name: 'code_cl_phc', type: 'string'},
+			{ name: 'no', type: 'number'},
+			{ name: 'anggota', type: 'number'},
+			{ name: 'id', type: 'string'},
+			{ name: 'nomor', type: 'string'},
+			{ name: 'nama', type: 'string'},
+			{ name: 'nama_grup', type: 'string'},
+			{ name: 'created_on', type: 'date'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('inventory/inv_ruangan/json'); ?>",
+		url: "<?php echo site_url('sms/group/json'); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -90,19 +92,10 @@
 				return obj.data;    
 			},
 			columns: [
-				{ text: 'Detail', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
-					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
-					}
-                 }
-                },
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -111,27 +104,28 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'ID', align: 'center', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
-				{ text: 'Nama Grup', datafield: 'code_cl_phc', columntype: 'textbox', filtertype: 'textbox', width: '60%' },
-				{ text: 'Terdaftar', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'No', align: 'center', cellsalign: 'center', datafield: 'no', columntype: 'textbox', sortable: false, filtertype: 'none', width: '5%' },
+				{ text: 'Nama Grup', datafield: 'nama', columntype: 'textbox', filtertype: 'textbox', width: '55%' },
+				{ text: 'Anggota', align: 'center', cellsalign: 'center', datafield: 'anggota', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Tanggal Dibuat', align: 'center', cellsalign: 'center', datafield: 'created_on', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy HH:mm:ss', width: '20%' },
             ]
 		});
 
 	function edit(id){
-		document.location.href="<?php echo base_url().'inventory/inv_ruangan/edit';?>/" + id;
+		document.location.href="<?php echo base_url().'sms/group/edit';?>/" + id;
 	}
 
 	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'inventory/inv_ruangan/dodel' ?>/" + id,  function(){
-				alert('data berhasil dihapus');
+			$.post("<?php echo base_url().'sms/group/dodel' ?>/" + id,  function(){
+				alert('Nomor berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 			});
@@ -160,7 +154,7 @@
             };
 
             $("select[name='code_cl_phc']").change(function(){
-				$.post("<?php echo base_url().'inventory/inv_ruangan/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
+				$.post("<?php echo base_url().'sms/group/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
 					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 				});
             });

@@ -16,7 +16,7 @@
 
 
 <section class="content">
-<form action="<?php echo base_url()?>inventory/inv_ruangan/add" method="POST" name="">
+<form action="<?php echo base_url()?>sms/pbk/{action}/{nomor}" method="POST" name="">
   <div class="row">
     <!-- left column -->
     <div class="col-md-6">
@@ -25,50 +25,47 @@
         <div class="box-header">
           <h3 class="box-title">{title_form}</h3>
         </div><!-- /.box-header -->
-
-          <div class="box-footer pull-right">
+          <div class="box-footer pull-right" style="width:100%;text-align:right">
             <button type="submit" class="btn btn-primary">Simpan</button>
             <button type="reset" class="btn btn-warning">Ulang</button>
-            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>mst/inv_ruangan'">Kembali</button>
+            <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>sms/pbk'">Kembali</button>
           </div>
           <div class="box-body">
             <div class="form-group">
-              <label>Id</label>
-              <input type="text" class="form-control" name="id_mst_inv_ruangan" placeholder="Id" readonly value="<?php 
-                if(set_value('id_mst_inv_ruangan')=="" && isset($id_mst_inv_ruangan)){
-                  echo $id_mst_inv_ruangan;
+              <label>Nomor (+62)</label>
+              <input type="text" class="form-control" name="nomor" placeholder="+62" <?php if($action=="edit") echo "readonly"; ?> value="<?php 
+                if(set_value('nomor')=="" && isset($nomor)){
+                  echo $nomor;
                 }else{
-                  echo  set_value('id_mst_inv_ruangan');
+                  echo  set_value('nomor');
                 }
                 ?>">
             </div>
             <div class="form-group">
-              <label>Nama Ruangan</label>
-              <input type="text" class="form-control" name="nama_ruangan" placeholder="Nama Ruangan" value="<?php 
-                if(set_value('nama_ruangan')=="" && isset($nama_ruangan)){
-                  echo $nama_ruangan;
+              <label>Nama</label>
+              <input type="text" class="form-control" name="nama" placeholder="Nama" value="<?php 
+                if(set_value('nama')=="" && isset($nama)){
+                  echo $nama;
                 }else{
-                  echo  set_value('nama_ruangan');
+                  echo  set_value('nama');
                 }
                 ?>">
             </div>
             <div class="form-group">
-              <label>Keterangan</label>
-              <input type="text" class="form-control" name="keterangan" placeholder="Keterangan" value="<?php 
-                if(set_value('keterangan')=="" && isset($keterangan)){
-                  echo $keterangan;
-                }else{
-                  echo  set_value('keterangan');
-                }
-                ?>">
-            </div>
-            <div class="form-group">
-              <label>Puskesmas<h1></h1></label>
-              <select  name="codepus" id="puskesmas" class="form-control">
-                  <option value="">-- Pilih Puskesmas --</option>
-                  <?php foreach($kodepuskesmas as $pus) : ?>
-                    <?php $select = $pus->code == set_value('codepus') ? 'selected' : '' ?>
-                    <option value="<?php echo $pus->code ?>" <?php echo $select ?>><?php echo $pus->value ?></option>
+              <label>Grup</label>
+              <select  name="id_sms_grup" id="id_sms_grup" class="form-control">
+                  <option value="">-- Pilih Grup --</option>
+                  <?php foreach($grupoption as $row) : ?>
+                    <?php 
+                    if(isset($id_sms_grup) && $id_sms_grup==$row->id_grup){
+                      $select = $row->id_grup == $id_sms_grup ? 'selected' : '';
+                    }elseif(set_value('id_sms_grup')!=""){
+                      $select = $row->id_grup == set_value('id_sms_grup') ? 'selected' : '';
+                    }else{
+                      $select ='';
+                    } 
+                    ?>
+                    <option value="<?php echo $row->id_grup ?>" <?php echo $select ?>><?php echo $row->nama ?></option>
                   <?php endforeach ?>
               </select>
             </div>
@@ -82,7 +79,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_inv_ruangan").addClass("active");
-    $("#menu_parameter").addClass("active");
+    $("#menu_sms_gateway").addClass("active");
+    $("#menu_sms_pbk").addClass("active");
 	});
 </script>
