@@ -8,11 +8,15 @@ class Permohonanbarang extends CI_Controller {
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
 	}
+
 	function autocomplite_barang(){
-		$search = $this->input->get('query');
-		$this->db->order_by('code','asc');
+		$search = explode("&",$this->input->server('QUERY_STRING'));
+		$search = str_replace("query=","",$search[0]);
+
 		$this->db->like("code",$search);
-		$this->db->like("uraian",$search);
+		$this->db->or_like("uraian",$search);
+		$this->db->order_by('code','asc');
+		$this->db->limit(10,0);
 		$query= $this->db->get("mst_inv_barang")->result();
 		foreach ($query as $q) {
 			$s = array();
@@ -22,13 +26,14 @@ class Permohonanbarang extends CI_Controller {
 			$s[3] = substr($q->code, 6,2);
 			$s[4] = substr($q->code, 8,2);
 			$barang[] = array(
-				'code' => $q->code , 
-				'code_tampil' => implode(".", $s) , 
-				'uraian' => $q->uraian, 
+				'code_tampil' 	=> implode(".", $s), 
+				'code' 			=> $q->code , 
+				'uraian' 		=> $q->uraian, 
 			);
 		}
 		echo json_encode($barang);
 	}
+
 	function json(){
 		$this->authentication->verify('inventory','show');
 

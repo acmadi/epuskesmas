@@ -59,22 +59,25 @@
 
             return false;
         });
+
         $("#jqxinput").jqxInput(
           {
+          placeHolder: " Ketik Kode atau Nama Barang ",
           theme: 'classic',
-          width: "100%",
-          height: 30,
+          width: '100%',
+          height: '30px',
+          minLength: 2,
           source: function (query, response) {
             var dataAdapter = new $.jqx.dataAdapter
             (
               {
-                  datatype: "json",
-                    datafields: [
+                datatype: "json",
+                  datafields: [
                   { name: 'uraian', type: 'string'},
-                  { name: 'code', type: 'number'},
+                  { name: 'code', type: 'string'},
                   { name: 'code_tampil', type: 'string'}
                 ],
-                url: '<?php echo base_url().'inventory/permohonanbarang/autocomplite_barang' ?>'
+                url: '<?php echo base_url().'inventory/permohonanbarang/autocomplite_barang'; ?>'
               },
               {
                 autoBind: true,
@@ -89,23 +92,14 @@
                     }));
                   }
                 }
-              }
-            );
+              });
           }
-        });
-
-        $("#jqxinput").select(function(){
+        }).select(function(){
             var codebarang = $(this).val();
             var res = codebarang.split(" | ");
-            document.getElementById("v_nama_barang").value = res[1];
-            document.getElementById("v_kode_barang").value = res[0].replace(/\./g,"");
+            $("#v_nama_barang").val(res[1]);
+            $("#v_kode_barang").val(res[0].replace(/\./g,""));
         });
-/*        var countries = new Array(<?php 
-          foreach ($kodebarang as $barang) {
-          
-          echo "\"".$barang->code."#".$barang->uraian."\", ";
-        }?>);
-        $("#code_mst_inv_barang").jqxInput({placeHolder: "Kode Nama Barang", height: 25, width: 200, minLength: 1,  source: countries });        */
     });
 </script>
 
@@ -123,7 +117,7 @@
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>
-              <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" placeholder="Kode Barang" type="text" value="<?php 
+              <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" type="text" value="<?php 
                 if(set_value('code_mst_inv')=="" && isset($code_mst_inv_barang)){
                   $s = array();
                   $s[0] = substr($code_mst_inv_barang, 0,2);
