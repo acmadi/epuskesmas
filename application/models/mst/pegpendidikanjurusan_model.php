@@ -17,7 +17,8 @@ class Pegpendidikanjurusan_model extends CI_Model {
     	$this->db->select('*');
 	    $this->db->from('mst_peg_jurusan');
 	    $this->db->join('mst_peg_tingkatpendidikan', 'mst_peg_jurusan.id_mst_peg_tingkatpendidikan = mst_peg_tingkatpendidikan.id_tingkat', 'inner');
-	    $this->db->join('mst_peg_rumpunpendidikan', 'mst_peg_jurusan.id_mst_peg_rumpunpendidikan = mst_peg_rumpunpendidikan.id_rumpun', 'inner'); 
+	    $this->db->join('mst_peg_rumpunpendidikan', 'mst_peg_jurusan.id_mst_peg_rumpunpendidikan = mst_peg_rumpunpendidikan.id_rumpun', 'inner');
+	    $this->db->limit($limit,$start); 
 	    $query = $this->db->get();
     	return $query->result();
 
