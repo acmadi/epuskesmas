@@ -94,7 +94,9 @@
                 }
               });
           }
-        }).select(function(){
+        });
+
+        $("#jqxinput").select(function(){
             var codebarang = $(this).val();
             var res = codebarang.split(" | ");
             $("#v_nama_barang").val(res[1]);

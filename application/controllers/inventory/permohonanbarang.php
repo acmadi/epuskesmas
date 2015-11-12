@@ -12,6 +12,7 @@ class Permohonanbarang extends CI_Controller {
 	function autocomplite_barang(){
 		$search = explode("&",$this->input->server('QUERY_STRING'));
 		$search = str_replace("query=","",$search[0]);
+		$search = str_replace("+"," ",$search);
 
 		$this->db->like("code",$search);
 		$this->db->or_like("uraian",$search);
