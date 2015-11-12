@@ -8,7 +8,19 @@ class Permohonanbarang extends CI_Controller {
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
 	}
-
+	function autocomplite_barang(){
+		$search = $this->input->get('query');
+		$this->db->like("code",$search);
+		$this->db->like("uraian",$search);
+		$query= $this->db->get("mst_inv_barang")->result();
+		foreach ($query as $q) {
+			$barang[] = array(
+				'code' => $q->code , 
+				'uraian' => $q->uraian, 
+			);
+		}
+		echo json_encode($barang);
+	}
 	function json(){
 		$this->authentication->verify('inventory','show');
 
@@ -380,27 +392,7 @@ class Permohonanbarang extends CI_Controller {
 		}
 	}
 
-	public function search()
-	{
-		// tangkap variabel keyword dari URL
-		$keyword = $this->uri->segment(3);
-
-		// cari di database
-		$data = $this->db->from('mts_inv_barang')->like('uraian',$keyword)->get();	
-
-		// format keluaran di dalam array
-		foreach($data->result() as $row)
-		{
-			$arr['query'] = $keyword;
-			$arr['suggestions'][] = array(
-				'code'	=>$row->code,
-				'uraian'	=>$row->uraian,
-
-			);
-		}
-		// minimal PHP 5.2
-		echo json_encode($arr);
-	}
+	
 	public function get_autonama() {
         $kode = $this->input->post('code_mst_inv_barang',TRUE); //variabel kunci yang di bawa dari input text id kode
         $query = $this->mkota->get_allkota(); //query model

@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
     $(function(){
 
@@ -5,7 +6,7 @@
         close_popup();
       });
 
-      $('#code_mst_inv_barang').change(function(){
+      /*$('#code_mst_inv_barang').change(function(){
           var code = $(this).val();
           $.ajax({
             url : '<?php echo base_url().'inventory/permohonanbarang/get_nama' ?>',
@@ -18,7 +19,7 @@
 
           return false;
         });
-
+*/
         $('#form-ss').submit(function(){
             var data = new FormData();
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
@@ -27,7 +28,7 @@
             data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
             data.append('jumlah', $('input[name="jumlah"]').val());
             data.append('nama_barang', $('input[name="nama_barang"]').val());
-            data.append('code_mst_inv_barang', $('select[name="code_mst_inv_barang"]').val());
+            data.append('code_mst_inv_barang', $('#v_kode_barang').val());
             data.append('keterangan', $('#keterangan').val());
             $.ajax({
                 cache : false,
@@ -59,8 +60,55 @@
 
             return false;
         });
+        $("#jqxinput").jqxInput(
+          {
+          theme: 'classic',
+          width: 200,
+          height: 25,
+          source: function (query, response) {
+            var dataAdapter = new $.jqx.dataAdapter
+            (
+              {
+                  datatype: "json",
+                    datafields: [
+                  { name: 'uraian', type: 'string'},
+                  { name: 'code', type: 'number'}
+                ],
+                url: '<?php echo base_url().'inventory/permohonanbarang/autocomplite_barang' ?>'
+              },
+              {
+                autoBind: true,
+                formatData: function (data) {
+                  data.query = query;
+                  return data;
+                },
+                loadComplete: function (data) {
+                  if (data.length > 0) {
+                    response($.map(data, function (item) {
+                      return item.code+' | '+item.uraian;
+                    }));
+                  }
+                }
+              }
+            );
+          }
+        });
+
+        $("#jqxinput").change(function(){
+            var codebarang = document.getElementById("jqxinput").value;
+            var res = codebarang.split(" | ");
+            document.getElementById("v_nama_barang").value = res[1];
+            document.getElementById("v_kode_barang").value = res[0];
+        });
+/*        var countries = new Array(<?php 
+          foreach ($kodebarang as $barang) {
+          
+          echo "\"".$barang->code."#".$barang->uraian."\", ";
+        }?>);
+        $("#code_mst_inv_barang").jqxInput({placeHolder: "Kode Nama Barang", height: 25, width: 200, minLength: 1,  source: countries });        */
     });
 </script>
+
 <div style="padding:15px">
   <div id="notice" class="alert alert-success alert-dismissable" <?php if ($notice==""){ echo 'style="display:none"';} ?> >
     <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
@@ -75,10 +123,25 @@
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>
-               <select  name="code_mst_inv_barang" id="code_mst_inv_barang" class="form-control">
+              <input id="jqxinput" class="form-control" name="code_mst_inv" type="text" value="<?php 
+                if(set_value('code_mst_inv_barang')=="" && isset($code_mst_inv_barang)){
+                  echo $code_mst_inv_barang;
+                }else{
+                  echo  set_value('code_mst_inv_barang');
+                }
+                ?>" />
+              <input id="v_kode_barang" class="form-control" name="code_mst_inv_barang" type="hidden" value="<?php 
+                if(set_value('code_mst_inv_barang')=="" && isset($code_mst_inv_barang)){
+                  echo $code_mst_inv_barang;
+                }else{
+                  echo  set_value('code_mst_inv_barang');
+                }
+                ?>" />
+              <!--<input type="text" class="form-control" id="code_mst_inv_barang" name="code_mst_inv_barang"> 
+                  <select  name="code_mst_inv_barang" id="code_mst_inv_barang" class="form-control">
                   <option value=""
                   </option>
-                  <?php foreach($kodebarang as $barang) : ?>
+                  <?php /*foreach($kodebarang as $barang) : ?>
                     <?php 
                     if(isset($code_mst_inv_barang) && $code_mst_inv_barang==$barang->code){
                       $select = $barang->code == $code_mst_inv_barang ? 'selected' : '';
@@ -89,21 +152,18 @@
                     } 
                     ?>
                     <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code.' - '.$barang->uraian ?></option>
-                  <?php endforeach ?>
-              </select>
+                  <?php endforeach */?>
+              </select>-->
             </div>
             <div class="form-group">
               <label>Nama Baranga</label>
-              <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" value="<?php
+              <input type="text" class="autocomplete form-control" id="v_nama_barang" name="nama_barang" placeholder="Nama Barang" value="<?php
               if(set_value('nama_barang')=="" && isset($nama_barang)){
                   echo $nama_barang;
                 }else{
                   echo  set_value('nama_barang');
                 }
                 ?>">
-              <!--<select name="nama_barang" id="nama_barang"  class="form-control">
-                  <option value="">Pilih Nama Barang</option>
-              </select>-->
             </div>
             <div class="form-group">
               <label>Jumlah</label>
