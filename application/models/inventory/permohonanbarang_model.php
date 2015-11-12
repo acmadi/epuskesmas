@@ -9,7 +9,15 @@ class Permohonanbarang_model extends CI_Model {
 		$this->lang	  = $this->config->item('language');
     }
     
-
+    function get_data_status()
+    {	
+    	$this->db->where("mst_inv_pilihan.tipe",'status_pengadaan');
+ 		$this->db->select('mst_inv_pilihan.*');		
+ 		$this->db->join('mst_inv_pilihan', "mst_inv_pilihan.code = inv_permohonan_barang.id_inv_permohonan_barang");
+ 		$this->db->order_by('mst_inv_pilihan.code','asc');
+		$query = $this->db->get($this->tabel);	
+		return $query->result_array();	
+    }
     function get_data($start=0,$limit=999999,$options=array())
     {	
     	$this->db->select("$this->tabel.*,mst_inv_ruangan.nama_ruangan,mst_inv_pilihan.value");

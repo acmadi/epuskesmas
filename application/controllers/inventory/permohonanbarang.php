@@ -100,13 +100,15 @@ class Permohonanbarang extends CI_Controller {
 				'jumlah_unit'			=> $act->jumlah_unit,
 				'nama_ruangan'			=> $act->nama_ruangan,
 				'keterangan'			=> $act->keterangan,
-				'value'	=> $act->value,
+				//'value'					=> $act->value,
 				'detail'	=> 1,
 				'edit'		=> 1,
 				'delete'	=> 1
 			);
 		}
 
+
+		
 		$size = sizeof($rows_all);
 		$json = array(
 			'TotalRows' => (int) $size,
@@ -126,6 +128,7 @@ class Permohonanbarang extends CI_Controller {
 		$this->authentication->verify('inventory','edit');
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Daftar Permohonan Barang";
+		$data['statusdata'] = $this->permohonanbarang_model->get_data_status();
 		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
 
 		$kodepuskesmas = $this->session->userdata('puskesmas');
@@ -134,6 +137,7 @@ class Permohonanbarang extends CI_Controller {
 		}else {
 			$this->db->like('code','P'.$kodepuskesmas);
 		}
+
 		$data['datapuskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
 		$data['content'] = $this->parser->parse("inventory/permohonan_barang/show",$data,true);
 

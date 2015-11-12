@@ -1,3 +1,4 @@
+
 <?php if($this->session->flashdata('alert')!=""){ ?>
 <div class="alert alert-success alert-dismissable">
 	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -60,6 +61,7 @@
 			{ name: 'nama_ruangan', type: 'string'},
 			{ name: 'keterangan', type: 'text'},
 			{ name: 'value', type: 'string'},
+			//{ name: 'ShipCountry', map: 'm\\:properties>d\\:ShipCountry', type: 'string' },
 			{ name: 'detail', type: 'number'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
@@ -97,7 +99,7 @@
 			width: '100%',
 			selectionmode: 'singlerow',
 			source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100', '200'],
-			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
+			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: true,
 			rendergridrows: function(obj)
 			{
 				return obj.data;    
@@ -130,12 +132,27 @@
 					}
                  }
                 },
-                { text: 'No', datafield: 'no',sortable: false, filtertype: 'none', width: '5%' },
-				{ text: 'Tanggal Permohonan', datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
-				{ text: 'Puskesmas-Ruangan', datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Jumlah Barang', datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Keterangan', datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
-				{ text: 'Status', datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '15%' }
+                { text: 'No', datafield: 'no',editable:false ,sortable: false, filtertype: 'none', width: '5%' },
+				{ text: 'Tanggal Permohonan',editable:false , datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
+				{ text: 'Puskesmas-Ruangan', editable:false ,datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Jumlah Barang', editable:false ,datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
+				//{ text: 'Status', datafield: 'value', columntype: 'dropdownlist', filtertype: 'textbox', width: '15%' }
+				{
+                        text: 'Ship Country', datafield: 'value', width: 150, columntype: 'dropdownlist',
+                        createeditor: function (row, column, editor) {
+                            // assign a new data source to the dropdownlist.
+                            var list = [<?php foreach ($statusdata as $key) {?>
+							"<?=$key['tipe']?>",
+							<?php } ?>];
+                            editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
+                        },
+                        // update the editor's value before saving it.
+                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                            // return the old value, if the new value is empty.
+                            if (newvalue == "") return oldvalue;
+                        }
+                 }
             ]
 		});
 
