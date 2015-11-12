@@ -10,7 +10,7 @@ class Permohonanbarang extends CI_Controller {
 	}
 	function autocomplite_barang(){
 		$search = $this->input->get('query');
-		$this->db->order_by('code');
+		$this->db->order_by('code','asc');
 		$this->db->like("code",$search);
 		$this->db->like("uraian",$search);
 		$query= $this->db->get("mst_inv_barang")->result();

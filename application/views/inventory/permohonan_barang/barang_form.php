@@ -131,7 +131,7 @@
                   $s[2] = substr($code_mst_inv_barang, 4,2);
                   $s[3] = substr($code_mst_inv_barang, 6,2);
                   $s[4] = substr($code_mst_inv_barang, 8,2);
-                  echo implode(".", $s);
+                  echo implode(".", $s).' | '.$nama_barang;
                 }else{
                   echo  set_value('code_mst_inv');
                 }
