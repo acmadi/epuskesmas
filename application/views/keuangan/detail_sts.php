@@ -1,4 +1,13 @@
-
+	<style>        
+        .min {
+            color: black\9;
+            background-color: #FFFCCA\9;
+        }        
+        .min:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected), .jqx-widget .min:not(.jqx-grid-cell-hover):not(.jqx-grid-cell-selected) {
+            color: black;
+            background-color: #FFFCCA	;
+        }
+    </style>
 <?php if($this->session->flashdata('alert')!=""){ ?>
 <div class="alert alert-success alert-dismissable">
 	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -40,7 +49,7 @@
 							<b>Tanggal</b>
 						</td>
 						<td>
-							<?=$ds['tgl']?>
+							<?=$tgl2?>
 						</td>
 						<td>
 						</td>
@@ -281,7 +290,8 @@
 			n = parseFloat(n);
 			return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 		}
-        $(document).ready(function () {   
+        $(document).ready(function () {
+			
 			//terbilang
 			document.getElementById("terbilangTotal").innerHTML = terbilang(<?php echo intval($data_sts_total); ?>);
 			document.getElementById("angkaTotal").innerHTML = formatMoney(<?php echo intval($data_sts_total); ?>,'Rp');
@@ -393,7 +403,7 @@
                   { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '15%' },
                   { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '20%' },
 				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '20%' },                                    
-				  { text: 'Volume', dataField: "Volume", editable:<?php echo $ds['status']=='tutup' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '10%' },                                    
+				  { text: 'Volume', dataField: "Volume",cellClassName: "min", editable:<?php echo $ds['status']=='tutup' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '10%' },                                    
 				  { text: 'Tarif', dataField: "Tarif", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '15%' },                                    
 				  { text: 'Subtotal', dataField: "Subtotal", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '20%' }      
                 ]

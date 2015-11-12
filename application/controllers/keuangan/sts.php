@@ -5,7 +5,13 @@ class Sts extends CI_Controller {
 		parent::__construct();
 		$this->load->model('keuangan/sts_model');
 	}
-
+	function convert_tgl($tgl){
+		//2015-11-12
+		$dataTgl = explode('-',$tgl);
+		$tgl = $dataTgl[2].'-'.$dataTgl[1].'-'.$dataTgl[0];
+		return $tgl;		
+	}
+		
 	function index(){
 		header("location:master_sts/anggaran");
 	}
@@ -16,7 +22,7 @@ class Sts extends CI_Controller {
 		if(!empty($this->session->userdata('puskes')) and  $this->session->userdata('puskes') != '0'){
 			$data['ambildata'] = $this->sts_model->get_data_keu_sts_general($this->session->userdata('puskes'));
 			foreach($data['ambildata'] as $d){
-				$txt = $d["tgl"]." \t ".$d["nomor"]." \t ".$d["total"]." \t ".$d["status"]." \t <a href=\"".base_url()."keuangan/sts/detail/".$d['tgl']."\">detail</a>  ".($d['status'] != "tutup" ? "| <a onclick=\"doDeleteSts('".$d['tgl']."')\" href=\"#\" >delete</a>" : "").  "\n ";				
+				$txt = $this->convert_tgl($d["tgl"])." \t ".$d["nomor"]." \t ".$d["total"]." \t ".$d["status"]." \t <a href=\"".base_url()."keuangan/sts/detail/".$d['tgl']."\"><img border=0 src='".base_url()."media/images/16_edit.gif'></a>  \t".($d['status'] != "tutup" ? "  <a onclick=\"doDeleteSts('".$d['tgl']."')\" href=\"#\" ><img border=0 src='".base_url()."media/images/16_del.gif'></a>" : "<img border=0 src='".base_url()."media/images/16_lock.gif'>").  "\n ";				
 				echo $txt;
 			}
 		}		
@@ -97,6 +103,7 @@ class Sts extends CI_Controller {
 		//$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
 		$data['nomor'] = $this->generate_nomor(date("Y-m-d H:i:s"));		
 		$data['tgl'] = $tgl;
+		$data['tgl2'] = $this->convert_tgl($tgl);
 		$data['content'] = $this->parser->parse("keuangan/detail_sts",$data,true);		
 				
 		$this->template->show($data,"home");
