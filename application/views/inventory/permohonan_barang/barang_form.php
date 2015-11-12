@@ -94,7 +94,7 @@
           }
         });
 
-        $("#jqxinput").change(function(){
+        $("#jqxinput").select(function(){
             var codebarang = $(this).val();
             var res = codebarang.split(" | ");
             document.getElementById("v_nama_barang").value = res[1];
@@ -124,12 +124,18 @@
             <div class="form-group">
               <label>Kode Barang</label>
               <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" placeholder="Kode Barang" type="text" value="<?php 
-                if(set_value('code_mst_inv_barang')=="" && isset($code_mst_inv_barang)){
-                  echo $code_mst_inv_barang;
+                if(set_value('code_mst_inv')=="" && isset($code_mst_inv_barang)){
+                  $s = array();
+                  $s[0] = substr($code_mst_inv_barang, 0,2);
+                  $s[1] = substr($code_mst_inv_barang, 2,2);
+                  $s[2] = substr($code_mst_inv_barang, 4,2);
+                  $s[3] = substr($code_mst_inv_barang, 6,2);
+                  $s[4] = substr($code_mst_inv_barang, 8,2);
+                  echo implode(".", $s);
                 }else{
-                  echo  set_value('code_mst_inv_barang');
+                  echo  set_value('code_mst_inv');
                 }
-                ?>" />
+                ?>" <?php if(isset($disable)){if($disable='disable'){echo "readonly";}} ?>/>
               <input id="v_kode_barang" class="form-control" name="code_mst_inv_barang" type="hidden" value="<?php 
                 if(set_value('code_mst_inv_barang')=="" && isset($code_mst_inv_barang)){
                   echo $code_mst_inv_barang;

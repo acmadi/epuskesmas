@@ -10,6 +10,7 @@ class Permohonanbarang extends CI_Controller {
 	}
 	function autocomplite_barang(){
 		$search = $this->input->get('query');
+		$this->db->order_by('code');
 		$this->db->like("code",$search);
 		$this->db->like("uraian",$search);
 		$query= $this->db->get("mst_inv_barang")->result();
@@ -366,6 +367,7 @@ class Permohonanbarang extends CI_Controller {
 			$data['action']			= "edit";
 			$data['kode']			= $kode;
 			$data['code_cl_phc']	= $code_cl_phc;
+			$data['disable']			= "disable";
 			die($this->parser->parse('inventory/permohonan_barang/barang_form', $data));
 		}else{
 			$values = array(
