@@ -1,4 +1,4 @@
-
+</style>
 <script type="text/javascript">
     $(function(){
 
@@ -63,8 +63,8 @@
         $("#jqxinput").jqxInput(
           {
           theme: 'classic',
-          width: 200,
-          height: 25,
+          width: "100%",
+          height: 30,
           source: function (query, response) {
             var dataAdapter = new $.jqx.dataAdapter
             (
