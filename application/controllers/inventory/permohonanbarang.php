@@ -14,8 +14,15 @@ class Permohonanbarang extends CI_Controller {
 		$this->db->like("uraian",$search);
 		$query= $this->db->get("mst_inv_barang")->result();
 		foreach ($query as $q) {
+			$s = array();
+			$s[0] = substr($q->code, 0,2);
+			$s[1] = substr($q->code, 2,2);
+			$s[2] = substr($q->code, 4,2);
+			$s[3] = substr($q->code, 6,2);
+			$s[4] = substr($q->code, 8,2);
 			$barang[] = array(
 				'code' => $q->code , 
+				'code_tampil' => implode(".", $s) , 
 				'uraian' => $q->uraian, 
 			);
 		}

@@ -18,8 +18,7 @@
           });
 
           return false;
-        });
-*/
+        });*/      
         $('#form-ss').submit(function(){
             var data = new FormData();
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
@@ -72,7 +71,8 @@
                   datatype: "json",
                     datafields: [
                   { name: 'uraian', type: 'string'},
-                  { name: 'code', type: 'number'}
+                  { name: 'code', type: 'number'},
+                  { name: 'code_tampil', type: 'string'}
                 ],
                 url: '<?php echo base_url().'inventory/permohonanbarang/autocomplite_barang' ?>'
               },
@@ -85,7 +85,7 @@
                 loadComplete: function (data) {
                   if (data.length > 0) {
                     response($.map(data, function (item) {
-                      return item.code+' | '+item.uraian;
+                      return item.code_tampil +' | '+item.uraian;
                     }));
                   }
                 }
@@ -95,10 +95,10 @@
         });
 
         $("#jqxinput").change(function(){
-            var codebarang = document.getElementById("jqxinput").value;
+            var codebarang = $(this).val();
             var res = codebarang.split(" | ");
             document.getElementById("v_nama_barang").value = res[1];
-            document.getElementById("v_kode_barang").value = res[0];
+            document.getElementById("v_kode_barang").value = res[0].replace(/\./g,"");
         });
 /*        var countries = new Array(<?php 
           foreach ($kodebarang as $barang) {
@@ -123,7 +123,7 @@
           <div class="box-body">
             <div class="form-group">
               <label>Kode Barang</label>
-              <input id="jqxinput" class="form-control" name="code_mst_inv" type="text" value="<?php 
+              <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" placeholder="Kode Barang" type="text" value="<?php 
                 if(set_value('code_mst_inv_barang')=="" && isset($code_mst_inv_barang)){
                   echo $code_mst_inv_barang;
                 }else{
@@ -157,7 +157,7 @@
             </div>
             <div class="form-group">
               <label>Nama Baranga</label>
-              <input type="text" class="autocomplete form-control" id="v_nama_barang" name="nama_barang" placeholder="Nama Barang" value="<?php
+              <input type="text" class="autocomplete form-control" id="v_nama_barang" name="nama_barang"  placeholder="Nama Barang" value="<?php
               if(set_value('nama_barang')=="" && isset($nama_barang)){
                   echo $nama_barang;
                 }else{
