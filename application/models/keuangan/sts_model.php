@@ -14,6 +14,27 @@ class Sts_model extends CI_Model {
  		$this->db->select('*');		
 		$query = $this->db->get($this->tb);		
 		return $query->result_array();
+    }
+	
+	function get_data_sts_total($tgl, $puskes)
+    {
+ 		$this->db->select('sum(jml) as n');				
+		$this->db->where('tgl',$tgl);
+		$this->db->where('code_cl_phc',$puskes);
+		$query = $this->db->get('keu_sts_hasil');
+		foreach($query->result() as $q){
+			return $q->n;
+		}		
+    }
+	
+	function get_data_sts($tgl, $puskes)
+    {
+ 		$this->db->select('*');		
+		$this->db->where('tgl', $tgl);
+		$this->db->where('code_cl_phc', $puskes);
+		$this->db->join('cl_phc','cl_phc.code = keu_sts.code_cl_phc');
+		$query = $this->db->get('keu_sts');		
+		return $query->result_array();
     }	
 	function get_data_kode_rekening()
     {
@@ -174,6 +195,117 @@ class Sts_model extends CI_Model {
 				}
 		}
 	}
+	function cek_volume($tgl, $puskes, $id_keu_anggaran){
+		$this->db->select('count(tgl) as n');
+		$this->db->where('id_keu_anggaran', $id_keu_anggaran);
+		$this->db->where('tgl', $tgl);
+		$this->db->where('code_cl_phc', $puskes);
+		$query = $this->db->get('keu_sts_hasil');
+		
+		foreach($query->result() as $q){
+				if($q->n > 0){
+					return true;
+					//ready update
+				}else{
+					return false;
+					// need input
+				}
+		}
+		
+	}
+	function update_total_sts($tgl, $code_cl_phc, $total){
+		$data=array(
+			'total'=> $total
+		);
+		$this->db->where('tgl', $tgl);
+		$this->db->where('code_cl_phc', $code_cl_phc);
+		$this->db->update('keu_sts', $data);				
+	}
+	function update_volume(){
+		$data = array(		   
+		   'tgl' => $this->input->post('tgl'),
+		   'id_keu_anggaran' => $this->input->post('id_keu_anggaran'),
+		   'tarif' => $this->input->post('tarif'),
+		   'vol' => $this->input->post('vol'),
+		   'jml' => ($this->input->post('vol')*$this->input->post('tarif')),
+		   'code_cl_phc' => $this->session->userdata('puskes')
+		);
+		if($this->cek_volume($data['tgl'], $data['code_cl_phc'], $data['id_keu_anggaran'])){
+			//update
+			$this->db->where('id_keu_anggaran', $data['id_keu_anggaran']);
+			$this->db->where('tgl', $data['tgl']);
+			$this->db->where('code_cl_phc', $data['code_cl_phc']);
+			$this->db->update('keu_sts_hasil', $data);
+		}else{
+			//input
+			$this->db->insert('keu_sts_hasil', $data);
+			
+		}
+		$total = $this->get_data_sts_total($data['tgl'], $data['code_cl_phc']);
+		$this->update_total_sts($data['tgl'], $data['code_cl_phc'], $total);
+		return $total;
+		
+		
+	}
+	function update_ttd(){
+		$data = array(		   
+		   'ttd_pimpinan_nip' => $this->input->post('ttd_pimpinan_nip'),
+		   'ttd_pimpinan_nama' => $this->input->post('ttd_pimpinan_nama'),
+		   'ttd_penerima_nip' => $this->input->post('ttd_penerima_nip'),
+		   'ttd_penerima_nama' => $this->input->post('ttd_penerima_nama'),
+		   'ttd_penyetor_nip' => $this->input->post('ttd_penyetor_nip'),
+		   'ttd_penyetor_nama' => $this->input->post('ttd_penyetor_nama')
+		);
+				
+		//update
+		$this->db->where('tgl', $this->input->post('tgl'));		
+		$this->db->where('code_cl_phc', $this->input->post('puskes'));
+		$this->db->update('keu_sts', $data);
+		
+	}	
+	
+	function tutup_sts(){
+		$data = array(		   
+			'tgl' => $this->input->post('tgl'),
+			'code_cl_phc' => $this->input->post('puskes'),
+			'status' => 'tutup'
+		);
+				
+		//update
+		$this->db->where('tgl', $this->input->post('tgl'));		
+		$this->db->where('code_cl_phc', $this->input->post('puskes'));
+		$this->db->update('keu_sts', $data);
+		
+	}
+	
+	function rekap_sts_rekening(){
+		$tgl = $this->input->post('tgl');
+		$code_cl_phc = $this->input->post('puskes');
+		$this->db->select("sum(jml) as total, kode_rekening, tgl, code_cl_phc ");
+		$this->db->join("keu_anggaran","keu_sts_hasil.id_keu_anggaran = keu_anggaran.id_anggaran");
+		$this->db->where("tgl",$tgl);
+		$this->db->where("code_cl_phc",$code_cl_phc);
+		$this->db->group_by("kode_rekening");
+		$query=$this->db->get("keu_sts_hasil");
+		
+		if(!empty($query->result())){
+			foreach($query->result() as $q){
+				#echo $q->kode_rekening." # ".$q->total." # ".$q->code_cl_phc." # ".$q->tgl."<br>";
+				
+				$data = array(		   
+					'tgl' => $q->tgl,
+					'code_cl_phc' => $q->code_cl_phc,
+					'jml' => $q->total,
+					'code_mst_keu_rekening' => $q->kode_rekening
+				);
+						
+				
+				$this->db->insert('keu_sts_hasil_rekap', $data);
+				
+			}
+		}
+	
+	}
 	
 	function add_tarif(){
 		$data = array(		   
@@ -210,5 +342,16 @@ class Sts_model extends CI_Model {
 				
 		$this->db->where('sub_id', $this->input->post('id_anggaran'));
 		return $this->db->delete($this->tb);
+	}
+	
+	function delete_sts($tgl){		
+		$this->db->where('tgl', $tgl);
+		$this->db->where('code_cl_phc', $this->session->userdata('puskes'));
+		$this->db->delete('keu_sts');
+		
+		$this->db->where('tgl', $tgl);
+		$this->db->where('code_cl_phc', $this->session->userdata('puskes'));
+		$this->db->delete('keu_sts_hasil');
+		
 	}
 }

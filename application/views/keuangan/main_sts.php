@@ -4,6 +4,8 @@
 }
 
 </style>
+
+
 <?php if($this->session->flashdata('alert')!=""){ ?>
 <div class="alert alert-success alert-dismissable">
 	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -160,9 +162,17 @@
 		}
 	</script>
 	<script type="text/javascript">
+	
+		function doDeleteSts(tgl){
+			if(confirm('hapus ?')){
+				$.post( '<?php echo base_url()?>keuangan/sts/delete_sts', {tgl:tgl},function( data ) {
+					$("#treeGrid").jqxTreeGrid('updateBoundData');		
+				});
+			}
+		}
         $(document).ready(function () {
 			<?php					
-				if(empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')==0){										
+				if(empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')=='0'){										
 			?>				
 				$("#buttonTambah").hide();
 			<?php
@@ -398,7 +408,7 @@
                   { text: 'Action', dataField: "tombol", align: 'center', width: '20%' },
                   { text: 'Tanggal', dataField: "tgl", align: 'center', width: '20%' },				  
                   { text: 'Nomor', dataField: "nomor", align: 'center', width: '20%' },				  
-                  { text: 'Total', dataField: "total", align: 'center', width: '20%' },				  
+                  { text: 'Total', dataField: "total", cellsFormat: "f", cellsAlign: 'right', align: 'right', width: '20%' },				  
                   { text: 'Status', dataField: "status", align: 'center', width: '20%' },				  
 				  			
                 ]

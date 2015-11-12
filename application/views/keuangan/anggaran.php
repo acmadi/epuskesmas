@@ -212,7 +212,7 @@
 					if(typeof(arr[1]) === 'object'){
 						var arr2 = $.map(arr[1], function(el) { return el });
 						//input data
-						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[6], kode_anggaran:arr[5], uraian : arr[4], type : arr[8]},function( data ) {
+						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[6], kode_anggaran:arr[4], uraian : arr[5], type : arr[8]},function( data ) {
 								$("#treeGrid").jqxTreeGrid('updateBoundData');
 						});
 					}else{			

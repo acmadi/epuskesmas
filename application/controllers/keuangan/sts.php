@@ -16,7 +16,7 @@ class Sts extends CI_Controller {
 		if(!empty($this->session->userdata('puskes')) and  $this->session->userdata('puskes') != '0'){
 			$data['ambildata'] = $this->sts_model->get_data_keu_sts_general($this->session->userdata('puskes'));
 			foreach($data['ambildata'] as $d){
-				$txt = $d["tgl"]." \t ".$d["nomor"]." \t ".$d["total"]." \t ".$d["status"]." \t <a href=\"".base_url()."keuangan/sts/detail/".$d['tgl']."\">detail</a> \n ";				
+				$txt = $d["tgl"]." \t ".$d["nomor"]." \t ".$d["total"]." \t ".$d["status"]." \t <a href=\"".base_url()."keuangan/sts/detail/".$d['tgl']."\">detail</a>  ".($d['status'] != "tutup" ? "| <a onclick=\"doDeleteSts('".$d['tgl']."')\" href=\"#\" >delete</a>" : "").  "\n ";				
 				echo $txt;
 			}
 		}		
@@ -65,6 +65,9 @@ class Sts extends CI_Controller {
 		$this->authentication->verify('keuangan','add');
 		$this->session->set_userdata('puskes',$this->input->post('puskes'));
 	}
+	
+	
+	
 	function general(){
 		$this->authentication->verify('keuangan','add');
 		$data['data_puskesmas']	= $this->sts_model->get_data_puskesmas();
@@ -88,8 +91,10 @@ class Sts extends CI_Controller {
 		$data['data_puskesmas']	= $this->sts_model->get_data_puskesmas();
 		$data['title_group'] = "Detail Surat Tanda Setoran";
 		$data['title_form'] = "Detail Surat Tanda Setoran";
-		$data['ambildata'] = $this->sts_model->get_data();
-		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
+		$data['data_sts'] = $this->sts_model->get_data_sts($tgl, $this->session->userdata('puskes'));
+		$data['data_sts_total'] = $this->sts_model->get_data_sts_total($tgl, $this->session->userdata('puskes'));
+		//$data['ambildata'] = $this->sts_model->get_data();
+		//$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
 		$data['nomor'] = $this->generate_nomor(date("Y-m-d H:i:s"));		
 		$data['tgl'] = $tgl;
 		$data['content'] = $this->parser->parse("keuangan/detail_sts",$data,true);		
@@ -136,4 +141,37 @@ class Sts extends CI_Controller {
 		}
 		
 	}
+	
+	function update_volume(){		
+		$this->authentication->verify('keuangan','edit');		
+		echo $this->sts_model->update_volume();
+
+	}
+	
+	function tutup_sts(){		
+		$this->authentication->verify('keuangan','edit');		
+		$this->sts_model->tutup_sts();
+		$this->sts_model->rekap_sts_rekening();
+		#redirect(base_url().'keuangan/sts/general', 'refresh');
+
+	}
+	
+	function update_ttd(){		
+		$this->authentication->verify('keuangan','edit');		
+		#var_dump($_POST);
+		$this->sts_model->update_ttd();
+		if(!empty($this->input->post('delete'))){
+			$this->tutup_sts();
+		}
+		redirect(base_url().'keuangan/sts/general', 'refresh');
+	}
+	
+	function delete_sts(){
+		$this->authentication->verify('keuangan','edit');
+		$tgl=$this->input->post('tgl');
+		$this->sts_model->delete_sts($tgl);
+		redirect(base_url().'keuangan/sts/general', 'refresh');
+	}
+	
+	
 }

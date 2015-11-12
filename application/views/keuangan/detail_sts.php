@@ -14,56 +14,160 @@
     <div class="col-md-12">
       <!-- general form elements -->
       <div class="box box-primary">
+		<?php foreach($data_sts as $ds) { ?>
+		<div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Data Penanggung Jawab <?php if($ds['status']=='tutup') echo "<b style=\"color:red\"> [STS TELAH TERTUTUP]</b>"  ?></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <table class="table table-condensed">
+					
+					<tr>
+						<td></td>
+						<td>
+							<b>Nomor</b>
+						</td>
+						<td>
+							<?=$ds['nomor']?>
+						</td>
+						<td>
+						</td>
+						<td></td>
+                    </tr>
+					<tr>
+						<td></td>
+						<td>
+							<b>Tanggal</b>
+						</td>
+						<td>
+							<?=$ds['tgl']?>
+						</td>
+						<td>
+						</td>
+						<td></td>
+                    </tr>
+					<tr>
+						<td></td>
+						<td>
+							<b>Puskesmas</b>
+						</td>
+						<td>
+							<?=$ds['code_cl_phc']?> - <?=$ds['value']?>
+						</td>
+						<td>
+						</td>
+						<td></td>
+                    </tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td>
+					</tr>
+                    <tr>
+						<th></th>
+						<th>Pimpinan</th>
+						<th>Penerima</th>
+						<th>Penyetor</th>
+						<th></th>
+                    </tr>
+					<form method="post" action="<?=base_url()?>keuangan/sts/update_ttd">
+					
+					<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
+					<input type="hidden" name="puskes" value="<?=$ds['code_cl_phc']?>" >
+                    <tr>
+						<td></td>
+						<td>
+							<div class="form-group">
+								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_pimpinan_nama" value="<?=$ds['ttd_pimpinan_nama']?>" class="form-control" id="pimpinan_nama" placeholder="Nama Pimpinan">
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penerima_nama" value="<?=$ds['ttd_penerima_nama']?>" class="form-control" id="penerima_nama" placeholder="Nama Penerima">
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+							  <input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penyetor_nama" value="<?=$ds['ttd_penyetor_nama']?>" class="form-control" id="penyetor_nama" placeholder="Nama Penyetor">
+							</div>
+						</td>
+						<td></td>
+                    </tr>
+					<tr>
+						<td></td>
+						<td>
+							<div class="form-group">
+								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_pimpinan_nip" value="<?=$ds['ttd_pimpinan_nip']?>" class="form-control" id="pimpinan_nip" placeholder="NIP Pimpinan">
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penerima_nip" value="<?=$ds['ttd_penerima_nip']?>" class="form-control" id="penerima_nip" placeholder="NIP Penerima">
+							</div>
+						</td>
+						<td>
+							<div class="form-group">
+							  <input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penyetor_nip" value="<?=$ds['ttd_penyetor_nip']?>" class="form-control" id="penyetor_nip" placeholder="NIP Penyetor">
+							</div>
+						</td>
+						<td></td>
+                    </tr>
+					
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><b>Uang Total</b></td><td colspan="3" id="angkaTotal">
+						
+						
+					</tr>
+					<tr>
+						<td></td>
+						<td><b>Terbilang</b></td><td id="terbilangTotal" colspan="3"></td>
+					</tr>
+					<?php } ?>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
         <div class="box-header">
           <h3 class="box-title">{title_form}</h3>
-	    </div>
-		
+	    </div>		             		
 	    <div class="box-body">
 		
-			<div class="col-md-2 pull-left">
-				<button id="doExpand" class="btn btn-block btn-warning btn-sm" >Expand All</button>	
-			</div>
-			<div class="col-md-2 pull-left">
-				<button id="doCollapse" onclick="" class="btn btn-block btn-warning btn-sm" >Collapse All</button>	
-			</div>
 			
+		
+			<div class="col-md-2 pull-left">
+				<p id="doExpand" class="btn btn-block btn-warning" >Expand All</p>	
+			</div>
+			<div class="col-md-2 pull-left">
+				<p id="doCollapse" onclick="" class="btn btn-block btn-warning" >Collapse All</p>	
+			</div>
+			<?php if($ds['status']=='tutup'){ ?>
 			<div class="">		
-			<?php
-
-			$kodepuskesmas = $this->session->userdata('puskesmas');
-				if(substr($kodepuskesmas, -2)=="01"){						
-					?>
-						<div class="col-md-2 pull-left">
-							<a href="<?php echo base_url(); ?>keuangan/sts/general" class="btn btn-block btn-success btn-sm" >Simpan Sementara</a>								
-						</div>
-						<div class="col-md-2 pull-left">
-							<a href="<?php echo base_url(); ?>keuangan/sts/general" class="btn btn-block btn-danger btn-sm" onclick="return confirm('apakah Anda yakin telah selesai mengisi form STS ? form yang telah ditutup tidak dapat diedit kembali')">Simpan & Tutup STS</a>								
-						</div>
-					<?php
-				}
-			?>			
-				
-				<div class="col-md-3 pull-right">
-				<select class="form-control" name="pilih_type">				
-					<option value="0">Select Puskesmas</option>
-					<?php
-					foreach($data_puskesmas as $p){ 
-						if($p['code'] == $this->session->userdata['puskes']){
-						?>
-							<option selected value="<?=$p['code']?>" ><?=$p['value']?></option>
-						<?php					
-						}else{
-						?>	
-							<option value="<?=$p['code']?>" ><?=$p['value']?></option>
-						<?php
-						}
-						?>
-						
-					<?php } ?>
-					
-				</select>
+			
+				<div class="col-md-2 pull-left">
+					<input disabled type="submit" class="btn btn-block btn-warning" value="STS Telah Tertutup" >								
+				</div>
+				</form>
+				<div class="col-md-3 pull-left">					
+					<a href="<?=base_url()?>keuangan/sts/general" class="btn btn-block btn-danger"  >Kembali kehalaman Sebelumnya<a>					
 				</div>
 			</div>
+			<?php }else { ?>
+			<div class="">		
+			
+				<div class="col-md-2 pull-left">
+					<input type="submit" name="save" class="btn btn-block btn-success" value="Simpan Sementara" >								
+				</div>
+				<!--</form>-->
+				<div class="col-md-2 pull-left">
+					<!--<form method="post" action="<?=base_url()?>keuangan/sts/tutup_sts">-->
+						<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
+						<input type="hidden" name="puskes" value="<?=$ds['code_cl_phc']?>" >
+						<input type="submit" name="delete" class="btn btn-block btn-danger" onclick="return confirm('apakah Anda yakin telah selesai mengisi form STS ? form yang telah ditutup tidak dapat diedit kembali')" value="Simpan & Tutup STS">
+					</form>
+				</div>
+			</div>
+			<?php } ?>
 	    </div>
 		
         <div class="box-body">
@@ -173,8 +277,15 @@
 		}
 	</script>
 	<script type="text/javascript">
+		function formatMoney(n, currency) { 
+			n = parseFloat(n);
+			return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+		}
         $(document).ready(function () {   
-        
+			//terbilang
+			document.getElementById("terbilangTotal").innerHTML = terbilang(<?php echo intval($data_sts_total); ?>);
+			document.getElementById("angkaTotal").innerHTML = formatMoney(<?php echo intval($data_sts_total); ?>,'Rp');
+			
             var newRowID = null;
 			
 			
@@ -210,8 +321,8 @@
                     { name: "KodeAnggaran", type: "string" },
                     { name: "Uraian", type: "string" },                    
                     { name: "Tarif", type: "number" },
-                    { name: "Volume", type: "string" },
-                    { name: "Subtotal", type: "string" }                    
+                    { name: "Volume", type: "number" },
+                    { name: "Subtotal", type: "number" }                    
                 ],
                 hierarchy:
                 {
@@ -237,13 +348,16 @@
 					
 					
                     commit(true);
-					var arr = $.map(rowData, function(el) { return el });															
-					alert(arr);														
+					var arr = $.map(rowData, function(el) { return el });																				
 					
-					//0,7
-					//$.post( '<?php echo base_url()?>keuangan/master_sts/add_tarif', {id_anggaran:arr[0],tarif:arr[8]},function( data ) {
-						
-					//});
+					//0,6
+					//update volume data
+					$.post( '<?php echo base_url()?>keuangan/sts/update_volume', {tgl:'<?=$tgl?>',id_keu_anggaran: arr[0], tarif:arr[5], vol:arr[6], code_cl_phc:'<?=$this->session->userdata['puskes']?>', },function( data ) {
+						$("#treeGrid").jqxTreeGrid('updateBoundData');	
+						//alert(data);
+						document.getElementById("terbilangTotal").innerHTML = terbilang(data.split('.')[0]);
+						document.getElementById("angkaTotal").innerHTML = formatMoney(data, "Rp");						
+					});
                  },
                  deleteRow: function (rowID, commit) {
                      // synchronize with the server - send delete command
@@ -267,7 +381,7 @@
                 width: '100%',				
                 source: dataAdapter, 
                 //pageable: true,
-                editable: true,                
+                editable: <?php echo $ds['status']=='tutup' ? "false" : "true" ?>,                
                 altRows: true,
                 ready: function()
                 {
@@ -279,9 +393,9 @@
                   { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '15%' },
                   { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '20%' },
 				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '20%' },                                    
-				  { text: 'Volume', dataField: "Volume", align: 'center', cellsAlign: 'right',  width: '10%' },                                    
+				  { text: 'Volume', dataField: "Volume", editable:<?php echo $ds['status']=='tutup' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '10%' },                                    
 				  { text: 'Tarif', dataField: "Tarif", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '15%' },                                    
-				  { text: 'Subtotal', dataField: "Subtotal", editable:false, align: 'center', cellsAlign: 'right',  width: '20%' }      
+				  { text: 'Subtotal', dataField: "Subtotal", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '20%' }      
                 ]
             });
 			
@@ -301,6 +415,95 @@
 					document.getElementById("uraian").value = '';
 				});
 		}
+		
+		/*
+Fungsi terbilang dalam JavaScript
+dibuat oleh Budi Adiono (iKode.net)
+*/
+
+function terbilang(bilangan) {
+
+	  bilangan    = String(bilangan);
+	  var angka   = new Array('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+	  var kata    = new Array('','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan');
+	  var tingkat = new Array('','Ribu','Juta','Milyar','Triliun');
+
+	  var panjang_bilangan = bilangan.length;
+
+	  /* pengujian panjang bilangan */
+	  if (panjang_bilangan > 15) {
+		kaLimat = "Diluar Batas";
+		return kaLimat;
+	  }
+
+	  /* mengambil angka-angka yang ada dalam bilangan, dimasukkan ke dalam array */
+	  for (i = 1; i <= panjang_bilangan; i++) {
+		angka[i] = bilangan.substr(-(i),1);
+	  }
+
+	  i = 1;
+	  j = 0;
+	  kaLimat = "";
+
+
+	  /* mulai proses iterasi terhadap array angka */
+	  while (i <= panjang_bilangan) {
+
+		subkaLimat = "";
+		kata1 = "";
+		kata2 = "";
+		kata3 = "";
+
+		/* untuk Ratusan */
+		if (angka[i+2] != "0") {
+		  if (angka[i+2] == "1") {
+			kata1 = "Seratus";
+		  } else {
+			kata1 = kata[angka[i+2]] + " Ratus";
+		  }
+		}
+
+		/* untuk Puluhan atau Belasan */
+		if (angka[i+1] != "0") {
+		  if (angka[i+1] == "1") {
+			if (angka[i] == "0") {
+			  kata2 = "Sepuluh";
+			} else if (angka[i] == "1") {
+			  kata2 = "Sebelas";
+			} else {
+			  kata2 = kata[angka[i]] + " Belas";
+			}
+		  } else {
+			kata2 = kata[angka[i+1]] + " Puluh";
+		  }
+		}
+
+		/* untuk Satuan */
+		if (angka[i] != "0") {
+		  if (angka[i+1] != "1") {
+			kata3 = kata[angka[i]];
+		  }
+		}
+
+		/* pengujian angka apakah tidak nol semua, lalu ditambahkan tingkat */
+		if ((angka[i] != "0") || (angka[i+1] != "0") || (angka[i+2] != "0")) {
+		  subkaLimat = kata1+" "+kata2+" "+kata3+" "+tingkat[j]+" ";
+		}
+
+		/* gabungkan variabe sub kaLimat (untuk Satu blok 3 angka) ke variabel kaLimat */
+		kaLimat = subkaLimat + kaLimat;
+		i = i + 3;
+		j = j + 1;
+
+	  }
+
+	  /* mengganti Satu Ribu jadi Seribu jika diperlukan */
+	  if ((angka[5] == "0") && (angka[6] == "0")) {
+		kaLimat = kaLimat.replace("Satu Ribu","Seribu");
+	  }
+
+	  return kaLimat + "Rupiah";
+	}
     </script>
 	
 		
