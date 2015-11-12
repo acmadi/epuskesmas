@@ -14,9 +14,8 @@ class inv_ruangan_model extends CI_Model {
     function get_data($start=0,$limit=999999,$options=array())
     {
     	$this->db->select('*');
-	    $this->db->from('mst_inv_ruangan');
 	    $this->db->join('cl_phc', 'mst_inv_ruangan.code_cl_phc = cl_phc.code', 'inner'); 
-	    $query = $this->db->get($limit,$start);
+	    $query = $this->db->get('mst_inv_ruangan',$limit,$start);
     	return $query->result();
 	
     }

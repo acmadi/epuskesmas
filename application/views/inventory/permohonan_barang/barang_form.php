@@ -158,7 +158,7 @@
               </select>-->
             </div>
             <div class="form-group">
-              <label>Nama Baranga</label>
+              <label>Nama Barang</label>
               <input type="text" class="autocomplete form-control" id="v_nama_barang" name="nama_barang"  placeholder="Nama Barang" value="<?php
               if(set_value('nama_barang')=="" && isset($nama_barang)){
                   echo $nama_barang;

@@ -267,7 +267,7 @@ class Permohonanbarang extends CI_Controller {
 		}
 	}
 
-	public function barang($id = 0)
+	public function barang($id = 0,$code_cl_phc="")
 	{
 		$data	  	= array();
 		$filter 	= array();
@@ -294,6 +294,7 @@ class Permohonanbarang extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		$this->db->where('code_cl_phc',$code_cl_phc);
 		$activity = $this->permohonanbarang_model->getItem('inv_permohonan_barang_item', array('id_inv_permohonan_barang'=>$id))->result();
 		$no=1;
 		foreach($activity as $act) {

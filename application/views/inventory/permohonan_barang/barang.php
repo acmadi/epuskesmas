@@ -18,7 +18,7 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('inventory/permohonanbarang/barang/'.$kode); ?>",
+		url: "<?php echo site_url('inventory/permohonanbarang/barang/'.$kode.'/'.$code_cl_phc); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
