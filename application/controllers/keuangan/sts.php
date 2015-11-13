@@ -80,7 +80,7 @@ class Sts extends CI_Controller {
 		$data['title_group'] = "Surat Tanda Setoran";
 		$data['title_form'] = "Surat Tanda Setoran";
 		$data['ambildata'] = $this->sts_model->get_data();
-		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
+		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening('penerimaan');
 		$data['nomor'] = $this->generate_nomor(date("Y-m-d H:i:s"));		
 		$data['nama_puskes'] = "";
 		if(!empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')!= '0'){
@@ -165,12 +165,37 @@ class Sts extends CI_Controller {
 	
 	function update_ttd(){		
 		$this->authentication->verify('keuangan','edit');		
-		#var_dump($_POST);
-		$this->sts_model->update_ttd();
-		if(!empty($this->input->post('delete'))){
-			$this->tutup_sts();
+		if(empty($this->input->post('delete'))){
+			$this->sts_model->update_ttd();
 		}
-		redirect(base_url().'keuangan/sts/general', 'refresh');
+				
+		$this->form_validation->set_rules('ttd_pimpinan_nama', 'Nama Pimpinan', 'trim|required');
+		$this->form_validation->set_rules('ttd_penerima_nama', 'Nama Penerima', 'trim|required');
+		$this->form_validation->set_rules('ttd_penyetor_nama', 'Nama Penyetor', 'trim|required');
+		
+		$this->form_validation->set_rules('ttd_pimpinan_nip', 'NIP Pimpinan', 'trim|required');
+		$this->form_validation->set_rules('ttd_penerima_nip', 'NIP Penerima', 'trim|required');
+		$this->form_validation->set_rules('ttd_penyetor_nip', 'NIP Penyetor', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			$this->session->set_flashdata('notif_content', validation_errors());
+			$this->session->set_flashdata('notif_type', 'error');
+			redirect(base_url().'keuangan/sts/detail/'.$this->input->post('tgl'));
+		}else{
+			
+			if(!empty($this->input->post('delete'))){
+				$this->sts_model->update_ttd();
+				$this->tutup_sts();
+				$this->session->set_flashdata('notif_type', 'closed');
+				
+			}else{
+				$this->session->set_flashdata('notif_type', 'saved');
+				
+			}
+			redirect(base_url().'keuangan/sts/detail/'.$this->input->post('tgl'));
+		}
+	
+		
 	}
 	
 	function delete_sts(){
@@ -178,6 +203,77 @@ class Sts extends CI_Controller {
 		$tgl=$this->input->post('tgl');
 		$this->sts_model->delete_sts($tgl);
 		redirect(base_url().'keuangan/sts/general', 'refresh');
+	}
+	
+	function koderekening(){
+		$this->authentication->verify('keuangan','edit');
+		$data['title_group'] = "Kode Anggaran";
+		$data['title_form'] = "Master Data - Kode Anggaran";
+
+		$data['content'] = $this->parser->parse("keuangan/kode_rekening",$data,true);						
+
+		$this->template->show($data,"home");
+	}
+	
+	function kode_rekening_json(){
+		$this->authentication->verify('keuangan','edit');
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				$this->db->like($field,$value);
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+
+		$rows_all = $this->sts_model->get_data_kode_rekening_all();
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				$this->db->like($field,$value);
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+
+		$rows = $this->sts_model->get_data_kode_rekening_all($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$data = array();
+		foreach($rows as $r) {
+			$data[] = array(
+				'code'			=> $r->code,
+				'kode_rekening'	=> $r->kode_rekening,
+				'uraian'		=> $r->uraian,
+				'tipe'			=> $r->tipe,
+				'edit'			=> "<a onclick=\"editform('".$r->code."','".$r->kode_rekening."','".$r->uraian."','".$r->tipe."')\" data-toggle=\"modal\" data-target=\"#myModal\" href=\"#\"><img border=0 src='".base_url()."media/images/16_edit.gif'></a>",
+				'delete'		=> "<a onclick=\"delete_rekening('".$r->code."')\" href=\"#\"><img border=0 src='".base_url()."media/images/16_del.gif'></a>",
+			);
+		}
+
+		$size = sizeof($rows_all);
+		$json = array(
+			'TotalRows' => (int) $size,
+			'Rows' => $data
+		);
+
+		echo json_encode(array($json));
 	}
 	
 	

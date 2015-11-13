@@ -25,10 +25,12 @@
       <div class="box box-primary">
 		<?php foreach($data_sts as $ds) { ?>
 		<div class="box">
+		
                 <div class="box-header">
                   <h3 class="box-title">Data Penanggung Jawab <?php if($ds['status']=='tutup') echo "<b style=\"color:red\"> [STS TELAH TERTUTUP]</b>"  ?></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
+				
                   <table class="table table-condensed">
 					
 					<tr>
@@ -137,11 +139,32 @@
                   </table>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
-        <div class="box-header">
-          <h3 class="box-title">{title_form}</h3>
-	    </div>		             		
+        		             		
 	    <div class="box-body">
-		
+			<?php
+				if($this->session->flashdata('notif_type') == 'error'){
+			?>
+				<div class="alert alert-warning alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Ups!</strong> <?=$this->session->flashdata('notif_content')?>
+				</div>
+			<?php	
+				}elseif($this->session->flashdata('notif_type') == 'saved'){
+			?>
+				<div class="alert alert-success alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Data Telah Tersimpan !</strong> data telah tersimpan dan Anda masih bisa mengganti data.
+				</div>
+			<?php	
+				}elseif($this->session->flashdata('notif_type') == 'closed'){
+			?>
+				<div class="alert alert-info alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Data Telah Tersimpan & Tertutup !</strong> Data Anda telah terkunci, hanya bisa dilihat dan tidak bisa di udah kembali.
+				</div>
+			<?php				
+				}
+			?>
 			
 		
 			<div class="col-md-2 pull-left">
@@ -163,22 +186,26 @@
 			</div>
 			<?php }else { ?>
 			<div class="">		
-			
-				<div class="col-md-2 pull-left">
-					<input type="submit" name="save" class="btn btn-block btn-success" value="Simpan Sementara" >								
+				<div class="col-md-2 pull-right">
+					<a href="<?=base_url()?>keuangan/sts/general" name="save" class="btn btn-block btn-primary" value="" >Kembali</a>						
 				</div>
-				<!--</form>-->
-				<div class="col-md-2 pull-left">
-					<!--<form method="post" action="<?=base_url()?>keuangan/sts/tutup_sts">-->
+				
+				<div class="col-md-2 pull-right">				
 						<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
 						<input type="hidden" name="puskes" value="<?=$ds['code_cl_phc']?>" >
 						<input type="submit" name="delete" class="btn btn-block btn-danger" onclick="return confirm('apakah Anda yakin telah selesai mengisi form STS ? form yang telah ditutup tidak dapat diedit kembali')" value="Simpan & Tutup STS">
-					</form>
+					
 				</div>
+				<div class="col-md-2 pull-right">
+					<input type="submit" name="save" class="btn btn-block btn-success" value="Simpan Sementara" >								
+				</div>
+				</form>
 			</div>
 			<?php } ?>
 	    </div>
-		
+		<div class="box-header">
+          <h3 class="box-title">{title_form}</h3>
+	    </div>
         <div class="box-body">
 			<div class="default">
 				<div id="treeGrid"></div>

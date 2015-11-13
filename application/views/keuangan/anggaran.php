@@ -160,14 +160,13 @@
 	</script>
 	<script type="text/javascript">
         $(document).ready(function () {
-
 			
             var newRowID = null;
-			
-			
+						
 			$("select[name='pilih_type']").change(function(){
 				$.post( '<?php echo base_url()?>keuangan/master_sts/set_type', {tipe:$(this).val()},function( data ) {
 					$("#treeGrid").jqxTreeGrid('updateBoundData');
+					$("#treeGrid").jqxTreeGrid('expandAll');						
 				});
             });
 			
@@ -433,7 +432,7 @@
                    createEditor: function (row, cellvalue, editor, cellText, width, height) {
                        // construct the editor.
 						var source=[<?php foreach($kode_rekening as $kr){?>
-							"<?=$kr['code']."-".$kr['uraian']?>",
+							"<?=$kr['code']."-".$kr['kode_rekening']."-".$kr['uraian']?>",
 						<?php } ?>]; 					   
 						
 						
@@ -461,6 +460,7 @@
 			var uraian = document.getElementById("uraian").value;
 			$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {sub_id:sub_id, kode_rekening:kode_rekening, kode_anggaran:kode_anggaran, uraian:uraian},function( data ) {
 					$("#treeGrid").jqxTreeGrid('updateBoundData');
+					$("#treeGrid").jqxTreeGrid('expandAll');						
 					document.getElementById("kode_rekening").value='';
 					document.getElementById("kode_anggaran").value='';
 					document.getElementById("uraian").value = '';
@@ -492,7 +492,7 @@
 			<?php 
 				foreach($kode_rekening as $kr){
 			?>
-					<option value="<?=$kr['code']?>"><?=$kr['code']."-".$kr['uraian']?></option>
+					<option value="<?=$kr['code']?>"><?=$kr['kode_rekening']."-".$kr['uraian']?></option>
 			<?php
 				}
 			?>

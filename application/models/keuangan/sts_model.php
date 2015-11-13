@@ -36,16 +36,18 @@ class Sts_model extends CI_Model {
 		$query = $this->db->get('keu_sts');		
 		return $query->result_array();
     }	
-	function get_data_kode_rekening()
+	function get_data_kode_rekening($tipe)
     {
  		$this->db->select('*');		
+		$this->db->where('tipe',$tipe);
 		$query = $this->db->get("mst_keu_rekening");		
+		
 		return $query->result_array();
     }	
 	
 	function get_data_type_filter($type)
     {		
- 		$this->db->select('id_anggaran, sub_id, mst_keu_rekening.code as code, mst_keu_rekening.uraian as rekening, kode_anggaran, keu_anggaran.uraian, type');		
+ 		$this->db->select('id_anggaran, sub_id, mst_keu_rekening.code as code, mst_keu_rekening.kode_rekening as kode_rekening, mst_keu_rekening.uraian as rekening, kode_anggaran, keu_anggaran.uraian, type');		
 		$this->db->join('mst_keu_rekening','mst_keu_rekening.code = keu_anggaran.kode_rekening');
 		$this->db->where('type', $type);		
 		$this->db->order_by('kode_anggaran','asc');
@@ -66,12 +68,13 @@ class Sts_model extends CI_Model {
     {				
  		$this->db->select('*');		
 		
-		$kodepuskesmas = $this->session->userdata('puskesmas');
+		#$kodepuskesmas = $this->session->userdata('puskesmas');
+		$kodepuskesmas = $pus;
 		if(substr($kodepuskesmas, -2)=="01"){			
-			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$this->session->userdata('puskes')."' where keu_anggaran.type='kec'",'left');
+			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."' where keu_anggaran.type='kec'",'left');
 			//kecamatan
 		}else{
-			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$this->session->userdata('puskes')."' where keu_anggaran.type='kel'",'left');
+			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."' where keu_anggaran.type='kel'",'left');
 			//kelurahan
 		}
 		$this->db->order_by('kode_anggaran','asc');
@@ -99,10 +102,15 @@ class Sts_model extends CI_Model {
     }
 	
 	function get_data_puskesmas(){
+		
+		
 		$kodepuskesmas = $this->session->userdata('puskesmas');
-		if(substr($kodepuskesmas, -2)=="01"){
-			$this->db->like('code','P'.substr($kodepuskesmas,0,7));
+		if(substr($kodepuskesmas, -2)=="01"){			
 			//kecamatan
+			
+				
+				$this->db->like('code','P'.substr($kodepuskesmas,0,7));
+			
 		}else{
 			$this->db->like('code','P'.$kodepuskesmas);
 			//kelurahan
@@ -157,6 +165,34 @@ class Sts_model extends CI_Model {
 		
 		return $this->db->insert($this->tb, $data);				
 	}
+	
+	function add_kode_rekening(){				
+		$data = array(
+		   'kode_rekening' => $this->input->post('kode_rekening') ,		   
+		   'uraian' => $this->input->post('uraian') ,		   
+		   'tipe' => $this->input->post('tipe'),		   
+		);
+		
+		return $this->db->insert('mst_keu_rekening', $data);				
+	}
+	
+	function update_kode_rekening(){				
+		$data = array(
+		   'code' => $this->input->post('code') ,		   
+		   'kode_rekening' => $this->input->post('kode_rekening') ,		   
+		   'uraian' => $this->input->post('uraian') ,		   
+		   'tipe' => $this->input->post('tipe'),		   
+		);
+		$this->db->where("code",$data['code']);
+		return $this->db->update('mst_keu_rekening', $data);				
+	}
+	
+	function delete_kode_rekening(){		
+		$this->db->where('code', $this->input->post('code'));
+		return $this->db->delete('mst_keu_rekening');
+		
+	}
+	
 	function get_puskesmas_name($id){
 		$this->db->select('value');
 		$this->db->where('code', $id);
@@ -354,4 +390,11 @@ class Sts_model extends CI_Model {
 		$this->db->delete('keu_sts_hasil');
 		
 	}
+	
+	function get_data_kode_rekening_all($start=0,$limit=100,$options=array())
+    {
+		$this->db->select('*');
+        $query = $this->db->get('mst_keu_rekening',$limit,$start);
+        return $query->result();
+    }
 }
