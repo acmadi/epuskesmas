@@ -51,7 +51,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_sms_gateway").addClass("active");
+    $("#menu_master_data").addClass("active");
     $("#menu_sms_group").addClass("active");
 	});
 </script>
