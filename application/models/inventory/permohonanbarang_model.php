@@ -126,6 +126,35 @@ class Permohonanbarang_model extends CI_Model {
 			return mysql_error();
 		}
     }
+    function tampil_id($status){
+    	$this->db->select('code');
+    	$this->db->where('value',$status);
+		$this->db->where('tipe','status_pengadaan');
+		$query=$this->db->get('mst_inv_pilihan');
+		if($query->num_rows()>0)
+        {
+            foreach($query->result() as $k)
+            {
+                $id = $k->code;
+            }
+        }
+        else
+        {
+            $id = 1;
+        }
+        	return  $id;
+    }
+    function update_status()
+    {	
+    	$status= $this->input->post('pilihan_status_pengadaan');
+    	$data['pilihan_status_pengadaan']	= $this->tampil_id($status);
+    	$id = $this->input->post('inv_permohonan_barang');
+		if($this->db->update($this->tabel, $data,array('id_inv_permohonan_barang'=> $id))){
+			return true;
+		}else{
+			return mysql_error();
+		}
+    }
     function sum_jumlah_item($kode,$code_cl_phc){
     	$this->db->select_sum('jumlah');
     	$this->db->where('id_inv_permohonan_barang',$kode);

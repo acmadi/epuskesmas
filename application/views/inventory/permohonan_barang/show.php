@@ -61,15 +61,35 @@
 			{ name: 'nama_ruangan', type: 'string'},
 			{ name: 'keterangan', type: 'text'},
 			{ name: 'value', type: 'string'},
-			//{ name: 'ShipCountry', map: 'm\\:properties>d\\:ShipCountry', type: 'string' },
+			{ name: 'pilihan_status_pengadaan', type: 'number'},
 			{ name: 'detail', type: 'number'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
 		url: "<?php echo site_url('inventory/permohonanbarang/json'); ?>",
 		cache: false,
-		updaterow: function (rowid, rowdata, commit) {
-			},
+			updateRow: function (rowID, rowData, commit) {
+             // synchronize with the server - send update command
+             // call commit with parameter true if the synchronization with the server is successful 
+             // and with parameter false if the synchronization failed.					
+			
+            commit(true);
+			var arr = $.map(rowData, function(el) { return el });
+		//	alert(arr[7]);		//6 status
+
+			//cek tipe inputan 
+			//object -> input
+			//number -> update
+			//if(typeof(arr[2]) === 'object'){
+				//var arr2 = $.map(arr[8], function(el) { return el });
+				//input data
+
+				$.post( '<?php echo base_url()?>inventory/permohonanbarang/updatestatus', {pilihan_status_pengadaan:arr[7],inv_permohonan_barang:arr[2]},function( data ) {
+						$("#jqxgrid").jqxGrid('updateBoundData');
+						
+				 });
+			//}
+         },
 		filter: function(){
 			$("#jqxgrid").jqxGrid('updatebounddata', 'filter');
 		},
@@ -139,11 +159,11 @@
 				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				//{ text: 'Status', datafield: 'value', columntype: 'dropdownlist', filtertype: 'textbox', width: '15%' }
 				{
-                        text: 'Ship Country', datafield: 'value', width: 150, columntype: 'dropdownlist',
+                        text: 'Status', datafield: 'value', width: 150, columntype: 'dropdownlist',
                         createeditor: function (row, column, editor) {
                             // assign a new data source to the dropdownlist.
                             var list = [<?php foreach ($statusdata as $key) {?>
-							"<?=$key['tipe']?>",
+							"<?=$key['value']?>",
 							<?php } ?>];
                             editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
                         },

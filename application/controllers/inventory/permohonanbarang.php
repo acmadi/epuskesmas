@@ -100,7 +100,7 @@ class Permohonanbarang extends CI_Controller {
 				'jumlah_unit'			=> $act->jumlah_unit,
 				'nama_ruangan'			=> $act->nama_ruangan,
 				'keterangan'			=> $act->keterangan,
-				//'value'					=> $act->value,
+				'value'					=> $act->value,
 				'detail'	=> 1,
 				'edit'		=> 1,
 				'delete'	=> 1
@@ -257,6 +257,10 @@ class Permohonanbarang extends CI_Controller {
 			$this->session->set_flashdata('alert', 'Delete data error');
 			redirect(base_url()."inventory/permohonanbarang");
 		}
+	}
+	function updatestatus(){
+		//$this->authentication->verify('inventory','edit');
+		$this->permohonanbarang_model->update_status();				
 	}
 	function dodelpermohonan($kode=0,$code_cl_phc="",$kode_item=""){
 		$this->authentication->verify('inventory','del');
