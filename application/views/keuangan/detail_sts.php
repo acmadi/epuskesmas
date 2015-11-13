@@ -140,6 +140,9 @@
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
         		             		
+		<div class="box-header">
+          <h3 class="box-title">{title_form}</h3>
+	    </div>
 	    <div class="box-body">
 			<?php
 				if($this->session->flashdata('notif_type') == 'error'){
@@ -167,44 +170,28 @@
 			?>
 			
 		
-			<div class="col-md-2 pull-left">
-				<p id="doExpand" class="btn btn-block btn-warning" >Expand All</p>	
-			</div>
-			<div class="col-md-2 pull-left">
-				<p id="doCollapse" onclick="" class="btn btn-block btn-warning" >Collapse All</p>	
+			<div class="col-md-4 pull-left">
+				<p id="doExpand" class="btn btn-warning" >Expand All</p>	
+				<p id="doCollapse" onclick="" class="btn btn-warning" >Collapse All</p>	
 			</div>
 			<?php if($ds['status']=='tutup'){ ?>
-			<div class="">		
-			
-				<div class="col-md-2 pull-left">
-					<input disabled type="submit" class="btn btn-block btn-warning" value="STS Telah Tertutup" >								
-				</div>
+				<div class="col-md-6 pull-right" style="text-align:right">
+					<input disabled type="submit" class="btn btn-warning" value="STS Telah Tertutup" >								
 				</form>
-				<div class="col-md-3 pull-left">					
-					<a href="<?=base_url()?>keuangan/sts/general" class="btn btn-block btn-danger"  >Kembali kehalaman Sebelumnya<a>					
+					<a href="<?=base_url()?>keuangan/sts/general" class="btn btn-primary" >Kembali<a>					
 				</div>
-			</div>
 			<?php }else { ?>
 			<div class="">		
-				<div class="col-md-2 pull-right">
-					<a href="<?=base_url()?>keuangan/sts/general" name="save" class="btn btn-block btn-primary" value="" >Kembali</a>						
-				</div>
-				
-				<div class="col-md-2 pull-right">				
-						<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
-						<input type="hidden" name="puskes" value="<?=$ds['code_cl_phc']?>" >
-						<input type="submit" name="delete" class="btn btn-block btn-danger" onclick="return confirm('apakah Anda yakin telah selesai mengisi form STS ? form yang telah ditutup tidak dapat diedit kembali')" value="Simpan & Tutup STS">
-					
-				</div>
-				<div class="col-md-2 pull-right">
-					<input type="submit" name="save" class="btn btn-block btn-success" value="Simpan Sementara" >								
+				<div class="col-md-6 pull-right" style="text-align:right">
+					<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
+					<input type="hidden" name="puskes" value="<?=$ds['code_cl_phc']?>" >
+					<input type="submit" name="save" class="btn btn-success" value="Simpan Sementara" >								
+					<input type="submit" name="delete" class="btn btn-danger" onclick="return confirm('apakah Anda yakin telah selesai mengisi form STS ? form yang telah ditutup tidak dapat diedit kembali')" value="Simpan & Tutup STS">
+					<a href="<?=base_url()?>keuangan/sts/general" name="save" class="btn btn-primary" value="" >Kembali</a>						
 				</div>
 				</form>
 			</div>
 			<?php } ?>
-	    </div>
-		<div class="box-header">
-          <h3 class="box-title">{title_form}</h3>
 	    </div>
         <div class="box-body">
 			<div class="default">
@@ -318,6 +305,8 @@
 			return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 		}
         $(document).ready(function () {
+            $("#menu_keuangan").addClass("active");
+            $("#menu_keuangan_sts_general").addClass("active");
 			
 			//terbilang
 			document.getElementById("terbilangTotal").innerHTML = terbilang(<?php echo intval($data_sts_total); ?>);
@@ -427,12 +416,11 @@
                 },
                 //pagerButtonsCount: 8,                
                 columns: [				                                 
-                  { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '15%' },
-                  { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '20%' },
-				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '20%' },                                    
-				  { text: 'Volume', dataField: "Volume",cellClassName: "min", editable:<?php echo $ds['status']=='tutup' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '10%' },                                    
-				  { text: 'Tarif', dataField: "Tarif", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '15%' },                                    
-				  { text: 'Subtotal', dataField: "Subtotal", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '20%' }      
+                  { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '25%' },
+                  { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '43%' },
+				  { text: 'Volume', dataField: "Volume",cellClassName: "min", editable:<?php echo $ds['status']=='tutup' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '8%' },
+				  { text: 'Tarif', dataField: "Tarif", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '12%' },                                    
+				  { text: 'Sub Total', dataField: "Subtotal", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '12%' }      
                 ]
             });
 			

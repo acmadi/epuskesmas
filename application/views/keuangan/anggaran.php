@@ -19,11 +19,13 @@
 		
 	    <div class="box-body">
 			<div class="">
-				<div class="col-md-2 pull-left">
-					<button class="btn btn-block btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Tambah Induk</button>					
+				<div class="col-md-3 pull-left">
+					<button id="doExpand" class="btn  btn-warning " >Expand All</button>	
+					<button id="doCollapse" onclick="" class="btn  btn-warning " >Collapse All</button>	
 				</div>
-				<div class="col-md-2 pull-left">
-					<a href="<?php echo base_url(); ?>keuangan/master_sts/anggaran_tarif" class="btn btn-block btn-warning btn-sm" >Ubah Tarif</a>	
+				<div class="col-md-3 pull-left">
+					<button class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Induk</button>					
+					<a href="<?php echo base_url(); ?>keuangan/master_sts/anggaran_tarif" class="btn btn-danger" >Ubah Tarif</a>	
 				</div>
 				
 				<div class="col-md-3 pull-right">
@@ -161,7 +163,18 @@
 	<script type="text/javascript">
         $(document).ready(function () {
 			
+			$("#menu_keuangan").addClass("active");
+			$("#menu_keuangan_master_sts_anggaran_tarif").addClass("active");
+
             var newRowID = null;
+			
+			$("#doExpand").click(function(){
+					$("#treeGrid").jqxTreeGrid('expandAll');										
+            });
+			
+			$("#doCollapse").click(function(){
+					$("#treeGrid").jqxTreeGrid('collapseAll');										
+            });
 						
 			$("select[name='pilih_type']").change(function(){
 				$.post( '<?php echo base_url()?>keuangan/master_sts/set_type', {tipe:$(this).val()},function( data ) {
@@ -217,7 +230,6 @@
 					}else{			
 						//update data
 						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_update', {id_anggaran_awal:rowID, id_anggaran:arr[0],sub_id:arr[1], kode_rekening:arr[2], kode_anggaran:arr[3], uraian : arr[4], type : arr[5]},function( data ) {
-							$("#treeGrid").jqxTreeGrid('updateBoundData');
 						});
 						
 						
@@ -255,7 +267,7 @@
             {
                 width: '100%',
                 source: dataAdapter, 
-                pageable: true,
+                pageable: false,
                 editable: true,
                 showToolbar: true,
                 altRows: true,
@@ -425,17 +437,15 @@
                     { name: "Uraian", type: "string" },
                     { name: "Type", type: "string" }
 				*/                                   
-                  { text: 'Kode Anggaran', dataField: "KodeAnggaran", align: 'center', width: '25%' },
-                  { text: 'Uraian', dataField: "Uraian", align: 'center', width: '30%' },				  
+                  { text: 'Kode Anggaran', dataField: "KodeAnggaran", align: 'center', width: '22%' },
+                  { text: 'Uraian', dataField: "Uraian", align: 'center', width: '38%' },				  
 				  {
-                   text: 'Kode Rekening', dataField: 'KodeRekening', width: "45%", columnType: "template",
+                   text: 'Kode Rekening', dataField: 'KodeRekening', width: "40%", columnType: "template",
                    createEditor: function (row, cellvalue, editor, cellText, width, height) {
                        // construct the editor.
 						var source=[<?php foreach($kode_rekening as $kr){?>
 							"<?=$kr['code']."-".$kr['kode_rekening']."-".$kr['uraian']?>",
 						<?php } ?>]; 					   
-						
-						
                        editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });
                    },
                    initEditor: function (row, cellvalue, editor, celltext, width, height) {

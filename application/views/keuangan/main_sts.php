@@ -172,6 +172,9 @@
 			}
 		}
         $(document).ready(function () {
+            $("#menu_keuangan").addClass("active");
+            $("#menu_keuangan_sts_general").addClass("active");
+
 			<?php					
 				if(empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')=='0'){										
 			?>				

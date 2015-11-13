@@ -50,7 +50,7 @@ class Sts_model extends CI_Model {
  		$this->db->select('id_anggaran, sub_id, mst_keu_rekening.code as code, mst_keu_rekening.kode_rekening as kode_rekening, mst_keu_rekening.uraian as rekening, kode_anggaran, keu_anggaran.uraian, type');		
 		$this->db->join('mst_keu_rekening','mst_keu_rekening.code = keu_anggaran.kode_rekening');
 		$this->db->where('type', $type);		
-		$this->db->order_by('kode_anggaran','asc');
+		$this->db->order_by('id_anggaran','asc');
 		$query = $this->db->get($this->tb);		
 		return $query->result_array();
     }
@@ -77,7 +77,7 @@ class Sts_model extends CI_Model {
 			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."' where keu_anggaran.type='kel'",'left');
 			//kelurahan
 		}
-		$this->db->order_by('kode_anggaran','asc');
+		$this->db->order_by('id_anggaran','asc');
 		$query = $this->db->get('keu_anggaran');		
 		return $query->result_array();
     }
@@ -96,7 +96,7 @@ class Sts_model extends CI_Model {
 			//kelurahan
 		}
 		
-		$this->db->order_by('kode_anggaran','asc');
+		$this->db->order_by('id_anggaran','asc');
 		$query = $this->db->get('keu_anggaran');		
 		return $query->result_array();
     }
