@@ -4,6 +4,8 @@
 }
 
 </style>
+
+
 <?php if($this->session->flashdata('alert')!=""){ ?>
 <div class="alert alert-success alert-dismissable">
 	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -27,7 +29,7 @@
 			<div class="">
 				
 				<div id="buttonTambah" style="" class="col-md-2 pull-left">
-					<button class="btn btn-block btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Tambah STS</button>					
+					<button class="btn btn-block btn-primary " data-toggle="modal" data-target="#myModal">Tambah STS</button>					
 				</div>				
 				
 				
@@ -67,6 +69,7 @@
 
 
 	<script type="text/javascript">
+	
 		function getDemoTheme() {
 			var theme = document.body ? $.data(document.body, 'theme') : null
 			if (theme == null) {
@@ -160,9 +163,20 @@
 		}
 	</script>
 	<script type="text/javascript">
+	
+		function doDeleteSts(tgl){
+			if(confirm('hapus ?')){
+				$.post( '<?php echo base_url()?>keuangan/sts/delete_sts', {tgl:tgl},function( data ) {
+					$("#treeGrid").jqxTreeGrid('updateBoundData');		
+				});
+			}
+		}
         $(document).ready(function () {
+            $("#menu_keuangan").addClass("active");
+            $("#menu_keuangan_sts_general").addClass("active");
+
 			<?php					
-				if(empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')==0){										
+				if(empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')=='0'){										
 			?>				
 				$("#buttonTambah").hide();
 			<?php
@@ -194,7 +208,8 @@
                     { name: "nomor", type: "string" },
                     { name: "total", type: "number" },
                     { name: "status", type: "string" },                    
-                    { name: "tombol", type: "string" },                    
+                    { name: "tombolShow", type: "string" },                    
+                    { name: "tombolDelete", type: "string" },                    
                 ],
                 hierarchy:
                 {
@@ -395,16 +410,17 @@
                     { name: "Uraian", type: "string" },
                     { name: "Type", type: "string" }
 				*/                                                     
-                  { text: 'Action', dataField: "tombol", align: 'center', width: '20%' },
+                  { text: 'Detail', cellsAlign: 'center', dataField: "tombolShow", align: 'center', width: '5%' },
+                  { text: 'Delete', cellsAlign: 'center', dataField: "tombolDelete", align: 'center', width: '5%' },
                   { text: 'Tanggal', dataField: "tgl", align: 'center', width: '20%' },				  
-                  { text: 'Nomor', dataField: "nomor", align: 'center', width: '20%' },				  
-                  { text: 'Total', dataField: "total", align: 'center', width: '20%' },				  
+                  { text: 'Nomor', dataField: "nomor", align: 'center', width: '25%' },				  
+                  { text: 'Total', dataField: "total", cellsFormat: "f", cellsAlign: 'right', align: 'right', width: '25%' },				  
                   { text: 'Status', dataField: "status", align: 'center', width: '20%' },				  
 				  			
                 ]
             });
 			
-			
+			 
         });
 		
 		function add_sts(){
@@ -419,6 +435,7 @@
 										
 				});
 		}
+		
     </script>
 	
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -441,7 +458,7 @@
 		<div class="form-group">
 		  <label for="exampleInputEmail1">Puskesmas</label>
 		  <input type="text" readonly required id="puskesmas_nama" value="<?=$nama_puskes?>" class="form-control" name="puskesmas" id="exampleInputEmail1" placeholder="Puskesmas" >		  
-		  <input type="hidden" required id="puskesmas_id"  class="form-control" name="puskesmas" id="exampleInputEmail1" placeholder="Puskesmas" >		  
+		  <input type="hidden" required id="puskesmas_id"  class="form-control" value="<?=$this->session->userdata('puskes')?>" name="puskesmas" id="exampleInputEmail1" placeholder="Puskesmas" >		  
 		</div>
 		
 		<script type="text/javascript">

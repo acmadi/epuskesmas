@@ -1,0 +1,7 @@
+SELECT MAX(id_inventaris_barang)+1 FROM inv_inventaris_barang WHERE id_mst_inv_barang=1;
+
+
+SELECT COUNT(id_mst_inv_barang) AS jml, inv_inventaris_barang.id_mst_inv_barang  
+
+FROM inv_inventaris_barang 
+WHERE id_pengadaan=1 GROUP BY id_mst_inv_barang;

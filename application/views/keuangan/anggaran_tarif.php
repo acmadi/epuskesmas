@@ -20,27 +20,23 @@
 		
 	    <div class="box-body">
 		
-			<div class="col-md-2 pull-left">
-				<button id="doExpand" class="btn btn-block btn-warning btn-sm" >Expand All</button>	
-			</div>
-			<div class="col-md-2 pull-left">
-				<button id="doCollapse" onclick="" class="btn btn-block btn-warning btn-sm" >Collapse All</button>	
+			<div class="col-md-3 pull-left">
+				<button id="doExpand" class="btn  btn-warning " >Expand All</button>	
+				<button id="doCollapse" onclick="" class="btn  btn-warning " >Collapse All</button>	
 			</div>
 			
-			<div class="">		
-			<?php
-
-			$kodepuskesmas = $this->session->userdata('puskesmas');
-				if(substr($kodepuskesmas, -2)=="01"){						
-					?>
-						<div class="col-md-2 pull-left">
-							<a href="<?php echo base_url(); ?>keuangan/master_sts/anggaran" class="btn btn-block btn-success btn-sm" >Manajemen Anggaran</a>	
-						</div>
+			<div class="col-md-2 pull-left">
+				<?php
+				$kodepuskesmas = $this->session->userdata('puskesmas');
+				if(substr($kodepuskesmas, -2)=="01"){ ?>
+					<a href="<?php echo base_url(); ?>keuangan/master_sts/anggaran" class="btn btn-success" >
+						Manajemen Anggaran 
+					</a>	
 					<?php
 				}
-			?>			
-				
-				<div class="col-md-3 pull-right">
+				?>			
+			</div>
+			<div class="col-md-3 pull-right">
 				<select class="form-control" name="pilih_type">				
 					<option value="0">Select Puskesmas</option>
 					<?php
@@ -55,11 +51,8 @@
 						<?php
 						}
 						?>
-						
 					<?php } ?>
-					
 				</select>
-				</div>
 			</div>
 	    </div>
 		
@@ -76,7 +69,6 @@
 
 
 	<script type="text/javascript">
-		
 		function getDemoTheme() {
 			var theme = document.body ? $.data(document.body, 'theme') : null
 			if (theme == null) {
@@ -171,9 +163,11 @@
 	</script>
 	<script type="text/javascript">
         $(document).ready(function () {   
+
+			$("#menu_keuangan").addClass("active");
+			$("#menu_keuangan_master_sts_anggaran_tarif").addClass("active");
         
             var newRowID = null;
-			
 			
 			$("#doExpand").click(function(){
 				$.post( '<?php echo base_url()?>keuangan/master_sts/set_puskes', {puskes:'<?php echo $this->session->userdata('puskes');?>'},function( data ) {
@@ -262,9 +256,9 @@
 
             $("#treeGrid").jqxTreeGrid(
             {
-                width: '100%',				
-                source: dataAdapter, 
-                pageable: true,
+                width: '100%',
+                source: dataAdapter,
+                pageable: false,pageSize:999,
                 editable: true,                
                 altRows: true,
                 ready: function()
@@ -282,10 +276,10 @@
                     { name: "Uraian", type: "string" },
                     { name: "Type", type: "string" }
 				*/                                   
-                  { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '20%' },
-                  { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '25%' },
-				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '35%' },                                    
-				  { text: 'Tarif', dataField: "Tarif", align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '20%' },                                    
+                  { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '25%' },
+                  { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '45%' },
+				  { text: 'Tarif', dataField: "Tarif", align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '15%' },
+				  { text: 'Kode Rekening', editable:false, dataField: "KodeRekening", align: 'center', width: '15%' }
                 ]
             });
 			

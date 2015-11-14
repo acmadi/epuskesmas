@@ -1,7 +1,7 @@
 <?php
-class Permohonanbarang_model extends CI_Model {
+class Pengadaanbarang_model extends CI_Model {
 
-    var $tabel    = 'inv_permohonan_barang';
+    var $tabel    = 'inv_pengadaan';
 	var $lang	  = '';
 
     function __construct() {
@@ -15,16 +15,14 @@ class Permohonanbarang_model extends CI_Model {
  		$this->db->select('mst_inv_pilihan.*');		
  		$this->db->order_by('mst_inv_pilihan.code','asc');
 		$query = $this->db->get('mst_inv_pilihan');	
-		return $query->result_array();	
+		return $query->result();	
     }
     function get_data($start=0,$limit=999999,$options=array())
-    {	
-    	$this->db->select("$this->tabel.*,mst_inv_ruangan.nama_ruangan,mst_inv_pilihan.value");
-		$this->db->join('mst_inv_ruangan', "inv_permohonan_barang.id_mst_inv_ruangan = mst_inv_ruangan.id_mst_inv_ruangan and inv_permohonan_barang.code_cl_phc = mst_inv_ruangan.code_cl_phc ",'inner');
-		$this->db->join('mst_inv_pilihan', "inv_permohonan_barang.pilihan_status_pengadaan = mst_inv_pilihan.code AND mst_inv_pilihan.tipe='status_pengadaan'",'left');
-
-		$this->db->order_by('inv_permohonan_barang.id_inv_permohonan_barang','desc');
-		$query =$this->db->get($this->tabel,$limit,$start);
+    {
+        $this->db->select("$this->tabel.*,mst_inv_pilihan.value");
+        $this->db->join('mst_inv_pilihan', "inv_pengadaan.pilihan_status_pengadaan = mst_inv_pilihan.code AND mst_inv_pilihan.tipe='status_pengadaan'",'left');
+        $this->db->order_by('tgl_pengadaan','asc');
+        $query = $this->db->get($this->tabel,$limit,$start);
         return $query->result();
     }
     public function getItem($table,$data)
@@ -32,14 +30,12 @@ class Permohonanbarang_model extends CI_Model {
         return $this->db->get_where($table, $data);
     }
 
- 	function get_data_row($code_cl_phc,$kode){
+ 	function get_data_row($kode){
 		$data = array();
-		$this->db->where("inv_permohonan_barang.code_cl_phc",$code_cl_phc);
-		$this->db->where("inv_permohonan_barang.id_inv_permohonan_barang",$kode);
-		$this->db->select("inv_permohonan_barang.*,cl_phc.value,mst_inv_ruangan.nama_ruangan");
-		$this->db->join('cl_phc', "inv_permohonan_barang.code_cl_phc = cl_phc.code");
-		$this->db->join('mst_inv_ruangan', "inv_permohonan_barang.id_mst_inv_ruangan = mst_inv_ruangan.id_mst_inv_ruangan");
-		$query = $this->db->get("inv_permohonan_barang");
+		$this->db->where("inv_pengadaan.id_pengadaan",$kode);
+		$this->db->select("$this->tabel.*,mst_inv_pilihan.value");
+        $this->db->join('mst_inv_pilihan', "inv_pengadaan.pilihan_status_pengadaan = mst_inv_pilihan.code AND mst_inv_pilihan.tipe='status_pengadaan'",'left');
+		$query = $this->db->get($this->tabel);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
 		}
@@ -78,9 +74,9 @@ class Permohonanbarang_model extends CI_Model {
     		return $permohonan->id;
     	}
 	}
-	function get_permohonanbarangitem_id()
+	function get_inventarisbarang_id()
     {
-    	$query  = $this->db->query("SELECT max(id_inv_permohonan_barang_item) as id from inv_permohonan_barang_item ");
+    	$query  = $this->db->query("SELECT max(id_inventaris_barang) as id from inv_inventaris_barang ");
     	if (empty($query->result()))
     	{
     		return 1;
@@ -93,17 +89,16 @@ class Permohonanbarang_model extends CI_Model {
 	}
    function insert_entry()
     {
-    	$data['tanggal_permohonan']	= date("Y-m-d",strtotime($this->input->post('tgl')));
-		$data['keterangan']			= $this->input->post('keterangan');
-		$data['code_cl_phc']		= $this->input->post('codepus');
-		$data['id_mst_inv_ruangan']	= $this->input->post('ruangan');
-
-		$data['waktu_dibuat']		= date('Y-m-d');
-		$data['jumlah_unit']      	= 0;
-		$data['app_users_list_username'] 	= $this->session->userdata('username'); 
-		$data['id_inv_permohonan_barang']	= $this->get_permohonan_id($this->input->post('codepus'));
+    	$data['tgl_pengadaan']	            = date("Y-m-d",strtotime($this->input->post('tgl')));
+		$data['pilihan_status_pengadaan']	= $this->input->post('status');
+		$data['keterangan']		            = $this->input->post('keterangan');
+        $data['nomor_kontrak']              = $this->input->post('nomor_kontrak');
+		$data['waktu_dibuat']		        = date('Y-m-d');
+        $data['terakhir_diubah']            = "0000-00-00";
+		$data['jumlah_unit']      	        = 0;
+        $data['nilai_pengadaan']            = 0;
 		if($this->db->insert($this->tabel, $data)){
-			return $data['id_inv_permohonan_barang'];
+			return $this->db->insert_id();
 		}else{
 			return mysql_error();
 		}

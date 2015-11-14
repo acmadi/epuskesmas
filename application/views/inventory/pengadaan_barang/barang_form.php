@@ -4,37 +4,23 @@
 
       $('#btn-close').click(function(){
         close_popup();
-      });
-
-      /*$('#code_mst_inv_barang').change(function(){
-          var code = $(this).val();
-          $.ajax({
-            url : '<?php echo base_url().'inventory/permohonanbarang/get_nama' ?>',
-            type : 'POST',
-            data : 'code=' + code,
-            success : function(data) {
-              $('input[name="nama_barang"]').val(data);
-            }
-          });
-
-          return false;
-        });*/      
+      }); 
         $('#form-ss').submit(function(){
             var data = new FormData();
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
             $('#notice').show();
 
-            data.append('id_inv_permohonan_barang', $('input[name="id_inv_permohonan_barang"]').val());
-            data.append('jumlah', $('input[name="jumlah"]').val());
-            data.append('nama_barang', $('input[name="nama_barang"]').val());
-            data.append('code_mst_inv_barang', $('#v_kode_barang').val());
-            data.append('keterangan', $('#keterangan').val());
+            data.append('id_mst_inv_barang', $('#v_kode_barang').val());
+            data.append('nama_barang', $('#v_nama_barang').val());
+            data.append('jumlah', $('#jumlah').val());
+            data.append('harga', $('#harga').val());
+            data.append('keterangan_pengadaan', $('#keterangan').val());
             $.ajax({
                 cache : false,
                 contentType : false,
                 processData : false,
                 type : 'POST',
-                url : '<?php echo base_url()."inventory/permohonanbarang/".$action."_barang/".$kode."/".$code_cl_phc."/".$id_inv_permohonan_barang_item ?>',
+                url : '<?php echo base_url()."inventory/pengadaanbarang/".$action."_barang/".$kode."/" ?>',
                 data : data,
                 success : function(response){
                   var res  = response.split("|");
@@ -102,6 +88,11 @@
             $("#v_nama_barang").val(res[1]);
             $("#v_kode_barang").val(res[0].replace(/\./g,""));
         });
+        $("#harga").change(function(){
+            var jumlah = document.getElementById("jumlah").value;
+            var harga = document.getElementById("harga").value;
+            document.getElementById("subtotal").value = jumlah*harga;
+        });
     });
 </script>
 
@@ -139,23 +130,6 @@
                   echo  set_value('code_mst_inv_barang');
                 }
                 ?>" />
-              <!--<input type="text" class="form-control" id="code_mst_inv_barang" name="code_mst_inv_barang"> 
-                  <select  name="code_mst_inv_barang" id="code_mst_inv_barang" class="form-control">
-                  <option value=""
-                  </option>
-                  <?php /*foreach($kodebarang as $barang) : ?>
-                    <?php 
-                    if(isset($code_mst_inv_barang) && $code_mst_inv_barang==$barang->code){
-                      $select = $barang->code == $code_mst_inv_barang ? 'selected' : '';
-                    }elseif(set_value('code_mst_inv_barang')!=""){
-                      $select = $barang->code == set_value('code_mst_inv_barang') ? 'selected' : '';
-                    }else{
-                      $select ='';
-                    } 
-                    ?>
-                    <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->code.' - '.$barang->uraian ?></option>
-                  <?php endforeach */?>
-              </select>-->
             </div>
             <div class="form-group">
               <label>Nama Barang</label>
@@ -169,13 +143,27 @@
             </div>
             <div class="form-group">
               <label>Jumlah</label>
-              <input type="number" class="form-control" name="jumlah" placeholder="Jumlah" value="<?php 
+              <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" value="<?php 
                 if(set_value('jumlah')=="" && isset($jumlah)){
                   echo $jumlah;
                 }else{
                   echo  set_value('jumlah');
                 }
                 ?>">
+            </div>
+            <div class="form-group">
+              <label>Harga Satuan</label>
+              <input type="number" class="form-control" name="harga" id="harga" placeholder="Harga Satuan" value="<?php 
+                if(set_value('harga')=="" && isset($harga)){
+                  echo $harga;
+                }else{
+                  echo  set_value('harga');
+                }
+                ?>">
+            </div>
+            <div class="form-group">
+              <label>Sub Total</label>
+              <input type="text" class="form-control" name="subtotal"  id="subtotal" placeholder="Sub Total" readonly="">
             </div>
             <div class="form-group">
               <label>Keterangan</label>

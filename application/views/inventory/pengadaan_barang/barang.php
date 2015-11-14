@@ -2,23 +2,38 @@
 <script type='text/javascript' src='<?php echo base_url();?>plugins/js/jquery.autocomplete.js'></script>
 <link href='<?php echo base_url();?>plugins/js/jquery.autocomplete.css' rel='stylesheet' />
 <script>
-var code_cl_phc = '<?php echo $code_cl_phc?>';
+
 	$(function(){
 	   var source = {
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'no', type: 'number' },
-			{ name: 'id_inv_permohonan_barang_item', type: 'number' },
+			{ name: 'id_inventaris_barang', type: 'number' },
+			{ name: 'id_mst_inv_barang', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'pilihan_keadaan_barang', type: 'string' },
 			{ name: 'nama_barang', type: 'string' },
+			{ name: 'pilihan_komponen', type: 'string' },
+			{ name: 'harga', type: 'double' },
+			{ name: 'keterangan_pengadaan', type: 'string' },
+			{ name: 'pilihan_status_invetaris', type: 'string' },
+			{ name: 'tanggal_pembelian', type: 'date' },
+			{ name: 'foto_barang', type: 'string' },
+			{ name: 'barang_kembar_proc', type: 'string' },
+			{ name: 'keterangan_inventory', type: 'string' },
+			{ name: 'tanggal_pengadaan', type: 'date' },
+			{ name: 'tanggal_diterima', type: 'date' },
+			{ name: 'tanggal_dihapus', type: 'date' },
+			{ name: 'alasan_penghapusan', type: 'string' },
+			{ name: 'pilihan_asal', type: 'string' },
+			{ name: 'waktu_dibuat', type: 'date' },
+			{ name: 'terakhir_diubah', type: 'date' },
 			{ name: 'jumlah', type: 'number' },
-			{ name: 'keterangan', type: 'string' },
-			{ name: 'id_inv_permohonan_barang', type: 'number' },
-			{ name: 'code_mst_inv_barang', type: 'string' },
+			{ name: 'totalharga', type: 'number' },
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('inventory/permohonanbarang/barang/'.$kode.'/'.$code_cl_phc); ?>",
+		url: "<?php echo site_url('inventory/pengadaanbarang/barang/'.$kode); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -57,7 +72,7 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_inv_permohonan_barang+"\",\""+code_cl_phc+"\",\""+dataRecord.id_inv_permohonan_barang_item+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
@@ -66,16 +81,20 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_inv_permohonan_barang_item+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'No', align: 'center', datafield: 'no', columntype: 'textbox', filtertype: 'none', width: '5%' },
-				{ text: 'Nama Barang', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '30%' },
-				{ text: 'Jumlah ', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Keterangan',datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '40%'}
+				{ text: 'Kode Barang', datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Nama Barang ', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'jumlah ', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Harga Satuan', datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Total Harga', datafield: 'totalharga', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Keterangan ', datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Status ', datafield: 'pilihan_status_invetaris', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Tanggal di terima',datafield: 'tanggal_diterima', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
            ]
 		});
         
@@ -99,27 +118,27 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 
 	function add_barang(){
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo base_url().'inventory/permohonanbarang/add_barang/'.$kode.'/'.$code_cl_phc.'/'; ?>" , function(data) {
+		$.get("<?php echo base_url().'inventory/pengadaanbarang/add_barang/'.$kode.'/'; ?>" , function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_barang").jqxWindow({
 			theme: theme, resizable: false,
 			width: 500,
-			height: 460,
+			height: 600,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup_barang").jqxWindow('open');
 	}
 
-	function edit_barang(kode,code_cl_phc,id_inv_permohonan_barang_item){
+	/*function edit_barang(kode,code_cl_phc,id_inv_permohonan_barang_item){
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo base_url().'inventory/permohonanbarang/edit_barang/'.$kode.'/'.$code_cl_phc.'/'; ?>" + id_inv_permohonan_barang_item, function(data) {
+		$.get("<?php echo base_url().'inventory/pengadaanbarang/edit_barang/'.$kode.'/'.$code_cl_phc.'/'; ?>" + id_inv_permohonan_barang_item, function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_barang").jqxWindow({
 			theme: theme, resizable: false,
 			width: 500,
-			height: 460,
+			height: 600,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup_barang").jqxWindow('open');
@@ -128,14 +147,14 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 	function del_barang(id_inv_permohonan_barang_item){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'inventory/permohonanbarang/dodelpermohonan/'.$kode.'/'.$code_cl_phc.'/' ?>/" + id_inv_permohonan_barang_item,  function(){
+			$.post("<?php echo base_url().'inventory/pengadaanbarang/dodelpermohonan/'.$kode.'/'.$code_cl_phc.'/' ?>/" + id_inv_permohonan_barang_item,  function(){
 				alert('Data berhasil dihapus');
 
 				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
 			});
 		}
 	}
-
+*/
 </script>
 
 <div id="popup_barang" style="display:none">

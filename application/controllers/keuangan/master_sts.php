@@ -19,7 +19,7 @@ class Master_sts extends CI_Controller {
 		
 		$data['ambildata'] = $this->sts_model->get_data_type_filter($this->session->userdata('tipe'));
 		foreach($data['ambildata'] as $d){
-			$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["code"]."-".$d["rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \n";				
+			$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]."-".$d["rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \n";				
 			echo $txt;
 		}
 		
@@ -32,7 +32,7 @@ class Master_sts extends CI_Controller {
 			$data['ambildata'] = $this->sts_model->get_data_puskesmas_filter($this->session->userdata('puskes'));
 			$i=0;
 			foreach($data['ambildata'] as $d){
-				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["kode_rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \t".$i++." \t".$d["id_keu_anggaran"]." \t".$d["tarif"]." \t".$d["code_cl_phc"]." \n";				
+				$txt = $d["id_anggaran"]." \t ".$d["sub_id"]." \t ".$d["rekening"]." \t ".$d["kode_anggaran"]." \t ".$d["uraian"]." \t ".$d["type"]." \t".$i++." \t".$d["id_keu_anggaran"]." \t".$d["tarif"]." \t".$d["code_cl_phc"]." \n";				
 				echo $txt;
 			}
 		}
@@ -47,13 +47,14 @@ class Master_sts extends CI_Controller {
 	function set_puskes(){
 		$this->authentication->verify('keuangan','edit');
 		$this->session->set_userdata('puskes',$this->input->post('puskes'));		
+		
 	}
 	function anggaran(){
 		$this->authentication->verify('keuangan','edit');
 		$data['title_group'] = "Anggaran";
 		$data['title_form'] = "Master Data - Anggaran";
 		$data['ambildata'] = $this->sts_model->get_data();
-		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
+		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening('penerimaan');
 		$data['content'] = $this->parser->parse("keuangan/anggaran",$data,true);		
 		
 		$this->template->show($data,"home");
@@ -91,6 +92,47 @@ class Master_sts extends CI_Controller {
 	function anggaran_delete(){
 		$this->authentication->verify('keuangan','del');
 		$this->sts_model->delete_anggaran();				
+	}
+	
+	function kode_rekening_add(){
+		#var_dump($_POST);
+		$this->authentication->verify('keuangan','add');
+		$this->form_validation->set_rules('kode_rekening','Kode Rekening','trim|required');
+		$this->form_validation->set_rules('uraian','Uraian Anggaran','trim|required');
+		$this->form_validation->set_rules('tipe','Tipe Rekening','trim|required');
+		
+		if($this->form_validation->run()== TRUE){
+			$this->sts_model->add_kode_rekening();
+		}else{
+			echo "ups";
+		}	
+	}
+	
+	function kode_rekening_update(){
+		#var_dump($_POST);
+		$this->authentication->verify('keuangan','edit');
+		$this->form_validation->set_rules('kode_rekening','Kode Rekening','trim|required');
+		$this->form_validation->set_rules('uraian','Uraian Anggaran','trim|required');
+		$this->form_validation->set_rules('tipe','Tipe Rekening','trim|required');
+		$this->form_validation->set_rules('code','Tipe Rekening','trim|required');
+		
+		if($this->form_validation->run()== TRUE){
+			$this->sts_model->update_kode_rekening();
+		}else{
+			echo "ups";
+		}	
+	}
+	
+	function kode_rekening_delete(){
+		#var_dump($_POST);
+		$this->authentication->verify('keuangan','edit');		
+		$this->form_validation->set_rules('code','Tipe Rekening','trim|required');
+		
+		if($this->form_validation->run()== TRUE){
+			$this->sts_model->delete_kode_rekening();
+		}else{
+			echo "ups";
+		}	
 	}
 
 
