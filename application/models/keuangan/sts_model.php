@@ -66,17 +66,20 @@ class Sts_model extends CI_Model {
 	
 	function get_data_puskesmas_filter($pus)
     {				
- 		$this->db->select('*');		
+ 		$this->db->select('keu_anggaran.*,keu_anggaran_tarif.*,mst_keu_rekening.kode_rekening AS rekening');		
 		
 		#$kodepuskesmas = $this->session->userdata('puskesmas');
 		$kodepuskesmas = $pus;
 		if(substr($kodepuskesmas, -2)=="01"){			
-			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."' where keu_anggaran.type='kec'",'left');
+			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."'",'left');
+			$this->db->where("keu_anggaran.type",'kec');
 			//kecamatan
 		}else{
-			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."' where keu_anggaran.type='kel'",'left');
+			$this->db->join('keu_anggaran_tarif', "keu_anggaran_tarif.id_keu_anggaran=keu_anggaran.id_anggaran and keu_anggaran_tarif.code_cl_phc= '".$pus."'",'left');
+			$this->db->where("keu_anggaran.type",'kel');
 			//kelurahan
 		}
+		$this->db->join('mst_keu_rekening', "mst_keu_rekening.code=keu_anggaran.kode_rekening",'inner');
 		$this->db->order_by('id_anggaran','asc');
 		$query = $this->db->get('keu_anggaran');		
 		return $query->result_array();
