@@ -71,7 +71,18 @@ class Master_sts extends CI_Controller {
 	
 	function add_tarif(){
 		$this->authentication->verify('keuangan','add');
-		$this->sts_model->add_tarif();				
+		
+		$this->form_validation->set_rules('id_anggaran','ID Anggaran','trim|required');
+		$this->form_validation->set_rules('tarif','Tarif','trim|required');
+				
+		if($this->form_validation->run()== TRUE){
+			$this->sts_model->add_tarif();	
+			echo "0";
+		}else{			
+			echo validation_errors();
+		}	
+		
+					
 	}
 	
 	function anggaran_add(){
@@ -79,15 +90,31 @@ class Master_sts extends CI_Controller {
 		$this->form_validation->set_rules('sub_id','sub_id','trim|required');
 		$this->form_validation->set_rules('kode_anggaran','Kode Anggaran','trim|required');
 		$this->form_validation->set_rules('kode_rekening','Kode Rekening','trim|required');
-		
 		if($this->form_validation->run()== TRUE){
-			$this->sts_model->add_anggaran();
-		}		
+			$this->sts_model->add_anggaran();	
+			echo "0";
+		}else{			
+			echo validation_errors();
+		}	
+				
 		
 	}
 	function anggaran_update(){
-		$this->authentication->verify('keuangan','edit');
-		$this->sts_model->update_anggaran();				
+		$this->authentication->verify('keuangan','edit');		
+		
+		$this->form_validation->set_rules('kode_rekening','Kode Rekening','trim|required');
+		$this->form_validation->set_rules('id_anggaran','ID Anggaran','trim|required');
+		$this->form_validation->set_rules('sub_id','Sub Id','trim|required');
+		$this->form_validation->set_rules('kode_anggaran','Kode Anggaran','trim|required');
+		$this->form_validation->set_rules('uraian','Uraian','trim|required');		
+		
+		if($this->form_validation->run()== TRUE){
+			$this->sts_model->update_anggaran();
+			echo "0";			
+		}else{						
+			echo validation_errors();
+		}
+		
 	}
 	function anggaran_delete(){
 		$this->authentication->verify('keuangan','del');
@@ -97,14 +124,16 @@ class Master_sts extends CI_Controller {
 	function kode_rekening_add(){
 		#var_dump($_POST);
 		$this->authentication->verify('keuangan','add');
+		
 		$this->form_validation->set_rules('kode_rekening','Kode Rekening','trim|required');
 		$this->form_validation->set_rules('uraian','Uraian Anggaran','trim|required');
 		$this->form_validation->set_rules('tipe','Tipe Rekening','trim|required');
 		
 		if($this->form_validation->run()== TRUE){
 			$this->sts_model->add_kode_rekening();
-		}else{
-			echo "ups";
+			echo "0";
+		}else{			
+			echo validation_errors();
 		}	
 	}
 	
@@ -115,12 +144,13 @@ class Master_sts extends CI_Controller {
 		$this->form_validation->set_rules('uraian','Uraian Anggaran','trim|required');
 		$this->form_validation->set_rules('tipe','Tipe Rekening','trim|required');
 		$this->form_validation->set_rules('code','Tipe Rekening','trim|required');
-		
+				
 		if($this->form_validation->run()== TRUE){
 			$this->sts_model->update_kode_rekening();
-		}else{
-			echo "ups";
-		}	
+			echo "0";
+		}else{			
+			echo validation_errors();
+		}		
 	}
 	
 	function kode_rekening_delete(){

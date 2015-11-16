@@ -235,7 +235,11 @@
 					
 					//0,7
 					$.post( '<?php echo base_url()?>keuangan/master_sts/add_tarif', {id_anggaran:arr[0],tarif:arr[8]},function( data ) {
-						
+						if(data != 0){
+							alert(data);									
+						}else{
+							//$("#treeGrid").jqxTreeGrid('updateBoundData');
+						}
 					});
                  },
                  deleteRow: function (rowID, commit) {
@@ -292,11 +296,17 @@
 			var kode_anggaran = document.getElementById("kode_anggaran").value;
 			var uraian = document.getElementById("uraian").value;
 			$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {sub_id:sub_id, kode_rekening:kode_rekening, kode_anggaran:kode_anggaran, uraian:uraian},function( data ) {
-					$("#treeGrid").jqxTreeGrid('updateBoundData');
+				
+					if(data != 0){
+						alert(data);									
+					}else{						
+						$("#treeGrid").jqxTreeGrid('updateBoundData');
 					
-					document.getElementById("kode_rekening").value='';
-					document.getElementById("kode_anggaran").value='';
-					document.getElementById("uraian").value = '';
+						document.getElementById("kode_rekening").value='';
+						document.getElementById("kode_anggaran").value='';
+						document.getElementById("uraian").value = '';
+					}
+					
 				});
 		}
     </script>

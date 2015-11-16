@@ -116,17 +116,21 @@ class Sts extends CI_Controller {
 		$query = $this->db->get('keu_sts');
 		
 		$datetime = new DateTime('tomorrow');
-		$besok = strtotime($datetime->format('Y-m-d'));
-		$sekarang = strtotime(date('Y-m-d'));
-		$tgl_input = strtotime($tgl_input);
+		$tgl_besok = $datetime->format('Y-m-d');
+		$besok = strtotime($tgl_besok);
+		#$sekarang = strtotime(date('Y-m-d'));
+		$exp = explode('/', $tgl_input);
+		//11/26/2015
+		$tgl_input = $exp['2'].'-'.$exp['0'].'-'.$exp['1'];
+		$tgl_inp = strtotime($tgl_input);
 
 		if(!empty($query->result())){
 			foreach($query->result() as $q){				
 				$sekarang = strtotime($q->tgl);
-				echo "sekarang".$sekarang." <br>";
-				echo "besok".$besok." <br>";
-				echo "inpput".$tgl_input." <br>";
-				if($tgl_input < $sekarang and $tgl_input < $besok){
+				#echo "sekarang".$sekarang." # ".$q->tgl."<br>";
+				#echo "besok".$besok." # ".$tgl_besok." <br>";
+				#echo "inpput".$tgl_inp." # ".$tgl_input." <br>";
+				if($tgl_inp > $sekarang and $tgl_inp < $besok){
 					return true;
 				}else{
 					return false;
@@ -140,12 +144,24 @@ class Sts extends CI_Controller {
 	}
 	function add_sts(){		
 		$this->authentication->verify('keuangan','add');
-		if($this->cek_tgl_sts($this->input->post('tgl'))){	
-			$this->sts_model->add_sts();
-			echo 'sip';
-		}else{
-			echo 'gagal';
+		//nomor:nomor, tgl:tanggal, code_cl_phc:code_cl_phc
+		$this->form_validation->set_rules('nomor','Nomor','trim|required');
+		$this->form_validation->set_rules('tgl','Tanggal','trim|required');
+		$this->form_validation->set_rules('code_cl_phc','code_cl_phc','trim|required');
+		
+		if($this->form_validation->run()== TRUE){
+			if($this->cek_tgl_sts($this->input->post('tgl'))){	
+				$this->sts_model->add_sts();
+				echo 0;
+			}else{
+				echo "Data Tanggal harus lebih dari tanggal terakhir input dan tidak lebih dari tanggal hari ini, terimakasih.";
+			}
+		}else{			
+			echo validation_errors();
 		}
+		
+		
+		
 		
 	}
 	

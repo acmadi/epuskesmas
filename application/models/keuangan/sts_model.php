@@ -210,7 +210,7 @@ class Sts_model extends CI_Model {
 	}
 	function add_sts(){
 		$datatgl = explode('/', $this->input->post('tgl'));
-		$tgl = $datatgl[2].'-'.$datatgl[1].'-'.$datatgl[0];
+		$tgl = $datatgl[2].'-'.$datatgl[0].'-'.$datatgl[1];
 		$data = array(		   
 		   'nomor' => $this->input->post('nomor') ,
 		   'tgl' => $tgl,		   		   

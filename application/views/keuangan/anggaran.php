@@ -73,6 +73,7 @@
 			if (theme == null) {
 				theme = '';
 			}
+			
 			else {
 				return theme;
 			}
@@ -225,11 +226,19 @@
 						var arr2 = $.map(arr[1], function(el) { return el });
 						//input data
 						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_add', {id_anggaran:arr[0],sub_id:arr2[0], kode_rekening:arr[6], kode_anggaran:arr[4], uraian : arr[5], type : arr[8]},function( data ) {
-								$("#treeGrid").jqxTreeGrid('updateBoundData');
+								if(data != 0){
+									alert(data);									
+								}else{
+									$("#treeGrid").jqxTreeGrid('updateBoundData');
+								}
+								
 						});
 					}else{			
 						//update data
 						$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_update', {id_anggaran_awal:rowID, id_anggaran:arr[0],sub_id:arr[1], kode_rekening:arr[2], kode_anggaran:arr[3], uraian : arr[4], type : arr[5]},function( data ) {
+								if(data != 0){
+									alert(data);									
+								}
 						});
 						
 						
@@ -240,6 +249,7 @@
                      // synchronize with the server - send delete command
                      // call commit with parameter true if the synchronization with the server is successful 
                      // and with parameter false if the synchronization failed.
+					
 					if( Object.prototype.toString.call( rowID ) === '[object Array]' ) {
 						for(var i=0; i< rowID.length; i++){
 							$.post( '<?php echo base_url()?>keuangan/master_sts/anggaran_delete', {id_anggaran:rowID[i]},function( data ) {
@@ -252,6 +262,8 @@
 							$("#treeGrid").jqxTreeGrid('updateBoundData');
 						});
 					}
+					
+					
 					 
                      commit(true);
                  }
@@ -418,10 +430,14 @@
                                 for (var i = 0; i < selection.length; i++) {
                                     keys.push($("#treeGrid").jqxTreeGrid('getKey', selection[i]));
                                 }
-                                $("#treeGrid").jqxTreeGrid('deleteRow', keys);
+								if(confirm('Apakah anda yakin akan menghapus beberapa data sekaligus ? Data yang telah terhapus tidak dapat di kembalikan lagi')){
+									$("#treeGrid").jqxTreeGrid('deleteRow', keys);
+								}
                             }
                             else {
-                                $("#treeGrid").jqxTreeGrid('deleteRow', rowKey);
+								if(confirm('Apakah anda yakin akan menghapus data ini ? Data yang telah terhapus tidak dapat di kembalikan lagi')){
+									$("#treeGrid").jqxTreeGrid('deleteRow', rowKey);
+								}
                             }
                             updateButtons('delete');
 
