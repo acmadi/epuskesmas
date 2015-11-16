@@ -227,8 +227,10 @@ class Sts_model extends CI_Model {
 		$query = $this->db->get('keu_anggaran_tarif');
 		
 		foreach($query->result() as $q){
+				
 				if($q->n > 0){
-					return $q->id;
+					
+					return $q->id_keu_anggaran;
 				}else{
 					return 0;
 				}
