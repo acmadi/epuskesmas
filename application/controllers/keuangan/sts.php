@@ -165,6 +165,12 @@ class Sts extends CI_Controller {
 		
 	}
 	
+	function reopen(){
+		$this->authentication->verify('keuangan','edit');
+		$this->sts_model->reopen();
+		echo "buka lagi";
+	}
+	
 	function update_volume(){		
 		$this->authentication->verify('keuangan','edit');		
 		echo $this->sts_model->update_volume();
