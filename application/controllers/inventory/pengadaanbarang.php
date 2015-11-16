@@ -369,7 +369,7 @@ class Pengadaanbarang extends CI_Controller {
 			$data['action']			= "edit";
 			$data['kode']			= $kode;
 			$data['disable']			= "disable";
-			die($this->parser->parse('inventory/pengadaan_barang/barang_form', $data));
+			die($this->parser->parse('inventory/pengadaan_barang/barang_form_edit', $data));
 		}else{
 			
 			$jumlah =$this->input->post('jumlah');

@@ -176,6 +176,26 @@ class Pengadaanbarang_model extends CI_Model {
         }
         return  $jumlah;
     }
+    function barang_kembar_proc($kode){
+        $q = $this->db->query("SELECT barang_kembar_proc FROM inv_inventaris_barang WHERE id_mst_inv_barang=$kode ORDER BY barang_kembar_proc DESC");
+        $kd = "";
+        if($q->num_rows()>0)
+        {
+            $kd = $q->id_mst_inv_barang;
+        }
+        else
+        {
+            $qq = $this->db->query("SELECT max(id_mst_inv_barang) as kd_max FROM inv_inventaris_barang where  id_inventaris_barang=$kode");
+            foreach($qq->result() as $k)
+            {
+                $tmp = ((int)$k->kd_max)+1;
+                $kd = sprintf("%03s", $tmp);
+            }
+        }
+
+        $today = date("ym"); 
+        return "KBNS-$today".$kd;
+    }
     function sum_unit($kode)
     {
         $this->db->select("*");

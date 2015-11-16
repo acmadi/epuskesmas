@@ -7,7 +7,7 @@ if(isset($disable)){if($disable='disable'){?>
 </script>
 <?php }} ?>
 <script type="text/javascript">
-
+function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+',00'}
     $(function(){
       $('#btn-close').click(function(){
         close_popup();
@@ -88,7 +88,7 @@ if(isset($disable)){if($disable='disable'){?>
               });
           }
         });
-
+      
         $("#jqxinput").select(function(){
             var codebarang = $(this).val();
             var res = codebarang.split(" | ");
@@ -98,7 +98,8 @@ if(isset($disable)){if($disable='disable'){?>
         $("#harga").change(function(){
             var jumlah = document.getElementById("jumlah").value;
             var harga = document.getElementById("harga").value;
-            document.getElementById("subtotal").value = jumlah*harga;
+            var subtotal =jumlah*harga;
+            document.getElementById("subtotal").value = toRp(subtotal);
         });
         
     });

@@ -92,7 +92,7 @@
             </tbody>
           </table>
       <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <?php if(!isset($viewreadonly)){?><button type="submit" class="btn btn-primary">Simpan</button><?php } ?>
         <button type="button" id="btn-kembali" class="btn btn-warning">Kembali</button>
       </div>
       </div>
