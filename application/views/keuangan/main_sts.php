@@ -429,9 +429,14 @@
 			var tanggal = document.getElementById("tanggal").value;
 			var code_cl_phc = document.getElementById("puskesmas_id").value;
 			$.post( '<?php echo base_url()?>keuangan/sts/add_sts', {nomor:nomor, tgl:tanggal, code_cl_phc:code_cl_phc},function( data ) {
-					$("#treeGrid").jqxTreeGrid('updateBoundData');
-					var no = nomor.split("/");
-					document.getElementById("nomor").value=(parseInt(no[0])+1)+"/"+no[1]+"/"+no[2]+"/"+no[3];
+					if(data == 0){
+						$("#treeGrid").jqxTreeGrid('updateBoundData');
+						var no = nomor.split("/");
+						document.getElementById("nomor").value=(parseInt(no[0])+1)+"/"+no[1]+"/"+no[2]+"/"+no[3];
+					}else{
+						alert(data);
+					}
+					
 										
 				});
 		}
@@ -453,7 +458,7 @@
 		</div>
 		<div class="form-group">
 		  <label for="exampleInputEmail1">Tanggal</label>
-		  <input type="text" required id="tanggal" value="<?=date("d/m/Y")?>" class="form-control" name="tanggal" id="exampleInputEmail1" placeholder="Tanggal" >		  
+		  <input type="text" required id="tanggal" value="<?=date("m/d/Y")?>" class="form-control" name="tanggal" id="exampleInputEmail1" placeholder="Tanggal" >		  
 		</div>
 		<div class="form-group">
 		  <label for="exampleInputEmail1">Puskesmas</label>
@@ -466,7 +471,7 @@
 				$( "#tanggal" ).datepicker({
 					numberOfMonths: 2,
 					showButtonPanel: true,
-					minDate: 0 
+					minDate: 0 					
 				});
 			});
         </script>

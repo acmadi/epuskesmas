@@ -210,7 +210,7 @@ class Sts_model extends CI_Model {
 	}
 	function add_sts(){
 		$datatgl = explode('/', $this->input->post('tgl'));
-		$tgl = $datatgl[2].'-'.$datatgl[1].'-'.$datatgl[0];
+		$tgl = $datatgl[2].'-'.$datatgl[0].'-'.$datatgl[1];
 		$data = array(		   
 		   'nomor' => $this->input->post('nomor') ,
 		   'tgl' => $tgl,		   		   
@@ -220,6 +220,17 @@ class Sts_model extends CI_Model {
 		return $this->db->insert("keu_sts", $data);				
 	}
 	
+	function reopen(){
+		
+		$data = array(		   
+		   'status' => 'buka'
+		);
+		$this->db->where('tgl', $this->input->post('tgl'));
+		$this->db->where('code_cl_phc', $this->input->post('code_cl_phc'));
+		
+		return $this->db->update("keu_sts", $data);				
+	}
+	
 	function cek_tarif($id_anggaran){
 		$this->db->select('count(id_keu_anggaran) as n, id_keu_anggaran');
 		$this->db->where('id_keu_anggaran',$id_anggaran);
@@ -227,8 +238,10 @@ class Sts_model extends CI_Model {
 		$query = $this->db->get('keu_anggaran_tarif');
 		
 		foreach($query->result() as $q){
+				
 				if($q->n > 0){
-					return $q->id;
+					
+					return $q->id_keu_anggaran;
 				}else{
 					return 0;
 				}
@@ -317,6 +330,23 @@ class Sts_model extends CI_Model {
 		
 	}
 	
+	
+	function cek_rekap_sts_rekening($tgl, $kode_rekening, $code_cl_phc){
+		$this->db->select('count(tgl) as n');
+		$this->db->where('tgl',$tgl);
+		$this->db->where('code_mst_keu_rekening',$kode_rekening);
+		$this->db->where('code_cl_phc',$code_cl_phc);
+		$q = $this->db->get('keu_sts_hasil_rekap');
+		foreach($q->result() as $r){
+			if($r->n > 0){
+				echo "update";
+				return 'update';
+			}else{
+				echo "input";
+				return 'input';
+			}
+		}
+	}
 	function rekap_sts_rekening(){
 		$tgl = $this->input->post('tgl');
 		$code_cl_phc = $this->input->post('puskes');
@@ -331,15 +361,23 @@ class Sts_model extends CI_Model {
 			foreach($query->result() as $q){
 				#echo $q->kode_rekening." # ".$q->total." # ".$q->code_cl_phc." # ".$q->tgl."<br>";
 				
+								
 				$data = array(		   
 					'tgl' => $q->tgl,
 					'code_cl_phc' => $q->code_cl_phc,
 					'jml' => $q->total,
 					'code_mst_keu_rekening' => $q->kode_rekening
 				);
-						
+				if($this->cek_rekap_sts_rekening($q->tgl, $q->kode_rekening, $q->code_cl_phc) == 'input'){
+					$this->db->insert('keu_sts_hasil_rekap', $data);
+				}else{
+					$this->db->where('tgl',$q->tgl);
+					$this->db->where('code_mst_keu_rekening',$q->kode_rekening);
+					$this->db->where('code_cl_phc',$q->code_cl_phc);
+					$this->db->update('keu_sts_hasil_rekap', $data);
+				}
 				
-				$this->db->insert('keu_sts_hasil_rekap', $data);
+				
 				
 			}
 		}

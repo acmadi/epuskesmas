@@ -19,14 +19,16 @@
     <div class="box box-primary">
       <div class="box-body">
         <div class="form-group">
-          <label>Tanggal</label>
-          <div id='tgl' name="tgl" value="<?php
+          <label>Tanggal</label><?php if(isset($viewreadonly)){if($action='view'){ 
+            echo "<br>".$tgl_pengadaan; }}else{ ?>
+              <div id='tgl' name="tgl" disabled value="<?php
               echo (set_value('tgl')!="") ? date("Y-m-d",strtotime(set_value('tgl'))) : "";
-            ?>"></div>
+            ?>" ></div>
+             <?php  }?>
         </div>
         <div class="form-group">
           <label>Status<h1></h1></label>
-          <select  name="status" type="text" class="form-control">
+          <select  name="status" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
               <option value="">Pilih Status</option>
               </option>
               <?php foreach($kodestatus as $stat) : ?>
@@ -43,11 +45,11 @@
             }else{
               echo  set_value('nomor_kontrak');
             }
-            ?>">
+            ?>" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
         </div>
         <div class="form-group">
           <label>Keterangan</label>
-          <textarea class="form-control" name="keterangan" placeholder="Keterangan"><?php 
+          <textarea class="form-control" name="keterangan" placeholder="Keterangan" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>><?php 
               if(set_value('keterangan')=="" && isset($keterangan)){
                 echo $keterangan;
               }else{
@@ -90,7 +92,7 @@
             </tbody>
           </table>
       <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <?php if(!isset($viewreadonly)){?><button type="submit" class="btn btn-primary">Simpan</button><?php } ?>
         <button type="button" id="btn-kembali" class="btn btn-warning">Kembali</button>
       </div>
       </div>

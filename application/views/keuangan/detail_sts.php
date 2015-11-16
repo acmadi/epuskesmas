@@ -177,6 +177,24 @@
 			<?php if($ds['status']=='tutup'){ ?>
 				<div class="col-md-6 pull-right" style="text-align:right">
 					<input disabled type="submit" class="btn btn-warning" value="STS Telah Tertutup" >								
+					
+					
+						<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
+						<input type="hidden" name="puskes" value="<?=$ds['code_cl_phc']?>" >
+						<?php 
+							$kodepuskesmas = $this->session->userdata('puskesmas');							
+							if(substr($kodepuskesmas, -2)=="01"){											
+						?>
+							<input type="button" onclick="reopen('<?=$ds['tgl']?>','<?=$ds['code_cl_phc']?>')" class="btn btn-success" name="openlagi" value="Buka Lagi" >
+						<?php
+								//kecamatan
+							}else{								
+								//kelurahan
+							}
+						?>
+						
+						
+					
 				</form>
 					<a href="<?=base_url()?>keuangan/sts/general" class="btn btn-primary" >Kembali<a>					
 				</div>
@@ -438,6 +456,13 @@
 					document.getElementById("kode_rekening").value='';
 					document.getElementById("kode_anggaran").value='';
 					document.getElementById("uraian").value = '';
+				});
+		}
+		
+		function reopen(tgl, code_cl_phc){
+			
+			$.post( '<?php echo base_url()?>keuangan/sts/reopen', {tgl:tgl, code_cl_phc:code_cl_phc},function( data ) {
+					location.reload();
 				});
 		}
 		

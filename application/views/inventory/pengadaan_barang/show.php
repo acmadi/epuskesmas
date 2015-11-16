@@ -51,6 +51,7 @@
 			{ name: 'value', type: 'string'},
 			{ name: 'jumlah_unit', type: 'number'},
 			{ name: 'total_harga', type: 'number'},
+			{ name: 'nilai_pengadaan', type: 'number'},
 			{ name: 'keterangan', type: 'text'},
 			{ name: 'detail', type: 'number'},
 			{ name: 'edit', type: 'number'},
@@ -126,7 +127,7 @@
 				{ text: 'Tanggal Pengadaan',editable:false , datafield: 'tgl_pengadaan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
 				{ text: 'Status Pengadaan', editable:false ,datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Jumlah Unit', editable:false ,datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Total Harga', editable:false ,datafield: 'total_harga', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Total Harga', editable:false ,datafield: 'nilai_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' }
             ]
 		});
@@ -143,7 +144,7 @@
 		document.location.href="<?php echo base_url().'inventory/pengadaanbarang/view';?>/" + id ;
 	}
 
-	function del(id,code_cl_phc){
+	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
 			$.post("<?php echo base_url().'inventory/pengadaanbarang/dodel' ?>/" + id,  function(){
