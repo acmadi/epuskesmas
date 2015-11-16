@@ -21,7 +21,7 @@ var nip_nit = '<?php echo $nip_nit?>';
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-        url: "<?php echo site_url('kepegawaian/json/json_alamat'); ?>",
+        url: "<?php echo site_url('kepegawaian/json/json_alamat/'.$id); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -90,22 +90,43 @@ var nip_nit = '<?php echo $nip_nit?>';
             ]
 		});
 
-        $("#jqxNavigationBar").jqxNavigationBar({ width: '100%', height: '100%',expandMode: 'multiple', expandedIndexes: [2, 3]});
+        $("#jqxNavigationBar").jqxNavigationBar({ width: '100%', height: '100%',expandMode: 'multiple', expandedIndexes: [0]});
+
+        		$('#clearfilteringbutton').click(function () {
+			$("#jqxgrid_alamat").jqxGrid('clearfilters');
+		});
+        
+ 		$('#refreshdatabutton').click(function () {
+			$("#jqxgrid_alamat").jqxGrid('updatebounddata', 'cells');
+		});
+
+ 		$('#btn_add_alamat').click(function () {
+			add_alamat();
+		});
+
+        $("select[name='code_cl_phc']").change(function(){
+			$.post("<?php echo base_url().'inventory/inv_ruangan/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
+				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+			});
+	    });
 	});
 
-	function edit(id){
-		document.location.href="<?php echo base_url().'kepegawaian/drh/edit';?>/" + id;
+	function close_popup(){
+		$("#popup_alamat").jqxWindow('close');
 	}
 
-	function del(id){
-		var confirms = confirm("Hapus Data ?");
-		if(confirms == true){
-			$.post("<?php echo base_url().'kepegawaian/drh/dodel' ?>/" + id,  function(){
-				alert('data berhasil dihapus');
-
-				$("#jqxgrid_alamat").jqxGrid('updatebounddata', 'cells');
-			});
-		}
+	function add_alamat(){
+		$("#popup_alamat #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo site_url().'kepegawaian/drh/add_alamat/'.$id; ?>" , function(data) {
+			$("#popup_content").html(data);
+		});
+		$("#popup_alamat").jqxWindow({
+			theme: theme, resizable: false,
+			width: 500,
+			height: 460,
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup_alamat").jqxWindow('open');
 	}
 			
  </script>
@@ -120,7 +141,7 @@ var nip_nit = '<?php echo $nip_nit?>';
                 </div>
             </div>
             <div>
-				<button class="btn btn-success pull-right" id='btn_add_barang' type='button'><i class='icon-copy'></i> Tambah Alamat</button>
+				<button class="btn btn-primary" id='btn_add_alamat' type='button' ><i class='icon-copy'></i> Tambah Alamat</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
                 <div id="jqxgrid_alamat"></div>
             </div>
@@ -188,5 +209,11 @@ var nip_nit = '<?php echo $nip_nit?>';
             </div>
         </div>
     </div>
+
+    <div id="popup_alamat" style="display:none">
+		<div id="popup_title">Data Barang</div>
+		<div id="popup_content">&nbsp;</div>
+	</div>
+
 
 

@@ -96,17 +96,17 @@ class Drh extends CI_Controller {
 		$this->template->show($data,"home");
 	}
 
-
+//crud pegawai
 	function add(){
 		$this->authentication->verify('kepegawaian','add');
 
         $this->form_validation->set_rules('nip_nit', 'Nip / Nit', 'trim|required');
-        $this->form_validation->set_rules('nip_lama', 'Nip Lama', 'trim|required');
-        $this->form_validation->set_rules('nip_baru', 'Nip Baru', 'trim|required');
-        $this->form_validation->set_rules('nrk', 'nrk', 'trim|required');
-        $this->form_validation->set_rules('karpeg', 'Kerpeg', 'trim|required');
-        $this->form_validation->set_rules('nit', 'Nit', 'trim|required');
-        $this->form_validation->set_rules('nit_phl', 'Nit Phl', 'trim|required');
+        $this->form_validation->set_rules('nip_lama', 'Nip Lama', 'trim|');
+        $this->form_validation->set_rules('nip_baru', 'Nip Baru', 'trim|');
+        $this->form_validation->set_rules('nrk', 'nrk', 'trim|');
+        $this->form_validation->set_rules('karpeg', 'Kerpeg', 'trim|');
+        $this->form_validation->set_rules('nit', 'Nit', 'trim|');
+        $this->form_validation->set_rules('nit_phl', 'Nit Phl', 'trim|');
         $this->form_validation->set_rules('gelar', 'Gelar', 'trim|required');
         $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
         $this->form_validation->set_rules('tar_sex', 'Jenis Kelamin', 'trim|required');
@@ -156,12 +156,12 @@ class Drh extends CI_Controller {
 		$this->authentication->verify('kepegawaian','add');
 
         $this->form_validation->set_rules('nip_nit', 'Nip / Nit', 'trim|required');
-        $this->form_validation->set_rules('nip_lama', 'Nip Lama', 'trim|required');
-        $this->form_validation->set_rules('nip_baru', 'Nip Baru', 'trim|required');
-        $this->form_validation->set_rules('nrk', 'nrk', 'trim|required');
-        $this->form_validation->set_rules('karpeg', 'Kerpeg', 'trim|required');
-        $this->form_validation->set_rules('nit', 'Nit', 'trim|required');
-        $this->form_validation->set_rules('nit_phl', 'Nit Phl', 'trim|required');
+        $this->form_validation->set_rules('nip_lama', 'Nip Lama', 'trim|');
+        $this->form_validation->set_rules('nip_baru', 'Nip Baru', 'trim|');
+        $this->form_validation->set_rules('nrk', 'nrk', 'trim|');
+        $this->form_validation->set_rules('karpeg', 'Kerpeg', 'trim|');
+        $this->form_validation->set_rules('nit', 'Nit', 'trim|');
+        $this->form_validation->set_rules('nit_phl', 'Nit Phl', 'trim|');
         $this->form_validation->set_rules('id_jurusan', 'ID Jurusan', 'trim|required');
         $this->form_validation->set_rules('gelar', 'Gelar', 'trim|required');
         $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
@@ -181,7 +181,7 @@ class Drh extends CI_Controller {
 			$data = $this->drh_model->get_data_row($id); 
 
 			$data['title_group'] = "Parameter";
-			$data['title_form']="Ubah Jurusan Pendidikan Pegawai";
+			$data['title_form']="Ubah Data Pegawai";
 			$data['action']="edit";
 			$data['id']=$id;
 			$data['alamat'] = $this->drh_model->get_data_alamat($id);
@@ -210,5 +210,56 @@ class Drh extends CI_Controller {
 			$this->session->set_flashdata('alert', 'Delete data error');
 			redirect(base_url()."kepegawaian/drh");
 		}
+	}
+
+// CRUD ALAMAT
+	function add_alamat($id="")
+	{
+		$this->authentication->verify('kepegawaian','add');
+
+		$data['title_group'] = "Parameter";
+		$data['title_form']="Tambah Alamar Pegawai";
+		$data['action']="add_alamat";
+		$data['id']=$id;
+
+		$data['province'] = $this->drh_model->get_data_province($id);
+		$data['district'] = $this->drh_model->get_data_district($id);
+		$data['kelurahan'] = $this->drh_model->get_data_kel($id);
+		$data['kecamatan'] = $this->drh_model->get_data_kec($id);
+		$this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+		$this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+		$this->form_validation->set_rules('Alamat', 'Alamat', 'trim|required');
+		$this->form_validation->set_rules('rt', 'RT', 'trim|required');
+		$this->form_validation->set_rules('rw', 'RW', 'trim|required');
+		$this->form_validation->set_rules('code_cl_province', 'Puskesmas', 'trim|required');
+		$this->form_validation->set_rules('code_cl_district', 'Kota', 'trim|required');
+		$this->form_validation->set_rules('code_cl_kec', 'Kecamatan', 'trim|required');
+		$this->form_validation->set_rules('code_cl_village', 'Kelurahan', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			$data['id']		= $this->drh_model->get_data_alamat();
+			$data['notice']			= validation_errors();
+
+			die($this->parser->parse('kepegawaian/drh/form_alamat', $data));
+		}else{
+			$values = array(
+				'nip_nit'=>$this->drh_model->get_data_alamat(),
+				'urut' => $this->input->post('urut'),
+				'alamat' => $this->input->post('alamat'),
+				'code_cl_province' => $this->input->post('code_cl_province'),
+				'code_cl_district' => $this->input->post('code_cl_district'),
+				'code_cl_kec' => $this->input->post('code_cl_kec'),
+				'code_cl_village' => $this->input->post('code_cl_village')
+			);
+			if($this->db->insert('nip_nit', $values)){
+				$key['nip_nit'] = $id;
+        		$this->db->update("pegawai",$key);
+
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+		}
+
 	}
 }
