@@ -212,7 +212,22 @@ class Pengadaanbarang extends CI_Controller {
 
 		$this->template->show($data,"home");
 	}
+	function detail($id_pengadaan=0){
+		$this->authentication->verify('inventory','edit');
+		if($this->form_validation->run()== FALSE){
+			$data 	= $this->pengadaanbarang_model->get_data_row($id_pengadaan);
+			$data['title_group'] 	= "Inventory";
+			$data['title_form']		= "Detail Pengadaan Barang";
+			$data['action']			= "view";
+			$data['kode']			= $id_pengadaan;
+			$data['viewreadonly']	= "readonly=''";
 
+			$data['kodestatus'] = $this->pengadaanbarang_model->get_data_status();
+			$data['barang']	  	= $this->parser->parse('inventory/pengadaan_barang/barang', $data, TRUE);
+			$data['content'] 	= $this->parser->parse("inventory/pengadaan_barang/edit",$data,true);
+			$this->template->show($data,"home");
+		}
+	}
 	function dodel($kode=0){
 		$this->authentication->verify('inventory','del');
 
