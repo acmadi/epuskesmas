@@ -1,7 +1,14 @@
 </style>
-<script type="text/javascript">
-    $(function(){
+<?php
+if(isset($disable)){if($disable='disable'){?>
 
+<script type="text/javascript">
+  $("#dateInput").jqxDateTimeInput({ width: '300px', height: '25px' });
+</script>
+<?php }} ?>
+<script type="text/javascript">
+
+    $(function(){
       $('#btn-close').click(function(){
         close_popup();
       }); 
@@ -9,8 +16,8 @@
             var data = new FormData();
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
             $('#notice').show();
-
             data.append('id_mst_inv_barang', $('#v_kode_barang').val());
+            data.append('tanggal_diterima', $('#dateInput').val());
             data.append('nama_barang', $('#v_nama_barang').val());
             data.append('jumlah', $('#jumlah').val());
             data.append('harga', $('#harga').val());
@@ -93,6 +100,7 @@
             var harga = document.getElementById("harga").value;
             document.getElementById("subtotal").value = jumlah*harga;
         });
+        
     });
 </script>
 
@@ -111,21 +119,21 @@
             <div class="form-group">
               <label>Kode Barang</label>
               <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" type="text" value="<?php 
-                if(set_value('code_mst_inv')=="" && isset($code_mst_inv_barang)){
+                if(set_value('code_mst_inv')=="" && isset($id_mst_inv_barang)){
                   $s = array();
-                  $s[0] = substr($code_mst_inv_barang, 0,2);
-                  $s[1] = substr($code_mst_inv_barang, 2,2);
-                  $s[2] = substr($code_mst_inv_barang, 4,2);
-                  $s[3] = substr($code_mst_inv_barang, 6,2);
-                  $s[4] = substr($code_mst_inv_barang, 8,2);
+                  $s[0] = substr($id_mst_inv_barang, 0,2);
+                  $s[1] = substr($id_mst_inv_barang, 2,2);
+                  $s[2] = substr($id_mst_inv_barang, 4,2);
+                  $s[3] = substr($id_mst_inv_barang, 6,2);
+                  $s[4] = substr($id_mst_inv_barang, 8,2);
                   echo implode(".", $s).' | '.$nama_barang;
                 }else{
                   echo  set_value('code_mst_inv');
                 }
                 ?>" <?php if(isset($disable)){if($disable='disable'){echo "readonly";}} ?>/>
               <input id="v_kode_barang" class="form-control" name="code_mst_inv_barang" type="hidden" value="<?php 
-                if(set_value('code_mst_inv_barang')=="" && isset($code_mst_inv_barang)){
-                  echo $code_mst_inv_barang;
+                if(set_value('code_mst_inv_barang')=="" && isset($id_mst_inv_barang)){
+                  echo $id_mst_inv_barang;
                 }else{
                   echo  set_value('code_mst_inv_barang');
                 }
@@ -163,13 +171,27 @@
             </div>
             <div class="form-group">
               <label>Sub Total</label>
-              <input type="text" class="form-control" name="subtotal"  id="subtotal" placeholder="Sub Total" readonly="">
+              <input type="text" class="form-control" name="subtotal"  id="subtotal" placeholder="Sub Total" readonly="" value="<?php
+              if(set_value('subtotal')=="" && isset($harga)){
+                  echo $jumlah*$harga;
+                }else{
+                  echo  set_value('subtotal');
+                }
+                ?>">
             </div>
+            <?php if(isset($disable)){if($disable='disable'){?>
+            <div class="form-group">
+              <label>Tanggal</label>
+              <div id='dateInput' name="tanggal_diterima" value="<?php
+              echo (!empty($tanggal_diterima)) ? date("Y-m-d",strtotime($tanggal_diterima)) :  date("d-m-Y");
+            ?>"></div>
+            </div>
+            <?php }} ?>
             <div class="form-group">
               <label>Keterangan</label>
               <textarea class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan"><?php 
-                  if(set_value('keterangan')=="" && isset($keterangan)){
-                    echo $keterangan;
+                  if(set_value('keterangan')=="" && isset($keterangan_pengadaan)){
+                    echo $keterangan_pengadaan;
                   }else{
                     echo  set_value('keterangan');
                   }

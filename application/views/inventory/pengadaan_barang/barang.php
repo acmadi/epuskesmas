@@ -26,6 +26,7 @@
 			{ name: 'tanggal_dihapus', type: 'date' },
 			{ name: 'alasan_penghapusan', type: 'string' },
 			{ name: 'pilihan_asal', type: 'string' },
+			{ name: 'value', type: 'string' },
 			{ name: 'waktu_dibuat', type: 'date' },
 			{ name: 'terakhir_diubah', type: 'date' },
 			{ name: 'jumlah', type: 'number' },
@@ -62,39 +63,53 @@
 			width: '100%',
 			selectionmode: 'singlerow',
 			source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100'],
-			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
+			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: true,
 			rendergridrows: function(obj)
 			{
 				return obj.data;    
 			},
 
 			columns: [
-				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Del', align: 'center', editable: false,filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_mst_inv_barang+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Kode Barang', datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'jumlah ', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Harga Satuan', datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Total Harga', datafield: 'totalharga', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Keterangan ', datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Status ', datafield: 'pilihan_status_invetaris', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
-				{ text: 'Tanggal di terima',datafield: 'tanggal_diterima', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
+				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Nama Barang ', editable: false,datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'jumlah ', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Harga Satuan',editable: false, datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Total Harga', editable: false,datafield: 'totalharga', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Keterangan ', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{
+                        text: 'Status', datafield: 'value', width: '7%', columntype: 'dropdownlist',
+                        createeditor: function (row, column, editor) {
+                            // assign a new data source to the dropdownlist.
+                            var list = [<?php foreach ($kodestatus as $key) {?>
+							"<?=$key->value?>",
+							<?php } ?>];
+                            editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
+                        },
+                        // update the editor's value before saving it.
+                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                            // return the old value, if the new value is empty.
+                            if (newvalue == "") return oldvalue;
+                        }
+                 },
+				{ text: 'Tanggal di terima',editable: false,datafield: 'tanggal_diterima', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
            ]
 		});
         
@@ -130,9 +145,9 @@
 		$("#popup_barang").jqxWindow('open');
 	}
 
-	/*function edit_barang(kode,code_cl_phc,id_inv_permohonan_barang_item){
+	function edit_barang(id_barang){
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo base_url().'inventory/pengadaanbarang/edit_barang/'.$kode.'/'.$code_cl_phc.'/'; ?>" + id_inv_permohonan_barang_item, function(data) {
+		$.get("<?php echo base_url().'inventory/pengadaanbarang/edit_barang/'.$kode.'/'; ?>" + id_barang, function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_barang").jqxWindow({
@@ -143,18 +158,17 @@
 		});
 		$("#popup_barang").jqxWindow('open');
 	}
-
-	function del_barang(id_inv_permohonan_barang_item){
+	function del_barang(id_barang){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'inventory/pengadaanbarang/dodelpermohonan/'.$kode.'/'.$code_cl_phc.'/' ?>/" + id_inv_permohonan_barang_item,  function(){
+			$.post("<?php echo base_url().'inventory/pengadaanbarang/dodelpermohonan/'.$kode.'/' ?>" + id_barang,  function(){
 				alert('Data berhasil dihapus');
 
 				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
 			});
 		}
 	}
-*/
+
 </script>
 
 <div id="popup_barang" style="display:none">
