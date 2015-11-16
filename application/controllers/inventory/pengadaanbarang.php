@@ -271,7 +271,7 @@ class Pengadaanbarang extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				if($field == 'date_received' || $field == 'date_accepted') {
+				if($field == 'tanggal_diterima' ) {
 					$value = date("Y-m-d",strtotime($value));
 
 					$this->db->where($field,$value);
