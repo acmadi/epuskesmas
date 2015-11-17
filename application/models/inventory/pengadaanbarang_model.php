@@ -28,13 +28,13 @@ class Pengadaanbarang_model extends CI_Model {
     public function getItem($table,$data)
     {   
         $this->db->where('mst_inv_pilihan.tipe','status_inventaris');
-        $this->db->select("inv_inventaris_barang.id_mst_inv_barang,inv_inventaris_barang.nama_barang,inv_inventaris_barang.harga,
+        $this->db->select("inv_inventaris_barang.id_mst_inv_barang,inv_inventaris_barang.nama_barang,inv_inventaris_barang.harga,inv_inventaris_barang.barang_kembar_proc,
                         COUNT(inv_inventaris_barang.id_mst_inv_barang) AS jumlah,
                         COUNT(inv_inventaris_barang.id_mst_inv_barang)*inv_inventaris_barang.harga AS totalharga,
                         inv_inventaris_barang.keterangan_pengadaan,mst_inv_pilihan.value,inv_inventaris_barang.tanggal_diterima,
                         inv_inventaris_barang.waktu_dibuat,inv_inventaris_barang.terakhir_diubah,inv_inventaris_barang.pilihan_status_invetaris");
         $this->db->join('mst_inv_pilihan', "inv_inventaris_barang.pilihan_status_invetaris=mst_inv_pilihan.code");
-        $this->db->group_by("inv_inventaris_barang.id_mst_inv_barang");
+        $this->db->group_by("inv_inventaris_barang.barang_kembar_proc");
         return $this->db->get_where($table, $data);
     }
 
@@ -51,7 +51,7 @@ class Pengadaanbarang_model extends CI_Model {
 		$query->free_result();    
 		return $data;
 	}
-	function get_data_barang_edit($kode, $id_barang){
+	function get_data_barang_edit($kode,$kd_proc,$id_barang){
 		$data = array();
 		
 		$this->db->select("inv_inventaris_barang.id_mst_inv_barang,inv_inventaris_barang.nama_barang,inv_inventaris_barang.harga,
@@ -61,6 +61,7 @@ class Pengadaanbarang_model extends CI_Model {
                         inv_inventaris_barang.waktu_dibuat,inv_inventaris_barang.terakhir_diubah,inv_inventaris_barang.pilihan_status_invetaris");
 		$this->db->where("id_pengadaan",$kode);
 		$this->db->where("id_mst_inv_barang",$id_barang);
+        $this->db->where("barang_kembar_proc",$kd_proc);
 		$query = $this->db->get("inv_inventaris_barang");
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -177,24 +178,21 @@ class Pengadaanbarang_model extends CI_Model {
         return  $jumlah;
     }
     function barang_kembar_proc($kode){
-        $q = $this->db->query("SELECT barang_kembar_proc FROM inv_inventaris_barang WHERE id_mst_inv_barang=$kode ORDER BY barang_kembar_proc DESC");
+        $q = $this->db->query("SELECT  MAX(RIGHT(barang_kembar_proc,3)) as kd_max FROM inv_inventaris_barang WHERE id_mst_inv_barang=$kode ORDER BY barang_kembar_proc DESC");
         $kd = "";
         if($q->num_rows()>0)
         {
-            $kd = $q->id_mst_inv_barang;
-        }
-        else
-        {
-            $qq = $this->db->query("SELECT max(id_mst_inv_barang) as kd_max FROM inv_inventaris_barang where  id_inventaris_barang=$kode");
-            foreach($qq->result() as $k)
+           foreach($q->result() as $k)
             {
                 $tmp = ((int)$k->kd_max)+1;
                 $kd = sprintf("%03s", $tmp);
             }
         }
-
-        $today = date("ym"); 
-        return "KBNS-$today".$kd;
+        else
+        {
+            $kd = "001";
+        }
+        return $kode.$kd;
     }
     function sum_unit($kode)
     {
@@ -208,8 +206,9 @@ class Pengadaanbarang_model extends CI_Model {
 
 		return $this->db->delete($this->tabel);
 	}
-	function delete_entryitem($kode,$id_barang)
-	{
+	function delete_entryitem($kode,$id_barang,$kd_proc)
+	{    
+        $this->db->where('barang_kembar_proc',$kd_proc);
 		$this->db->where('id_pengadaan',$kode);
 		$this->db->where('id_mst_inv_barang',$id_barang);
 		return $this->db->delete('inv_inventaris_barang');

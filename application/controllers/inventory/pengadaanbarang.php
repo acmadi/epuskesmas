@@ -243,10 +243,10 @@ class Pengadaanbarang extends CI_Controller {
 		//$this->authentication->verify('inventory','edit');
 		$this->pengadaanbarang_model->update_status();				
 	}
-	function dodelpermohonan($kode=0,$id_barang=""){
+	function dodelpermohonan($kode=0,$id_barang="",$kd_proc=0){
 		$this->authentication->verify('inventory','del');
 
-		if($this->pengadaanbarang_model->delete_entryitem($kode,$id_barang)){
+		if($this->pengadaanbarang_model->delete_entryitem($kode,$id_barang,$kd_proc)){
 			$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
 			$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
 			$key['id_pengadaan'] = $kode;
@@ -294,6 +294,7 @@ class Pengadaanbarang extends CI_Controller {
 				'totalharga'					=> $act->totalharga,
 				'keterangan_pengadaan'			=> $act->keterangan_pengadaan,
 				'pilihan_status_invetaris'		=> $act->pilihan_status_invetaris,
+				'barang_kembar_proc'			=> $act->barang_kembar_proc,
 				'tanggal_diterima'				=> $act->tanggal_diterima,
 				'waktu_dibuat'					=> $act->waktu_dibuat,
 				'terakhir_diubah'				=> $act->terakhir_diubah,
@@ -329,6 +330,7 @@ class Pengadaanbarang extends CI_Controller {
 		}else{
 			$jumlah =$this->input->post('jumlah');
 			$id_barang = $this->input->post('id_mst_inv_barang');
+			$kode_proc = $this->pengadaanbarang_model->barang_kembar_proc($id_barang);
 			for($i=1;$i<=$jumlah;$i++){
 				$values = array(
 					'id_inventaris_barang' => $this->pengadaanbarang_model->get_inventarisbarang_id($kode,$id_barang),
@@ -336,6 +338,7 @@ class Pengadaanbarang extends CI_Controller {
 					'nama_barang' => $this->input->post('nama_barang'),
 					'harga' => $this->input->post('harga'),
 					'keterangan_pengadaan' => $this->input->post('keterangan_pengadaan'),
+					'barang_kembar_proc' => $kode_proc,
 					'id_pengadaan' => $kode,
 				);
 				$simpan=$this->db->insert('inv_inventaris_barang', $values);
@@ -352,7 +355,7 @@ class Pengadaanbarang extends CI_Controller {
 			
 		}
 	}
-	public function edit_barang($kode=0,$id_barang=0)
+	public function edit_barang($kode=0,$id_barang=0,$kd_proc=0)
 	{
 		$data['action']			= "edit";
 		$data['kode']			= $kode;
@@ -363,21 +366,23 @@ class Pengadaanbarang extends CI_Controller {
         $this->form_validation->set_rules('keterangan_pengadaan', 'Keterangan', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data = $this->pengadaanbarang_model->get_data_barang_edit($kode,$id_barang); 
+			$data = $this->pengadaanbarang_model->get_data_barang_edit($kode,$kd_proc,$id_barang); 
 			$data['kodebarang']		= $this->pengadaanbarang_model->get_databarang();
 			$data['notice']			= validation_errors();
 			$data['action']			= "edit";
 			$data['kode']			= $kode;
-			$data['disable']			= "disable";
+			$data['id_barang']		= $id_barang;
+			$data['kd_proc']		= $kd_proc;
+			$data['disable']		= "disable";
 			die($this->parser->parse('inventory/pengadaan_barang/barang_form_edit', $data));
 		}else{
-			
 			$jumlah =$this->input->post('jumlah');
 			$id_barang = $this->input->post('id_mst_inv_barang');
-			$this->dodelpermohonan($kode,$id_barang);
+			$this->dodelpermohonan($kode,$id_barang,$kd_proc);
 			$tanggalterima = explode("/",$this->input->post('tanggal_diterima'));
 			$this->input->post('tanggal_diterima');
 			$tanggal_diterima = $tanggalterima[2].'-'.$tanggalterima[1].'-'.$tanggalterima[0];
+			$kode_proc = $this->pengadaanbarang_model->barang_kembar_proc($id_barang);
 			for($i=1;$i<=$jumlah;$i++){
 				$values = array(
 					'id_inventaris_barang' => $this->pengadaanbarang_model->get_inventarisbarang_id($kode,$id_barang),
@@ -387,6 +392,7 @@ class Pengadaanbarang extends CI_Controller {
 					'keterangan_pengadaan' => $this->input->post('keterangan_pengadaan'),
 					'id_pengadaan' => $kode,
 					'tanggal_diterima' => $tanggal_diterima,
+					'barang_kembar_proc' => $kode_proc,
 				);
 				$simpan=$this->db->insert('inv_inventaris_barang', $values);
 			}
@@ -400,14 +406,6 @@ class Pengadaanbarang extends CI_Controller {
 			}else{
 				 die("Error|Proses data gagal");
 			}
-			/*if($this->db->update('inv_permohonan_barang_item', $values,array('id_inv_permohonan_barang_item' => $id_inv_permohonan_barang_item,'code_cl_phc'=>$code_cl_phc,'id_inv_permohonan_barang'=>$kode))){
-				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,$code_cl_phc);
-				$key['id_inv_permohonan_barang'] = $kode;
-        		$this->db->update("inv_permohonan_barang",$dataupdate,$key);
-				die("OK|");
-			}else{
-				die("Error|Proses data gagal");
-			}*/
 		}
 		
 	}
