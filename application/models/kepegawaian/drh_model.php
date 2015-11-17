@@ -25,6 +25,11 @@ class Drh_model extends CI_Model {
 
     // }
 
+    public function getItem($t_alamat,$data)
+    {
+        return $this->db->get_where($t_alamat, $data);
+    }
+
     function get_data($start=0,$limit=999999,$options=array())
     {
 		$this->db->order_by('nip_nit','asc');
@@ -32,12 +37,25 @@ class Drh_model extends CI_Model {
         return $query->result();
     }
 
-    function get_data_alamat($id,$start=0,$limit=999999,$options=array())
+    function get_data_alamat($start=0,$limit=999999,$options=array())
     {
-    	$this->db->where('nip_nit',$id);
-		// $this->db->order_by('nip_nit','asc');
+    	// $this->db->where('nip_nit',$id);
+		$this->db->order_by('nip_nit','asc');
         $query = $this->db->get($this->t_alamat,$limit,$start);
         return $query->result();
+    }
+
+    function get_data_alamat_id($id)
+    {
+		$data = array();
+		$options = array('nip_nit' => $id);
+		$query = $this->db->get_where($this->t_alamat,$options);
+		if ($query->num_rows() > 0){
+			$data = $query->row_array();
+		}
+
+		$query->free_result();    
+		return $data;
     }
 
  	function get_data_row($id){
@@ -66,6 +84,38 @@ class Drh_model extends CI_Model {
 		return $query->result();
 	}
 
+    function get_data_province($id)
+    {
+       $this->db->select('*');
+        $this->db->from('cl_province');
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+
+    function get_data_district($id)
+    {
+       $this->db->select('*');
+        $this->db->from('cl_district');
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+
+    function get_data_kel($id)
+    {
+       $this->db->select('*');
+        $this->db->from('cl_village');
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+
+    function get_data_kec($id)
+    {
+       $this->db->select('*');
+        $this->db->from('cl_kec');
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+
 	function get_data_puskesmas($start=0,$limit=999999,$options=array())
     {
     	$this->db->order_by('value','asc');
@@ -79,6 +129,8 @@ class Drh_model extends CI_Model {
         return $this->db->get_where($table, array('nip_nit'=>$data));
     }
 
+
+// CRUD pegawai
     function insert_entry()
     {
     	$data['nip_nit']		= $this->input->post('nip_nit');
@@ -153,4 +205,11 @@ class Drh_model extends CI_Model {
 
 		return $this->db->delete($this->tabel);
 	}
+
+// CRUD alamat pegawai
+
+    function insert_alamat()
+    {
+
+    }
 }

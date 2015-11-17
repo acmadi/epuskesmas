@@ -13,7 +13,18 @@
   <?php echo $this->session->flashdata('alert_form')?>
 </div>
 <?php } ?>
-
+<script>
+$(function() {
+    $('#row_dim').hide(); 
+    $('#type').change(function(){
+        if($('#type').val() == 'PNS') {
+            $('#row_dim').show(); 
+        } else {
+            $('#row_dim').hide(); 
+        } 
+    });
+});
+</script>
 
 <section class="content">
   <form action="<?php echo base_url()?>kepegawaian/drh/{action}/{id}" method="POST" name="">
@@ -26,7 +37,16 @@
             <h3 class="box-title">{title_form}</h3>
           </div><!-- /.box-header -->
           <label>--Informasi Utama--</label>
+          
+          </div>
           <div class="box-body">
+            <div class="form-group">
+            <label>Status Masuk</label>
+              <select name="status_masuk" id="type" >
+                      <option value="NonPNS">Non PNS</option>
+                      <option value="PNS">PNS</option>
+              </select>
+            </div>
             <div class="form-group">
               <label>Nomor Induk Pegawai / Nomor Induk Tenaga</label>
               <input type="text" class="form-control" name="nip_nit" placeholder="NIP/NIT" value="<?php 
@@ -37,8 +57,9 @@
               }
               ?>">
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
+            <div class="row" id="row_dim">
+            <div class="col-md-6 ">
+              <div class="form-group ">
                 <label>NIP Lama</label>
                 <input type="text" class="form-control" name="nip_lama" placeholder="NIP Lama" value="<?php 
                 if(set_value('nip_lama')=="" && isset($nip_lama)){
@@ -49,7 +70,7 @@
                 ?>">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 ">
               <div class="form-group">
                 <label>NIP Baru</label>
                 <input type="text" class="form-control" name="nip_baru" placeholder="NIP Baru" value="<?php 
@@ -61,7 +82,7 @@
                 ?>">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 ">
               <div class="form-group">
                 <label>NRK</label>
                 <input type="text" class="form-control" name="nrk" placeholder="NRK" value="<?php 
@@ -73,7 +94,7 @@
                 ?>">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 ">
               <div class="form-group">
                 <label>Kartu Pegawai</label>
                 <input type="text" class="form-control" name="karpeg" placeholder="Kartu Pegawai" value="<?php 
@@ -85,7 +106,8 @@
                 ?>">
               </div>
             </div>
-            <div class="col-md-6">
+            </div>
+            <div class="col-md-6 ">
               <div class="form-group">
                 <label>Nomor Induk Tenaga</label>
                 <input type="text" class="form-control" name="nit" placeholder="Nomor Induk Tenaga" value="<?php 
@@ -97,7 +119,7 @@
                 ?>">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 ">
               <div class="form-group">
                 <label>Nomor Induk Tenga phl</label>
                 <input type="text" class="form-control" name="nit_phl" placeholder="Deskripsi" value="<?php 
@@ -248,16 +270,6 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Status Masuk</label>
-                <select type="text" class="form-control" name="status_masuk">
-                  <option value="pns">PNS</option>
-                  <option value="nonpns">Non PNS</option>
-                </select>
-              </div>
-            </div>
-          </div>
 
         </div>
         <div class="box-footer pull-right">
