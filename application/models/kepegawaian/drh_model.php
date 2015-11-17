@@ -84,36 +84,92 @@ class Drh_model extends CI_Model {
 		return $query->result();
 	}
 
-    function get_data_province($id)
-    {
-       $this->db->select('*');
-        $this->db->from('cl_province');
-        $query = $this->db->get();
-        return $query->result(); 
+    function provinsi_option($id=0){
+        $html ="<option value=''>-</option>";
+        $sql = "select * from cl_province ORDER BY value ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            if($id==$row->code)
+                $html .= "<option value=".$row->code." selected>".$row->value."</option>";
+            else
+                $html .= "<option value=".$row->code.">".$row->value."</option>";
+        }
+        return $html;
     }
 
-    function get_data_district($id)
-    {
-       $this->db->select('*');
-        $this->db->from('cl_district');
-        $query = $this->db->get();
-        return $query->result(); 
+   function kota_option($kode_provinsi="",$id=0){
+        if($kode_provinsi=="") $kode_provinsi ="-";
+        $html ="<option value=''>-</option>";
+        $sql = "select * from cl_district where code like '".$kode_provinsi."%' ORDER BY value ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            if($id==$row->code)
+                $html .= "<option value=".$row->code." selected>".$row->value."</option>";
+            else
+                $html .= "<option value=".$row->code.">".$row->value."</option>";
+        }
+        return $html;
     }
 
-    function get_data_kel($id)
-    {
-       $this->db->select('*');
-        $this->db->from('cl_village');
-        $query = $this->db->get();
-        return $query->result(); 
+    function kecamatan_option($kode_kota, $id=""){
+        $html ="<option value=''>-</option>";
+        if($kode_kota=="") $kode_kota ="-";
+        $sql = "select * from cl_kec where code like '".$kode_kota."%' ORDER BY nama ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            if($id==$row->code)
+                $html .= "<option value=".$row->code." selected>".$row->nama."</option>";
+            else
+                $html .= "<option value=".$row->code.">".$row->nama."</option>";
+        }
+        return $html;
     }
 
-    function get_data_kec($id)
-    {
-       $this->db->select('*');
-        $this->db->from('cl_kec');
-        $query = $this->db->get();
-        return $query->result(); 
+    function desa_option($kode_kec, $id=""){
+        $html ="<option value=''>-</option>";
+        if($kode_kec=="") $kode_kec ="-";
+        $sql = "select * from cl_village where code like '".$kode_kec."%' ORDER BY value ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            if($id==$row->code)
+                $html .= "<option value=".$row->code." selected>".$row->value."</option>";
+            else
+                $html .= "<option value=".$row->code.">".$row->value."</option>";
+        }
+        return $html;
+    }
+
+    function get_kota($kode_provinsi, $id=""){
+        if($kode_provinsi=="") $kode_provinsi ="-";
+        $sql = "select * from cl_district where code like '".$kode_provinsi."%' ORDER BY value ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            $data[$row->code] = $row->value;
+        }
+
+        return $data;
+    }
+
+    function get_kecamatan($kode_kota, $id=""){
+        if($kode_kota=="") $kode_kota ="-";
+        $sql = "select * from cl_kec where code like '".$kode_kota."%' ORDER BY nama ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            $data[$row->code] = $row->nama;
+        }
+
+        return $data;
+    }
+
+    function get_desa($kode_kec, $id=""){
+        if($kode_kec=="") $kode_kec ="-";
+        $sql = "select * from cl_village where code like '".$kode_kec."%' ORDER BY value ASC";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            $data[$row->code] = $row->value;
+        }
+
+        return $data;
     }
 
 	function get_data_puskesmas($start=0,$limit=999999,$options=array())

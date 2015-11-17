@@ -19,8 +19,10 @@ $(function() {
     $('#type').change(function(){
         if($('#type').val() == 'PNS') {
             $('#row_dim').show(); 
+            $('#row_dim2').disable(); 
         } else {
             $('#row_dim').hide(); 
+            $('#row_dim2').disable(); 
         } 
     });
 });
@@ -37,9 +39,7 @@ $(function() {
             <h3 class="box-title">{title_form}</h3>
           </div><!-- /.box-header -->
           <label>--Informasi Utama--</label>
-          
-          </div>
-          <div class="box-body">
+            <div class="box-body">
             <div class="form-group">
             <label>Status Masuk</label>
               <select name="status_masuk" id="type" >
@@ -58,77 +58,79 @@ $(function() {
               ?>">
             </div>
             <div class="row" id="row_dim">
-            <div class="col-md-6 ">
-              <div class="form-group ">
-                <label>NIP Lama</label>
-                <input type="text" class="form-control" name="nip_lama" placeholder="NIP Lama" value="<?php 
-                if(set_value('nip_lama')=="" && isset($nip_lama)){
-                  echo $nip_lama;
-                }else{
-                  echo  set_value('nip_lama');
-                }
-                ?>">
+              <div class="col-md-6 ">
+                <div class="form-group ">
+                  <label>NIP Lama</label>
+                  <input type="text" class="form-control" name="nip_lama" placeholder="NIP Lama" value="<?php 
+                  if(set_value('nip_lama')=="" && isset($nip_lama)){
+                    echo $nip_lama;
+                  }else{
+                    echo  set_value('nip_lama');
+                  }
+                  ?>">
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>NIP Baru</label>
+                  <input type="text" class="form-control" name="nip_baru" placeholder="NIP Baru" value="<?php 
+                  if(set_value('nip_baru')=="" && isset($nip_baru)){
+                    echo $nip_baru;
+                  }else{
+                    echo  set_value('nip_baru');
+                  }
+                  ?>">
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>NRK</label>
+                  <input type="text" class="form-control" name="nrk" placeholder="NRK" value="<?php 
+                  if(set_value('nrk')=="" && isset($nrk)){
+                    echo $nrk;
+                  }else{
+                    echo  set_value('nrk');
+                  }
+                  ?>">
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>Kartu Pegawai</label>
+                  <input type="text" class="form-control" name="karpeg" placeholder="Kartu Pegawai" value="<?php 
+                  if(set_value('karpeg')=="" && isset($karpeg)){
+                    echo $karpeg;
+                  }else{
+                    echo  set_value('karpeg');
+                  }
+                  ?>">
+                </div>
               </div>
             </div>
-            <div class="col-md-6 ">
-              <div class="form-group">
-                <label>NIP Baru</label>
-                <input type="text" class="form-control" name="nip_baru" placeholder="NIP Baru" value="<?php 
-                if(set_value('nip_baru')=="" && isset($nip_baru)){
-                  echo $nip_baru;
-                }else{
-                  echo  set_value('nip_baru');
-                }
-                ?>">
+            <div class="row" id="row_dim2">
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>Nomor Induk Tenaga</label>
+                  <input type="text" class="form-control" name="nit" placeholder="Nomor Induk Tenaga" value="<?php 
+                  if(set_value('nit')=="" && isset($nit)){
+                    echo $nit;
+                  }else{
+                    echo  set_value('nit');
+                  }
+                  ?>">
+                </div>
               </div>
-            </div>
-            <div class="col-md-6 ">
-              <div class="form-group">
-                <label>NRK</label>
-                <input type="text" class="form-control" name="nrk" placeholder="NRK" value="<?php 
-                if(set_value('nrk')=="" && isset($nrk)){
-                  echo $nrk;
-                }else{
-                  echo  set_value('nrk');
-                }
-                ?>">
-              </div>
-            </div>
-            <div class="col-md-6 ">
-              <div class="form-group">
-                <label>Kartu Pegawai</label>
-                <input type="text" class="form-control" name="karpeg" placeholder="Kartu Pegawai" value="<?php 
-                if(set_value('karpeg')=="" && isset($karpeg)){
-                  echo $karpeg;
-                }else{
-                  echo  set_value('karpeg');
-                }
-                ?>">
-              </div>
-            </div>
-            </div>
-            <div class="col-md-6 ">
-              <div class="form-group">
-                <label>Nomor Induk Tenaga</label>
-                <input type="text" class="form-control" name="nit" placeholder="Nomor Induk Tenaga" value="<?php 
-                if(set_value('nit')=="" && isset($nit)){
-                  echo $nit;
-                }else{
-                  echo  set_value('nit');
-                }
-                ?>">
-              </div>
-            </div>
-            <div class="col-md-6 ">
-              <div class="form-group">
-                <label>Nomor Induk Tenga phl</label>
-                <input type="text" class="form-control" name="nit_phl" placeholder="Deskripsi" value="<?php 
-                if(set_value('nit_phl')=="" && isset($nit_phl)){
-                  echo $nit_phl;
-                }else{
-                  echo  set_value('nit_phl');
-                }
-                ?>">
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>Nomor Induk Tenga phl</label>
+                  <input type="text" class="form-control" name="nit_phl" placeholder="Deskripsi" value="<?php 
+                  if(set_value('nit_phl')=="" && isset($nit_phl)){
+                    echo $nit_phl;
+                  }else{
+                    echo  set_value('nit_phl');
+                  }
+                  ?>">
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -270,20 +272,24 @@ $(function() {
                 </select>
               </div>
             </div>
-
+            </div>
         </div>
         <div class="box-footer pull-right">
           <button type="submit" class="btn btn-primary">Simpan</button>
           <button type="reset" class="btn btn-warning">Ulang</button>
           <button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>kepegawaian/drh'">Kembali</button>
         </div>
+          </div>
+          
+
       </div><!-- /.box-body -->
-    </div><!-- /.box -->
-    <div class="box box-success">
+      <div class="box box-success">
       <div class="box-body">
               <?php echo $form_tambahan;?>
         </div>
       </div>
+    </div><!-- /.box -->
+    
 </div>
   </div><!-- /.box -->
 
@@ -296,6 +302,6 @@ $(function() {
 <script>
   $(function () { 
     $("#menu_kepegawaian_drh").addClass("active");
-    $("#menu_master_data").addClass("active");
+    $("#menu_kepegawaian").addClass("active");
   });
 </script>

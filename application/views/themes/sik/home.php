@@ -45,6 +45,8 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxnavigationbar.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxpanel.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxtabs.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/jqwidgets/jqxcombobox.js"></script>
 	 
     <script type="text/javascript">
         var theme = "bootstrap";

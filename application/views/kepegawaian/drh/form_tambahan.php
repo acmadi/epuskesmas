@@ -104,8 +104,8 @@ var nip_nit = '<?php echo $nip_nit?>';
 			add_alamat();
 		});
 
-        $("select[name='code_cl_phc']").change(function(){
-			$.post("<?php echo base_url().'inventory/inv_ruangan/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
+        $("select[name='code_cl_province']").change(function(){
+			$.post("<?php echo base_url().'kepegawaian/drh/filter_district' ?>", 'code_cl_province='+$(this).val(),  function(){
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 			});
 	    });
@@ -121,9 +121,9 @@ var nip_nit = '<?php echo $nip_nit?>';
 			$("#popup_content").html(data);
 		});
 		$("#popup_alamat").jqxWindow({
-			theme: theme, resizable: false,
-			width: 500,
-			height: 460,
+			theme: theme, resizable: true,
+			width: '40%',
+			height: '75%',
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup_alamat").jqxWindow('open');
@@ -211,7 +211,7 @@ var nip_nit = '<?php echo $nip_nit?>';
     </div>
 
     <div id="popup_alamat" style="display:none">
-		<div id="popup_title">Data Barang</div>
+		<div id="popup_title">Data Alamat Pegawai</div>
 		<div id="popup_content">&nbsp;</div>
 	</div>
 

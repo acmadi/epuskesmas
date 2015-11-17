@@ -53,7 +53,7 @@
 
 <script>
 	$(function () {	
-    $("#menu_mst_pegpendidikanrumpun").addClass("active");
-    $("#menu_master_data").addClass("active");
+    $("#menu_kepegawaian_drh").addClass("active");
+    $("#menu_kepegawaian").addClass("active");
 	});
 </script>
