@@ -1,4 +1,23 @@
-</style>
+
+<script type="text/javascript">
+  <?php $kodebarang_ = substr($id_mst_inv_barang, 0,2);
+      if($kodebarang_=='01') {?>  
+            $("#status_sertifikat_tanggal").jqxDateTimeInput({ width: '300px', height: '25px' })
+<?php  }else if($kodebarang_=='02') {?>
+            $("#tanggal_bpkb").jqxDateTimeInput({ width: '300px', height: '25px' });
+            $("#tanggal_perolehan").jqxDateTimeInput({ width: '300px', height: '25px' });
+<?php  }else if($kodebarang_=='03') {?>
+            $("#dokumen_tanggal").jqxDateTimeInput({ width: '300px', height: '25px' });
+<?php  }else if($kodebarang_=='04') {?>
+            $("#dokumen_tanggal1").jqxDateTimeInput({ width: '300px', height: '25px' });
+<?php  }else if($kodebarang_=='05') {?>
+<?php  }else if($kodebarang_=='06') {?>
+            $("#dokumen_tanggal2").jqxDateTimeInput({ width: '300px', height: '25px' });
+            $("#tanggal_mulai").jqxDateTimeInput({ width: '300px', height: '25px' });
+<?php }?>   
+  
+  
+</script>
 <?php
 if(isset($disable)){if($disable='disable'){?>
 
@@ -22,6 +41,66 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
             data.append('jumlah', $('#jumlah').val());
             data.append('harga', $('#harga').val());
             data.append('keterangan_pengadaan', $('#keterangan').val());
+            var kd_barang = $('#v_kode_barang').val().substring(0,2);
+            if(kd_barang=="01"){
+                data.append('luas', $('#luas').val());
+                data.append('alamat', $('#alamat').val());
+                data.append('pilihan_satuan_barang', $('#pilihan_satuan_barang').val());
+                data.append('pilihan_status_hak', $('#pilihan_status_hak').val());
+                data.append('status_sertifikat_tanggal', $('#status_sertifikat_tanggal').val());
+                data.append('pilihan_penggunaan', $('#pilihan_penggunaan').val());
+                data.append('status_sertifikat_nomor', $('#status_sertifikat_nomor').val());
+            }else if(kd_barang=="02"){
+                data.append('merek_type', $('#merek_type').val());
+                data.append('identitas_barang', $('#identitas_barang').val());
+                data.append('pilihan_bahan', $('#pilihan_bahan').val());
+                data.append('ukuran_barang', $('#ukuran_barang').val());
+                data.append('pilihan_satuan', $('#pilihan_satuan').val());
+                data.append('tanggal_bpkb', $('#tanggal_bpkb').val());
+                data.append('nomor_bpkb', $('#nomor_bpkb').val());
+                data.append('no_polisi', $('#no_polisi').val());
+                data.append('tanggal_perolehan', $('#tanggal_perolehan').val());
+            }else if(kd_barang=="03"){
+                data.append('luas_lantai', $('#luas_lantai').val());
+                data.append('letak_lokasi_alamat', $('#letak_lokasi_alamat').val());
+                data.append('pillihan_status_hak', $('#pillihan_status_hak').val());
+                data.append('nomor_kode_tanah', $('#nomor_kode_tanah').val());
+                data.append('pilihan_kons_tingkat', $('#pilihan_kons_tingkat').val());
+                data.append('pilihan_kons_beton', $('#pilihan_kons_beton').val());
+                data.append('dokumen_tanggal', $('#dokumen_tanggal').val());
+                data.append('dokumen_nomor', $('#dokumen_nomor').val());
+            }else if(kd_barang=="04"){
+                data.append('konstruksi', $('#konstruksi').val());
+                data.append('panjang', $('#panjang').val());
+                data.append('lebar', $('#lebar').val());
+                data.append('luas', $('#luas1').val());
+                data.append('letak_lokasi_alamat', $('#letak_lokasi_alamat1').val());
+                data.append('dokumen_tanggal', $('#dokumen_tanggal1').val());
+                data.append('dokumen_nomor', $('#dokumen_nomor1').val());
+                data.append('pilihan_status_tanah', $('#pilihan_status_tanah').val());
+                data.append('nomor_kode_tanah', $('#nomor_kode_tanah1').val());
+            }else if(kd_barang=="05"){
+                data.append('buku_judul_pencipta', $('#buku_judul_pencipta').val());
+                data.append('buku_spesifikasi', $('#buku_spesifikasi').val());
+                data.append('budaya_asal_daerah', $('#budaya_asal_daerah').val());
+                data.append('budaya_pencipta', $('#budaya_pencipta').val());
+                data.append('pilihan_budaya_bahan', $('#pilihan_budaya_bahan').val());
+                data.append('flora_fauna_jenis', $('#flora_fauna_jenis').val());
+                data.append('flora_fauna_ukuran', $('#flora_fauna_ukuran').val());
+                data.append('pilihan_satuan', $('#pilihan_satuan1').val());
+                data.append('tahun_cetak_beli', $('#tahun_cetak_beli').val());
+            }else if(kd_barang=="06"){
+                data.append('bangunan', $('#bangunan').val());
+                data.append('pilihan_konstruksi_bertingkat', $('#pilihan_konstruksi_bertingkat').val());
+                data.append('pilihan_konstruksi_beton', $('#pilihan_konstruksi_beton').val());
+                data.append('luas', $('#luas2').val());
+                data.append('lokasi', $('#lokasi').val());
+                data.append('dokumen_tanggal', $('#dokumen_tanggal2').val());
+                data.append('dokumen_nomor', $('#dokumen_nomor2').val());
+                data.append('tanggal_mulai', $('#tanggal_mulai').val());
+                data.append('pilihan_status_tanah', $('#pilihan_status_tanah1').val());
+            }
+
             $.ajax({
                 cache : false,
                 contentType : false,
@@ -213,7 +292,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
     if($kodebarang_=='01') {?>
       <div class="form-group">
         <label>Luas</label>
-        <input type="text" class="form-control" name="luas"  placeholder="Luas"  value="<?php
+        <input type="number" class="form-control" name="luas" id="luas" placeholder="Luas"  value="<?php
         if(set_value('luas')=="" && isset($luas)){
             echo $luas;
           }else{
@@ -223,7 +302,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Alamat</label>
-        <textarea class="form-control"  name="alamat" placeholder="alamat"><?php 
+        <textarea class="form-control" id="alamat" name="alamat" placeholder="alamat"><?php 
         if(set_value('alamat')=="" && isset($alamat)){
           echo $alamat;
         }else{
@@ -233,10 +312,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Status Barang</label>
-        <select  name="pilihan_satuan_barang" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
-            <option value="">Pilih Status Barang</option>
+        <select  name="pilihan_satuan_barang" type="text" class="form-control" id="pilihan_satuan_barang">
+            <option value="">Pilih Satuan Barang</option>
             </option>
-            <?php foreach($pilihan_satuan_barang as $barang) : ?>
+            <?php foreach($pilihan_satuan_barang_ as $barang) : ?>
               <?php $select = $barang->code == $pilihan_satuan_barang ? 'selected' : '' ?>
               <option value="<?php echo $barang->code ?>" <?php echo $select ?>><?php echo $barang->value ?></option>
             <?php endforeach ?>
@@ -244,10 +323,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Status Hak</label>
-        <select  name="pilihan_status_hak" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_status_hak" type="text" class="form-control" id="pilihan_status_hak">
             <option value="">Pilih Status Hak</option>
             </option>
-            <?php foreach($pilihan_status_hak as $hak) : ?>
+            <?php foreach($pilihan_status_hak_ as $hak) : ?>
               <?php $select = $hak->code == $pilihan_status_hak ? 'selected' : '' ?>
               <option value="<?php echo $hak->code ?>" <?php echo $select ?>><?php echo $hak->value ?></option>
             <?php endforeach ?>
@@ -261,7 +340,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Nomor Sertifikat</label>
-        <input type="text" class="form-control" name="status_sertifikat_nomor"  placeholder="Nomor Sertifikat"  value="<?php
+        <input type="text" class="form-control" name="status_sertifikat_nomor" id="status_sertifikat_nomor" placeholder="Nomor Sertifikat"  value="<?php
         if(set_value('status_sertifikat_nomor')=="" && isset($status_sertifikat_nomor)){
             echo $status_sertifikat_nomor;
           }else{
@@ -271,10 +350,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Penggunaan</label>
-        <select  name="pilihan_penggunaan" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_penggunaan" type="text" class="form-control" id="pilihan_penggunaan">
             <option value="">Pilih Status Penggunaan</option>
             </option>
-            <?php foreach($pilihan_penggunaan as $pengguna) : ?>
+            <?php foreach($pilihan_penggunaan_ as $pengguna) : ?>
               <?php $select = $pengguna->code == $pilihan_penggunaan ? 'selected' : '' ?>
               <option value="<?php echo $pengguna->code ?>" <?php echo $select ?>><?php echo $pengguna->value ?></option>
             <?php endforeach ?>
@@ -285,7 +364,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
 
       <div class="form-group">
         <label>Merek Tipe</label>
-        <textarea class="form-control"  name="merek_type" placeholder="Keterangan"><?php 
+        <textarea class="form-control"  name="merek_type" placeholder="Keterangan" id="Keterangan"><?php 
         if(set_value('merek_type')=="" && isset($merek_type)){
           echo $merek_type;
         }else{
@@ -305,10 +384,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Barang</label>
-        <select  name="pilihan_bahan" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_bahan" type="text" class="form-control" id="pilihan_bahan">
             <option value="">Pilih Status Barang</option>
             </option>
-            <?php foreach($pilihan_bahan as $bahan) : ?>
+            <?php foreach($pilihan_bahan_ as $bahan) : ?>
               <?php $select = $bahan->code == $pilihan_bahan ? 'selected' : '' ?>
               <option value="<?php echo $bahan->code ?>" <?php echo $select ?>><?php echo $bahan->value ?></option>
             <?php endforeach ?>
@@ -316,7 +395,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Ukuran Barang</label>
-        <input type="text" class="form-control" name="ukuran_barang"  placeholder="Ukuran Barang"  value="<?php
+        <input type="text" class="form-control" name="ukuran_barang" id="ukuran_barang" placeholder="Ukuran Barang"  value="<?php
         if(set_value('ukuran_barang')=="" && isset($ukuran_barang)){
             echo $ukuran_barang;
           }else{
@@ -326,10 +405,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Satuan</label>
-        <select  name="pilihan_satuan" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_satuan" type="text" class="form-control" id="pilihan_satuan">
             <option value="">Pilih Status Satuan</option>
             </option>
-            <?php foreach($pilihan_satuan as $satuan) : ?>
+            <?php foreach($pilihan_satuan_ as $satuan) : ?>
               <?php $select = $satuan->code == $pilihan_satuan ? 'selected' : '' ?>
               <option value="<?php echo $satuan->code ?>" <?php echo $select ?>><?php echo $satuan->value ?></option>
             <?php endforeach ?>
@@ -353,7 +432,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Nomor Polisi</label>
-        <input type="text" class="form-control" name="no_polisi"  placeholder="Nomor Polisi"  value="<?php
+        <input type="text" class="form-control" name="no_polisi" id="no_polisi" placeholder="Nomor Polisi"  value="<?php
         if(set_value('no_polisi')=="" && isset($no_polisi)){
             echo $no_polisi;
           }else{
@@ -373,7 +452,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
         
       <div class="form-group">
         <label>Luas Lantai</label>
-        <input type="text" class="form-control" name="luas_lantai"  placeholder="Luas Lantai"  value="<?php
+        <input type="number" class="form-control" name="luas_lantai" id="luas_lantai"  placeholder="Luas Lantai"  value="<?php
         if(set_value('luas_lantai')=="" && isset($luas_lantai)){
             echo $luas_lantai;
           }else{
@@ -393,10 +472,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Status Hak</label>
-        <select  name="pillihan_status_hak" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pillihan_status_hak" type="text" class="form-control" id="pillihan_status_hak">
             <option value="">Pilih Status Hak</option>
             </option>
-            <?php foreach($pillihan_status_hak as $hak) : ?>
+            <?php foreach($pillihan_status_hak_ as $hak) : ?>
               <?php $select = $hak->code == $pillihan_status_hak ? 'selected' : '' ?>
               <option value="<?php echo $hak->code ?>" <?php echo $select ?>><?php echo $hak->value ?></option>
             <?php endforeach ?>
@@ -404,7 +483,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Nomor Kode Tanah</label>
-        <input type="text" class="form-control" name="nomor_kode_tanah"  placeholder="Nomor Kode Tanah"  value="<?php
+        <input type="text" class="form-control" name="nomor_kode_tanah" id="nomor_kode_tanah" placeholder="Nomor Kode Tanah"  value="<?php
         if(set_value('nomor_kode_tanah')=="" && isset($nomor_kode_tanah)){
             echo $nomor_kode_tanah;
           }else{
@@ -414,10 +493,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Kontruksi Tingkat</label>
-        <select  name="pilihan_kons_tingkat" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_kons_tingkat" type="text" class="form-control" id="pilihan_kons_tingkat">
             <option value="">Pilih Kontruksi Tingkat</option>
             </option>
-            <?php foreach($pilihan_kons_tingkat as $tingkat) : ?>
+            <?php foreach($pilihan_kons_tingkat_ as $tingkat) : ?>
               <?php $select = $tingkat->code == $pilihan_kons_tingkat ? 'selected' : '' ?>
               <option value="<?php echo $tingkat->code ?>" <?php echo $select ?>><?php echo $tingkat->value ?></option>
             <?php endforeach ?>
@@ -425,10 +504,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Kontruksi Beton</label>
-        <select  name="pilihan_kons_beton" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_kons_beton" type="text" class="form-control" id="pilihan_kons_beton">
             <option value="">Pilihan Kontruksi Beton</option>
             </option>
-            <?php foreach($pilihan_kons_beton as $beton) : ?>
+            <?php foreach($pilihan_kons_beton_ as $beton) : ?>
               <?php $select = $beton->code == $pilihan_kons_beton ? 'selected' : '' ?>
               <option value="<?php echo $beton->code ?>" <?php echo $select ?>><?php echo $beton->value ?></option>
             <?php endforeach ?>
@@ -442,7 +521,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Nomor Dokumen</label>
-        <input type="text" class="form-control" name="dokumen_nomor"  placeholder="Nomor Dokumen"  value="<?php
+        <input type="text" class="form-control" name="dokumen_nomor" id="dokumen_nomor" placeholder="Nomor Dokumen"  value="<?php
         if(set_value('dokumen_nomor')=="" && isset($dokumen_nomor)){
             echo $dokumen_nomor;
           }else{
@@ -466,7 +545,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Panjang</label>
-        <input type="text" class="form-control" name="panjang"  placeholder="Panjang"  value="<?php
+        <input type="number" class="form-control" name="panjang" id="panjang" placeholder="Panjang"  value="<?php
         if(set_value('panjang')=="" && isset($panjang)){
             echo $panjang;
           }else{
@@ -476,7 +555,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Lebar</label>
-        <input type="text" class="form-control" name="lebar"  placeholder="Lebar"  value="<?php
+        <input type="number" class="form-control" name="lebar" id="lebar" placeholder="Lebar"  value="<?php
         if(set_value('lebar')=="" && isset($lebar)){
             echo $lebar;
           }else{
@@ -486,7 +565,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Luas</label>
-        <input type="text" class="form-control" name="luas"  placeholder="Luas"  value="<?php
+        <input type="number" class="form-control" name="luas" id="luas1"  placeholder="Luas"  value="<?php
         if(set_value('luas')=="" && isset($luas)){
             echo $luas;
           }else{
@@ -496,7 +575,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Alamat Lokasi</label>
-        <textarea class="form-control" id="letak_lokasi_alamat" name="letak_lokasi_alamat" placeholder="Alamat Lokasi"><?php 
+        <textarea class="form-control" id="letak_lokasi_alamat1" name="letak_lokasi_alamat" placeholder="Alamat Lokasi"><?php 
             if(set_value('letak_lokasi_alamat')=="" && isset($letak_lokasi_alamat)){
               echo $letak_lokasi_alamat;
             }else{
@@ -506,13 +585,13 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
               <label>Tanggal Dokumen</label>
-              <div id='dokumen_tanggal' name="dokumen_tanggal" value="<?php
+              <div id='dokumen_tanggal1' name="dokumen_tanggal" value="<?php
               echo (!empty($dokumen_tanggal)) ? date("Y-m-d",strtotime($dokumen_tanggal)) :  date("d-m-Y");
             ?>"></div>
             </div>
       <div class="form-group">
         <label>Nomor Dokumen</label>
-        <input type="text" class="form-control" name="dokumen_nomor"  placeholder="dokumen_nomor"  value="<?php
+        <input type="text" class="form-control" name="dokumen_nomor" id="dokumen_nomor1" placeholder="dokumen_nomor"  value="<?php
         if(set_value('dokumen_nomor')=="" && isset($dokumen_nomor)){
             echo $dokumen_nomor;
           }else{
@@ -522,10 +601,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Status Tanah</label>
-        <select  name="pilihan_status_tanah" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_status_tanah" type="text" class="form-control" id="pilihan_status_tanah">
             <option value="">Pilihan Status Tanah</option>
             </option>
-            <?php foreach($pilihan_status_tanah as $tanah) : ?>
+            <?php foreach($pilihan_status_tanah_ as $tanah) : ?>
               <?php $select = $tanah->code == $pilihan_status_tanah ? 'selected' : '' ?>
               <option value="<?php echo $tanah->code ?>" <?php echo $select ?>><?php echo $tanah->value ?></option>
             <?php endforeach ?>
@@ -533,7 +612,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Nomor Kode Tanah</label>
-        <input type="text" class="form-control" name="nomor_kode_tanah"  placeholder="Nomor Kode Tanah"  value="<?php
+        <input type="text" class="form-control" name="nomor_kode_tanah" id="nomor_kode_tanah1" placeholder="Nomor Kode Tanah"  value="<?php
         if(set_value('nomor_kode_tanah')=="" && isset($nomor_kode_tanah)){
             echo $nomor_kode_tanah;
           }else{
@@ -547,7 +626,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       
       <div class="form-group">
         <label>Judul Buku Pencipta</label>
-        <input type="text" class="form-control" name="buku_judul_pencipta"  placeholder="Judul Buku Pencipta"  value="<?php
+        <input type="text" class="form-control" name="buku_judul_pencipta" id="buku_judul_pencipta" placeholder="Judul Buku Pencipta"  value="<?php
         if(set_value('buku_judul_pencipta')=="" && isset($buku_judul_pencipta)){
             echo $buku_judul_pencipta;
           }else{
@@ -567,7 +646,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Budaya Asal Daerah</label>
-        <input type="text" class="form-control" name="budaya_asal_daerah"  placeholder="Budaya Asal Daerah"  value="<?php
+        <input type="text" class="form-control" name="budaya_asal_daerah" id="budaya_asal_daerah"  placeholder="Budaya Asal Daerah"  value="<?php
         if(set_value('budaya_asal_daerah')=="" && isset($budaya_asal_daerah)){
             echo $budaya_asal_daerah;
           }else{
@@ -577,7 +656,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pencipta Budaya</label>
-        <input type="text" class="form-control" name="budaya_pencipta"  placeholder="Pencipta Budaya"  value="<?php
+        <input type="text" class="form-control" name="budaya_pencipta" id="budaya_pencipta"  placeholder="Pencipta Budaya"  value="<?php
         if(set_value('budaya_pencipta')=="" && isset($budaya_pencipta)){
             echo $budaya_pencipta;
           }else{
@@ -587,10 +666,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Budaya Bahan</label>
-        <select  name="pilihan_budaya_bahan" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_budaya_bahan" type="text" class="form-control" id="pilihan_budaya_bahan">
             <option value="">Pilihan Budaya Bahan</option>
             </option>
-            <?php foreach($pilihan_budaya_bahan as $bahan) : ?>
+            <?php foreach($pilihan_budaya_bahan_ as $bahan) : ?>
               <?php $select = $bahan->code == $pilihan_budaya_bahan ? 'selected' : '' ?>
               <option value="<?php echo $bahan->code ?>" <?php echo $select ?>><?php echo $bahan->value ?></option>
             <?php endforeach ?>
@@ -598,7 +677,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Jenis Flora dan Fauna</label>
-        <input type="text" class="form-control" name="flora_fauna_jenis"  placeholder="Jenis Flora dan Fauna<"  value="<?php
+        <input type="text" class="form-control" name="flora_fauna_jenis" id="flora_fauna_jenis" placeholder="Jenis Flora dan Fauna"  value="<?php
         if(set_value('flora_fauna_jenis')=="" && isset($flora_fauna_jenis)){
             echo $flora_fauna_jenis;
           }else{
@@ -608,7 +687,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Ukuran Flora dan Fauna</label>
-        <input type="text" class="form-control" name="flora_fauna_ukuran"  placeholder="Ukuran Flora dan Fauna"  value="<?php
+        <input type="number" class="form-control" name="flora_fauna_ukuran" id="flora_fauna_ukuran"  placeholder="Ukuran Flora dan Fauna"  value="<?php
         if(set_value('buku_judul_pencipta')=="" && isset($flora_fauna_ukuran)){
             echo $flora_fauna_ukuran;
           }else{
@@ -618,10 +697,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Satuan</label>
-        <select  name="pilihan_satuan" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_satuan" type="text" class="form-control" id="pilihan_satuan1">
             <option value="">Pilihan Status Tanah</option>
             </option>
-            <?php foreach($pilihan_satuan as $satuan) : ?>
+            <?php foreach($pilihan_satuan_ as $satuan) : ?>
               <?php $select = $satuan->code == $pilihan_satuan ? 'selected' : '' ?>
               <option value="<?php echo $satuan->code ?>" <?php echo $select ?>><?php echo $satuan->value ?></option>
             <?php endforeach ?>
@@ -639,7 +718,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       
       <div class="form-group">
         <label>Bangunan</label>
-        <input type="text" class="form-control" name="bangunan"  placeholder="Bangunan"  value="<?php
+        <input type="text" class="form-control" name="bangunan" id="bangunan" placeholder="Bangunan"  value="<?php
         if(set_value('bangunan')=="" && isset($bangunan)){
             echo $bangunan;
           }else{
@@ -649,10 +728,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Kontruksi Bertingkat</label>
-        <select  name="pilihan_konstruksi_bertingkat" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_konstruksi_bertingkat" type="text" class="form-control" id="pilihan_konstruksi_bertingkat">
             <option value="">Pilihan Kontruksi Bertingkat</option>
             </option>
-            <?php foreach($pilihan_konstruksi_bertingkat as $tingkat) : ?>
+            <?php foreach($pilihan_konstruksi_bertingkat_ as $tingkat) : ?>
               <?php $select = $tingkat->code == $pilihan_konstruksi_bertingkat ? 'selected' : '' ?>
               <option value="<?php echo $tingkat->code ?>" <?php echo $select ?>><?php echo $tingkat->value ?></option>
             <?php endforeach ?>
@@ -660,10 +739,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Pilihan Kontruksi Beton</label>
-        <select  name="pilihan_konstruksi_beton" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_konstruksi_beton" type="text" class="form-control" id="pilihan_konstruksi_beton">
             <option value="">Pilihan Kontruksi Beton</option>
             </option>
-            <?php foreach($pilihan_konstruksi_beton as $beton) : ?>
+            <?php foreach($pilihan_konstruksi_beton_ as $beton) : ?>
               <?php $select = $beton->code == $pilihan_konstruksi_beton ? 'selected' : '' ?>
               <option value="<?php echo $beton->code ?>" <?php echo $select ?>><?php echo $beton->value ?></option>
             <?php endforeach ?>
@@ -671,7 +750,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Luas</label>
-        <input type="text" class="form-control" name="luas"  placeholder="Luas"  value="<?php
+        <input type="text" class="form-control" name="luas"  placeholder="Luas" id="luas2" value="<?php
         if(set_value('luas')=="" && isset($luas)){
             echo $luas;
           }else{
@@ -681,7 +760,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Lokasi</label>
-        <textarea class="form-control" id="lokasi" name="lokasi" placeholder="Lokasi"><?php 
+        <textarea class="form-control" id="lokasi" name="lokasi" id="lokasi" placeholder="Lokasi"><?php 
             if(set_value('lokasi')=="" && isset($lokasi)){
               echo $lokasi;
             }else{
@@ -691,12 +770,12 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Tanggal Dokumen</label>
-        <div id='dateInput' name="dokumen_tanggal" value="<?php
+        <div id='dokumen_tanggal2' name="dokumen_tanggal" value="<?php
         echo (!empty($dokumen_tanggal)) ? date("Y-m-d",strtotime($dokumen_tanggal)) :  date("d-m-Y");
       ?>"></div>
       <div class="form-group">
         <label>Nomor Dokumen</label>
-        <input type="text" class="form-control" name="dokumen_nomor"  placeholder="Nomor Dokumen"  value="<?php
+        <input type="text" class="form-control" name="dokumen_nomor" id="dokumen_nomor2" placeholder="Nomor Dokumen"  value="<?php
         if(set_value('dokumen_nomor')=="" && isset($dokumen_nomor)){
             echo $dokumen_nomor;
           }else{
@@ -711,12 +790,12 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       ?>"></div>
       <div class="form-group">
         <label>Pilihan Status Tanah</label>
-        <select  name="pilihan_konstruksi_beton" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
+        <select  name="pilihan_status_tanah" type="text" class="form-control" id="pilihan_status_tanah1">
             <option value="">Pilihan Status Tanah</option>
             </option>
-            <?php foreach($pilihan_konstruksi_beton as $beton) : ?>
-              <?php $select = $beton->code == $pilihan_konstruksi_beton ? 'selected' : '' ?>
-              <option value="<?php echo $beton->code ?>" <?php echo $select ?>><?php echo $beton->value ?></option>
+            <?php foreach($pilihan_status_tanah_ as $tanah) : ?>
+              <?php $select = $tanah->code == $pilihan_status_tanah ? 'selected' : '' ?>
+              <option value="<?php echo $tanah->code ?>" <?php echo $select ?>><?php echo $tanah->value ?></option>
             <?php endforeach ?>
         </select>
       </div>
