@@ -1,6 +1,4 @@
 
-<script type='text/javascript' src='<?php echo base_url();?>plugins/js/jquery.autocomplete.js'></script>
-<link href='<?php echo base_url();?>plugins/js/jquery.autocomplete.css' rel='stylesheet' />
 <script>
 var code_cl_phc = '<?php echo $code_cl_phc?>';
 	$(function(){

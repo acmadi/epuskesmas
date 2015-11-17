@@ -27,7 +27,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                 contentType : false,
                 processData : false,
                 type : 'POST',
-                url : '<?php echo base_url()."inventory/pengadaanbarang/".$action."_barang/".$kode."/" ?>',
+                url : '<?php echo base_url()."inventory/pengadaanbarang/".$action."_barang/".$kode."/".$id_barang."/".$kd_proc."/" ?>',
                 data : data,
                 success : function(response){
                   var res  = response.split("|");
