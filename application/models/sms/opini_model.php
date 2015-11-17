@@ -1,7 +1,7 @@
 <?php
-class Inbox_model extends CI_Model {
+class Opini_model extends CI_Model {
 
-    var $tabel    = 'inbox';
+    var $tabel    = 'sms_opini';
 	var $lang	  = 'ina';
 
     function __construct() {
@@ -32,10 +32,16 @@ class Inbox_model extends CI_Model {
 
  	function get_data_ID($id){
 		$data = array();
-		$this->db->where("ID",$id);
+		$this->db->where("id_opini",$id);
 		$query = $this->db->get($this->tabel)->row_array();
 
 		if(!empty($query)){
+			if($query['status']=="baru"){
+				$update = array("status"=>"baca");
+				$this->db->where("id_opini",$id);
+				$this->db->update($this->tabel,$update);
+			}
+
 			return $query;
 		}else{
 			return $data;
@@ -49,27 +55,18 @@ class Inbox_model extends CI_Model {
         return $this->db->get_where($tabel, array('nomor'=>$data));
     }
 
-	function move($id)
-	{
-		$inbox = $this->get_data_ID($id);
-		$data = array(
-			'id_sms_tipe'	=> $this->input->post('id_sms_tipe'),
-			'pesan'			=> $inbox['TextDecoded'],
-			'nomor'			=> $inbox['SenderNumber'],
-			'status'		=> 'baru'
-		);
-		if($this->db->insert('sms_opini',$data)){
-			$this->db->where('ID',$id);
-			return $this->db->delete($this->tabel);
-		}else{
-			return false;
-		}
-	}
-
 	function delete_entry($id)
 	{
-		$this->db->where('ID',$id);
+		$this->db->where('id_opini',$id);
 
 		return $this->db->delete($this->tabel);
 	}
-}
+
+    function get_tipe($jenis='terima')
+    {
+		$this->db->where('jenis',$jenis);
+
+	    $query = $this->db->get('sms_tipe');
+    	return $query->result();
+	
+    }}
