@@ -5,6 +5,7 @@ class Inbox extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('html');
 		$this->load->model('sms/inbox_model');
+		$this->load->model('sms/opini_model');
 	}
 	
 	function index(){
@@ -134,4 +135,26 @@ class Inbox extends CI_Controller {
 		}
 		
 	}
-}
+
+	public function move($id=0)
+	{
+		$data = $this->inbox_model->get_data_ID($id);
+		$data['title_form']	= "Pindah SMS -&raquo; Opini Publik";
+		$data['action']		= "move";
+		$data['id']			= $id;
+
+        $this->form_validation->set_rules('id_sms_tipe', 'Kategori Opini', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			$data['tipeoption'] 	= $this->opini_model->get_tipe('terima');
+
+			die($this->parser->parse('sms/inbox/move', $data));
+		}else{
+			if($this->inbox_model->move($id)){
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+		}
+		
+	}}
