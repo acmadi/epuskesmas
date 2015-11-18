@@ -34,6 +34,19 @@ class Pengadaanbarang extends CI_Controller {
 		}
 		echo json_encode($barang);
 	}
+	public function total_pengadaan($id){
+		$this->db->where('id_pengadaan',$id);
+		$query = $this->db->get('inv_pengadaan')->result();
+		foreach ($query as $q) {
+			$totalpengadaan[] = array(
+				'jumlah_unit' => $q->jumlah_unit, 
+				'nilai_pengadaan' => number_format($q->nilai_pengadaan,2), 
+				'waktu_dibuat' => $q->waktu_dibuat,
+				'terakhir_diubah' => $q->terakhir_diubah,
+			);
+			echo json_encode($totalpengadaan);
+		}
+    }
 
 	function json(){
 		$this->authentication->verify('inventory','show');
@@ -342,20 +355,21 @@ class Pengadaanbarang extends CI_Controller {
 					'id_pengadaan' => $kode,
 				);
 				$simpan=$this->db->insert('inv_inventaris_barang', $values);
+				$id_= $this->db->insert_id();
 			}
 			if($simpan==true){
 				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
 				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
 				$key['id_pengadaan'] = $kode;
         		$this->db->update("inv_pengadaan",$dataupdate,$key);
-				die("OK|");
+				die("OK|$id_");
 			}else{
 				 die("Error|Proses data gagal");
 			}
 			
 		}
 	}
-	public function edit_barang($id_barang=0,$kd_proc=0,$kd_inventaris=0)
+	public function edit_barang($id_pengadaan=0,$id_barang=0,$kd_proc=0,$kd_inventaris=0)
 	{
 		$data['action']			= "edit";
 		$data['kode']			= $kd_inventaris;
@@ -426,17 +440,16 @@ class Pengadaanbarang extends CI_Controller {
 	    }
 		/*end validasi kode barang*/
 		if($this->form_validation->run()== FALSE){
-			//$data = $this->pengadaanbarang_model->get_data_barang_edit($id_barang,$kd_proc,$kd_inventaris); 
+			
 			
 			/*mengirim status pada masing2 form*/
+
 			$kodebarang_ = substr($id_barang, 0,2);
 	   		if($kodebarang_=='01') {
 	   			$data = $this->pengadaanbarang_model->get_data_barang_edit_table($id_barang,$kd_inventaris,'inv_inventaris_barang_a'); 
-	   			$data['action']			= "edit";
-	   			$data['pilihan_satuan_barang_']		= $this->pengadaanbarang_model->get_data_pilihan('satuan');
+	   			$data['pilihan_satuan_barang_']			= $this->pengadaanbarang_model->get_data_pilihan('satuan');
 	   			$data['pilihan_status_hak_']			= $this->pengadaanbarang_model->get_data_pilihan('status_hak');
 	   			$data['pilihan_penggunaan_']			= $this->pengadaanbarang_model->get_data_pilihan('penggunaan');
-	   			$data['notice']			= validation_errors();
 	   		}else if($kodebarang_=='02') {
 	   			$data = $this->pengadaanbarang_model->get_data_barang_edit_table($id_barang,$kd_inventaris,'inv_inventaris_barang_b'); 
 	   			$data['pilihan_bahan_']				= $this->pengadaanbarang_model->get_data_pilihan('bahan');
@@ -448,38 +461,42 @@ class Pengadaanbarang extends CI_Controller {
 	   			$data['pilihan_kons_beton_']			= $this->pengadaanbarang_model->get_data_pilihan('kons_beton');
 	   		}else if($kodebarang_=='04') {
 	   			$data = $this->pengadaanbarang_model->get_data_barang_edit_table($id_barang,$kd_inventaris,'inv_inventaris_barang_d'); 
-	   			$data['pilihan_status_tanah_']		= $this->pengadaanbarang_model->get_data_pilihan('status_tanah');
+	   			$data['pilihan_status_tanah_']		= $this->pengadaanbarang_model->get_data_pilihan('status_hak');
 	   		}else if($kodebarang_=='05') {
 	   			$data = $this->pengadaanbarang_model->get_data_barang_edit_table($id_barang,$kd_inventaris,'inv_inventaris_barang_e'); 
-	   			$data['pilihan_budaya_bahan_']		= $this->pengadaanbarang_model->get_data_pilihan('budaya_bahan');
+	   			$data['pilihan_budaya_bahan_']		= $this->pengadaanbarang_model->get_data_pilihan('bahan');
 	   			$data['pilihan_satuan_']				= $this->pengadaanbarang_model->get_data_pilihan('satuan');
    			}else if($kodebarang_=='06') {
    				$data = $this->pengadaanbarang_model->get_data_barang_edit_table($id_barang,$kd_inventaris,'inv_inventaris_barang_f'); 
    				$data['pilihan_konstruksi_bertingkat_']= $this->pengadaanbarang_model->get_data_pilihan('kons_tingkat');
 	   			$data['pilihan_konstruksi_beton_']	= $this->pengadaanbarang_model->get_data_pilihan('kons_beton');
-	   			$data['pilihan_status_tanah_']		= $this->pengadaanbarang_model->get_data_pilihan('status_tanah');
+	   			$data['pilihan_status_tanah_']		= $this->pengadaanbarang_model->get_data_pilihan('status_hak');
    			}
+   			//$data = $this->pengadaanbarang_model->get_data_barang_edit($id_barang,$kd_proc,$kd_inventaris); 
    			$data['kodebarang']		= $this->pengadaanbarang_model->get_databarang();
 			$data['action']			= "edit";
 			$data['kode']			= $kd_inventaris;
 			$data['id_barang']		= $id_barang;
+			$data['id_pengadaan']	= $id_pengadaan;
 			$data['kd_proc']		= $kd_proc;
 			$data['disable']		= "disable";
+			$data['notice']			= validation_errors();
    			/*end mengirim status pada masing2 form*/
 			die($this->parser->parse('inventory/pengadaan_barang/barang_form_edit', $data));
 		}else{
 			$jumlah =$this->input->post('jumlah');
-			$this->dodelpermohonan($kode,$id_barang,$kd_proc);
 			$tanggalterima = explode("/",$this->input->post('tanggal_diterima'));
 			$kodebarang_ = substr($id_barang, 0,2);
 			$id_barang = $this->input->post('id_mst_inv_barang');
 			$kode_proc = $this->pengadaanbarang_model->barang_kembar_proc($id_barang);
 			$tanggal_diterima = $tanggalterima[2].'-'.$tanggalterima[1].'-'.$tanggalterima[0];
+			$simpan = $this->dodelpermohonan($kd_inventaris,$id_barang,$kd_proc);
 			for($i=1;$i<=$jumlah;$i++){
-			
-				$id = $this->pengadaanbarang_model->insert_data_from($id_barang,$kode_proc,$tanggal_diterima,$kode);
+				$id = $this->pengadaanbarang_model->insert_data_from($id_barang,$kode_proc,$tanggal_diterima,$id_pengadaan);
 					/*simpan pada bedadatabase*/
 		   		if($kodebarang_=='01') {	
+		   				$tanggal = explode("/",$this->input->post('status_sertifikat_tanggal'));
+		   				$status_sertifikat_tanggal = $tanggal[2].'-'.$tanggal[1].'-'.$tanggal[0];
 		   				$values = array(
 						'id_inventaris_barang' 	=> $id,
 						'id_mst_inv_barang'		=> $id_barang,
@@ -487,12 +504,16 @@ class Pengadaanbarang extends CI_Controller {
 						'alamat' 				=> $this->input->post('alamat'),
 						'pilihan_satuan_barang' => $this->input->post('pilihan_satuan_barang'),
 						'pilihan_status_hak' 	=> $this->input->post('pilihan_status_hak'),
-						'status_sertifikat_tanggal' => $this->input->post('status_sertifikat_tanggal'),
+						'status_sertifikat_tanggal' => $status_sertifikat_tanggal,
 						'status_sertifikat_nomor'=> $this->input->post('status_sertifikat_nomor'),
 						'pilihan_penggunaan' 	=> $this->input->post('pilihan_penggunaan'),
 					);
 					$simpan=$this->db->insert('inv_inventaris_barang_a', $values);
 		   		}else if($kodebarang_=='02') {
+		   			$tanggal = explode("/",$this->input->post('tanggal_bpkb'));
+		   			$tanggal_bpkb = $tanggal[2].'-'.$tanggal[1].'-'.$tanggal[0];
+		   			$tanggal_ = explode("/",$this->input->post('tanggal_perolehan'));
+		   			$tanggal_perolehan = $tanggal_[2].'-'.$tanggal_[1].'-'.$tanggal_[0];
 		   			$values = array(
 						'id_inventaris_barang' 	=> $id,
 						'id_mst_inv_barang'		=> $id_barang,
@@ -501,13 +522,15 @@ class Pengadaanbarang extends CI_Controller {
 						'pilihan_bahan' 		=> $this->input->post('pilihan_bahan'),
 						'ukuran_barang' 		=> $this->input->post('ukuran_barang'),
 						'pilihan_satuan' 		=> $this->input->post('pilihan_satuan'),
-						'tanggal_bpkb'			=> $this->input->post('tanggal_bpkb'),
+						'tanggal_bpkb'			=> $tanggal_bpkb,
 						'nomor_bpkb'		 	=> $this->input->post('nomor_bpkb'),
 						'no_polisi'		 		=> $this->input->post('no_polisi'),
-						'tanggal_perolehan'	 	=> $this->input->post('tanggal_perolehan'),
+						'tanggal_perolehan'	 	=> $tanggal_perolehan,
 					);
 					$simpan=$this->db->insert('inv_inventaris_barang_b', $values);
 		   		}else if($kodebarang_=='03') {
+		   			$tanggal = explode("/",$this->input->post('dokumen_tanggal'));
+		   			$dokumen_tanggal = $tanggal[2].'-'.$tanggal[1].'-'.$tanggal[0];
 		   			$values = array(
 						'id_inventaris_barang' 	=> $id,
 						'id_mst_inv_barang'		=> $id_barang,
@@ -517,11 +540,13 @@ class Pengadaanbarang extends CI_Controller {
 						'nomor_kode_tanah' 		=> $this->input->post('nomor_kode_tanah'),
 						'pilihan_kons_tingkat' 	=> $this->input->post('pilihan_kons_tingkat'),
 						'pilihan_kons_beton'	=> $this->input->post('pilihan_kons_beton'),
-						'dokumen_tanggal'		=> $this->input->post('dokumen_tanggal'),
+						'dokumen_tanggal'		=> $dokumen_tanggal,
 						'dokumen_nomor'		 	=> $this->input->post('dokumen_nomor'),
 					);
 					$simpan=$this->db->insert('inv_inventaris_barang_c', $values);
 		   		}else if($kodebarang_=='04') {
+		   			$tanggal = explode("/",$this->input->post('dokumen_tanggal'));
+		   			$dokumen_tanggal = $tanggal[2].'-'.$tanggal[1].'-'.$tanggal[0];
 		   			$values = array(
 						'id_inventaris_barang' 	=> $id,
 						'id_mst_inv_barang'		=> $id_barang,
@@ -530,13 +555,15 @@ class Pengadaanbarang extends CI_Controller {
 						'lebar' 				=> $this->input->post('lebar'),
 						'luas' 					=> $this->input->post('luas'),
 						'letak_lokasi_alamat' 	=> $this->input->post('pilihan_kons_tingkat'),
-						'dokumen_tanggal'		=> $this->input->post('dokumen_tanggal'),
+						'dokumen_tanggal'		=> $dokumen_tanggal,
 						'dokumen_nomor'			=> $this->input->post('dokumen_nomor'),
 						'pilihan_status_tanah'	=> $this->input->post('pilihan_status_tanah'),
 						'nomor_kode_tanah'		=> $this->input->post('nomor_kode_tanah'),
 					);
 					$simpan=$this->db->insert('inv_inventaris_barang_d', $values);
 		   		}else if($kodebarang_=='05') {
+		   			$tanggal = explode("/",$this->input->post('tahun_cetak_beli'));
+		   			$tahun_cetak_beli = $tanggal[2].'-'.$tanggal[1].'-'.$tanggal[0];
 		   			$values = array(
 						'id_inventaris_barang' 	=> $id,
 						'id_mst_inv_barang'		=> $id_barang,
@@ -548,10 +575,12 @@ class Pengadaanbarang extends CI_Controller {
 						'flora_fauna_jenis'		=> $this->input->post('flora_fauna_jenis'),
 						'flora_fauna_ukuran'	=> $this->input->post('flora_fauna_ukuran'),
 						'pilihan_satuan'		=> $this->input->post('pilihan_satuan'),
-						'tahun_cetak_beli'		=> $this->input->post('tahun_cetak_beli'),
+						'tahun_cetak_beli'		=> $tahun_cetak_beli,
 					);
 					$simpan=$this->db->insert('inv_inventaris_barang_e', $values);
 				}else if($kodebarang_=='06') {
+					$tanggal = explode("/",$this->input->post('tanggal_mulai'));
+		   			$tanggal_mulai = $tanggal[2].'-'.$tanggal[1].'-'.$tanggal[0];
 		   			$values = array(
 						'id_inventaris_barang' 	=> $id,
 						'id_mst_inv_barang'		=> $id_barang,
@@ -562,7 +591,7 @@ class Pengadaanbarang extends CI_Controller {
 						'lokasi' 				=> $this->input->post('lokasi'),
 						'dokumen_tanggal'		=> $this->input->post('dokumen_tanggal'),
 						'dokumen_nomor'			=> $this->input->post('dokumen_nomor'),
-						'tanggal_mulai'			=> $this->input->post('tanggal_mulai'),
+						'tanggal_mulai'			=> $tanggal_mulai,
 						'pilihan_status_tanah'	=> $this->input->post('pilihan_status_tanah'),
 					);
 					$simpan=$this->db->insert('inv_inventaris_barang_f', $values);
@@ -571,9 +600,9 @@ class Pengadaanbarang extends CI_Controller {
 			}
 			if($simpan==true){
 				$dataupdate['terakhir_diubah']= date("Y-m-d");
-				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
-				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
-				$key['id_pengadaan'] = $kode;
+				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $id_pengadaan,'harga');
+				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($id_pengadaan)->num_rows();
+				$key['id_pengadaan'] = $id_pengadaan;
         		$this->db->update("inv_pengadaan",$dataupdate,$key);
 				die("OK|");
 			}else{
@@ -608,4 +637,5 @@ class Pengadaanbarang extends CI_Controller {
         }
         echo json_encode($kota);      //data array yang telah kota deklarasikan dibawa menggunakan json
     }
+
 }

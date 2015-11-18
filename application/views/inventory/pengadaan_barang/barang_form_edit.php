@@ -11,12 +11,13 @@
 <?php  }else if($kodebarang_=='04') {?>
             $("#dokumen_tanggal1").jqxDateTimeInput({ width: '300px', height: '25px' });
 <?php  }else if($kodebarang_=='05') {?>
+             $("#tahun_cetak_beli").jqxDateTimeInput({ width: '300px', height: '25px' });
 <?php  }else if($kodebarang_=='06') {?>
             $("#dokumen_tanggal2").jqxDateTimeInput({ width: '300px', height: '25px' });
             $("#tanggal_mulai").jqxDateTimeInput({ width: '300px', height: '25px' });
 <?php }?>   
   
-  
+ 
 </script>
 <?php
 if(isset($disable)){if($disable='disable'){?>
@@ -26,7 +27,10 @@ if(isset($disable)){if($disable='disable'){?>
 </script>
 <?php }} ?>
 <script type="text/javascript">
-function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+',00'}
+
+  function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+',00'}
+
+
     $(function(){
       $('#btn-close').click(function(){
         close_popup();
@@ -100,21 +104,24 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                 data.append('tanggal_mulai', $('#tanggal_mulai').val());
                 data.append('pilihan_status_tanah', $('#pilihan_status_tanah1').val());
             }
+            
 
             $.ajax({
                 cache : false,
                 contentType : false,
                 processData : false,
                 type : 'POST',
-                url : '<?php echo base_url()."inventory/pengadaanbarang/".$action."_barang/".$kode."/".$id_barang."/".$kd_proc."/" ?>',
+                url : '<?php echo base_url()."inventory/pengadaanbarang/".$action."_barang/".$id_pengadaan."/".$id_barang."/".$kd_proc."/".$kode."/" ?>',
                 data : data,
+                
                 success : function(response){
+                
+                
                   var res  = response.split("|");
                   if(res[0]=="OK"){
                       $('#notice').hide();
                       $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
                       $('#notice').show();
-
                       $("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
                       close_popup();
                   }
@@ -364,7 +371,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
 
       <div class="form-group">
         <label>Merek Tipe</label>
-        <textarea class="form-control"  name="merek_type" placeholder="Keterangan" id="Keterangan"><?php 
+        <textarea class="form-control"  name="merek_type" placeholder="Merek Tipe" id="merek_type"><?php 
         if(set_value('merek_type')=="" && isset($merek_type)){
           echo $merek_type;
         }else{
@@ -374,7 +381,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Identitas Barang</label>
-        <textarea class="form-control"  name="identitas_barang" placeholder="Keterangan"><?php 
+        <textarea class="form-control"  name="identitas_barang" id="identitas_barang" placeholder="Identitas Barang"><?php 
         if(set_value('identitas_barang')=="" && isset($identitas_barang)){
           echo $identitas_barang;
         }else{
@@ -422,7 +429,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
       </div>
       <div class="form-group">
         <label>Nomor BPKB</label>
-        <input type="text" class="form-control" name="nomor_bpkb"  placeholder="Nomor BPKB"  value="<?php
+        <input type="text" class="form-control" name="nomor_bpkb" id="nomor_bpkb"  placeholder="Nomor BPKB"  value="<?php
         if(set_value('nomor_bpkb')=="" && isset($nomor_bpkb)){
             echo $nomor_bpkb;
           }else{
