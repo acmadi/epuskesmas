@@ -1,5 +1,4 @@
 <script >
-var nip_nit = '<?php echo $nip_nit?>';
   $(function(){	
 		$("#menu_kepegawaian_drh").addClass("active");
 		$("#menu_kepegawaian").addClass("active");
@@ -9,12 +8,16 @@ var nip_nit = '<?php echo $nip_nit?>';
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'nip_nit', type: 'number' },
+			{ name: 'nip_nit', type: 'string' },
 			{ name: 'urut', type: 'number' },
 			{ name: 'alamat', type: 'string' },
 			{ name: 'rt', type: 'string' },
 			{ name: 'rw', type: 'string' },
-			{ name: 'code_cl_province', type: 'number' },
+			{ name: 'code_cl_province', type: 'string' },
+			{ name: 'propinsi', type: 'string' },
+			{ name: 'kota', type: 'string' },
+			{ name: 'kecamatan', type: 'string' },
+			{ name: 'kelurahan', type: 'string' },
 			{ name: 'code_cl_district', type: 'string' },
 			{ name: 'code_cl_kec', type: 'string' },
 			{ name: 'code_cl_village', type: 'string' },
@@ -60,12 +63,12 @@ var nip_nit = '<?php echo $nip_nit?>';
 				return obj.data;    
 			},
 			columns: [
-				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_alamat").jqxGrid('getrowdata', row);
-				    if(dataRecord.view==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='detail(\""+dataRecord.nip_nit+"\",\""+dataRecord.urut+"\");'></a></div>";
+				    if(dataRecord.edit==1){
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_alamat(\""+dataRecord.nip_nit+"/"+dataRecord.urut+"\");'></a></div>";
 					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif'></a></div>";
 					}
                  }
                 },
@@ -83,10 +86,10 @@ var nip_nit = '<?php echo $nip_nit?>';
 				{ text: 'Alamat ', datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '20%'},
 				{ text: 'RT',datafield: 'rt', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'RW',datafield: 'rw', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Provinsi',datafield: 'code_cl_province', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Kota',datafield: 'code_cl_district', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Kecamatan',datafield: 'code_cl_kec', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Kelurahan',datafield: 'code_cl_village', columntype: 'textbox', filtertype: 'textbox', width: '10%'}
+				{ text: 'Provinsi',datafield: 'propinsi', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Kota',datafield: 'kota', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Kecamatan',datafield: 'kecamatan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Kelurahan',datafield: 'kelurahan', columntype: 'textbox', filtertype: 'textbox', width: '10%'}
             ]
 		});
 
@@ -118,6 +121,20 @@ var nip_nit = '<?php echo $nip_nit?>';
 	function add_alamat(){
 		$("#popup_alamat #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
 		$.get("<?php echo site_url().'kepegawaian/drh/add_alamat/'.$id; ?>" , function(data) {
+			$("#popup_content").html(data);
+		});
+		$("#popup_alamat").jqxWindow({
+			theme: theme, resizable: true,
+			width: '40%',
+			height: '75%',
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup_alamat").jqxWindow('open');
+	}
+
+	function edit_alamat(urut){
+		$("#popup_alamat #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo site_url().'kepegawaian/drh/edit_alamat/'.$id; ?>" +urut, function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_alamat").jqxWindow({

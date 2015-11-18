@@ -32,23 +32,26 @@ class Drh_model extends CI_Model {
 
     function get_data($start=0,$limit=999999,$options=array())
     {
-		$this->db->order_by('nip_nit','asc');
-        $query = $this->db->get($this->tabel,$limit,$start);
+		$this->db->order_by('nit_nip','asc');
+        $query = $this->db->get('pegawai',$limit,$start);
         return $query->result();
     }
 
     function get_data_alamat($start=0,$limit=999999,$options=array())
     {
-    	// $this->db->where('nip_nit',$id);
-		$this->db->order_by('nip_nit','asc');
-        $query = $this->db->get($this->t_alamat,$limit,$start);
+    	$this->db->select('*');
+        $this->db->join('cl_province','pegawai_alamat.code_cl_province=cl_province.code ','value as propinsi','inner');
+        $this->db->join('cl_district','pegawai_alamat.code_cl_district=cl_district.code ','value as kota','inner');
+        $this->db->join('cl_kec','pegawai_alamat.code_cl_kec=cl_kec.code ','nama as kecamatan','inner');
+        $this->db->join('cl_village','pegawai_alamat.code_cl_village=cl_village.code ','value as kelurahan','inner');
+        $query = $this->db->get('pegawai_alamat',$limit,$start);
         return $query->result();
     }
 
-    function get_data_alamat_id($id)
+    function get_data_alamat_id($id,$urut=0)
     {
 		$data = array();
-		$options = array('nip_nit' => $id);
+        $options = array('nip_nit' => $id,'urut' => $urut);
 		$query = $this->db->get_where($this->t_alamat,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -262,10 +265,13 @@ class Drh_model extends CI_Model {
 		return $this->db->delete($this->tabel);
 	}
 
+
+    
+
 // CRUD alamat pegawai
 
     function insert_alamat()
     {
-
+        
     }
 }

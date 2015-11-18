@@ -179,7 +179,8 @@ class Drh extends CI_Controller {
 
 		if($this->form_validation->run()== FALSE){
 			$data = $this->drh_model->get_data_row($id); 
-
+			// var_dump($data);
+			// exit();
 			$data['title_group'] = "Parameter";
 			$data['title_form']="Ubah Data Pegawai";
 			$data['action']="edit";
@@ -216,14 +217,14 @@ class Drh extends CI_Controller {
 
 	function kota($kode_provinsi="",$kode_kota="")
 	{
-		$data['kota'] = "<option>-</option>";
+		$data['code_cl_district'] = "<option>-</option>";
 		$kota = $this->drh_model->get_kota($kode_provinsi);	
 		if (is_array($kota) || is_object($kota))
 		{	
 			foreach($kota as $x => $y){
-				$data['kota'] .= "<option value='".$x."' ";
-				if($kode_kota == $x) $data['kota'] .="selected";
-				$data['kota'] .=">".$y."</option>";
+				$data['code_cl_district'] .= "<option value='".$x."' ";
+				if($kode_kota == $x) $data['code_cl_district'] .="selected";
+				$data['code_cl_district'] .=">".$y."</option>";
 			}
 		}
 
@@ -234,14 +235,14 @@ class Drh extends CI_Controller {
 	
 	function kecamatan($kode_kota="",$kode_kec="")
 	{
-		$data['kecamatan'] = "<option>-</option>";
+		$data['code_cl_kec'] = "<option>-</option>";
 		$kecamatan = $this->drh_model->get_kecamatan($kode_kota);
 		if (is_array($kecamatan) || is_object($kecamata))
 		{		
 			foreach($kecamatan as $x=>$y){
-				$data['kecamatan'] .= "<option value='".$x."' ";
-				if($kode_kec == $x) $data['kecamatan'] .="selected";
-				$data['kecamatan'] .=">".$y."</option>";
+				$data['code_cl_kec'] .= "<option value='".$x."' ";
+				if($kode_kec == $x) $data['code_cl_kec'] .="selected";
+				$data['code_cl_kec'] .=">".$y."</option>";
 			}
 		}
 
@@ -252,14 +253,14 @@ class Drh extends CI_Controller {
 	
 	function desa($kode_kec="",$kode_desa="")
 	{
-		$data['desa'] = "<option>-</option>";
+		$data['code_cl_village'] = "<option>-</option>";
 		$desa = $this->drh_model->get_desa($kode_kec);	
 		if (is_array($desa) || is_object($desa))
 		{	
 			foreach($desa as $x=>$y){
-				$data['desa'] .= "<option value='".$x."' ";
-				if($kode_desa == $x) $data['desa'] .="selected";
-				$data['desa'] .=">".$y."</option>";
+				$data['code_cl_village'] .= "<option value='".$x."' ";
+				if($kode_desa == $x) $data['code_cl_village'] .="selected";
+				$data['code_cl_village'] .=">".$y."</option>";
 			}
 		}
 
@@ -272,24 +273,24 @@ class Drh extends CI_Controller {
 	{
 		$this->authentication->verify('kepegawaian','add');
 
+		$data['id']		= $id;
 		$data['title_group'] = "Parameter";
 		$data['title_form']="Tambah Alamar Pegawai";
 		$data['action']="add_alamat";
-		$data['id']='107509131996032001';
 
 		
 		$this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
 		$this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
-		$this->form_validation->set_rules('Alamat', 'Alamat', 'trim|required');
+		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
 		$this->form_validation->set_rules('rt', 'RT', 'trim|required');
 		$this->form_validation->set_rules('rw', 'RW', 'trim|required');
-		$this->form_validation->set_rules('propinsi', 'Puskesmas', 'trim|required');
-		$this->form_validation->set_rules('kota', 'Kota', 'trim|required');
-		$this->form_validation->set_rules('kecamatan', 'Kecamatan', 'trim|required');
-		$this->form_validation->set_rules('kelurahan', 'Kelurahan', 'trim|required');
+		$this->form_validation->set_rules('code_cl_province', 'Propinsi', 'trim|required');
+		$this->form_validation->set_rules('code_cl_district', 'Kota', 'trim|required');
+		$this->form_validation->set_rules('code_cl_kec', 'Kecamatan', 'trim|required');
+		$this->form_validation->set_rules('code_cl_village', 'Kelurahan', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
-			$data['id']		= $this->drh_model->get_data_alamat();
+			// $data['urut'] 			= $this->drh_model->get_data_alamat('urut');
 			$data['notice']			= validation_errors();
 			if(!isset($propinsi)){
               	$propinsi  = set_value('propinsi');
@@ -311,17 +312,90 @@ class Drh extends CI_Controller {
 			die($this->parser->parse('kepegawaian/drh/form_alamat', $data,true));
 		}else{
 			$values = array(
-				'nip_nit'=>$this->drh_model->get_data_alamat(),
+				'nip_nit'=>$id,
 				'urut' => $this->input->post('urut'),
 				'alamat' => $this->input->post('alamat'),
 				'rt' => $this->input->post('rt'),
 				'rw' => $this->input->post('rw'),
-				'code_cl_province' => $this->input->post('propinsi'),
-				'code_cl_district' => $this->input->post('kota'),
-				'code_cl_kec' => $this->input->post('kecamatan'),
-				'code_cl_village' => $this->input->post('desa')
+				'code_cl_province' => $this->input->post('code_cl_province'),
+				'code_cl_district' => $this->input->post('code_cl_district'),
+				'code_cl_kec' => $this->input->post('code_cl_kec'),
+				'code_cl_village' => $this->input->post('code_cl_village')
 			);
 			if($this->db->insert('pegawai_alamat', $values)){
+				$key['nip_nit'] = $id;
+        		$this->db->update("pegawai",$key);
+
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+		}
+
+	}
+
+	function edit_alamat($id="",$urut=0)
+	{
+		$this->authentication->verify('kepegawaian','add');
+
+		$data['id']		= $id;
+		$data['urut']	= $urut;
+		$data['title_group'] = "Parameter";
+		$data['title_form']="Tambah Alamat Pegawai";
+		$data['action']="edit_alamat";
+
+		
+		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+		$this->form_validation->set_rules('rt', 'RT', 'trim|required');
+		$this->form_validation->set_rules('rw', 'RW', 'trim|required');
+		$this->form_validation->set_rules('code_cl_province', 'Propinsi', 'trim|required');
+		$this->form_validation->set_rules('code_cl_district', 'Kota', 'trim|required');
+		$this->form_validation->set_rules('code_cl_kec', 'Kecamatan', 'trim|required');
+		$this->form_validation->set_rules('code_cl_village', 'Kelurahan', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			// $data['urut'] 			= $this->drh_model->get_data_alamat('urut');
+			$data['notice']			= validation_errors();
+			$data = $this->drh_model->get_data_alamat_id($id,$urut);
+			$data['urut']	= $urut;
+			$data['action']="edit_alamat";
+			$data['id'] = $id;
+			// var_dump($data);
+			// exit();
+			$data['notice']			= validation_errors();
+			if(!isset($propinsi)){
+              	$propinsi  = set_value('propinsi');
+              	$data['propinsi']  = set_value('propinsi');
+            }
+			if(!isset($kota)){
+				$kota = set_value('kota');
+              	$data['kota']  = set_value('kota');
+            }
+			if(!isset($kecamatan)){
+              	$data['kecamatan']  = set_value('kecamatan');
+            }
+			if(!isset($desa)){
+              	$data['desa']  = set_value('desa');
+            }
+			$data['provinsi_option']	= $this->drh_model->provinsi_option($propinsi);
+			
+			$data['content'] = $this->parser->parse("kepegawaian/drh/form_alamat",$data,true);
+			die($this->parser->parse('kepegawaian/drh/form_alamat', $data,true));
+		}else{
+			$values = array(
+				'nip_nit'=>$id,
+				'urut' => $this->input->post('urut'),
+				'alamat' => $this->input->post('alamat'),
+				'rt' => $this->input->post('rt'),
+				'rw' => $this->input->post('rw'),
+				'code_cl_province' => $this->input->post('code_cl_province'),
+				'code_cl_district' => $this->input->post('code_cl_district'),
+				'code_cl_kec' => $this->input->post('code_cl_kec'),
+				'code_cl_village' => $this->input->post('code_cl_village')
+			);
+			if($this->db->update('pegawai_alamat', $values,'urut',$urut)){
 				$key['nip_nit'] = $id;
         		$this->db->update("pegawai",$key);
 
