@@ -7,7 +7,31 @@ if(isset($disable)){if($disable='disable'){?>
 </script>
 <?php }} ?>
 <script type="text/javascript">
-function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+',00'}
+
+function edit_barang(id_barang,barang_kembar_proc,id_inventaris_barang){
+    $("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+    $.get("<?php echo base_url().'inventory/pengadaanbarang/edit_barang/'.$kode.'/';?>" + id_barang+'/'+barang_kembar_proc+'/'+id_inventaris_barang, function(data) {
+      $("#popup_content").html(data);
+    });
+    $("#popup_barang").jqxWindow({
+      theme: theme, resizable: false,
+      width: 1000,
+      height: 600,
+      isModal: true, autoOpen: false, modalOpacity: 0.2
+    });
+    $("#popup_barang").jqxWindow('open');
+  } 
+  
+  function toRp(a,b,c,d,e){
+    e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());
+    for(c=0,d='';c<b.length;c++){
+      d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}
+    }
+    return'Rp.\t'+e(d)+',00'
+  }
+  
+  
+
     $(function(){
       $('#btn-close').click(function(){
         close_popup();
@@ -22,6 +46,9 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
             data.append('jumlah', $('#jumlah').val());
             data.append('harga', $('#harga').val());
             data.append('keterangan_pengadaan', $('#keterangan').val());
+            var id_pengadaan_ = '<?php echo $kode; ?>'; 
+            var id_barang_    = $('#v_kode_barang').val();
+            var kd_proc_      = 0;
             $.ajax({
                 cache : false,
                 contentType : false,
@@ -35,9 +62,10 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                       $('#notice').hide();
                       $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
                       $('#notice').show();
-
                       $("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
                       close_popup();
+                      var kode_          = res[1]; 
+                      edit_barang(id_barang_,kd_proc_,kode_); 
                   }
                   else if(res[0]=="Error"){
                       $('#notice').hide();

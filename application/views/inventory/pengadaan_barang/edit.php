@@ -64,33 +64,39 @@
   <div class="col-md-6">
     <div class="box box-warning">
       <div class="box-body">
+      <div id="success"> 
           <table class="table table-condensed">
               <tr>
                 <td>Jumlah Unit</td>
                 <td>
-                  <?php echo $jumlah_unit.' '.'Unit'; ?>
+                    <div id="jumlah_unit_"></div>
+                  <?php //echo $jumlah_unit.' '.'Unit'; ?>
                 </td>
               </tr>
               <tr>
                 <td>Nilai Pengadaan</td>
                 <td>
-                  <?php echo 'Rp. '.$nilai_pengadaan; ?>
+                  <div id="nilai_pengadaan_"></div>
+                  <?php //echo 'Rp. '.$nilai_pengadaan; ?>
                 </td>
               </tr>
               <tr>
                 <td>Waktu dibuat</td>
                 <td>
-                  <?php echo date("d-m-Y",strtotime($waktu_dibuat)); ?>
+                  <div id="waktu_dibuat_"></div>
+                  <?php //echo date("d-m-Y",strtotime($waktu_dibuat)); ?>
                 </td>
               </tr>
               <tr>
                 <td>Terakhir di edit</td>
                 <td>
-                  <?php echo date("d-m-Y",strtotime($terakhir_diubah)); ?>
+                  <div id="terakhir_diubah_"></div>
+                  <?php// echo date("d-m-Y",strtotime($terakhir_diubah)); ?>
                 </td>
               </tr>
             </tbody>
           </table>
+      </div>
       <div class="box-footer">
         <?php if(!isset($viewreadonly)){?><button type="submit" class="btn btn-primary">Simpan</button><?php } ?>
         <button type="button" id="btn-kembali" class="btn btn-warning">Kembali</button>

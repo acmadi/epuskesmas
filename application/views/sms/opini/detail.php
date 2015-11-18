@@ -27,19 +27,18 @@
           <div class="box-body">
             <div class="form-group">
               <label>Tanggal</label>
-              <input readonly type="text" class="form-control" name="ReceivingDateTime" placeholder="ReceivingDateTime" value="<?php echo $ReceivingDateTime;?>">
+              <input readonly type="text" class="form-control" name="created_on" placeholder="created_on" value="<?php echo $created_on;?>">
             </div>
             <div class="form-group">
               <label>Pengirim</label>
-              <input readonly type="text" class="form-control" name="SenderNumber" placeholder="SenderNumber" value="<?php echo $SenderNumber;?>">
+              <input readonly type="text" class="form-control" name="nomor" placeholder="nomor" value="<?php echo $nomor;?>">
             </div>
             <div class="form-group">
               <label>Pesan</label>
-              <textarea readonly class="form-control" placeholder="TextDecoded"><?php echo ($TextDecoded);?></textarea>
+              <textarea readonly class="form-control" placeholder="pesan"><?php echo ($pesan);?></textarea>
             </div>
           </div>
           <div class="box-footer pull-right">
-            <button type="button" id="btn-move" class="btn btn-success">Pindah</button>
             <button type="button" id="btn-reply" class="btn btn-primary">Reply</button>
             <button type="button" id="btn-close" class="btn btn-warning">Tutup</button>
           </div>
@@ -49,10 +48,6 @@
 </section>
 <script type="text/javascript">
   $(function () { 
-    $("#btn-move").click(function(){
-      move({id});
-    });
-
     $("#btn-reply").click(function(){
       reply({id});
     });
