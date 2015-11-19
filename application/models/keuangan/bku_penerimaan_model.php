@@ -33,6 +33,15 @@ class Bku_penerimaan_model extends CI_Model {
 	
 	public function getItemBku($start=0, $limit = 999999, $options=array())
     {
+		if(empty($this->session->userdata('bku_penerimaan_bulan')) ){			
+			$this->session->set_userdata('bku_penerimaan_bulan', date('m'));
+		}
+		
+		if(empty($this->session->userdata('bku_penerimaan_tahun')) ){			
+			$this->session->set_userdata('bku_penerimaan_tahun', date('Y'));
+		} 
+		$this->db->where('year(tgl)',$this->session->userdata('bku_penerimaan_tahun'));
+		$this->db->where('month(tgl)',$this->session->userdata('bku_penerimaan_bulan'));
         return $this->db->get('keu_bku_penerimaan', $limit, $start)->result();
     }
 	
@@ -40,7 +49,7 @@ class Bku_penerimaan_model extends CI_Model {
     {
  		$this->db->select('*');		
 		$this->db->join('cl_phc','cl_phc.code = keu_sts.code_cl_phc','inner');
-		$this->db->where('status <>', 'setor');
+		$this->db->where('status', 'tutup');
 		$query = $this->db->get('keu_sts');		
 		
 		return $query->result_array();
@@ -528,23 +537,23 @@ class Bku_penerimaan_model extends CI_Model {
 		for($i=0; $i<count($periode); $i++){
 			$this->db->select('*');
 			$this->db->where('periode',$periode[$i]);
-			$this->db->where('code_mst_keu_kode_rekening',$kode_rekening);
-			$dataCek = $this->db->get('keu_bku_rekap_rekening');
+			$this->db->where('mst_keu_rekening',$kode_rekening);
+			$dataCek = $this->db->get('keu_bku_penerimaan_rekap_rekening');
 			if(empty($dataCek->result())){
 				$values = array(
 					'periode' => $periode[$i],
-					'code_mst_keu_kode_rekening' => $kode_rekening,
+					'mst_keu_rekening' => $kode_rekening,
 					'jumlah' => $jml,					
 				);
 				
-				$this->db->insert('keu_bku_rekap_rekening', $values);
+				$this->db->insert('keu_bku_penerimaan_rekap_rekening', $values);
 			}else{
 				foreach($dataCek->result() as $dc){
 					$values = array(					
 						'jumlah' => $dc->jumlah+$jml,					
 					);
 					$this->db->where('periode',$periode[$i]);
-					$this->db->update('keu_bku_rekap_rekening', $values);
+					$this->db->update('keu_bku_penerimaan_rekap_rekening', $values);
 				}
 				
 			}

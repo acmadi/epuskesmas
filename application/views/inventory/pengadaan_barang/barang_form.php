@@ -65,6 +65,8 @@ function edit_barang(id_barang,barang_kembar_proc,id_inventaris_barang){
                       $("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
                       close_popup();
                       var kode_          = res[1]; 
+                      var kd_proc_       = res[2];
+                      var id_barang_     = res[2].substring(0,10);
                       edit_barang(id_barang_,kd_proc_,kode_); 
                   }
                   else if(res[0]=="Error"){

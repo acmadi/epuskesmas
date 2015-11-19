@@ -54,7 +54,7 @@ class Master_sts extends CI_Controller {
 		$data['title_group'] = "Anggaran";
 		$data['title_form'] = "Master Data - Anggaran";
 		$data['ambildata'] = $this->sts_model->get_data();
-		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening('penerimaan');
+		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening();
 		$data['content'] = $this->parser->parse("keuangan/anggaran",$data,true);		
 		
 		$this->template->show($data,"home");

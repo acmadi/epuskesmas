@@ -19,6 +19,8 @@ class Opini extends CI_Controller {
 									'terima-baca'=>' - Sudah Dibaca',
 									'balas'=>'Balasan'
 								);
+		$this->session->set_userdata('filter_status','terima-baru');
+		$data['statusoption_active'] = $this->session->userdata('filter_status');
 
 		$data['content'] = $this->parser->parse("sms/opini/show",$data,true);
 		$this->template->show($data,'home');
@@ -70,7 +72,7 @@ class Opini extends CI_Controller {
 
 				if($field == 'created_on') {
 					$value = date("Y-m-d",strtotime($value));
-					$this->db->like("inbox.created_on",$value);
+					$this->db->like("opini.created_on",$value);
 				}else{
 					$this->db->like($field,$value);
 				}
@@ -113,7 +115,7 @@ class Opini extends CI_Controller {
 
 				if($field == 'created_on') {
 					$value = date("Y-m-d",strtotime($value));
-					$this->db->like("inbox.created_on",$value);
+					$this->db->like("opini.created_on",$value);
 				}else{
 					$this->db->like($field,$value);
 				}
@@ -205,15 +207,14 @@ class Opini extends CI_Controller {
         $this->form_validation->set_rules('id_sms_tipe', 'Kategori Opini', 'trim|required');
 
 		if($this->form_validation->run()== FALSE){
+			if($data['status'] != "kirim" && $data['status'] != "draft"){
+				$data['pesan'] = "";
+			}
 			$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');
 
 			die($this->parser->parse('sms/opini/form', $data));
 		}else{
-
-			$update = array("status"=>"balas");
-			$this->db->where("id_opini",$id);
-			$this->db->update('sms_opini',$update);
-
+			
 			if($this->input->post('status')=="kirim"){
 				$values = array(
 					'CreatorID'			=> $this->session->userdata('username'),
@@ -223,19 +224,61 @@ class Opini extends CI_Controller {
 				$this->db->insert('outbox',$values);
 			}
 
-			$data = array(
-				'id_sms_tipe'	=> $this->input->post('id_sms_tipe'),
-				'pesan'			=> $this->input->post('pesan'),
-				'nomor'			=> $data['nomor'],
-				'status'		=> $this->input->post('status')
-			);
-			if($this->db->insert('sms_opini',$data)){
+
+			if($data['status'] != "kirim" && $data['status'] != "draft"){
+
+				$update = array("status"=>"balas");
+				$this->db->where("id_opini",$id);
+				$this->db->update('sms_opini',$update);
+
+				$data = array(
+					'id_sms_tipe'	=> $this->input->post('id_sms_tipe'),
+					'pesan'			=> $this->input->post('pesan'),
+					'nomor'			=> $data['nomor'],
+					'status'		=> $this->input->post('status')
+				);
+				if($this->db->insert('sms_opini',$data)){
+					die("OK|");
+				}else{
+					die("Error|Proses data gagal");
+				}
+			}else{
+				$update = array(
+					'id_sms_tipe'	=> $this->input->post('id_sms_tipe'),
+					'pesan'			=> $this->input->post('pesan'),
+					"status"		=>$this->input->post('status')
+				);
+				$this->db->where("id_opini",$id);
+				if($this->db->update('sms_opini',$update)){
+					die("OK|");
+				}else{
+					die("Error|Proses data gagal");
+				}
+			}
+
+		}
+		
+	}
+
+	public function move($id=0)
+	{
+		$data = $this->opini_model->get_data_ID($id);
+		$data['title_form']	= "Pindah Kategori";
+		$data['action']		= "move";
+		$data['id']			= $id;
+
+        $this->form_validation->set_rules('id_sms_tipe', 'Kategori Opini', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			$data['tipeoption'] 	= $this->opini_model->get_tipe('terima');
+
+			die($this->parser->parse('sms/opini/move', $data));
+		}else{
+			if($this->opini_model->move($id)){
 				die("OK|");
 			}else{
 				die("Error|Proses data gagal");
 			}
-
-
 		}
 		
 	}

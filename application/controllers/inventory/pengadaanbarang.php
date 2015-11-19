@@ -213,6 +213,7 @@ class Pengadaanbarang extends CI_Controller {
 			$data['kode']			= $id_pengadaan;
 
 			$data['kodestatus'] = $this->pengadaanbarang_model->get_data_status();
+			$data['kodestatus_inv'] = $this->pengadaanbarang_model->pilih_data_status('status_inventaris');
 			$data['barang']	  	= $this->parser->parse('inventory/pengadaan_barang/barang', $data, TRUE);
 			$data['content'] 	= $this->parser->parse("inventory/pengadaan_barang/edit",$data,true);
 		}elseif($this->pengadaanbarang_model->update_entry($id_pengadaan)){
@@ -252,22 +253,23 @@ class Pengadaanbarang extends CI_Controller {
 			redirect(base_url()."inventory/pengadaanbarang");
 		}
 	}
-	function updatestatus(){
-		//$this->authentication->verify('inventory','edit');
+	function updatestatus_barang(){
+		$this->authentication->verify('inventory','edit');
 		$this->pengadaanbarang_model->update_status();				
 	}
 	function dodelpermohonan($kode=0,$id_barang="",$kd_proc=0){
 		$this->authentication->verify('inventory','del');
 
 		if($this->pengadaanbarang_model->delete_entryitem($kode,$id_barang,$kd_proc)){
-			$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
-			$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
-			$key['id_pengadaan'] = $kode;
-    		$this->db->update("inv_pengadaan",$dataupdate,$key);
-			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
+				
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
 		}
+				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
+				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
+				$key['id_pengadaan'] = $kode;
+        		$this->db->update("inv_pengadaan",$dataupdate,$key);
+				$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
 	}
 
 	public function barang($id = 0)
@@ -363,7 +365,7 @@ class Pengadaanbarang extends CI_Controller {
 				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
 				$key['id_pengadaan'] = $kode;
         		$this->db->update("inv_pengadaan",$dataupdate,$key);
-				die("OK|$id_");
+				die("OK|$id_|$kode_proc");
 			}else{
 				 die("Error|Proses data gagal");
 			}
@@ -475,6 +477,7 @@ class Pengadaanbarang extends CI_Controller {
    			}
    			//$data = $this->pengadaanbarang_model->get_data_barang_edit($id_barang,$kd_proc,$kd_inventaris); 
    			$data['kodebarang']		= $this->pengadaanbarang_model->get_databarang();
+   			$data['kodestatus_inv'] = $this->pengadaanbarang_model->pilih_data_status('status_inventaris');
 			$data['action']			= "edit";
 			$data['kode']			= $kd_inventaris;
 			$data['id_barang']		= $id_barang;

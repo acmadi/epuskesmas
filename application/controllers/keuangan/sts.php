@@ -22,7 +22,7 @@ class Sts extends CI_Controller {
 		if(!empty($this->session->userdata('puskes')) and  $this->session->userdata('puskes') != '0'){
 			$data['ambildata'] = $this->sts_model->get_data_keu_sts_general($this->session->userdata('puskes'));
 			foreach($data['ambildata'] as $d){
-				$txt = $this->convert_tgl($d["tgl"])." \t ".$d["nomor"]." \t ".$d["total"]." \t ".$d["status"]." \t <a href=\"".base_url()."keuangan/sts/detail/".$d['tgl']."\"><img border=0 src='".base_url()."media/images/16_edit.gif'></a>  \t".($d['status'] != "tutup" ? "  <a onclick=\"doDeleteSts('".$d['tgl']."')\" href=\"#\" ><img border=0 src='".base_url()."media/images/16_del.gif'></a>" : "<img border=0 src='".base_url()."media/images/16_lock.gif'>").  "\n ";				
+				$txt = $this->convert_tgl($d["tgl"])." \t ".$d["nomor"]." \t ".$d["total"]." \t ".$d["status"]." \t <a href=\"".base_url()."keuangan/sts/detail/".$d['tgl']."\"><img border=0 src='".base_url()."media/images/16_edit.gif'></a>  \t".($d['status'] == "buka" ? "  <a onclick=\"doDeleteSts('".$d['tgl']."')\" href=\"#\" ><img border=0 src='".base_url()."media/images/16_del.gif'></a>" : "<img border=0 src='".base_url()."media/images/16_lock.gif'>").  "\n ";				
 				echo $txt;
 			}
 		}		
