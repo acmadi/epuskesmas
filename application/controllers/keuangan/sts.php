@@ -80,7 +80,7 @@ class Sts extends CI_Controller {
 		$data['title_group'] = "Surat Tanda Setoran";
 		$data['title_form'] = "Surat Tanda Setoran";
 		$data['ambildata'] = $this->sts_model->get_data();
-		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening('penerimaan');
+		$data['kode_rekening'] = $this->sts_model->get_data_kode_rekening_all();
 		$data['nomor'] = $this->generate_nomor(date("Y-m-d H:i:s"));		
 		$data['nama_puskes'] = "";
 		if(!empty($this->session->userdata('puskes')) and $this->session->userdata('puskes')!= '0'){
