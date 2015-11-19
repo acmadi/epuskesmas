@@ -283,7 +283,7 @@ class Drh extends CI_Controller {
 
 		$data['id']		= $id;
 		$data['title_group'] = "Parameter";
-		$data['title_form']="Tambah Alamar Pegawai";
+		$data['title_form']="Tambah Alamat Pegawai";
 		$data['action']="add_alamat";
 
 		
@@ -426,4 +426,53 @@ class Drh extends CI_Controller {
 			redirect(base_url()."kepegawaian/drh/edit/".$id);
 		}
 	}
+
+//CRUD DIKLAT
+
+	function add_diklat($id=""){
+		$this->authentication->verify('kepegawaian','add');
+
+		$data['id']		= $id;
+		$data['title_group'] = "Parameter";
+		$data['title_form']="Tambah Data Diklat Pegawai";
+		$data['action']="add_diklat";
+
+		
+		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+		$this->form_validation->set_rules('id_mst_peg_kursus', 'Jenis Diklat', 'trim|required');
+		$this->form_validation->set_rules('nip_nit', 'NIP / NIT Pegawai', 'trim|required');
+		$this->form_validation->set_rules('nama_diklat', 'Nama Diklat', 'trim|required');
+		$this->form_validation->set_rules('lama_diklat', 'Lama Diklat', 'trim|required');
+		$this->form_validation->set_rules('tgl_diklat', 'Tanggal Diklat', 'trim|required');
+		$this->form_validation->set_rules('tar_penyelenggara', 'Penyelenggara', 'trim|required');
+
+		if($this->form_validation->run()== FALSE){
+			// $data['urut'] 			= $this->drh_model->get_data_alamat('urut');
+			$data['notice']			   = validation_errors();
+			$data['id_mst_peg_kursus'] = $this->drh_model->get_data_diklat1($id);
+			$data['content'] = $this->parser->parse("kepegawaian/drh/form_diklat",$data,true);
+			die($this->parser->parse('kepegawaian/drh/form_diklat', $data,true));
+		}else{
+			$values = array(
+				// 'nip_nit'=>$id,
+				// 'urut' => $this->input->post('urut'),
+				'id_mst_peg_kursus' => $this->input->post('id_mst_peg_kursus'),
+				'nip_nit' => $this->input->post('nip_nit'),
+				'nama_diklat' => $this->input->post('nama_diklat'),
+				'lama_diklat' => $this->input->post('lama_diklat'),
+				'tgl_diklat' => $this->input->post('tgl_diklat'),
+				'tar_penyelenggara' => $this->input->post('tar_penyelenggara')
+			);
+			if($this->db->insert('pegawai_diklat', $values)){
+				$key['nip_nit'] = $id;
+        		$this->db->update("pegawai",$key);
+
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+		}
+	}
+
 }

@@ -4,6 +4,7 @@ class Drh_model extends CI_Model {
     var $tabel    = 'pegawai';
     var $t_puskesmas = 'cl_phc';
     var $t_alamat = 'pegawai_alamat';
+    var $t_diklat = 'pegawai_diklat';
 	var $lang	  = '';
 
     function __construct() {
@@ -289,5 +290,36 @@ class Drh_model extends CI_Model {
         $this->db->where('urut',$urut);
 
         return $this->db->delete($this->t_alamat);
+    }
+
+//Diklat
+    function get_data_diklat($start=0,$limit=999999,$options=array())
+    {
+        $this->db->select('*');
+        $this->db->join('mst_peg_kursus','pegawai_diklat.id_mst_peg_kursus=mst_peg_kursus.id_kursus ','inner');
+        $query = $this->db->get('pegawai_diklat',$limit,$start);
+        return $query->result();
+    }
+
+    function get_data_diklat_id($id)
+    {
+        $data = array();
+        $options = array('nip_nit'=>$id);
+        $query = $this->db->get_where($this->t_diklat,$options);
+        if ($query->num_rows() > 0){
+            $data = $query->row_array();
+        }
+
+        $query->free_result();    
+        return $data;
+    }
+
+    function get_data_diklat1($id){
+        $this->db->select('*');
+        $kursus = 'kursus';
+        $this->db->where('jenis !=',$kursus);
+        $this->db->from('mst_peg_kursus');
+        $query = $this->db->get();
+        return $query->result();
     }
 }

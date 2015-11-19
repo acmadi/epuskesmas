@@ -120,7 +120,7 @@
 						<div class="col-md-6">
 						<div class="form-group">
 							<label>RT</label>
-							<input type="text" class="form-control" id="rt" name="rt" placeholder="RT" value="<?php 
+							<input type="number" class="form-control" id="rt" name="rt" placeholder="RT" value="<?php 
 				              if(set_value('rt')=="" && isset($rt)){
 				                echo $rt;
 				              }else{
@@ -132,7 +132,7 @@
 						<div class="col-md-6">
 						<div class="form-group">
 							<label>RW</label>
-							<input type="text" class="form-control" id="rw" name="rw" placeholder="RW" value="<?php 
+							<input type="number" class="form-control" id="rw" name="rw" placeholder="RW" value="<?php 
 				              if(set_value('rw')=="" && isset($rw)){
 				                echo $rw;
 				              }else{
