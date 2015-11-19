@@ -213,6 +213,7 @@ class Pengadaanbarang extends CI_Controller {
 			$data['kode']			= $id_pengadaan;
 
 			$data['kodestatus'] = $this->pengadaanbarang_model->get_data_status();
+			$data['kodestatus_inv'] = $this->pengadaanbarang_model->pilih_data_status('status_inventaris');
 			$data['barang']	  	= $this->parser->parse('inventory/pengadaan_barang/barang', $data, TRUE);
 			$data['content'] 	= $this->parser->parse("inventory/pengadaan_barang/edit",$data,true);
 		}elseif($this->pengadaanbarang_model->update_entry($id_pengadaan)){
@@ -370,7 +371,7 @@ class Pengadaanbarang extends CI_Controller {
 			
 		}
 	}
-	public function edit_barang($id_pengadaan=0,$id_barang=0,$kd_proc=0,$kd_inventaris=0)
+	public function edit_barang($id_pengadaan=0,$id_barang=0,$kd_proc=0,$kd_inventaris=0,$tgl_pembelian=0)
 	{
 		$data['action']			= "edit";
 		$data['kode']			= $kd_inventaris;
@@ -475,6 +476,7 @@ class Pengadaanbarang extends CI_Controller {
    			}
    			//$data = $this->pengadaanbarang_model->get_data_barang_edit($id_barang,$kd_proc,$kd_inventaris); 
    			$data['kodebarang']		= $this->pengadaanbarang_model->get_databarang();
+   			$data['kodestatus_inv'] = $this->pengadaanbarang_model->pilih_data_status('status_inventaris');
 			$data['action']			= "edit";
 			$data['kode']			= $kd_inventaris;
 			$data['id_barang']		= $id_barang;
@@ -482,6 +484,7 @@ class Pengadaanbarang extends CI_Controller {
 			$data['kd_proc']		= $kd_proc;
 			$data['disable']		= "disable";
 			$data['notice']			= validation_errors();
+			$data['tgl_pembelian']	= $tgl_pembelian;
    			/*end mengirim status pada masing2 form*/
 			die($this->parser->parse('inventory/pengadaan_barang/barang_form_edit', $data));
 		}else{

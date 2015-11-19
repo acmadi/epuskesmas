@@ -22,7 +22,7 @@
           <label>Tanggal</label><?php if(isset($viewreadonly)){if($action='view'){ 
             echo "<br>".$tgl_pengadaan; }}else{ ?>
               <div id='tgl' name="tgl" disabled value="<?php
-              echo (set_value('tgl')!="") ? date("Y-m-d",strtotime(set_value('tgl'))) : "";
+              echo $tgl_pengadaan;;//echo ($tgl_pengadaan!="") ? date("Y-m-d",strtotime($$tgl_pengadaan)) : "";
             ?>" ></div>
              <?php  }?>
         </div>
@@ -70,28 +70,24 @@
                 <td>Jumlah Unit</td>
                 <td>
                     <div id="jumlah_unit_"></div>
-                  <?php //echo $jumlah_unit.' '.'Unit'; ?>
                 </td>
               </tr>
               <tr>
                 <td>Nilai Pengadaan</td>
                 <td>
                   <div id="nilai_pengadaan_"></div>
-                  <?php //echo 'Rp. '.$nilai_pengadaan; ?>
                 </td>
               </tr>
               <tr>
                 <td>Waktu dibuat</td>
                 <td>
                   <div id="waktu_dibuat_"></div>
-                  <?php //echo date("d-m-Y",strtotime($waktu_dibuat)); ?>
                 </td>
               </tr>
               <tr>
                 <td>Terakhir di edit</td>
                 <td>
                   <div id="terakhir_diubah_"></div>
-                  <?php// echo date("d-m-Y",strtotime($terakhir_diubah)); ?>
                 </td>
               </tr>
             </tbody>

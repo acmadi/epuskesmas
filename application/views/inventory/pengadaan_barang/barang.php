@@ -29,13 +29,21 @@
 			{ name: 'waktu_dibuat', type: 'date' },
 			{ name: 'terakhir_diubah', type: 'date' },
 			{ name: 'jumlah', type: 'number' },
-			{ name: 'totalharga', type: 'number' },
+			{ name: 'totalharga', type: 'double' },
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
 		url: "<?php echo site_url('inventory/pengadaanbarang/barang/'.$kode); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
+			commit(true);
+			var arr = $.map(rowData, function(el) { return el });
+			alert(arr[4]);		//6 status
+
+				/*$.post( '<?php echo base_url()?>inventory/permohonanbarang/updatestatus', {pilihan_status_pengadaan:arr[7],inv_permohonan_barang:arr[2]},function( data ) {
+						$("#jqxgrid").jqxGrid('updateBoundData');
+						
+				 });*/
 			},
 		filter: function(){
 			$("#jqxgrid_barang").jqxGrid('updatebounddata', 'filter');
@@ -97,7 +105,7 @@
                         text: 'Status', datafield: 'value', width: '7%', columntype: 'dropdownlist',
                         createeditor: function (row, column, editor) {
                             // assign a new data source to the dropdownlist.
-                            var list = [<?php foreach ($kodestatus as $key) {?>
+                            var list = [<?php foreach ($kodestatus_inv as $key) {?>
 							"<?=$key->value?>",
 							<?php } ?>];
                             editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
@@ -181,8 +189,10 @@
 	}
 
 	function edit_barang(id_barang,barang_kembar_proc,id_inventaris_barang){
+		var tglpembeli = $('#tgl').val();
+		//(tglpembeli);
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo base_url().'inventory/pengadaanbarang/edit_barang/'.$kode.'/';?>" + id_barang+'/'+barang_kembar_proc+'/'+id_inventaris_barang, function(data) {
+		$.get("<?php echo base_url().'inventory/pengadaanbarang/edit_barang/'.$kode.'/';?>" + id_barang+'/'+barang_kembar_proc+'/'+id_inventaris_barang+'/'+tglpembeli, function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_barang").jqxWindow({
