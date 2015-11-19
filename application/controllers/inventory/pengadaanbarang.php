@@ -253,8 +253,8 @@ class Pengadaanbarang extends CI_Controller {
 			redirect(base_url()."inventory/pengadaanbarang");
 		}
 	}
-	function updatestatus(){
-		//$this->authentication->verify('inventory','edit');
+	function updatestatus_barang(){
+		$this->authentication->verify('inventory','edit');
 		$this->pengadaanbarang_model->update_status();				
 	}
 	function dodelpermohonan($kode=0,$id_barang="",$kd_proc=0){

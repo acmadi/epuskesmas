@@ -35,16 +35,18 @@
         ],
 		url: "<?php echo site_url('inventory/pengadaanbarang/barang/'.$kode); ?>",
 		cache: false,
-		updaterow: function (rowid, rowdata, commit) {
-			commit(true);
+		updateRow: function (rowID, rowData, commit) {
+            commit(true);
 			var arr = $.map(rowData, function(el) { return el });
-			alert(arr[4]);		//6 status
+			//alert(arr[6]); alert(arr[8]);		//6 status
+			var pengadaan= '<?php echo $kode; ?>';
+			//alert(pengadaan);
 
-				/*$.post( '<?php echo base_url()?>inventory/permohonanbarang/updatestatus', {pilihan_status_pengadaan:arr[7],inv_permohonan_barang:arr[2]},function( data ) {
-						$("#jqxgrid").jqxGrid('updateBoundData');
+				$.post( '<?php echo base_url()?>inventory/pengadaanbarang/updatestatus_barang', {kode_proc:arr[6],pilihan_inv:arr[8],id_pengadaan:pengadaan},function( data ) {
+						$("#jqxgrid_barang").jqxGrid('updateBoundData');
 						
-				 });*/
-			},
+				 });
+         },
 		filter: function(){
 			$("#jqxgrid_barang").jqxGrid('updatebounddata', 'filter');
 		},
