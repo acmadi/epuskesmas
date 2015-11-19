@@ -6,11 +6,11 @@ class Bku_penerimaan extends CI_Controller {
 		$this->load->model('keuangan/bku_penerimaan_model');
 	}
 			
-	function index(){
-		header("location:bku_penerimaan/pembantu");
-	}
+	#function index(){
+		#header("location:bku_penerimaan/pembantu");
+	#}
 
-	function pembantu(){
+	function index(){
 		$this->authentication->verify('keuangan','add');
 		
 		$data['title_group'] = "BKU Penerimaan Pembantu";
