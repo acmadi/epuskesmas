@@ -1,3 +1,5 @@
+
+
 <style>
 .modal-dialog {
 	width:70%;
@@ -11,6 +13,8 @@
 </div>
 <?php } ?>
 
+
+
 <section class="content">
 <form action="<?php echo base_url()?>mst/agama/dodel_multi" method="POST" name="">
   <div class="row">
@@ -23,10 +27,31 @@
 	    </div>
 
 	      <div class="box-footer">
-		 	<button id="btn_add_bku" type="button" class="btn btn-primary" ><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
-		 	<button data-toggle="modal" data-target="#ModalAdd" type="button" class="btn btn-primary" ><i class='fa fa-plus-square-o'></i> &nbsp; Cetak</button>
-		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Export</button>
-		 	<button type="button" onclick="doList()" class="btn btn-warning" id="btn-refresh"><i class='fa fa-check'></i> &nbsp; Setor/Pengeluaran</button>
+			<div class="col-md-6">
+				<button id="btn_add_bku" type="button" class="btn btn-primary" ><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+				<button data-toggle="modal" data-target="#ModalAdd" type="button" class="btn btn-primary" ><i class='fa fa-plus-square-o'></i> &nbsp; Cetak</button>
+				<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Export</button>
+				<button type="button" onclick="doList()" class="btn btn-warning" id="btn-refresh"><i class='fa fa-check'></i> &nbsp; Setor/Pengeluaran</button>
+			</div>
+			<div class="col-md-2 pull-right">
+			<select name="pilih_tahun" class="form-control">
+				<option value="0">Pilih Tahun</option>
+				<?php for($i=date('Y'); $i>date('Y')-5; $i--){?>
+					<option <?=$this->session->userdata('bku_penerimaan_tahun')==$i?'selected':''?> value="<?=$i?>"><?=$i?></option>
+				<?php } ?>				
+			</select>
+			</div>
+			<div class="col-md-2 pull-right">
+			
+			<select name="pilih_bulan" class="form-control">
+				<option value="0">Pilih Bulan</option>
+				<?php 
+				$bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+				for($i=0; $i<12; $i++){?>
+					<option <?=$this->session->userdata('bku_penerimaan_bulan')==$i+1?'selected':''?> value="<?=$i+1?>"><?=$bulan[$i]?></option>
+				<?php } ?>				
+			</select>
+			</div>
 	     </div>
         <div class="box-body">
 			<div id="popup_barang" style="display:none">
@@ -46,6 +71,46 @@
 </form>
 </section>
 
+
+
+
+
+<div class="modal fade" id="ModalSetor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Tambah Kode Rekening</h4>
+      </div>
+      <div class="modal-body">
+	
+		<div class="form-group">
+		  <label for="exampleInputEmail1">Kode Rekening</label>
+		  <input type="text"  id="kode_rekening" class="form-control" name="kode_rekening" id="exampleInputEmail1" placeholder="Kode Rekening" >		  
+		</div>
+		
+		<div class="form-group">
+		  <label for="exampleInputEmail1">Uraian</label>
+		  <input type="text"  id="uraian" value="Setoran Tunai ke Bank " class="form-control" name="uraian" id="exampleInputEmail1" placeholder="Kode Rekening" >		  
+		</div>
+		
+		<div class="form-group">
+		  <label for="exampleInputEmail1">Tipe </label>
+		  <select name="tipe" id="tipe" class="form-control">			
+			<option >pilih tipe rekening</option>
+			<option value="penerimaan">Penerimaan</option>
+			<option value="pengeluaran">Pengeluaran</option>
+		  </select>
+		</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" onclick="add_rekening()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 	
 	$(function(){
@@ -63,7 +128,8 @@
 			{ name: 'delete', 		type: 'string' },
 			{ name: 'status', 		type: 'string' },
 			{ name: 'id_bku', 		type: 'string' },
-			{ name: 'is_bku', 		type: 'string' }
+			{ name: 'is_bku', 		type: 'string' },
+			{ name: 'tgl_id', 		type: 'string' }
         ],
 		url: "<?php echo site_url('keuangan/bku_penerimaan/api_data_bku'); ?>",
 		cache: false,
@@ -106,7 +172,7 @@
 					if(dataRecord.status != '0'){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif' );'></a></div>";											
 					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a onclick=\"doDelete('"+dataRecord.tgl+"','"+dataRecord.id_bku+"')\" href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' );'></a></div>";											
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a onclick=\"doDelete('"+dataRecord.tgl_id+"','"+dataRecord.id_bku+"')\" href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' );'></a></div>";											
 					}					
 					
                  }
@@ -116,7 +182,7 @@
 					if(dataRecord.status != '0' || dataRecord.pengeluaran > 0){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif' );'></a></div>";											
 					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><input type=\"checkbox\" name=\"datalist[]\" value=\""+dataRecord.id_bku+"z"+dataRecord.tgl+"z"+dataRecord.is_bku + "\"></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><input type=\"checkbox\" name=\"datalist[]\" value=\""+dataRecord.id_bku+"z"+dataRecord.tgl_id+"z"+dataRecord.is_bku + "\"></div>";
 					}
 				   
 					
@@ -126,8 +192,8 @@
 				{ text: 'Tanggal', datafield: 'tgl', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
 				{ text: 'Uraian ', datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '37%'},
 				{ text: 'Kode Rekening',datafield: 'kode_rekening', columntype: 'textbox', filtertype: 'textbox', width: '16%'},
-				{ text: 'Penerimaan (Rp)',datafield: 'penerimaan', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
-				{ text: 'Pengeluaran (Rp)',datafield: 'pengeluaran', columntype: 'textbox', filtertype: 'textbox', width: '12%'}
+				{ text: 'Penerimaan (Rp)', cellsalign: 'right', cellsformat: 'f', datafield: 'penerimaan', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
+				{ text: 'Pengeluaran (Rp)',cellsalign: 'right', cellsformat: 'f', datafield: 'pengeluaran', columntype: 'textbox', filtertype: 'textbox', width: '12%'}
            ]
 		});
         
@@ -231,45 +297,21 @@
 			});
 		}
 	}
+	
+	$("select[name='pilih_bulan']").change(function(){		
+		if($(this).val() != '0'){			
+			$.post( '<?php echo base_url()?>keuangan/bku_penerimaan/set_filter_bulan', {bulan:$(this).val()},function( data ) {								
+				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+			});
+		}				
+	});
+	
+	$("select[name='pilih_tahun']").change(function(){			
+		if($(this).val() != '0'){
+			$.post( '<?php echo base_url()?>keuangan/bku_penerimaan/set_filter_tahun', {tahun:$(this).val()},function( data ) {				
+				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+			});
+		}				
+	});
 
 </script>
-
-
-
-<div class="modal fade" id="ModalSetor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Tambah Kode Rekening</h4>
-      </div>
-      <div class="modal-body">
-	
-		<div class="form-group">
-		  <label for="exampleInputEmail1">Kode Rekening</label>
-		  <input type="text"  id="kode_rekening" class="form-control" name="kode_rekening" id="exampleInputEmail1" placeholder="Kode Rekening" >		  
-		</div>
-		
-		<div class="form-group">
-		  <label for="exampleInputEmail1">Uraian</label>
-		  <input type="text"  id="uraian" value="Setoran Tunai ke Bank " class="form-control" name="uraian" id="exampleInputEmail1" placeholder="Kode Rekening" >		  
-		</div>
-		
-		<div class="form-group">
-		  <label for="exampleInputEmail1">Tipe </label>
-		  <select name="tipe" id="tipe" class="form-control">			
-			<option >pilih tipe rekening</option>
-			<option value="penerimaan">Penerimaan</option>
-			<option value="pengeluaran">Pengeluaran</option>
-		  </select>
-		</div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" onclick="add_rekening()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-

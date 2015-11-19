@@ -150,10 +150,11 @@ class Bku_penerimaan extends CI_Controller {
 		$activity = $this->bku_penerimaan_model->getItemBku($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$no=1;
 		foreach($activity as $act) {
-			
+			$t = explode('-',$act->tgl);
+			$tgl = $t[2].'-'.$t[1].'-'.$t[0];
 			$data[] = array(
 				'no'			=> $no++,
-				'tgl' 			=> $act->tgl,				
+				'tgl' 			=> $tgl,				
 				'uraian'   		=> $act->uraian,
 				'kode_rekening'	=> $act->kode_rekening,				
 				'catatan'		=> $act->catatan,
@@ -162,7 +163,9 @@ class Bku_penerimaan extends CI_Controller {
 				'delete'		=> $act->id_bku.'#'.$act->tgl,
 				'status'		=> $act->is_setor,
 				'id_bku'		=> $act->id_bku,
-				'is_bku'		=> $act->is_bku
+				'is_bku'		=> $act->is_bku,
+				'tgl_id'		=> $act->tgl,
+				
 			);
 		}
 
@@ -172,6 +175,14 @@ class Bku_penerimaan extends CI_Controller {
 		);
 
 		echo json_encode(array($json));
+	}
+	
+	function set_filter_bulan(){
+		$this->session->set_userdata('bku_penerimaan_bulan', $this->input->post('bulan'));		
+	}
+	
+	function set_filter_tahun(){		
+		$this->session->set_userdata('bku_penerimaan_tahun', $this->input->post('tahun'));		
 	}
 	
 	

@@ -36,10 +36,10 @@ class Sts_model extends CI_Model {
 		$query = $this->db->get('keu_sts');		
 		return $query->result_array();
     }	
-	function get_data_kode_rekening($tipe)
+	function get_data_kode_rekening()
     {
  		$this->db->select('*');		
-		$this->db->where('tipe',$tipe);
+		
 		$query = $this->db->get("mst_keu_rekening");		
 		
 		return $query->result_array();
@@ -418,7 +418,10 @@ class Sts_model extends CI_Model {
 		$this->db->delete($this->tb);
 				
 		$this->db->where('sub_id', $this->input->post('id_anggaran'));
-		return $this->db->delete($this->tb);
+		$this->db->delete($this->tb);
+		
+		$this->db->where('id_keu_anggaran', $this->input->post('id_anggaran'));		
+		return $this->db->delete('keu_anggaran_tarif');
 	}
 	
 	function delete_sts($tgl){		
