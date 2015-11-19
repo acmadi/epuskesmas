@@ -186,8 +186,16 @@ class Drh extends CI_Controller {
 			$data['action']="edit";
 			$data['id']=$id;
 			$data['alamat'] = $this->drh_model->get_data_alamat($id);
-			// var_dump($data);
-			// exit();
+			$data['kode_ag'] = $this->drh_model->get_kode_agama('kode_ag');
+			$data['kode_nk'] = $this->drh_model->get_kode_nikah('kode_nk');
+
+			$kodepuskesmas = $this->session->userdata('puskesmas');
+				if(substr($kodepuskesmas, -2)=="01"){
+					$this->db->like('code','P'.substr($kodepuskesmas,0,7));
+				}else{
+					$this->db->like('code','P'.$kodepuskesmas);
+				}
+				$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
 			
 			$data['form_tambahan'] = $this->parser->parse("kepegawaian/drh/form_tambahan",$data,true);
 			$data['content'] = $this->parser->parse("kepegawaian/drh/form",$data,true);
@@ -279,7 +287,7 @@ class Drh extends CI_Controller {
 		$data['action']="add_alamat";
 
 		
-		$this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
 		$this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
 		$this->form_validation->set_rules('rt', 'RT', 'trim|required');

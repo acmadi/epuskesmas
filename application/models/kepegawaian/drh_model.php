@@ -32,7 +32,7 @@ class Drh_model extends CI_Model {
 
     function get_data($start=0,$limit=999999,$options=array())
     {
-		$this->db->order_by('nit_nip','asc');
+		$this->db->order_by('nip_nit','asc');
         $query = $this->db->get('pegawai',$limit,$start);
         return $query->result();
     }

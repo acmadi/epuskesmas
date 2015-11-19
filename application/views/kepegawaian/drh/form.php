@@ -180,11 +180,11 @@ $(function() {
             <div class="col-md-6">
               <div class="form-group">
                 <label>Tempat Lahir</label>
-                <input type="text" class="form-control" name="tgl_lhr" placeholder="Deskripsi" value="<?php 
-                if(set_value('tgl_lhr')=="" && isset($tgl_lhr)){
-                  echo $tgl_lhr;
+                <input type="text" class="form-control" name="tmp_lahir" placeholder="Deskripsi" value="<?php 
+                if(set_value('tmp_lahir')=="" && isset($tmp_lahir)){
+                  echo $tmp_lahir;
                 }else{
-                  echo  set_value('tgl_lhr');
+                  echo  set_value('tmp_lahir');
                 }
                 ?>">
               </div>
@@ -192,11 +192,11 @@ $(function() {
             <div class="col-md-6">
               <div class="form-group">
                 <label>Tanggal Lahir</label>
-                <input type="date" class="form-control" name="tmp_lahir" placeholder="Deskripsi" value="<?php 
-                if(set_value('tmp_lahir')=="" && isset($tmp_lahir)){
-                  echo $tmp_lahir;
+                <input type="date" class="form-control" name="tgl_lhr" placeholder="Deskripsi" value="<?php 
+                if(set_value('tgl_lhr')=="" && isset($tgl_lhr)){
+                  echo $tgl_lhr;
                 }else{
-                  echo  set_value('tmp_lahir');
+                  echo  set_value('tgl_lhr');
                 }
                 ?>">
               </div>
