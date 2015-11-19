@@ -187,6 +187,12 @@ if(isset($disable)){if($disable='disable'){?>
             var subtotal =jumlah*harga;
             document.getElementById("subtotal").value = toRp(subtotal);
         });
+        $("#jumlah").change(function(){
+            var jumlah = document.getElementById("jumlah").value;
+            var harga = document.getElementById("harga").value;
+            var subtotal =jumlah*harga;
+            document.getElementById("subtotal").value = toRp(subtotal);
+        });
         
     });
 </script>
