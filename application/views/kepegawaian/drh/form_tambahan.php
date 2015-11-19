@@ -66,7 +66,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_alamat").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_alamat(\""+dataRecord.nip_nit+"/"+dataRecord.urut+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_alamat(\""+dataRecord.urut+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif'></a></div>";
 					}
@@ -75,21 +75,19 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_alamat").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.nip_nit+"\",\""+dataRecord.urut+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='delete_alamat(\""+dataRecord.nip_nit+"\",\""+dataRecord.urut+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'NIP / NIT', datafield: 'nip_nit', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Urut', datafield: 'urut', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
-				{ text: 'Alamat ', datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '20%'},
+				{ text: 'Alamat ', datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '30%'},
 				{ text: 'RT',datafield: 'rt', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'RW',datafield: 'rw', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'Provinsi',datafield: 'propinsi', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Kota',datafield: 'kota', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Kecamatan',datafield: 'kecamatan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Kelurahan',datafield: 'kelurahan', columntype: 'textbox', filtertype: 'textbox', width: '10%'}
+				{ text: 'Kecamatan',datafield: 'kecamatan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Kelurahan',datafield: 'kelurahan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
             ]
 		});
 
@@ -134,7 +132,7 @@
 
 	function edit_alamat(urut){
 		$("#popup_alamat #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo site_url().'kepegawaian/drh/edit_alamat/'.$id; ?>" +urut, function(data) {
+		$.get("<?php echo site_url().'kepegawaian/drh/edit_alamat/'.$id; ?>/" +urut, function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_alamat").jqxWindow({
@@ -144,6 +142,17 @@
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup_alamat").jqxWindow('open');
+	}
+
+	function delete_alamat(id,urut){
+		var confirms = confirm("Hapus Data ?");
+		if(confirms == true){
+			$.post("<?php echo base_url().'kepegawaian/drh/dodel_alamat/'.$id; ?>/" +urut ,  function(){
+				alert('Data berhasil dihapus');
+
+				$("#jqxgrid_alamat").jqxGrid('updatebounddata', 'cells');
+			});
+		}
 	}
 			
  </script>

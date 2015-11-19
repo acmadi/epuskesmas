@@ -69,7 +69,7 @@
 	                contentType : false,
 	                processData : false,
 	                type : 'POST',
-	                url : '<?php echo base_url()."kepegawaian/drh/".$action."/".$id ?>',
+	                url : '<?php echo base_url()."kepegawaian/drh/".$action."/".$id."/".$urut ?>',
 	                data : data,
 	                success : function(response){
 	                  var res  = response.split("|");
@@ -101,7 +101,7 @@
         </script>
 
 
-	<form action="<?php echo base_url()?>kepegawaian/drh/{action}/{id}" id="form-ss" method="POST" name="">
+	<form action="<?php echo base_url()?>kepegawaian/drh/{action}/{id}/" id="form-ss" method="POST" name="">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box box-primary">
