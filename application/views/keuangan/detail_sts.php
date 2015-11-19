@@ -27,7 +27,7 @@
 		<div class="box">
 		
                 <div class="box-header">
-                  <h3 class="box-title">Data Penanggung Jawab <?php if($ds['status']=='tutup') echo "<b style=\"color:red\"> [STS TELAH TERTUTUP]</b>"  ?></h3>
+                  <h3 class="box-title">Data Penanggung Jawab <?php if($ds['status']!='buka') echo "<b style=\"color:red\"> [STS TUTUP BUKU]</b>"  ?></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
 				
@@ -87,17 +87,17 @@
 						<td></td>
 						<td>
 							<div class="form-group">
-								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_pimpinan_nama" value="<?=$ds['ttd_pimpinan_nama']?>" class="form-control" id="pimpinan_nama" placeholder="Nama Pimpinan">
+								<input <?php echo $ds['status']!='buka' ? "readonly" : "" ?> type="text" name="ttd_pimpinan_nama" value="<?=$ds['ttd_pimpinan_nama']?>" class="form-control" id="pimpinan_nama" placeholder="Nama Pimpinan">
 							</div>
 						</td>
 						<td>
 							<div class="form-group">
-								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penerima_nama" value="<?=$ds['ttd_penerima_nama']?>" class="form-control" id="penerima_nama" placeholder="Nama Penerima">
+								<input <?php echo $ds['status']!='buka' ? "readonly" : "" ?> type="text" name="ttd_penerima_nama" value="<?=$ds['ttd_penerima_nama']?>" class="form-control" id="penerima_nama" placeholder="Nama Penerima">
 							</div>
 						</td>
 						<td>
 							<div class="form-group">
-							  <input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penyetor_nama" value="<?=$ds['ttd_penyetor_nama']?>" class="form-control" id="penyetor_nama" placeholder="Nama Penyetor">
+							  <input <?php echo $ds['status']!='buka' ? "readonly" : "" ?> type="text" name="ttd_penyetor_nama" value="<?=$ds['ttd_penyetor_nama']?>" class="form-control" id="penyetor_nama" placeholder="Nama Penyetor">
 							</div>
 						</td>
 						<td></td>
@@ -106,17 +106,17 @@
 						<td></td>
 						<td>
 							<div class="form-group">
-								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_pimpinan_nip" value="<?=$ds['ttd_pimpinan_nip']?>" class="form-control" id="pimpinan_nip" placeholder="NIP Pimpinan">
+								<input <?php echo $ds['status']!='buka' ? "readonly" : "" ?> type="text" name="ttd_pimpinan_nip" value="<?=$ds['ttd_pimpinan_nip']?>" class="form-control" id="pimpinan_nip" placeholder="NIP Pimpinan">
 							</div>
 						</td>
 						<td>
 							<div class="form-group">
-								<input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penerima_nip" value="<?=$ds['ttd_penerima_nip']?>" class="form-control" id="penerima_nip" placeholder="NIP Penerima">
+								<input <?php echo $ds['status']!='buka' ? "readonly" : "" ?> type="text" name="ttd_penerima_nip" value="<?=$ds['ttd_penerima_nip']?>" class="form-control" id="penerima_nip" placeholder="NIP Penerima">
 							</div>
 						</td>
 						<td>
 							<div class="form-group">
-							  <input <?php echo $ds['status']=='tutup' ? "readonly" : "" ?> type="text" name="ttd_penyetor_nip" value="<?=$ds['ttd_penyetor_nip']?>" class="form-control" id="penyetor_nip" placeholder="NIP Penyetor">
+							  <input <?php echo $ds['status']!='buka' ? "readonly" : "" ?> type="text" name="ttd_penyetor_nip" value="<?=$ds['ttd_penyetor_nip']?>" class="form-control" id="penyetor_nip" placeholder="NIP Penyetor">
 							</div>
 						</td>
 						<td></td>
@@ -163,7 +163,7 @@
 			?>
 				<div class="alert alert-info alert-dismissible" role="alert">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				  <strong>Data Telah Tersimpan & Tertutup !</strong> Data Anda telah terkunci, hanya bisa dilihat dan tidak bisa di udah kembali.
+				  <strong>Data Telah Tersimpan & Ditutup !</strong> Data Anda telah terkunci, hanya bisa dilihat dan tidak bisa di udah kembali.
 				</div>
 			<?php				
 				}
@@ -176,7 +176,7 @@
 			</div>
 			<?php if($ds['status']=='tutup'){ ?>
 				<div class="col-md-6 pull-right" style="text-align:right">
-					<input disabled type="submit" class="btn btn-warning" value="STS Telah Tertutup" >								
+					<input disabled type="submit" class="btn btn-warning" value="STS Telah Ditutup" >								
 					
 					
 						<input type="hidden" name="tgl" value="<?=$ds['tgl']?>" >
@@ -185,7 +185,7 @@
 							$kodepuskesmas = $this->session->userdata('puskesmas');							
 							if(substr($kodepuskesmas, -2)=="01"){											
 						?>
-							<input type="button" onclick="reopen('<?=$ds['tgl']?>','<?=$ds['code_cl_phc']?>')" class="btn btn-success" name="openlagi" value="Buka Lagi" >
+							<input type="button" onclick="reopen('<?=$ds['tgl']?>','<?=$ds['code_cl_phc']?>')" class="btn btn-success" name="openlagi" value="Buka STS" >
 						<?php
 								//kecamatan
 							}else{								
@@ -193,6 +193,14 @@
 							}
 						?>
 						
+						
+					
+				</form>
+					<a href="<?=base_url()?>keuangan/sts/general" class="btn btn-primary" >Kembali<a>					
+				</div>
+			<?php }elseif($ds['status']=='setor'){ ?>
+				<div class="col-md-6 pull-right" style="text-align:right">
+					<input disabled type="submit" class="btn btn-warning" value="STS Telah Disetor" >								
 						
 					
 				</form>
@@ -425,7 +433,7 @@
                 width: '100%',				
                 source: dataAdapter, 
                 //pageable: true,
-                editable: <?php echo $ds['status']=='tutup' ? "false" : "true" ?>,                
+                editable: <?php echo $ds['status']!='buka' ? "false" : "true" ?>,                
                 altRows: true,
                 ready: function()
                 {
@@ -436,7 +444,7 @@
                 columns: [				                                 
                   { text: 'Kode Anggaran', editable:false, dataField: "KodeAnggaran", align: 'center', width: '25%' },
                   { text: 'Uraian', editable:false, dataField: "Uraian", align: 'center', width: '43%' },
-				  { text: 'Volume', dataField: "Volume",cellClassName: "min", editable:<?php echo $ds['status']=='tutup' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '8%' },
+				  { text: 'Volume', dataField: "Volume",cellClassName: "min", editable:<?php echo $ds['status']!='buka' ? "false" : "true" ?>, align: 'center', cellsAlign: 'right',  cellsFormat: "f", width: '8%' },
 				  { text: 'Tarif', dataField: "Tarif", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '12%' },                                    
 				  { text: 'Sub Total', dataField: "Subtotal", editable:false, align: 'center', cellsAlign: 'right', cellsFormat: "f", width: '12%' }      
                 ]

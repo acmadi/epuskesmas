@@ -469,9 +469,7 @@
 		<script type="text/javascript">
             $(function() {
 				$( "#tanggal" ).datepicker({
-					numberOfMonths: 2,
-					showButtonPanel: true,
-					minDate: 0 					
+										
 				});
 			});
         </script>

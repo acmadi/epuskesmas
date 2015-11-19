@@ -13,7 +13,7 @@ class Sts extends CI_Controller {
 	}
 		
 	function index(){
-		header("location:master_sts/anggaran");
+		header("location:sts/general");
 	}
 
 	function api_data_sts_general(){
