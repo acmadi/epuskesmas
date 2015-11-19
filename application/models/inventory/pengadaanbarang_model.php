@@ -186,8 +186,8 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
 		$data['pilihan_status_pengadaan']	= $this->input->post('status');
 		$data['keterangan']		            = $this->input->post('keterangan');
         $data['nomor_kontrak']              = $this->input->post('nomor_kontrak');
-		$data['waktu_dibuat']		        = date('Y-m-d');
-        $data['terakhir_diubah']            = "0000-00-00";
+		$data['waktu_dibuat']		        = date('Y-m-d H:i:s');
+        $data['terakhir_diubah']            = "0000-00-00 00:00:00";
 		$data['jumlah_unit']      	        = 0;
         $data['nilai_pengadaan']            = 0;
 		if($this->db->insert($this->tabel, $data)){

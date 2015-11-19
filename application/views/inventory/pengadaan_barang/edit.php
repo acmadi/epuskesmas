@@ -20,7 +20,7 @@
       <div class="box-body">
         <div class="form-group">
           <label>Tanggal</label><?php if(isset($viewreadonly)){if($action='view'){ 
-            echo "<br>".$tgl_pengadaan; }}else{ ?>
+            echo "<br>".date("d-m-Y",strtotime($tgl_pengadaan)); }}else{ ?>
               <div id='tgl' name="tgl" disabled value="<?php
               echo $tgl_pengadaan;;//echo ($tgl_pengadaan!="") ? date("Y-m-d",strtotime($$tgl_pengadaan)) : "";
             ?>" ></div>

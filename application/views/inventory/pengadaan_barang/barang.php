@@ -211,6 +211,7 @@
 
 				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
 			});
+			ambil_total();
 		}
 	}
 

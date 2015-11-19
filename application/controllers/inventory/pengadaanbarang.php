@@ -41,8 +41,8 @@ class Pengadaanbarang extends CI_Controller {
 			$totalpengadaan[] = array(
 				'jumlah_unit' => $q->jumlah_unit, 
 				'nilai_pengadaan' => number_format($q->nilai_pengadaan,2), 
-				'waktu_dibuat' => $q->waktu_dibuat,
-				'terakhir_diubah' => $q->terakhir_diubah,
+				'waktu_dibuat' => date("d-m-Y H:i:s",strtotime($q->waktu_dibuat)),
+				'terakhir_diubah' => date("d-m-Y H:i:s",strtotime($q->terakhir_diubah)),
 			);
 			echo json_encode($totalpengadaan);
 		}
@@ -237,6 +237,7 @@ class Pengadaanbarang extends CI_Controller {
 			$data['viewreadonly']	= "readonly=''";
 
 			$data['kodestatus'] = $this->pengadaanbarang_model->get_data_status();
+			$data['kodestatus_inv'] = $this->pengadaanbarang_model->pilih_data_status('status_inventaris');
 			$data['barang']	  	= $this->parser->parse('inventory/pengadaan_barang/barang', $data, TRUE);
 			$data['content'] 	= $this->parser->parse("inventory/pengadaan_barang/edit",$data,true);
 			$this->template->show($data,"home");
