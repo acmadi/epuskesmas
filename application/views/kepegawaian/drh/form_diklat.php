@@ -17,7 +17,7 @@
 	            data.append('nama_diklat', $('input[name="nama_diklat"]').val());
 	            data.append('lama_diklat', $('#lama_diklat').val());
 	            data.append('tgl_diklat', $('#tgl_diklat').val());
-	            data.append('tar_penyelenggara', $('#penyelengara').val());
+	            data.append('tar_penyelenggara', $('#tar_penyelengara').val());
 	            $.ajax({
 	                cache : false,
 	                contentType : false,
@@ -62,6 +62,7 @@
 			<div class="col-md-12">
 				<div class="box box-primary">
 					<div class="box-body">
+					<div class="notice" ><?php echo $notice; ?></div>
 						<div class="form-group">
 							<label>Nama Diklat</label>
 							<select type="text" name="id_mst_peg_kursus" class="form-control" >
@@ -73,20 +74,8 @@
 						</div>
 						<div class="col-md-6">
 						<div class="form-group">
-							<label>NIP / NIT</label>
-							<input type="number" class="form-control" id="nip_nit_diklat" name="nip_nit_diklat" placeholder="NIP atau NIT" value="<?php 
-				              if(set_value('nip_nit')=="" && isset($nip_nit)){
-				                echo $nip_nit;
-				              }else{
-				                echo  set_value('nip_nit');
-				              }
-				            ?>">
-						</div>
-						</div>
-						<div class="col-md-6">
-						<div class="form-group">
 							<label>Nama Diklat</label>
-							<input type="test" class="form-control" id="nama_diklat" name="nama_diklat" placeholder="Nama Diklat" value="<?php 
+							<input type="text" class="form-control" id="nama_diklat" name="nama_diklat" placeholder="Nama Diklat" value="<?php 
 				              if(set_value('nama_diklat')=="" && isset($nama_diklat)){
 				                echo $nama_diklat;
 				              }else{
@@ -97,7 +86,7 @@
 						</div>
 						<div class="input-group">
 					        <label>Lama Diklat</label>
-					        <input type="test" class="form-control" id="lama_diklat" name="lama_diklat" placeholder="Lama diklat" value="<?php 
+					        <input type="text" class="form-control" id="lama_diklat" name="lama_diklat" placeholder="Lama diklat" value="<?php 
 				              if(set_value('lama_diklat')=="" && isset($lama_diklat)){
 				                echo $lama_diklat;
 				              }else{

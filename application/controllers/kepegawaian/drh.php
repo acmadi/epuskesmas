@@ -441,7 +441,6 @@ class Drh extends CI_Controller {
 		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
 		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
 		$this->form_validation->set_rules('id_mst_peg_kursus', 'Jenis Diklat', 'trim|required');
-		$this->form_validation->set_rules('nip_nit', 'NIP / NIT Pegawai', 'trim|required');
 		$this->form_validation->set_rules('nama_diklat', 'Nama Diklat', 'trim|required');
 		$this->form_validation->set_rules('lama_diklat', 'Lama Diklat', 'trim|required');
 		$this->form_validation->set_rules('tgl_diklat', 'Tanggal Diklat', 'trim|required');
@@ -458,7 +457,7 @@ class Drh extends CI_Controller {
 				// 'nip_nit'=>$id,
 				// 'urut' => $this->input->post('urut'),
 				'id_mst_peg_kursus' => $this->input->post('id_mst_peg_kursus'),
-				'nip_nit' => $this->input->post('nip_nit'),
+				'nip_nit' => $id,
 				'nama_diklat' => $this->input->post('nama_diklat'),
 				'lama_diklat' => $this->input->post('lama_diklat'),
 				'tgl_diklat' => $this->input->post('tgl_diklat'),

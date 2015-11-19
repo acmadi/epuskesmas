@@ -98,7 +98,7 @@
 			{ name: 'id_kursus', type: 'string' },
 			{ name: 'nama_kursus', type: 'number' },
 			{ name: 'id_mst_peg_kursus', type: 'string' },
-			{ name: 'nip_nit', type: 'string' },
+			{ name: 'nip_nit_diklat', type: 'string' },
 			{ name: 'nama_diklat', type: 'string' },
 			{ name: 'code_cl_province', type: 'string' },
 			{ name: 'lama_diklat', type: 'string' },
@@ -149,7 +149,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_diklat").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_diklat(\""+dataRecord.nip_nit+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_diklat(\""+dataRecord.nip_nit_diklat+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif'></a></div>";
 					}
@@ -165,7 +165,6 @@
                  }
                 },
 				{ text: 'Nama Kursus ', datafield: 'nama_kursus', columntype: 'textbox', filtertype: 'textbox', width: '30%'},
-				{ text: 'NIP / NIT',datafield: '', columntype: 'textbox', filtertype: 'textbox', width: '20%'},
 				{ text: 'Nama Diklat',datafield: 'nama_diklat', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'Lama Diklat',datafield: 'lama_diklat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Tanggal Diklat',datafield: 'tgl_diklat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
@@ -258,6 +257,7 @@
 			height: '75%',
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
+
 		$("#popup_diklat").jqxWindow('open');
 	}
 			
@@ -343,6 +343,10 @@
     <div id="popup_alamat" style="display:none">
 		<div id="popup_title">Data Alamat Pegawai</div>
 		<div id="popup_content">&nbsp;</div>
+	</div>
+	<div id="popup_diklat" style="display:none">
+		<div id="popup_title">Data Diklat Pegawai</div>
+		<div id="popup_content_diklat">&nbsp;</div>
 	</div>
 
 

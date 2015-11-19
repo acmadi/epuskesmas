@@ -104,13 +104,13 @@ class Json extends CI_Controller {
 		foreach($rows as $act) {
 			$data[] = array(
 				'id_kursus'			=> $act->id_kursus,
-				'nama_kursus'		=> $act->urut,
+				'nama_kursus'		=> $act->nama_kursus,
 				'id_mst_peg_kursus'	=> $act->id_mst_peg_kursus,
 				'nip_nit'			=> $act->nip_nit,
 				'nama_diklat'		=> $act->nama_diklat,
 				'lama_diklat'		=> $act->lama_diklat,
 				'tgl_diklat'		=> $act->tgl_diklat,
-				'tar_penyelengara'	=> $act->tar_penyelengara,
+				'tar_penyelengara'	=> $act->tar_penyelenggara,
 				// 'view'		=> 1,
 				'edit'		=> 1,
 				'delete'	=> 1
