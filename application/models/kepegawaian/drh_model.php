@@ -51,7 +51,7 @@ class Drh_model extends CI_Model {
     function get_data_alamat_id($id,$urut=0)
     {
 		$data = array();
-        $options = array('nip_nit' => $id,'urut' => $urut);
+        $options = array('nip_nit'=>$id,'urut' => $urut);
 		$query = $this->db->get_where($this->t_alamat,$options);
 		if ($query->num_rows() > 0){
 			$data = $query->row_array();
@@ -269,9 +269,25 @@ class Drh_model extends CI_Model {
     
 
 // CRUD alamat pegawai
-
-    function insert_alamat()
+    function get_alamat_id($id="")
     {
+        $this->db->select('max(urut) as urut');
+        $this->db->where('nip_nit',$id);
+        $jum = $this->db->get('pegawai')->row();
         
+        if (empty($jum)){
+            return 1;
+        }else {
+            return $jum->urut+1;
+        }
+
+    }
+
+    function delete_entry_alamat($id,$urut)
+    {
+        $this->db->where('nip_nit',$id);
+        $this->db->where('urut',$urut);
+
+        return $this->db->delete($this->t_alamat);
     }
 }

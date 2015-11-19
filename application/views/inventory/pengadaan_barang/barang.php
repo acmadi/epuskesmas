@@ -29,14 +29,24 @@
 			{ name: 'waktu_dibuat', type: 'date' },
 			{ name: 'terakhir_diubah', type: 'date' },
 			{ name: 'jumlah', type: 'number' },
-			{ name: 'totalharga', type: 'number' },
+			{ name: 'totalharga', type: 'double' },
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
 		url: "<?php echo site_url('inventory/pengadaanbarang/barang/'.$kode); ?>",
 		cache: false,
-		updaterow: function (rowid, rowdata, commit) {
-			},
+		updateRow: function (rowID, rowData, commit) {
+            commit(true);
+			var arr = $.map(rowData, function(el) { return el });
+			//alert(arr[6]); alert(arr[8]);		//6 status
+			var pengadaan= '<?php echo $kode; ?>';
+			//alert(pengadaan);
+
+				$.post( '<?php echo base_url()?>inventory/pengadaanbarang/updatestatus_barang', {kode_proc:arr[6],pilihan_inv:arr[8],id_pengadaan:pengadaan},function( data ) {
+						$("#jqxgrid_barang").jqxGrid('updateBoundData');
+						
+				 });
+         },
 		filter: function(){
 			$("#jqxgrid_barang").jqxGrid('updatebounddata', 'filter');
 		},
@@ -97,7 +107,7 @@
                         text: 'Status', datafield: 'value', width: '7%', columntype: 'dropdownlist',
                         createeditor: function (row, column, editor) {
                             // assign a new data source to the dropdownlist.
-                            var list = [<?php foreach ($kodestatus as $key) {?>
+                            var list = [<?php foreach ($kodestatus_inv as $key) {?>
 							"<?=$key->value?>",
 							<?php } ?>];
                             editor.jqxDropDownList({ autoDropDownHeight: true, source: list });

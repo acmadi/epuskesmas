@@ -11,11 +11,19 @@ class Pengadaanbarang_model extends CI_Model {
     
     function get_data_status()
     {	
-    	$this->db->where("mst_inv_pilihan.tipe",'status_inventaris');
+    	$this->db->where("mst_inv_pilihan.tipe",'status_pengadaan');
  		$this->db->select('mst_inv_pilihan.*');		
  		$this->db->order_by('mst_inv_pilihan.code','asc');
 		$query = $this->db->get('mst_inv_pilihan');	
 		return $query->result();	
+    }
+    function pilih_data_status($status)
+    {   
+        $this->db->where("mst_inv_pilihan.tipe",$status);
+        $this->db->select('mst_inv_pilihan.*');     
+        $this->db->order_by('mst_inv_pilihan.code','asc');
+        $query = $this->db->get('mst_inv_pilihan'); 
+        return $query->result();    
     }
     function get_data_pilihan($pilih)
     {   
@@ -188,14 +196,22 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
 			return mysql_error();
 		}
     }
-    
+    function tanggal($pengadaan){
+        $query = $this->db->query("select tgl_pengadaan from inv_pengadaan where id_pengadaan = $pengadaan")->result();
+        foreach ($query as $key) {
+            return $key->tgl_pengadaan;
+        }
+    }
     function insert_data_from($id_barang,$kode_proc,$tanggal_diterima,$kode)
-    {
+    {   $tanggal = $this->tanggal($kode);
         $values = array(
             'id_mst_inv_barang'     => $id_barang,
             'nama_barang'           => $this->input->post('nama_barang'),
             'harga'                 => $this->input->post('harga'),
             'keterangan_pengadaan'  => $this->input->post('keterangan_pengadaan'),
+            'pilihan_status_invetaris'  => $this->input->post('pilihan_status_invetaris'),
+            'tanggal_pembelian'     => $tanggal,
+            'tanggal_pengadaan'     => $tanggal,
             'id_pengadaan'          => $kode,
             'tanggal_diterima'      => $tanggal_diterima,
             'barang_kembar_proc'    => $kode_proc,
@@ -239,16 +255,39 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
         }
         	return  $id;
     }
+
+    function tampilstatus_id($status,$tipe){
+        $this->db->select('code');
+        $this->db->where('value',$status);
+        $this->db->where('tipe',$tipe);
+        $query=$this->db->get('mst_inv_pilihan');
+        if($query->num_rows()>0)
+        {
+            foreach($query->result() as $k)
+            {
+                $id = $k->code;
+            }
+        }
+        else
+        {
+            $id = 1;
+        }
+            return  $id;
+    }
+
     function update_status()
     {	
-    	$status= $this->input->post('pilihan_status_pengadaan');
-    	$data['pilihan_status_pengadaan']	= $this->tampil_id($status);
-    	$id = $this->input->post('inv_permohonan_barang');
-		if($this->db->update($this->tabel, $data,array('id_inv_permohonan_barang'=> $id))){
-			return true;
-		}else{
-			return mysql_error();
-		}
+        $pilihan_inv  = $this->input->post('pilihan_inv');
+    	$kode_proc= $this->input->post('kode_proc');
+        $id_pengadaan= $this->input->post('id_pengadaan');
+
+        $id = $this->db->query("SELECT id_inventaris_barang FROM inv_inventaris_barang WHERE barang_kembar_proc =$kode_proc and id_pengadaan=$id_pengadaan")->result(); 
+        foreach ($id as $key) {
+            $data['pilihan_status_invetaris']   = $this->tampilstatus_id($pilihan_inv,'status_inventaris');
+            $this->db->update('inv_inventaris_barang', $data,array('id_inventaris_barang'=> $key->id_inventaris_barang));
+        }
+            
+
     }
     function sum_jumlah_item($kode,$tipe){
     	$this->db->select_sum($tipe);

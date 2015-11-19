@@ -288,7 +288,7 @@ class Drh extends CI_Controller {
 
 		
 		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
-		$this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
 		$this->form_validation->set_rules('rt', 'RT', 'trim|required');
 		$this->form_validation->set_rules('rw', 'RW', 'trim|required');
@@ -320,8 +320,8 @@ class Drh extends CI_Controller {
 			die($this->parser->parse('kepegawaian/drh/form_alamat', $data,true));
 		}else{
 			$values = array(
-				'nip_nit'=>$id,
-				'urut' => $this->input->post('urut'),
+				// 'nip_nit'=>$id,
+				// 'urut' => $this->input->post('urut'),
 				'alamat' => $this->input->post('alamat'),
 				'rt' => $this->input->post('rt'),
 				'rw' => $this->input->post('rw'),
@@ -342,11 +342,11 @@ class Drh extends CI_Controller {
 
 	}
 
-	function edit_alamat($id="",$urut=0)
+	function edit_alamat($id=0,$urut="")
 	{
 		$this->authentication->verify('kepegawaian','add');
 
-		$data['id']		= $id;
+		// $data['id']		= $id;
 		$data['urut']	= $urut;
 		$data['title_group'] = "Parameter";
 		$data['title_form']="Tambah Alamat Pegawai";
@@ -393,8 +393,8 @@ class Drh extends CI_Controller {
 			die($this->parser->parse('kepegawaian/drh/form_alamat', $data,true));
 		}else{
 			$values = array(
-				'nip_nit'=>$id,
-				'urut' => $this->input->post('urut'),
+				// 'nip_nit'=>$id,
+				// 'urut' => $this->input->post('urut'),
 				'alamat' => $this->input->post('alamat'),
 				'rt' => $this->input->post('rt'),
 				'rw' => $this->input->post('rw'),
@@ -403,9 +403,9 @@ class Drh extends CI_Controller {
 				'code_cl_kec' => $this->input->post('code_cl_kec'),
 				'code_cl_village' => $this->input->post('code_cl_village')
 			);
-			if($this->db->update('pegawai_alamat', $values,'urut',$urut)){
-				$key['nip_nit'] = $id;
-        		$this->db->update("pegawai",$key);
+			if($this->db->update('pegawai_alamat', $values,array('urut'=>$urut))){
+				// $key['nip_nit'] = $id;
+    //     		$this->db->update("pegawai_alamat",$key);
 
 				die("OK|");
 			}else{
@@ -413,5 +413,17 @@ class Drh extends CI_Controller {
 			}
 		}
 
+	}
+
+	function dodel_alamat($id="",$urut=0){
+		$this->authentication->verify('kepegawaian','del');
+
+		if($this->drh_model->delete_entry_alamat($id,$urut)){
+			$this->session->set_flashdata('alert','delete data ('.$id.')');
+			redirect(base_url()."kepegawaian/drh/edit/".$id);
+		} else {
+			$this->session->set_flashdata('alert','delete data error');
+			redirect(base_url()."kepegawaian/drh/edit/".$id);
+		}
 	}
 }

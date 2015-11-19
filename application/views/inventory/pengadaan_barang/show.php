@@ -49,9 +49,9 @@
 			{ name: 'tgl_pengadaan', type: 'date'},
 			{ name: 'pilihan_status_pengadaan', type: 'string'},
 			{ name: 'value', type: 'string'},
-			{ name: 'jumlah_unit', type: 'number'},
-			{ name: 'total_harga', type: 'number'},
-			{ name: 'nilai_pengadaan', type: 'number'},
+			{ name: 'jumlah_unit', type: 'double'},
+			{ name: 'total_harga', type: 'double'},
+			{ name: 'nilai_pengadaan', type: 'double'},
 			{ name: 'keterangan', type: 'text'},
 			{ name: 'detail', type: 'number'},
 			{ name: 'edit', type: 'number'},
@@ -127,7 +127,7 @@
 				{ text: 'Tanggal Pengadaan',editable:false , datafield: 'tgl_pengadaan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
 				{ text: 'Status Pengadaan', editable:false ,datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
 				{ text: 'Jumlah Unit', editable:false ,datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Total Harga', editable:false ,datafield: 'nilai_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Total Harga (Rp.)', editable:false ,datafield: 'nilai_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' }
             ]
 		});

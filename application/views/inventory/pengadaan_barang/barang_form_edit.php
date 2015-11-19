@@ -41,6 +41,7 @@ if(isset($disable)){if($disable='disable'){?>
             $('#notice').show();
             data.append('id_mst_inv_barang', $('#v_kode_barang').val());
             data.append('tanggal_diterima', $('#dateInput').val());
+            data.append('pilihan_status_invetaris', $('#status_invetaris').val());
             data.append('nama_barang', $('#v_nama_barang').val());
             data.append('jumlah', $('#jumlah').val());
             data.append('harga', $('#harga').val());
@@ -211,7 +212,7 @@ if(isset($disable)){if($disable='disable'){?>
     <div class="col-md-6">
     <div class="box box-primary">
           <div class="box-body">
-            <div class="form-group">
+            <div class="form-group"> 
               <label>Kode Barang</label>
               <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" type="text" value="<?php 
                 if(set_value('code_mst_inv')=="" && isset($id_mst_inv_barang)){
@@ -276,10 +277,21 @@ if(isset($disable)){if($disable='disable'){?>
             </div>
             <?php if(isset($disable)){if($disable='disable'){?>
             <div class="form-group">
-              <label>Tanggal</label>
+              <label>Tanggal Diterima</label>
               <div id='dateInput' name="tanggal_diterima" value="<?php
               echo (!empty($tanggal_diterima)) ? date("Y-m-d",strtotime($tanggal_diterima)) :  date("d-m-Y");
             ?>"></div>
+            </div>
+            <div class="form-group">
+              <label>Status Inventaris</label>
+            <select  name="status_invetaris" type="text" class="form-control" id="status_invetaris">
+                <option value="">Pilih Status Inventaris</option>
+                </option>
+                <?php foreach($kodestatus_inv as $stat) : ?>
+                  <?php $select = $stat->code == $pilihan_status_invetaris ? 'selected' : '' ?>
+                  <option value="<?php echo $stat->code ?>" <?php echo $select ?>><?php echo $stat->value ?></option>
+                <?php endforeach ?>
+            </select>
             </div>
             <?php }} ?>
             <div class="form-group">
