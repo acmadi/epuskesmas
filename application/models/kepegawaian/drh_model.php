@@ -269,6 +269,19 @@ class Drh_model extends CI_Model {
     
 
 // CRUD alamat pegawai
+    function get_alamat_id($id="")
+    {
+        $this->db->select('max(urut) as urut');
+        $this->db->where('nip_nit',$id);
+        $jum = $this->db->get('pegawai')->row();
+        
+        if (empty($jum)){
+            return 1;
+        }else {
+            return $jum->urut+1;
+        }
+
+    }
 
     function delete_entry_alamat($id,$urut)
     {

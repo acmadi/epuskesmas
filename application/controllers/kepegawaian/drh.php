@@ -288,7 +288,7 @@ class Drh extends CI_Controller {
 
 		
 		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
-		$this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
 		$this->form_validation->set_rules('rt', 'RT', 'trim|required');
 		$this->form_validation->set_rules('rw', 'RW', 'trim|required');
@@ -320,8 +320,8 @@ class Drh extends CI_Controller {
 			die($this->parser->parse('kepegawaian/drh/form_alamat', $data,true));
 		}else{
 			$values = array(
-				'nip_nit'=>$id,
-				'urut' => $this->input->post('urut'),
+				// 'nip_nit'=>$id,
+				// 'urut' => $this->input->post('urut'),
 				'alamat' => $this->input->post('alamat'),
 				'rt' => $this->input->post('rt'),
 				'rw' => $this->input->post('rw'),

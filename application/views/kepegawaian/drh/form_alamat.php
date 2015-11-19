@@ -69,7 +69,7 @@
 	                contentType : false,
 	                processData : false,
 	                type : 'POST',
-	                url : '<?php echo base_url()."kepegawaian/drh/".$action."/".$id."/".$urut ?>',
+	                url : '<?php echo base_url()."kepegawaian/drh/".$action."/".$id."/" ?>',
 	                data : data,
 	                success : function(response){
 	                  var res  = response.split("|");
@@ -77,7 +77,8 @@
 	                      $('#notice').hide();
 	                      $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
 	                      $('#notice').show();
-
+                          var id          = res[1]; 
+                      	  edit_alamat(id,urut); 
 	                      $("#jqxgrid_alamat").jqxGrid('updatebounddata', 'cells');
 	                      close_popup();
 	                  }
@@ -106,18 +107,6 @@
 			<div class="col-md-12">
 				<div class="box box-primary">
 					<div class="box-body">
-						<div class="form-group">
-							<label>No Urut</label>
-							<div id="notice"><?php echo $notice; ?></div>
-							<input type="text" class="form-control" id="urut" name="urut" placeholder="No Urut" value="<?php 
-				              if(set_value('urut')=="" && isset($urut)){
-				                echo $urut;
-				              }else{
-				                echo  set_value('urut');
-				              }
-				            ?>">
-
-						</div>
 						<div class="form-group">
 							<label>Alamat</label>
 							<input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat" value="<?php 
