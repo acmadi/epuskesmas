@@ -16,7 +16,8 @@
 
 
 <section class="content">
-<form method="POST" id="form-ss">
+<form method="POST" id="form-move">
+  <input type="hidden" name="id_opini" value="<?php echo $id_opini;?>">
   <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -29,18 +30,23 @@
           <div class="box-body">
             <div class="form-group">
               <label>Pengirim</label>
-              <input readonly type="text" class="form-control" name="SenderNumber" placeholder="SenderNumber" value="<?php echo $SenderNumber;?>">
+              <input readonly type="text" class="form-control" name="SenderNumber" placeholder="SenderNumber" value="<?php echo $nomor;?>">
             </div>
             <div class="form-group">
               <label>Pesan</label>
-              <textarea class="form-control" placeholder="Pesan" id="Pesan"></textarea>
-              <label class="pull-right" style="padding:4px" id="counting">
-                160
-              </label>
+              <textarea readonly class="form-control" placeholder="TextDecoded" id="TextDecoded"><?php echo $pesan;?></textarea>
+            </div>
+            <div class="form-group">
+              <label>Kategori</label>
+              <select id="id_sms_tipe" class="form-control">
+                <?php foreach ($tipeoption as $row ) { ;?>
+                  <option value="<?php echo $row->id_tipe; ?>" ><?php echo $row->nama; ?></option>
+                <?php }?>
+              </select>
             </div>
           </div>
           <div class="box-footer pull-right">
-            <button type="submit" class="btn btn-primary">Kirim</button>
+            <button type="submit" class="btn btn-primary">Pindah</button>
             <button type="reset" id="btn-close" class="btn btn-warning">Batal</button>
           </div>
       </div><!-- /.box -->
@@ -50,28 +56,23 @@
 </section>
 <script type="text/javascript">
   $(function () { 
-    $("#Pesan").keyup(function(){
-      var max = 160;
-      var len = $(this).val().length;
-      $("#counting").html(max-len);
-    }).keyup();
-
     $("#btn-close").click(function(){
       close_popup();
     });
 
-    $('#form-ss').submit(function(){
+    $('#form-move').submit(function(){
         var data = new FormData();
         $('#notice-content').html('<div class="alert">Mohon tunggu....</div>');
         $('#notice').show();
 
-        data.append('TextDecoded', $('#Pesan').val());
+        data.append('id_sms_tipe', $('#id_sms_tipe').val());
+        
         $.ajax({
             cache : false,
             contentType : false,
             processData : false,
             type : 'POST',
-            url : '<?php echo base_url()."sms/inbox/reply/".$id?>',
+            url : '<?php echo base_url()."sms/opini/move/".$id?>',
             data : data,
             success : function(response){
               var res  = response.split("|");

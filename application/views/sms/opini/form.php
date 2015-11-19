@@ -33,7 +33,10 @@
             </div>
             <div class="form-group">
               <label>Pesan</label>
-              <textarea class="form-control" placeholder="Pesan" id="Pesan"></textarea>
+              <textarea class="form-control" placeholder="Pesan" id="Pesan"><?php echo $pesan ?></textarea>
+              <label class="pull-right" style="padding:4px" id="counting">
+                160
+              </label>
             </div>
             <div class="form-group">
               <label>Kategori</label>
@@ -56,6 +59,12 @@
 </section>
 <script type="text/javascript">
   $(function () { 
+    $("#Pesan").keyup(function(){
+      var max = 160;
+      var len = $(this).val().length;
+      $("#counting").html(max-len);
+    }).keyup();
+
     $("#btn-close").click(function(){
       close_popup();
     });

@@ -31,7 +31,7 @@
     		<div class="col-md-3">
 	     		<select id="status" class="form-control">
 					<?php foreach ($statusoption as $row=>$val ) { ;?>
-						<option value="<?php echo $row; ?>" ><?php echo $val; ?></option>
+						<option value="<?php echo $row; ?>" <?php if($statusoption_active==$row) echo "selected" ?>><?php echo $val; ?></option>
 					<?php }?>
 	     		</select>
 			</div>
@@ -77,6 +77,20 @@
 		$("#popup").jqxWindow('close');
 	}
 
+	function move(id){
+		$("#popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo base_url().'sms/opini/move/'; ?>" + id , function(data) {
+			$("#popup_content").html(data);
+		});
+		$("#popup").jqxWindow({
+			theme: theme, resizable: false,
+			width: 420,
+			height: 450,
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup").jqxWindow('open');
+	}
+
 	function reply(id){
 		$("#popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
 		$.get("<?php echo base_url().'sms/opini/reply/'; ?>" + id , function(data) {
@@ -86,7 +100,7 @@
 		$("#popup").jqxWindow({
 			theme: theme, resizable: false,
 			width: 420,
-			height: 440,
+			height: 480,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup").jqxWindow('open');

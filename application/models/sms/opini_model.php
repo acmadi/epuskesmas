@@ -50,6 +50,20 @@ class Opini_model extends CI_Model {
 		$query->free_result();    
 	}
 
+	function move($id)
+	{
+		$data = array(
+			'id_sms_tipe'	=> $this->input->post('id_sms_tipe'),
+		);
+
+		$this->db->where('id_opini',$id);
+		if($this->db->update('sms_opini',$data)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	public function getSelectedData($tabel,$data)
     {
         return $this->db->get_where($tabel, array('nomor'=>$data));

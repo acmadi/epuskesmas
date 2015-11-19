@@ -53,7 +53,7 @@
 		$("#popup").jqxWindow({
 			theme: theme, resizable: false,
 			width: 420,
-			height: 450,
+			height: 440,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup").jqxWindow('open');
@@ -67,7 +67,7 @@
 		$("#popup").jqxWindow({
 			theme: theme, resizable: false,
 			width: 420,
-			height: 420,
+			height: 440,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup").jqxWindow('open');
