@@ -196,17 +196,22 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
 			return mysql_error();
 		}
     }
-    
+    function tanggal($pengadaan){
+        $query = $this->db->query("select tgl_pengadaan from inv_pengadaan where id_pengadaan = $pengadaan")->result();
+        foreach ($query as $key) {
+            return $key->tgl_pengadaan;
+        }
+    }
     function insert_data_from($id_barang,$kode_proc,$tanggal_diterima,$kode)
-    {
+    {   $tanggal = $this->tanggal($kode);
         $values = array(
             'id_mst_inv_barang'     => $id_barang,
             'nama_barang'           => $this->input->post('nama_barang'),
             'harga'                 => $this->input->post('harga'),
             'keterangan_pengadaan'  => $this->input->post('keterangan_pengadaan'),
             'pilihan_status_invetaris'  => $this->input->post('pilihan_status_invetaris'),
-            'tanggal_pembelian'     => $this->input->post('tanggalpembelian'),
-            'tanggal_pengadaan'     => $this->input->post('tanggalpembelian'),
+            'tanggal_pembelian'     => $tanggal,
+            'tanggal_pengadaan'     => $tanggal,
             'id_pengadaan'          => $kode,
             'tanggal_diterima'      => $tanggal_diterima,
             'barang_kembar_proc'    => $kode_proc,

@@ -371,7 +371,7 @@ class Pengadaanbarang extends CI_Controller {
 			
 		}
 	}
-	public function edit_barang($id_pengadaan=0,$id_barang=0,$kd_proc=0,$kd_inventaris=0,$tgl_pembelian=0)
+	public function edit_barang($id_pengadaan=0,$id_barang=0,$kd_proc=0,$kd_inventaris=0)
 	{
 		$data['action']			= "edit";
 		$data['kode']			= $kd_inventaris;
@@ -484,7 +484,6 @@ class Pengadaanbarang extends CI_Controller {
 			$data['kd_proc']		= $kd_proc;
 			$data['disable']		= "disable";
 			$data['notice']			= validation_errors();
-			$data['tgl_pembelian']	= $tgl_pembelian;
    			/*end mengirim status pada masing2 form*/
 			die($this->parser->parse('inventory/pengadaan_barang/barang_form_edit', $data));
 		}else{

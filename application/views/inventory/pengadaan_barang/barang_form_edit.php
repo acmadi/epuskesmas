@@ -44,7 +44,6 @@ if(isset($disable)){if($disable='disable'){?>
             data.append('pilihan_status_invetaris', $('#status_invetaris').val());
             data.append('nama_barang', $('#v_nama_barang').val());
             data.append('jumlah', $('#jumlah').val());
-            data.append('tanggalpembelian', $('#tgl_pembelian').val());
             data.append('harga', $('#harga').val());
             data.append('keterangan_pengadaan', $('#keterangan').val());
             var kd_barang = $('#v_kode_barang').val().substring(0,2);
@@ -213,8 +212,8 @@ if(isset($disable)){if($disable='disable'){?>
     <div class="col-md-6">
     <div class="box box-primary">
           <div class="box-body">
-            <div class="form-group"> <?php $g = explode("-",$tgl_pembelian); ?>
-              <label>Kode Barang</label><input type="hidden" id="tgl_pembelian" value="<?php echo $g[2].'-'.$g[1].'-'.$g[0];  ?>"> 
+            <div class="form-group"> 
+              <label>Kode Barang</label>
               <input id="jqxinput" class="form-control" autocomplete="off" name="code_mst_inv" type="text" value="<?php 
                 if(set_value('code_mst_inv')=="" && isset($id_mst_inv_barang)){
                   $s = array();
