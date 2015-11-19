@@ -261,14 +261,15 @@ class Pengadaanbarang extends CI_Controller {
 		$this->authentication->verify('inventory','del');
 
 		if($this->pengadaanbarang_model->delete_entryitem($kode,$id_barang,$kd_proc)){
-			$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
-			$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
-			$key['id_pengadaan'] = $kode;
-    		$this->db->update("inv_pengadaan",$dataupdate,$key);
-			$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
+				
 		}else{
 			$this->session->set_flashdata('alert', 'Delete data error');
 		}
+				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
+				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
+				$key['id_pengadaan'] = $kode;
+        		$this->db->update("inv_pengadaan",$dataupdate,$key);
+				$this->session->set_flashdata('alert', 'Delete data ('.$kode.')');
 	}
 
 	public function barang($id = 0)
@@ -364,7 +365,7 @@ class Pengadaanbarang extends CI_Controller {
 				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
 				$key['id_pengadaan'] = $kode;
         		$this->db->update("inv_pengadaan",$dataupdate,$key);
-				die("OK|$id_");
+				die("OK|$id_|$kode_proc");
 			}else{
 				 die("Error|Proses data gagal");
 			}

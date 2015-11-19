@@ -362,7 +362,7 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
                     $this->db->delete('inv_inventaris_barang_f');
                 }
         }
-        return 0;
+        
 	}
     function delete_entryitem_table($kode,$id_barang,$table)
     {    
