@@ -2,6 +2,7 @@
 <script>
 
 	$(function(){
+		ambil_total();
 	   var source = {
 			datatype: "json",
 			type	: "POST",
@@ -137,17 +138,28 @@
 	}*/
 	function ambil_total()
 	{
-		jQuery.ajax({
+		$.ajax({
 		url: "<?php echo base_url().'inventory/pengadaanbarang/total_pengadaan/'.$kode ?>",
-		dataType:'json',
-		success:function(response)
-		{
-			$('#jumlah_unit_').html(response.jumlah_unit );
-			$('#nilai_pengadaan_').html(response.nilai_pengadaan );
-			$('#waktu_dibuat_').html(response.waktu_dibuat);
-			$('#terakhir_diubah_').html(response.terakhir_diubah);
+		dataType: "json",
+		success:function(data)
+		{ 
+			$.each(data,function(index,elemet){
+				document.getElementById("jumlah_unit_").innerHTML = elemet.jumlah_unit;
+				document.getElementById("nilai_pengadaan_").innerHTML = elemet.nilai_pengadaan;
+				document.getElementById("waktu_dibuat_").innerHTML = elemet.waktu_dibuat;
+				document.getElementById("terakhir_diubah_").innerHTML = elemet.terakhir_diubah;
+			});
 		}
 		});
+		/*$.ajax({
+        url: "<?php echo base_url().'inventory/pengadaanbarang/total_pengadaan/'.$kode ?>",
+        dataType: "json"
+		}).success(function(data){
+		    $('#jumlah_unit_').append(JSON.stringify(data));
+		});*/
+
+
+		return false;
 	}
 	function close_popup(){
 		$("#popup_barang").jqxWindow('close');

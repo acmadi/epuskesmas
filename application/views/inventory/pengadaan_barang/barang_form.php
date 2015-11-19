@@ -129,6 +129,12 @@ function edit_barang(id_barang,barang_kembar_proc,id_inventaris_barang){
             var subtotal =jumlah*harga;
             document.getElementById("subtotal").value = toRp(subtotal);
         });
+        $("#jumlah").change(function(){
+            var jumlah = document.getElementById("jumlah").value;
+            var harga = document.getElementById("harga").value;
+            var subtotal =jumlah*harga;
+            document.getElementById("subtotal").value = toRp(subtotal);
+        });
         
     });
 </script>

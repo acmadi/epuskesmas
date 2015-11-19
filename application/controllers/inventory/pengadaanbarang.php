@@ -106,7 +106,7 @@ class Pengadaanbarang extends CI_Controller {
 				'pilihan_status_pengadaan' 	=> $act->pilihan_status_pengadaan,
 				'value' 					=> $act->value,
 				'jumlah_unit'				=> $act->jumlah_unit,
-				'nilai_pengadaan'			=> $act->nilai_pengadaan,
+				'nilai_pengadaan'			=> number_format($act->nilai_pengadaan,2),
 				'keterangan'				=> $act->keterangan,
 				'detail'					=> 1,
 				'edit'						=> 1,
@@ -304,8 +304,8 @@ class Pengadaanbarang extends CI_Controller {
 				'id_mst_inv_barang'   			=> $act->id_mst_inv_barang,
 				'nama_barang'					=> $act->nama_barang,
 				'jumlah'						=> $act->jumlah,
-				'harga'							=> $act->harga,
-				'totalharga'					=> $act->totalharga,
+				'harga'							=> number_format($act->harga,2),
+				'totalharga'					=> number_format($act->totalharga,2),
 				'keterangan_pengadaan'			=> $act->keterangan_pengadaan,
 				'pilihan_status_invetaris'		=> $act->pilihan_status_invetaris,
 				'barang_kembar_proc'			=> $act->barang_kembar_proc,
@@ -358,6 +358,7 @@ class Pengadaanbarang extends CI_Controller {
 				$id_= $this->db->insert_id();
 			}
 			if($simpan==true){
+				$dataupdate['terakhir_diubah']= date('Y-m-d H:i:s');
 				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($kode)->num_rows();
 				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $kode,'harga');
 				$key['id_pengadaan'] = $kode;
@@ -599,7 +600,7 @@ class Pengadaanbarang extends CI_Controller {
 				/*end simpan pada bedadatabase form*/
 			}
 			if($simpan==true){
-				$dataupdate['terakhir_diubah']= date("Y-m-d");
+				$dataupdate['terakhir_diubah']= date('Y-m-d H:i:s');
 				$dataupdate['nilai_pengadaan']= $this->pengadaanbarang_model->sum_jumlah_item( $id_pengadaan,'harga');
 				$dataupdate['jumlah_unit']= $this->pengadaanbarang_model->sum_unit($id_pengadaan)->num_rows();
 				$key['id_pengadaan'] = $id_pengadaan;
