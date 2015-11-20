@@ -23,7 +23,7 @@
 	                contentType : false,
 	                processData : false,
 	                type : 'POST',
-	                url : '<?php echo base_url()."kepegawaian/drh/".$action."/".$id."/" ?>',
+	                url : '<?php echo base_url()."kepegawaian/drh/".$action."/".$id."/".$id_mst_peg_kursus ?>',
 	                data : data,
 	                success : function(response){
 	                  var res  = response.split("|");
@@ -31,8 +31,6 @@
 	                      $('#notice-diklat').hide();
 	                      $('#notice-content-diklat').html('<div class="alert">'+res[1]+'</div>');
 	                      $('#notice-diklat').show();
-                          var id_          = res[1]; 
-                      	  edit_diklat(id,id_mst_peg_kursus); 
 	                      $("#jqxgrid_diklat").jqxGrid('updatebounddata', 'cells');
 	                      close_popup_diklat();
 	                  }

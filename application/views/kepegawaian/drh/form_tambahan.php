@@ -95,15 +95,13 @@
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id_kursus', type: 'string' },
-			{ name: 'nama_kursus', type: 'number' },
-			{ name: 'id_mst_peg_kursus', type: 'string' },
-			{ name: 'nip_nit_diklat', type: 'string' },
+			{ name: 'id_mst_peg_kursus', type: 'string'},
+			{ name: 'nip_nit', type: 'string' },
 			{ name: 'nama_diklat', type: 'string' },
-			{ name: 'code_cl_province', type: 'string' },
 			{ name: 'lama_diklat', type: 'string' },
 			{ name: 'tgl_diklat', type: 'string' },
-			{ name: 'tar_penyelengara', type: 'string' },
+			{ name: 'tar_penyelenggara', type: 'string' },
+			{ name: 'nama_kursus', type: 'number' },
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
@@ -149,7 +147,7 @@
 				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_diklat").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_diklat(\""+dataRecord.nip_nit_diklat+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_diklat(\""+dataRecord.id_mst_peg_kursus+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif'></a></div>";
 					}
@@ -158,17 +156,17 @@
 				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_diklat").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='delete_diklat(\""+dataRecord.nip_nit+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='delete_diklat(\""+dataRecord.nip_nit+"\",\""+dataRecord.id_mst_peg_kursus+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Nama Kursus ', datafield: 'nama_kursus', columntype: 'textbox', filtertype: 'textbox', width: '30%'},
-				{ text: 'Nama Diklat',datafield: 'nama_diklat', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Jenis Diklat ', datafield: 'nama_kursus', columntype: 'textbox', filtertype: 'textbox', width: '30%'},
+				{ text: 'Nama Diklat',datafield: 'nama_diklat', columntype: 'textbox', filtertype: 'textbox', width: '25%'},
 				{ text: 'Lama Diklat',datafield: 'lama_diklat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Tanggal Diklat',datafield: 'tgl_diklat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Penyelenggara',datafield: 'tar_penyelengara', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
+				{ text: 'Penyelenggara',datafield: 'tar_penyelenggara', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
             ]
 		});
 
@@ -259,6 +257,31 @@
 		});
 
 		$("#popup_diklat").jqxWindow('open');
+	}
+
+	function edit_diklat(id_mst_peg_kursus){
+		$("#popup_diklat #popup_content_diklat").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo site_url().'kepegawaian/drh/edit_diklat/'.$id; ?>/" +id_mst_peg_kursus, function(data) {
+			$("#popup_content_diklat").html(data);
+		});
+		$("#popup_diklat").jqxWindow({
+			theme: theme, resizable: true,
+			width: '40%',
+			height: '75%',
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup_diklat").jqxWindow('open');
+	}
+
+	function delete_diklat(id,id_mst_peg_kursus){
+		var confirms = confirm("Hapus Data ?");
+		if(confirms == true){
+			$.post("<?php echo base_url().'kepegawaian/drh/dodel_diklat/'.$id; ?>/" +id_mst_peg_kursus ,  function(){
+				alert('Data berhasil dihapus');
+
+				$("#jqxgrid_diklat").jqxGrid('updatebounddata', 'cells');
+			});
+		}
 	}
 			
  </script>

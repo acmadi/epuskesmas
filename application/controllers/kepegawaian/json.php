@@ -100,6 +100,8 @@ class Json extends CI_Controller {
 		}
 		$this->db->where('nip_nit',$id);
 		$rows = $this->drh_model->get_data_diklat($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		// var_dump($rows);
+		// exit();
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -110,7 +112,7 @@ class Json extends CI_Controller {
 				'nama_diklat'		=> $act->nama_diklat,
 				'lama_diklat'		=> $act->lama_diklat,
 				'tgl_diklat'		=> $act->tgl_diklat,
-				'tar_penyelengara'	=> $act->tar_penyelenggara,
+				'tar_penyelenggara'	=> $act->tar_penyelenggara,
 				// 'view'		=> 1,
 				'edit'		=> 1,
 				'delete'	=> 1

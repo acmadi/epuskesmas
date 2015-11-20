@@ -301,10 +301,10 @@ class Drh_model extends CI_Model {
         return $query->result();
     }
 
-    function get_data_diklat_id($id)
+    function get_data_diklat_id($id,$id_mst_peg_kursus)
     {
         $data = array();
-        $options = array('nip_nit'=>$id);
+        $options = array('nip_nit'=>$id,'id_mst_peg_kursus'=>$id_mst_peg_kursus);
         $query = $this->db->get_where($this->t_diklat,$options);
         if ($query->num_rows() > 0){
             $data = $query->row_array();
@@ -322,4 +322,13 @@ class Drh_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    function delete_entry_diklat($id,$id_mst_peg_kursus)
+    {
+        $this->db->where('nip_nit',$id);
+        $this->db->where('id_mst_peg_kursus',$id_mst_peg_kursus);
+
+        return $this->db->delete($this->t_diklat);
+    }
+    
 }
