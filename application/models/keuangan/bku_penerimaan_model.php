@@ -537,12 +537,12 @@ class Bku_penerimaan_model extends CI_Model {
 		for($i=0; $i<count($periode); $i++){
 			$this->db->select('*');
 			$this->db->where('periode',$periode[$i]);
-			$this->db->where('mst_keu_rekening',$kode_rekening);
+			$this->db->where('code_mst_keu_rekening',$kode_rekening);
 			$dataCek = $this->db->get('keu_bku_penerimaan_rekap_rekening');
 			if(empty($dataCek->result())){
 				$values = array(
 					'periode' => $periode[$i],
-					'mst_keu_rekening' => $kode_rekening,
+					'code_mst_keu_rekening' => $kode_rekening,
 					'jumlah' => $jml,					
 				);
 				
