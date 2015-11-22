@@ -127,4 +127,68 @@ class Json extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
+
+
+	function json_dp3($id=""){
+		$this->authentication->verify('kepegawaian','show');
+
+
+		$data	  	= array();
+		$filter 	= array();
+		$filterLike = array();
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'date_received' || $field == 'date_accepted') {
+					$value = date("Y-m-d",strtotime($value));
+
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		$this->db->where('nip_nit',$id);
+		$rows = $this->drh_model->get_data_dp3($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		// var_dump($rows);
+		// exit();
+		$data = array();
+		foreach($rows as $act) {
+			$data[] = array(
+				'nip_nit'			=> $act->nip_nit,
+				'tahun'				=> $act->tahun,
+				'setia'				=> $act->setia,
+				'prestasi'			=> $act->prestasi,
+				'tanggungjawab'		=> $act->tanggungjawab,
+				'taat'				=> $act->taat,
+				'jujur'				=> $act->jujur,
+				'kerjasama'			=> $act->kerjasama,
+				'pimpin'			=> $act->pimpin,
+				'prakarsa'			=> $act->prakarsa,
+				'jumlah'			=> $act->jumlah,
+				'ratarata'			=> $act->ratarata,
+				// 'view'		=> 1,
+				'edit'		=> 1,
+				'delete'	=> 1
+			);
+		}
+
+		$size = sizeof($data);
+		$json = array(
+			'TotalRows' => (int) $size,
+			'Rows' => $data
+		);
+
+		echo json_encode(array($json));
+	}
 }

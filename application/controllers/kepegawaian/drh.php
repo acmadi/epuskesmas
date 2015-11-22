@@ -543,4 +543,132 @@ class Drh extends CI_Controller {
 		}
 	}
 
+// DP3 Pegawai
+
+		function add_dp3($id=""){
+		$this->authentication->verify('kepegawaian','add');
+
+		$data['id']		= $id;
+		$data['title_group'] = "Parameter";
+		$data['title_form']="Tambah Data Diklat Pegawai";
+		$data['action']="add_dp3";
+
+		
+		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+		$this->form_validation->set_rules('tahun', 'Tahun', 'trim|required');
+		$this->form_validation->set_rules('setia', 'Kesetiaan', 'trim|required');
+		$this->form_validation->set_rules('prestasi', 'Prestasi', 'trim|required');
+		$this->form_validation->set_rules('tanggungjawab', 'Tanggung Jawab', 'trim|required');
+		$this->form_validation->set_rules('taat', 'Ketaatan', 'trim|required');
+		$this->form_validation->set_rules('jujur', 'Kejujuran', 'trim|required');
+		$this->form_validation->set_rules('kerjasama', 'kerjasama', 'trim|required');
+		$this->form_validation->set_rules('pimpin', 'Kepemimpinan', 'trim|required');
+		$this->form_validation->set_rules('prakarsa', 'Prakarsa', 'trim|required');
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|');
+		$this->form_validation->set_rules('ratarata', 'Rata-rata', 'trim|');
+
+		if($this->form_validation->run()== FALSE){
+			// $data['urut'] 			= $this->drh_model->get_data_alamat('urut');
+			// $data['peg_kursus'] = $this->drh_model->get_data_diklat1($id);
+			$data['notice']			   = validation_errors();
+			$data['id']			=$id;
+			// var_dump($data['id_mst_peg_kursus']);
+			// exit();
+			$data['content'] = $this->parser->parse("kepegawaian/drh/form_dp3",$data,true);
+			// echo "string";
+			die($this->parser->parse('kepegawaian/drh/form_dp3', $data,true));
+		}else{
+			$values = array(
+				// 'nip_nit'=>$id,
+				// 'urut' => $this->input->post('urut'),
+				'nip_nit' => $id,
+				'tahun' => $this->input->post('tahun'),
+				'setia' => $this->input->post('setia'),
+				'prestasi' => $this->input->post('prestasi'),
+    			'tanggungjawab' => $this->input->post('tanggungjawab'),
+				'taat' => $this->input->post('taat'),
+				'jujur' => $this->input->post('jujur'),
+				'kerjasama' => $this->input->post('kerjasama'),
+				'pimpin' => $this->input->post('pimpin'),
+				'prakarsa' => $this->input->post('prakarsa'),
+				'jumlah' => $this->input->post('setia')+$this->input->post('prestasi')+$this->input->post('tanggungjawab')+$this->input->post('taat')+$this->input->post('jujur')+$this->input->post('kerjasama')+$this->input->post('pimpin')+$this->input->post('prakarsa'),
+				'ratarata' => ($this->input->post('tahun')+$this->input->post('setia')+$this->input->post('prestasi')+$this->input->post('tanggungjawab')+$this->input->post('taat')+$this->input->post('jujur')+$this->input->post('kerjasama')+$this->input->post('pimpin')+$this->input->post('prakarsa'))/8,
+			);
+			if($this->db->insert('pegawai_dp3', $values)){
+				$key['nip_nit'] = $id;
+        		$this->db->update("pegawai_dp3",$key);
+
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+		}
+	}
+
+
+	// function edit_diklat($id="",$id_mst_peg_kursus=0){
+	// 	$this->authentication->verify('kepegawaian','add');
+
+	// 	$data['id']		= $id;
+	// 	$data['title_group'] = "Parameter";
+	// 	$data['title_form']="Tambah Data Diklat Pegawai";
+	// 	$data['action']="edit_diklat";
+
+		
+	// 	// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+	// 	// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
+	// 	$this->form_validation->set_rules('id_mst_peg_kursus', 'Jenis Diklat', 'trim|required');
+	// 	$this->form_validation->set_rules('nama_diklat', 'Nama Diklat', 'trim|required');
+	// 	$this->form_validation->set_rules('lama_diklat', 'Lama Diklat', 'trim|required');
+	// 	$this->form_validation->set_rules('tgl_diklat', 'Tanggal Diklat', 'trim|required');
+	// 	$this->form_validation->set_rules('tar_penyelenggara', 'Penyelenggara', 'trim|required');
+
+	// 	if($this->form_validation->run()== FALSE){
+	// 		$data['notice']			   = validation_errors();
+	// 		$data = $this->drh_model->get_data_diklat_id($id,$id_mst_peg_kursus);
+	// 		// var_dump($data);
+	// 		// exit();
+	// 		$data['peg_kursus'] = $this->drh_model->get_data_diklat1($id);
+	// 		$data['action'] 	= "edit_diklat";
+	// 		$data['id_mst_peg_kursus'] = $id_mst_peg_kursus;
+	// 		$data['id'] = $id;
+			
+	// 		$data['content'] = $this->parser->parse("kepegawaian/drh/form_diklat_edit",$data,true);
+	// 		// echo "string";
+	// 		die($this->parser->parse('kepegawaian/drh/form_diklat_edit', $data,true));
+	// 	}else{
+	// 		$values = array(
+	// 			// 'nip_nit'=>$id,
+	// 			// 'urut' => $this->input->post('urut'),
+	// 			'id_mst_peg_kursus' => $this->input->post('id_mst_peg_kursus'),
+	// 			// 'nip_nit' => $id,
+	// 			'nama_diklat' => $this->input->post('nama_diklat'),
+	// 			'lama_diklat' => $this->input->post('lama_diklat'),
+ //    			'tgl_diklat' => date("Y-m-d",strtotime($this->input->post('tgl_diklat'))),
+	// 			'tar_penyelenggara' => $this->input->post('tar_penyelenggara')
+	// 		);
+	// 		if($this->db->update('pegawai_diklat', $values,array('id_mst_peg_kursus'=>$id_mst_peg_kursus))){
+	// 			// $key['nip_nit'] = $id;
+ //    //     		$this->db->update("pegawai_diklat",$key);
+
+	// 			die("OK|");
+	// 		}else{
+	// 			die("Error|Proses data gagal");
+	// 		}
+	// 	}
+	// }
+
+	// function dodel_diklat($id="",$id_mst_peg_kursus=0){
+	// 	$this->authentication->verify('kepegawaian','del');
+
+	// 	if($this->drh_model->delete_entry_diklat($id,$id_mst_peg_kursus)){
+	// 		$this->session->set_flashdata('alert','delete data ('.$id.')');
+	// 		redirect(base_url()."kepegawaian/drh/edit/".$id);
+	// 	} else {
+	// 		$this->session->set_flashdata('alert','delete data error');
+	// 		redirect(base_url()."kepegawaian/drh/edit/".$id);
+	// 	}
+	// }
+
 }

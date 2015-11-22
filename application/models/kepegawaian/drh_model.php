@@ -5,6 +5,7 @@ class Drh_model extends CI_Model {
     var $t_puskesmas = 'cl_phc';
     var $t_alamat = 'pegawai_alamat';
     var $t_diklat = 'pegawai_diklat';
+    var $t_dp3 = 'pegawai_dp3';
 	var $lang	  = '';
 
     function __construct() {
@@ -330,5 +331,35 @@ class Drh_model extends CI_Model {
 
         return $this->db->delete($this->t_diklat);
     }
-    
+
+//Pegawai DP3
+    function get_data_dp3($start=0,$limit=999999,$options=array())
+    {
+        $this->db->order_by('nip_nit','asc');
+        $query = $this->db->get('pegawai_dp3',$limit,$start);
+        return $query->result();
+    }
+
+    function get_data_dp3_id($id,$tahun)
+    {
+        $data = array();
+        $options = array('nip_nit'=>$id,'tahun'=>$tahun);
+        $query = $this->db->get_where($this->t_dp3,$options);
+        if ($query->num_rows() > 0){
+            $data = $query->row_array();
+        }
+
+        $query->free_result();    
+        return $data;
+    }
+
+    function delete_entry_dp3($id,$dp3)
+    {
+        $this->db->where('nip_nit',$id);
+        $this->db->where('tahun',$tahun);
+
+        return $this->db->delete($this->t_dp3);
+    }
+
+
 }
