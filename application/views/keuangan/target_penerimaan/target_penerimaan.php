@@ -1,10 +1,5 @@
 
 
-<style>
-.modal-dialog {
-	width:70%;
-}
-</style>
 <?php if($this->session->flashdata('alert')!=""){ ?>
 <div class="alert alert-success alert-dismissable">
 	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -28,10 +23,8 @@
 
 	      <div class="box-footer">
 			<div class="col-md-6">
-				<button id="btn_add_bku" type="button" class="btn btn-primary" ><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
-				<button data-toggle="modal" data-target="#ModalAdd" type="button" class="btn btn-primary" ><i class='fa fa-plus-square-o'></i> &nbsp; Cetak</button>
-				<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Export</button>
-				<button type="button" onclick="doList()" class="btn btn-warning" id="btn-refresh"><i class='fa fa-check'></i> &nbsp; Setor/Pengeluaran</button>
+				<button id="btn_add_bku" type="button" class="btn btn-primary" ><i class='fa fa-plus'></i> &nbsp; Tambah Target</button>
+
 			</div>
 			<div class="col-md-2 pull-right">
 			<select name="pilih_tahun" class="form-control">
@@ -55,7 +48,7 @@
 	     </div>
         <div class="box-body">
 			<div id="popup_barang" style="display:none">
-				<div id="popup_title">Data BKU Penerimaan</div>
+				<div id="popup_title">Data Rekening</div>
 				<div id="popup_content">&nbsp;</div>
 			</div>
 
@@ -117,21 +110,22 @@
 	   var source = {
 			datatype: "json",
 			type	: "POST",
-			datafields: [
-			{ name: 'no', 			type: 'number' },
-			{ name: 'tgl', 			type: 'string' },
-			{ name: 'uraian', 		type: 'string' },
-			{ name: 'kode_rekening',type: 'string' },
-			{ name: 'catatan', 		type: 'string' },
-			{ name: 'penerimaan', 	type: 'number' },
-			{ name: 'pengeluaran', 	type: 'number' },			
-			{ name: 'delete', 		type: 'string' },
-			{ name: 'status', 		type: 'string' },
-			{ name: 'id_bku', 		type: 'string' },
-			{ name: 'is_bku', 		type: 'string' },
-			{ name: 'tgl_id', 		type: 'string' }
-        ],
-		url: "<?php echo site_url('keuangan/bku_penerimaan/api_data_bku'); ?>",
+			datafields: [			
+				{ name: 'no', 			type: 'number' },
+				{ name: 'code', 		type: 'string' },			
+				{ name: 'kode_rekening',type: 'string' },
+				{ name: 'uraian', 		type: 'string' },
+				{ name: 'tahun', 		type: 'number' },
+				{ name: 'target', 		type: 'number' },
+				{ name: 'input_a', 		type: 'number' },			
+				{ name: 'input_b', 		type: 'number' },
+				{ name: 'total_input', 	type: 'number' },
+				{ name: 'output_a', 	type: 'number' },
+				{ name: 'output_b', 	type: 'number' },
+				{ name: 'total_output', type: 'number' },
+				{ name: 'total_akhir', type: 'number' }
+			],
+		url: "<?php echo site_url('keuangan/target_penerimaan/api_target_penerimaan'); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -158,9 +152,13 @@
 		$("#jqxgrid_barang").jqxGrid(
 		{		
 			width: '100%',
-			selectionmode: 'singlerow',
-			source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100'],
-			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
+			selectionmode: 'singlerow',			
+			showstatusbar: true,
+			statusbarheight: 50,
+			source: dataadapter, 
+			showaggregates: true,
+			theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25', '50', '100'],
+			showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: false, virtualmode: true, editable: false,
 			rendergridrows: function(obj)
 			{
 				return obj.data;    
@@ -169,32 +167,98 @@
 			columns: [
 				{ text: 'Delete', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);				    
-					if(dataRecord.status != '0'){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif' );'></a></div>";											
-					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a onclick=\"doDelete('"+dataRecord.tgl_id+"','"+dataRecord.id_bku+"')\" href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' );'></a></div>";											
-					}					
+					
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a onclick=\"doDelete('"+dataRecord.code+"','"+dataRecord.tahun+"')\" href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' );'></a></div>";											
+										
 					
                  }
                 },
-				{ text: 'Action', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
-					if(dataRecord.status != '0' || dataRecord.pengeluaran > 0){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='#'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif' );'></a></div>";											
-					}else{
-						return "<div style='width:100%;padding-top:2px;text-align:center'><input type=\"checkbox\" name=\"datalist[]\" value=\""+dataRecord.id_bku+"z"+dataRecord.tgl_id+"z"+dataRecord.is_bku + "\"></div>";
-					}
-				   
-					
-                 }
-                },
+				
 				{ text: 'No', align: 'center', datafield: 'no', columntype: 'textbox', filtertype: 'none', width: '5%' },
-				{ text: 'Tanggal', datafield: 'tgl', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
-				{ text: 'Uraian ', datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '37%'},
-				{ text: 'Kode Rekening',datafield: 'kode_rekening', columntype: 'textbox', filtertype: 'textbox', width: '16%'},
-				{ text: 'Penerimaan (Rp)', cellsalign: 'right', cellsformat: 'f', datafield: 'penerimaan', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
-				{ text: 'Pengeluaran (Rp)',cellsalign: 'right', cellsformat: 'f', datafield: 'pengeluaran', columntype: 'textbox', filtertype: 'textbox', width: '12%'}
-           ]
+				{ text: 'Rekening', datafield: 'kode_rekening', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Uraian ', datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '35%'},
+				{ text: 'target',datafield: 'target', columntype: 'textbox', cellsalign: 'right', cellsformat: 'f', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }},
+				{ text: 'Bulan Lalu', columngroup: 'Penerimaan', cellsalign: 'right', cellsformat: 'f', datafield: 'input_a', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }
+					
+				},
+				{ text: 'Bulan ini', columngroup: 'Penerimaan', cellsalign: 'right', cellsformat: 'f', datafield: 'input_b', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }
+				},
+				{ text: 's/d Bulan ini',columngroup: 'Penerimaan', cellsalign: 'right', cellsformat: 'f', datafield: 'total_input', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }},
+				{ text: 'Bulan Lalu', columngroup: 'Pengeluaran', cellsalign: 'right', cellsformat: 'f', datafield: 'output_a', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }},
+				{ text: 'Bulan ini',columngroup: 'Pengeluaran', cellsalign: 'right', cellsformat: 'f', datafield: 'output_b', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }},
+				{ text: 's/d Bulan ini', columngroup: 'Pengeluaran', cellsalign: 'right', cellsformat: 'f', datafield: 'total_output', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }},
+				{ text: 'Jumlah Setoran <br/> s/d Bulan ini',cellsalign: 'right',  cellsformat: 'f', datafield: 'total_akhir', columntype: 'textbox', filtertype: 'textbox', width: '15%', aggregates: ['sum'],
+					aggregatesrenderer: function (aggregates) {
+						  var renderstring = "";
+						  $.each(aggregates, function (key, value) {
+							  
+							  renderstring += '<div style="position: relative; margin: 4px; overflow: hidden;"> Total: ' + value +'</div>';
+						  });
+						  return renderstring;
+					  }}
+           ],
+		   columngroups: 
+                [
+                  { text: 'Penerimaan', align: 'center', name: 'Penerimaan' },
+                  { text: 'Pengeluaran', align: 'center', name: 'Pengeluaran' }
+                  
+                ]
 		});
         
 		$('#clearfilteringbutton').click(function () {
@@ -212,9 +276,9 @@
 		
 
 	});
-	function doDelete(tgl, id){
+	function doDelete(id, tahun){
 		if(confirm("Apakah Anda yakin akan menghapus data ini ?")){
-			$.post("<?php echo base_url().'keuangan/bku_penerimaan/bku_delete'; ?>" ,{tgl:tgl, id_bku:id}, function(data) {
+			$.post("<?php echo base_url().'keuangan/target_penerimaan/delete_target'; ?>" ,{id:id, tahun:tahun}, function(data) {
 				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
 			});
 		}
@@ -247,13 +311,13 @@
 
 	function add_bku(){
 		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
-		$.get("<?php echo base_url().'keuangan/bku_penerimaan/pop_bku_add'; ?>" , function(data) {
+		$.get("<?php echo base_url().'keuangan/target_penerimaan/pop_rekening'; ?>" , function(data) {
 			$("#popup_content").html(data);
 		});
 		$("#popup_barang").jqxWindow({
 			theme: theme, resizable: false,
-			width: '75%',
-			height: 425,
+			width: '30%',
+			height: 360,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
 		$("#popup_barang").jqxWindow('open');
