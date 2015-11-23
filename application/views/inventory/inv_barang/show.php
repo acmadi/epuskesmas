@@ -974,7 +974,7 @@ $(function(){
     }).change();
     $("#golongan_invetaris").change(function(){
 		$.post("<?php echo base_url().'inventory/inv_barang/filter_golongan_invetaris' ?>", 'golongan_invetaris='+$(this).val(),  function(){
-			"<?php echo base_url().'inventory/inv_barang/' ?>";
+			location.reload(); 
 		});
 	});
   });
