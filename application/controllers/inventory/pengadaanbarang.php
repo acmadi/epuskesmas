@@ -460,7 +460,7 @@ class Pengadaanbarang extends CI_Controller {
 	   			$data['pilihan_satuan_']				= $this->pengadaanbarang_model->get_data_pilihan('satuan');
 	   		}else if($kodebarang_=='03') {
 	   			$data = $this->pengadaanbarang_model->get_data_barang_edit_table($id_barang,$kd_inventaris,'inv_inventaris_barang_c'); 
-	   			$data['pillihan_status_hak_']		= $this->pengadaanbarang_model->get_data_pilihan('hak');
+	   			$data['pillihan_status_hak_']		= $this->pengadaanbarang_model->get_data_pilihan('status_hak');
 	   			$data['pilihan_kons_tingkat_']		= $this->pengadaanbarang_model->get_data_pilihan('kons_tingkat');
 	   			$data['pilihan_kons_beton_']			= $this->pengadaanbarang_model->get_data_pilihan('kons_beton');
 	   		}else if($kodebarang_=='04') {
@@ -559,7 +559,7 @@ class Pengadaanbarang extends CI_Controller {
 						'panjang' 				=> $this->input->post('panjang'),
 						'lebar' 				=> $this->input->post('lebar'),
 						'luas' 					=> $this->input->post('luas'),
-						'letak_lokasi_alamat' 	=> $this->input->post('pilihan_kons_tingkat'),
+						'letak_lokasi_alamat' 	=> $this->input->post('letak_lokasi_alamat'),
 						'dokumen_tanggal'		=> $dokumen_tanggal,
 						'dokumen_nomor'			=> $this->input->post('dokumen_nomor'),
 						'pilihan_status_tanah'	=> $this->input->post('pilihan_status_tanah'),

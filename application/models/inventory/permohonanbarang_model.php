@@ -27,6 +27,7 @@ class Permohonanbarang_model extends CI_Model {
 		$query =$this->db->get($this->tabel,$limit,$start);
         return $query->result();
     }
+    
     public function getItem($table,$data)
     {
         return $this->db->get_where($table, $data);

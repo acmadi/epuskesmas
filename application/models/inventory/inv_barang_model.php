@@ -35,16 +35,34 @@ class Inv_barang_model extends CI_Model {
     }
     function get_data($start=0,$limit=999999,$options=array())
     {
-        $this->db->select("`inv_inventaris_barang.id_pengadaan,inv_inventaris_barang`.`id_inventaris_barang`, `inv_inventaris_barang`.`id_mst_inv_barang`, `inv_inventaris_barang`.`nama_barang`, `inv_inventaris_barang`.`harga`, `inv_inventaris_barang`.`barang_kembar_proc`, 
-COUNT(inv_inventaris_barang.id_mst_inv_barang) AS jumlah, COUNT(inv_inventaris_barang.id_mst_inv_barang)*inv_inventaris_barang.harga AS totalharga, `inv_inventaris_barang`.`keterangan_pengadaan`, `mst_inv_pilihan`.`value`, `inv_inventaris_barang`.`tanggal_diterima`, 
-`inv_inventaris_barang`.`waktu_dibuat`, `inv_inventaris_barang`.`terakhir_diubah`, `inv_inventaris_barang`.`pilihan_status_invetaris`");
-        $this->db->join('`mst_inv_pilihan`',"inv_inventaris_barang.pilihan_status_invetaris=mst_inv_pilihan.code");
-        $this->db->join('inv_pengadaan',"inv_pengadaan.id_pengadaan = inv_inventaris_barang.id_pengadaan AND inv_pengadaan.pilihan_status_pengadaan=4 AND mst_inv_pilihan.tipe='status_inventaris' OR inv_inventaris_barang.id_pengadaan=0");
-        $this->db->group_by("inv_inventaris_barang.barang_kembar_proc");
+        $query = $this->db->query("(SELECT mst_inv_pilihan.value,inv_inventaris_barang.barang_kembar_proc,inv_inventaris_barang.*,COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,SUM(inv_inventaris_barang.harga) AS totalharga FROM inv_inventaris_barang 
+JOIN mst_inv_pilihan ON inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code AND tipe='status_inventaris'
+WHERE inv_inventaris_barang.id_pengadaan=0 GROUP BY inv_inventaris_barang.barang_kembar_proc)
+UNION
+(SELECT mst_inv_pilihan.value,inv_inventaris_barang.barang_kembar_proc,inv_inventaris_barang.*,COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,SUM(inv_inventaris_barang.harga) AS totalharga FROM inv_inventaris_barang 
+ INNER JOIN inv_pengadaan ON inv_pengadaan.id_pengadaan=inv_inventaris_barang.id_pengadaan AND pilihan_status_pengadaan=4
+JOIN mst_inv_pilihan ON inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code AND tipe='status_inventaris' GROUP BY inv_inventaris_barang.barang_kembar_proc 
+)");
+        return $query->result();
+    }
+    function get_data_A($start=0,$limit=999999,$options=array())
+    {
+        $query = $this->db->query("(SELECT mst_inv_pilihan.value,inv_inventaris_barang.barang_kembar_proc,inv_inventaris_barang.*,COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,SUM(inv_inventaris_barang.harga) AS totalharga FROM inv_inventaris_barang 
+JOIN mst_inv_pilihan ON inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code AND tipe='status_inventaris'
+WHERE inv_inventaris_barang.id_pengadaan=0 AND inv_inventaris_barang.pilihan_status_invetaris=3 GROUP BY inv_inventaris_barang.barang_kembar_proc)
+UNION
+(SELECT mst_inv_pilihan.value,inv_inventaris_barang.barang_kembar_proc,inv_inventaris_barang.*,COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,SUM(inv_inventaris_barang.harga) AS totalharga FROM inv_inventaris_barang 
+ INNER JOIN inv_pengadaan ON inv_pengadaan.id_pengadaan=inv_inventaris_barang.id_pengadaan AND pilihan_status_pengadaan=4
+JOIN mst_inv_pilihan ON inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code AND tipe='status_inventaris' AND inv_inventaris_barang.pilihan_status_invetaris=3 GROUP BY inv_inventaris_barang.barang_kembar_proc 
+)");
         $query = $this->db->get($this->tabel,$limit,$start);
         return $query->result();
     }
-
+    function get_data_golongan($table,$start=0,$limit=999999,$options=array()){
+        $this->db->select("$table.*");
+        $query = $this->db->get($table,$limit,$start);
+        return $query->result();
+    }
  	function get_data_row($kode){
 		$data = array();
 		$this->db->where("inv_pengadaan.id_pengadaan",$kode);
