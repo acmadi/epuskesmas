@@ -2,19 +2,21 @@
 <div class="row">
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+      <span class="info-box-icon bg-red"><i class="fa fa-ambulance"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Jumlah Puskesmas</span>
-        <span class="info-box-number">10 Puskesmas</span>
+        <span class="info-box-number"><?php echo $j_puskesmas ;?> Puskesmas</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
   </div><!-- /.col -->
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+      <span class="info-box-icon bg-blue"><i class="fa fa-bank"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Jumlah Ruangan</span>
-        <span class="info-box-number">110 Ruangan</span>
+        <span class="info-box-number"><?php foreach ($j_ruangan as $row) { 
+        echo $row->jml;  
+        }?> Ruangan</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
   </div><!-- /.col -->
@@ -24,19 +26,25 @@
 
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-random"></i></span>
+      <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Nilai Aset</span>
-        <span class="info-box-number">Rp. 2.020.500</span>
+        <span class="info-box-number">Rp. <?php foreach ($j_asset as $row) { 
+        echo $row->nilai;  
+        }?></span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
   </div><!-- /.col -->
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
-      <span class="info-box-icon bg-yellow"><i class="fa fa-certificate"></i></span>
+      <span class="info-box-icon bg-yellow"><i class="fa fa-archive"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Jumlah Aset</span>
-        <span class="info-box-number">3.210 Barang</span>
+        <span class="info-box-number">
+        <?php foreach ($j_asset as $row) { 
+        echo $row->jml;  
+        }?>
+        Barang</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
   </div><!-- /.col -->
@@ -47,6 +55,10 @@
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Jumlah Aset per Puskesmas </h3>
+          <select name="code_cl_phc" class="form-control">
+            <option value="">Jumlah Aset</option>
+            <option value="">Nilai Aset</option>
+          </select>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -63,6 +75,10 @@
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Nilai Aset per Puskesmas </h3>
+        <select name="code_cl_phc" class="form-control">
+            <option value="">Jumlah Aset</option>
+            <option value="">Nilai Aset</option>
+          </select>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -103,12 +119,12 @@
             },
             {
               label: "Barang Rusak",
-              fillColor: "rgba(60,141,188,0.9)",
-              strokeColor: "rgba(60,141,188,0.8)",
-              pointColor: "#3b8bba",
-              pointStrokeColor: "rgba(60,141,188,1)",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(60,141,188,1)",
+              fillColor: "#B00000",
+              strokeColor: "#B00000",
+              pointColor: "#B00000",
+              pointStrokeColor: "#B00000",
+              pointHighlightFill: "#B00000",
+              pointHighlightStroke: "#B00000",
               data: [28, 48, 40, 19, 86, 27, 90]
             }
           ]
@@ -163,15 +179,45 @@
         var PieData = [
           {
             value: 700,
-            color: "#f56954",
-            highlight: "#f56954",
-            label: "PNS"
+            color: "#00a65a",
+            highlight: "#00a65a",
+            label: "Matraman"
+          },
+          {
+            value: 700,
+            color: "#D00000",
+            highlight: "#D00000",
+            label: "Kayu Manis"
+          },
+          {
+            value: 700,
+            color: "#aaffcc",
+            highlight: "#aaffcc",
+            label: "Utan kayu utara"
           },
           {
             value: 200,
-            color: "#00a65a",
-            highlight: "#00a65a",
-            label: "Non PNS"
+            color: "#eeddcc",
+            highlight: "#eeddcc",
+            label: "Utan Kayu Sel I"
+          },
+          {
+            value: 200,
+            color: "#aabbcc",
+            highlight: "#aabbcc",
+            label: "Utan Kayu Sel II"
+          },
+          {
+            value: 200,
+            color: "#aaaa00",
+            highlight: "#aaaa00",
+            label: "Pisang Baru"
+          },
+          {
+            value: 200,
+            color: "#ccff00",
+            highlight: "#ccff00",
+            label: "Palriem"
           }
         ];
         var pieOptions = {
@@ -208,9 +254,9 @@
         var barChartCanvas = $("#barChart").get(0).getContext("2d");
         var barChart = new Chart(barChartCanvas);
         var barChartData = areaChartData;
-        barChartData.datasets[1].fillColor = "#00a65a";
-        barChartData.datasets[1].strokeColor = "#00a65a";
-        barChartData.datasets[1].pointColor = "#00a65a";
+        barChartData.datasets[1].fillColor = "#D00000";
+        barChartData.datasets[1].strokeColor = "#D00000";
+        barChartData.datasets[1].pointColor = "#D00000";
         var barChartOptions = {
           //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
           scaleBeginAtZero: true,

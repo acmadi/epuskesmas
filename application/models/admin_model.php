@@ -18,6 +18,18 @@ class Admin_model extends CI_Model {
 		$query->free_result();    
 		return $data;
 	}
-	
+
+
+	function get_inv_barang(){
+		$query = $this->db->query("SELECT SUM(jml) AS jml, SUM(nilai) AS nilai FROM ((SELECT COUNT(id_inventaris_barang) AS jml,SUM(harga) AS nilai FROM inv_inventaris_barang WHERE id_pengadaan=0)UNION(SELECT COUNT(id_inventaris_barang) AS jml,SUM(harga) AS nilai FROM inv_inventaris_barang INNER JOIN inv_pengadaan ON inv_pengadaan.id_pengadaan=inv_inventaris_barang.id_pengadaan)) AS aset");
+
+		return $query->result();
+	}
+
+	function get_inv_barang1(){
+		$query = $this->db->query("SELECT COUNT(id_mst_inv_ruangan) as jml from mst_inv_ruangan ");
+
+		return $query->result();
+	}
 
 }
