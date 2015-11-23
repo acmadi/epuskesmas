@@ -4,8 +4,8 @@
     <div class="info-box">
       <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Jumlah Pegawai</span>
-        <span class="info-box-number">445 Orang</span>
+        <span class="info-box-text">Jumlah Puskesmas</span>
+        <span class="info-box-number">10 Puskesmas</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
   </div><!-- /.col -->
@@ -13,8 +13,8 @@
     <div class="info-box">
       <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-exclamation-sign"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Jumlah Puskesmas</span>
-        <span class="info-box-number">8 Keluarahan</span>
+        <span class="info-box-text">Jumlah Ruangan</span>
+        <span class="info-box-number">110 Ruangan</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
   </div><!-- /.col -->
@@ -26,7 +26,7 @@
     <div class="info-box">
       <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-random"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Penerimaan BLUD</span>
+        <span class="info-box-text">Nilai Aset</span>
         <span class="info-box-number">Rp. 2.020.500</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
@@ -35,7 +35,7 @@
     <div class="info-box">
       <span class="info-box-icon bg-yellow"><i class="fa fa-certificate"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Data Aset</span>
+        <span class="info-box-text">Jumlah Aset</span>
         <span class="info-box-number">3.210 Barang</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
@@ -46,7 +46,7 @@
   <div class="col-md-8">
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">SMS Chart </h3>
+        <h3 class="box-title">Jumlah Aset per Puskesmas </h3>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -62,7 +62,7 @@
   <div class="col-md-4">
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">PNS / Non PNS </h3>
+        <h3 class="box-title">Nilai Aset per Puskesmas </h3>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -89,10 +89,10 @@
     <script>
       $(function () {
         var areaChartData = {
-          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          labels: ["Matraman", "Kayu Manis", "Pal Meriem", "Pisangan Baru", "Utan Kayu Sel I", "Utan Kayu Sel II", "Utan Kayu Utara"],
           datasets: [
             {
-              label: "SMS Recieved",
+              label: "Barang",
               fillColor: "#00c0ef",
               strokeColor: "#00c0ef",
               pointColor: "#00c0ef",
@@ -102,20 +102,10 @@
               data: [65, 59, 80, 81, 56, 55, 40]
             },
             {
-              label: "SMS Sent",
+              label: "Barang Rusak",
               fillColor: "rgba(60,141,188,0.9)",
               strokeColor: "rgba(60,141,188,0.8)",
               pointColor: "#3b8bba",
-              pointStrokeColor: "rgba(60,141,188,1)",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(60,141,188,1)",
-              data: [28, 48, 40, 19, 86, 27, 90]
-            },
-            {
-              label: "SMS Error",
-              fillColor: "#f56954",
-              strokeColor: "#f56954",
-              pointColor: "#f56954",
               pointStrokeColor: "rgba(60,141,188,1)",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(60,141,188,1)",
