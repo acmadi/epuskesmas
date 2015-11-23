@@ -15,7 +15,7 @@
       <div class="info-box-content">
         <span class="info-box-text">Jumlah Ruangan</span>
         <span class="info-box-number"><?php foreach ($j_ruangan as $row) { 
-        echo $row->jml;  
+        echo number_format($row->jml);  
         }?> Ruangan</span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
@@ -30,7 +30,7 @@
       <div class="info-box-content">
         <span class="info-box-text">Nilai Aset</span>
         <span class="info-box-number">Rp. <?php foreach ($j_asset as $row) { 
-        echo $row->nilai;  
+        echo number_format($row->nilai,2);  
         }?></span>
       </div><!-- /.info-box-content -->
     </div><!-- /.info-box -->
@@ -42,7 +42,7 @@
         <span class="info-box-text">Jumlah Aset</span>
         <span class="info-box-number">
         <?php foreach ($j_asset as $row) { 
-        echo $row->jml;  
+        echo number_format($row->jml);  
         }?>
         Barang</span>
       </div><!-- /.info-box-content -->
@@ -54,10 +54,10 @@
   <div class="col-md-8">
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">Jumlah Aset per Puskesmas </h3>
-          <select name="code_cl_phc" class="form-control">
-            <option value="">Jumlah Aset</option>
-            <option value="">Nilai Aset</option>
+        <h3 class="box-title">Kondisi Aset per Puskesmas </h3>
+          <select name="bar_tipe" class="form-control" style="width:25%;float:right;margin-top:30px">
+            <option value="jml">Jumlah Aset</option>
+            <option value="nilai">Nilai Aset</option>
           </select>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -75,9 +75,9 @@
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Nilai Aset per Puskesmas </h3>
-        <select name="code_cl_phc" class="form-control">
-            <option value="">Jumlah Aset</option>
-            <option value="">Nilai Aset</option>
+        <select name="pie_tioe" class="form-control" style="width:40%;float:right;margin-top:10px">
+            <option value="jml">Jumlah Aset</option>
+            <option value="nilai">Nilai Aset</option>
           </select>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -108,24 +108,34 @@
           labels: ["Matraman", "Kayu Manis", "Pal Meriem", "Pisangan Baru", "Utan Kayu Sel I", "Utan Kayu Sel II", "Utan Kayu Utara"],
           datasets: [
             {
-              label: "Barang",
-              fillColor: "#00c0ef",
-              strokeColor: "#00c0ef",
-              pointColor: "#00c0ef",
+              label: "Baik",
+              fillColor: "#20ad3a",
+              strokeColor: "#20ad3a",
+              pointColor: "#20ad3a",
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
               data: [65, 59, 80, 81, 56, 55, 40]
             },
             {
-              label: "Barang Rusak",
-              fillColor: "#B00000",
-              strokeColor: "#B00000",
-              pointColor: "#B00000",
-              pointStrokeColor: "#B00000",
-              pointHighlightFill: "#B00000",
-              pointHighlightStroke: "#B00000",
-              data: [28, 48, 40, 19, 86, 27, 90]
+              label: "Kurang Baik",
+              fillColor: "#ffb400",
+              strokeColor: "#ffb400",
+              pointColor: "#ffb400",
+              pointStrokeColor: "#c1c7d1",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(220,220,220,1)",
+              data: [18, 48, 40, 19, 86, 27, 20]
+            },
+            {
+              label: "Rusak Berat",
+              fillColor: "#e02a11",
+              strokeColor: "#e02a11",
+              pointColor: "#e02a11",
+              pointStrokeColor: "#c1c7d1",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(220,220,220,1)",
+              data: [28, 48, 40, 19, 36, 27, 40]
             }
           ]
         };
@@ -254,9 +264,6 @@
         var barChartCanvas = $("#barChart").get(0).getContext("2d");
         var barChart = new Chart(barChartCanvas);
         var barChartData = areaChartData;
-        barChartData.datasets[1].fillColor = "#D00000";
-        barChartData.datasets[1].strokeColor = "#D00000";
-        barChartData.datasets[1].pointColor = "#D00000";
         var barChartOptions = {
           //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
           scaleBeginAtZero: true,
