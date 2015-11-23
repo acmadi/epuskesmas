@@ -14,7 +14,7 @@ class Permohonanbarang extends CI_Controller {
 		$search = str_replace("query=","",$search[0]);
 		$search = str_replace("+"," ",$search);
 
-		$this->db->where("code like '%".$search."%'");
+		$this->db->where("code like '%".str_replace(".","",$search)."%'");
 		$this->db->or_where("uraian like '%".$search."%'");
 		$this->db->order_by('code','asc');
 		$this->db->limit(10,0);
