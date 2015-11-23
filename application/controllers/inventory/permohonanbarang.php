@@ -14,8 +14,8 @@ class Permohonanbarang extends CI_Controller {
 		$search = str_replace("query=","",$search[0]);
 		$search = str_replace("+"," ",$search);
 
-		$this->db->like("code",$search);
-		$this->db->or_like("uraian",$search);
+		$this->db->where("code like '%".$search."%'");
+		$this->db->or_where("uraian like '%".$search."%'");
 		$this->db->order_by('code','asc');
 		$this->db->limit(10,0);
 		$query= $this->db->get("mst_inv_barang")->result();
@@ -26,10 +26,34 @@ class Permohonanbarang extends CI_Controller {
 			$s[2] = substr($q->code, 4,2);
 			$s[3] = substr($q->code, 6,2);
 			$s[4] = substr($q->code, 8,2);
+
+			if($s[1]=="00"){
+				$parent = "";
+			}
+			elseif($s[2]=="00"){
+				$this->db->where("code like '".$s[0]."00%'");
+				$parent= $this->db->get("mst_inv_barang")->row();
+				$parent = $parent->uraian." - ";
+			}
+			elseif($s[3]=="00"){
+				$this->db->where("code like '".$s[0].$s[1]."00%'");
+				$parent= $this->db->get("mst_inv_barang")->row();
+				$parent = $parent->uraian." - ";
+			}
+			elseif($s[4]=="00"){
+				$this->db->where("code like '".$s[0].$s[1].$s[2]."00%'");
+				$parent= $this->db->get("mst_inv_barang")->row();
+				$parent = $parent->uraian." - ";
+			}else{
+				$this->db->where("code like '".$s[0].$s[1].$s[2].$s[3]."00%'");
+				$parent= $this->db->get("mst_inv_barang")->row();
+				$parent = $parent->uraian." - ";
+			}
+
 			$barang[] = array(
 				'code_tampil' 	=> implode(".", $s), 
 				'code' 			=> $q->code , 
-				'uraian' 		=> $q->uraian, 
+				'uraian' 		=> $parent." ".$q->uraian, 
 			);
 		}
 		echo json_encode($barang);

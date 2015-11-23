@@ -102,7 +102,7 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 		});
 		$("#popup_barang").jqxWindow({
 			theme: theme, resizable: false,
-			width: 500,
+			width: 700,
 			height: 460,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
@@ -116,7 +116,7 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 		});
 		$("#popup_barang").jqxWindow({
 			theme: theme, resizable: false,
-			width: 500,
+			width: 700,
 			height: 460,
 			isModal: true, autoOpen: false, modalOpacity: 0.2
 		});
