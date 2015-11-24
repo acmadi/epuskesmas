@@ -18,14 +18,25 @@
 	    </div>
 
 	      <div class="box-footer">
-    		<div class="col-md-9">
-			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+    		<div class="col-md-6">
+			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>sms/bc/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Kirim SMS Baru</button>
 			 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
 			 </div>
     		<div class="col-md-3">
-	     		<select name="code_cl_phc" class="form-control">
-	     			<option value="-">Pilih Tipe</option>
-	     	</select>
+	     		<select id="is_loop" class="form-control">
+	     			<option value="">-- Pilih Jadwal --</option>
+					<?php foreach ($jenisoption as $row=>$val ) { ;?>
+						<option value="<?php echo $row; ?>" >Kirim <?php echo ucwords($val); ?></option>
+					<?php }?>
+	     		</select>
+			</div>
+    		<div class="col-md-3">
+	     		<select id="tipe" class="form-control">
+	     			<option value="">-- Pilih Kategori --</option>
+					<?php foreach ($tipeoption as $row ) { ;?>
+						<option value="<?php echo $row->id_tipe; ?>" ><?php echo $row->nama; ?></option>
+					<?php }?>
+	     		</select>
 			</div>
 	     </div>
         <div class="box-body">
@@ -42,21 +53,40 @@
 <script type="text/javascript">
 	$(function () {	
 		$("#menu_sms_gateway").addClass("active");
-		$("#menu_sms_schedule").addClass("active");
+		$("#menu_sms_bc").addClass("active");
+
+		$("#is_loop").change(function(){
+			$.post("<?php echo base_url().'sms/bc/filter' ?>", 'is_loop='+$(this).val(),  function(){
+				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+			});
+		});
+
+		$("#tipe").change(function(){
+			$.post("<?php echo base_url().'sms/bc/filter' ?>", 'tipe='+$(this).val(),  function(){
+				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+			});
+		});
 	});
 
 	   var source = {
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id_mst_inv_ruangan', type: 'string'},
-			{ name: 'nama_ruangan', type: 'string'},
-			{ name: 'keterangan', type: 'string'},
-			{ name: 'code_cl_phc', type: 'string'},
+			{ name: 'id_info', type: 'number'},
+			{ name: 'katakunci', type: 'string'},
+			{ name: 'tgl_mulai', type: 'date'},
+			{ name: 'tgl_akhir', type: 'date'},
+			{ name: 'pesan', type: 'string'},
+			{ name: 'code_sms_menu', type: 'string'},
+			{ name: 'id_sms_tipe', type: 'number'},
+			{ name: 'tipe', type: 'string'},
+			{ name: 'penerima', type: 'number'},
+			{ name: 'status', type: 'string'},
+			{ name: 'is_loop', type: 'string'},
 			{ name: 'edit', type: 'number'},
 			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('inventory/inv_ruangan/json'); ?>",
+		url: "<?php echo site_url('sms/bc/json'); ?>",
 		cache: false,
 		updaterow: function (rowid, rowdata, commit) {
 			},
@@ -95,73 +125,47 @@
 				return obj.data;    
 			},
 			columns: [
-				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_info+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
-						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.code+"\");'></a></div>";
+						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_info+"\");'></a></div>";
 					}else{
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
                 },
-				{ text: 'ID', align: 'center', datafield: 'id_mst_inv_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '5%' },
-				{ text: 'Tanggal',  columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Balasan', columntype: 'textbox', filtertype: 'textbox', width: '35%' },
-				{ text: 'Tipe',  columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Terdaftar', columntype: 'textbox', filtertype: 'textbox', width: '20%' }
+				{ text: 'Informasi', datafield:'pesan', columntype: 'textbox', filtertype: 'textbox', width: '37%' },
+				{ text: 'Kategori', datafield:'tipe', columntype: 'textbox', filtertype: 'textbox', width: '13%' },
+				{ text: 'Penerima', align: 'center', cellsalign: 'center', datafield:'penerima', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
+				{ text: 'Jadwal', datafield:'is_loop', align: 'center', cellsalign: 'center', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
+				{ text: 'Status', datafield:'status', align: 'center', cellsalign: 'center', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
+				{ text: 'Aktif', align: 'center', cellsalign: 'center', datafield:'tgl_mulai', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '9%' },
+				{ text: 'Non Aktif', align: 'center', cellsalign: 'center', datafield:'tgl_akhir', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '9%' }
             ]
 		});
 
 	function edit(id){
-		document.location.href="<?php echo base_url().'inventory/inv_ruangan/edit';?>/" + id;
+		document.location.href="<?php echo base_url().'sms/bc/edit';?>/" + id;
 	}
 
 	function del(id){
 		var confirms = confirm("Hapus Data ?");
 		if(confirms == true){
-			$.post("<?php echo base_url().'inventory/inv_ruangan/dodel' ?>/" + id,  function(){
-				alert('data berhasil dihapus');
+			$.post("<?php echo base_url().'sms/bc/dodel' ?>/" + id,  function(){
+				alert('SMS berhasil dihapus');
 
 				$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 			});
 		}
 	}
-
-	$(document).ready(function () {            
-            // prepare the data
-            var source = {
-			datatype: "json",
-			type	: "POST",
-			datafields: [
-			{ name: 'code', type: 'string'},
-			{ name: 'nama', type: 'string'},
-			{ name: 'edit', type: 'number'},
-			{ name: 'delete', type: 'number'}
-	        ],
-			url: "<?php echo site_url('mst/kecamatan/json'); ?>",
-			cache: false,
-                data: {
-                    featureClass: "P",
-                    style: "full",
-                    maxRows: 50,
-                    username: "jqwidgets"
-                }
-            };
-
-            $("select[name='code_cl_phc']").change(function(){
-				$.post("<?php echo base_url().'inventory/inv_ruangan/filter' ?>", 'code_cl_phc='+$(this).val(),  function(){
-					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-				});
-            });
-        });
 
 </script>

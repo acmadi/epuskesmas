@@ -19,7 +19,7 @@
 
 	      <div class="box-footer">
     		<div class="col-md-7">
-			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>sms/autoreply/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+			 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>sms/autoreply/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah Info Baru</button>
 			 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
 			 </div>
     		<div class="col-md-2">
@@ -145,7 +145,7 @@
 				{ text: 'Informasi', datafield:'pesan', columntype: 'textbox', filtertype: 'textbox', width: '35%' },
 				{ text: 'Kategori', datafield:'tipe', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
 				{ text: 'Aktif', align: 'center', cellsalign: 'center', datafield:'tgl_mulai', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%' },
-				{ text: 'Selesai', align: 'center', cellsalign: 'center', datafield:'tgl_akhir', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%' }
+				{ text: 'Non Aktif', align: 'center', cellsalign: 'center', datafield:'tgl_akhir', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%' }
             ]
 		});
 
