@@ -13,7 +13,7 @@
     <div class="info-box">
       <span class="info-box-icon bg-blue"><i class="fa fa-bank"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Jumlah Ruangan</span>
+        <span class="info-box-text">Jumlah Ruangan </span>
         <span class="info-box-number"><?php foreach ($j_ruangan as $row) { 
         echo number_format($row->jml);  
         }?> Ruangan</span>
@@ -59,6 +59,7 @@
             <option value="jml">Jumlah Aset</option>
             <option value="nilai">Nilai Aset</option>
           </select>
+          <br>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -67,6 +68,17 @@
         <div class="box-body">
           <div class="chart">
             <canvas id="barChart" height="240" width="511" style="width: 511px; height: 240px;"></canvas>
+            <ul>
+              <li>
+              <div class="bux"></div>Baik
+              </li>
+              <li>
+                <div class="bux1"></div>Rusak Ringan
+              </li>
+              <li>
+                <div class="bux2"></div>Rusak Berat
+              </li>
+            </ul>
           </div>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
@@ -74,9 +86,9 @@
   <div class="col-md-4">
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">Nilai Aset per Puskesmas </h3>
-        <select name="pie_tioe" class="form-control" style="width:40%;float:right;margin-top:10px">
-            <option value="jml">Jumlah Aset</option>
+        <h3 class="box-title">Nilai Aset per Puskesmas </h3>        
+          <select name="pie_tioe" class="form-control" style="width:40%;float:right;margin-top:10px">
+            <option value="jml">Jumlah Aset </option>
             <option value="nilai">Nilai Aset</option>
           </select>
         <div class="box-tools pull-right">
@@ -94,18 +106,20 @@
 </div><!-- /.row -->
 
 
-<!-- <script src="<?php echo base_url()?>public/themes/disbun/dist/js/pages/dashboard2.js" type="text/javascript"></script> -->
+<!-- <script src="<?php  base_url()?>public/themes/disbun/dist/js/pages/dashboard2.js" type="text/javascript"></script> -->
 <script>
   $(function () { 
     $("#menu_dashboard").addClass("active");
     $("#menu_dashboard_home").addClass("active");
   });
 </script>
-
     <script>
       $(function () {
         var areaChartData = {
-          labels: ["Matraman", "Kayu Manis", "Pal Meriem", "Pisangan Baru", "Utan Kayu Sel I", "Utan Kayu Sel II", "Utan Kayu Utara"],
+          labels: [<?php
+           foreach ($datapuskesmas as $row ) {
+            echo "\"".str_replace(array("KEC. ","KEL. "),"", $row->value)."\",";}
+            ?>],
           datasets: [
             {
               label: "Baik",
@@ -115,7 +129,8 @@
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [65, 59, 80, 81, 56, 55, 40]
+              data: [<?php foreach ($j_barang_baik as $row) { echo $row->jml;  }?>,
+               59, 80, 81, 56, 55, 40]
             },
             {
               label: "Kurang Baik",
@@ -125,7 +140,7 @@
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [18, 48, 40, 19, 86, 27, 20]
+              data: [<?php foreach ($j_barang_rr as $row) { echo $row->jml;  }?>, 48, 40, 19, 86, 27, 20]
             },
             {
               label: "Rusak Berat",
@@ -135,7 +150,7 @@
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [28, 48, 40, 19, 36, 27, 40]
+              data: [<?php foreach ($j_barang_rb as $row) { echo $row->jml;  }?>, 48, 40, 19, 36, 27, 40]
             }
           ]
         };
@@ -296,3 +311,33 @@
         barChart.Bar(barChartData, barChartOptions);
       });
     </script>
+    <style type="text/css">
+
+    ul li{
+      list-style: none;
+      float: left;
+      margin-left: 10px;
+    }
+      .bux{
+        width: 10px;
+        padding: 10px; 
+        margin-right: 20px;
+        background-color: #20ad3a;
+        margin: 0;
+        float: left;
+      }
+      .bux1{
+        width: 10px;
+        padding: 10px;
+        background-color: #ffb400;
+        margin: 0;
+        float: left;
+      }
+      .bux2{
+        width: 10px;
+        padding: 10px;
+        background-color: #e02a11;
+        margin: 0;
+        float: left;
+      }
+    </style>

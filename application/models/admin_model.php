@@ -32,4 +32,22 @@ class Admin_model extends CI_Model {
 		return $query->result();
 	}
 
+	function get_jum_aset(){
+		$query =  $this->db->query("select count(id_inventaris_barang) as jml from inv_inventaris_barang where pilihan_keadaan_barang = 'B'");
+
+		return $query->result();
+	}
+
+	function get_jum_aset1(){
+		$query =  $this->db->query("select count(id_inventaris_barang) as jml from inv_inventaris_barang where pilihan_keadaan_barang = 'RR'");
+
+		return $query->result();
+	}
+
+	function get_jum_aset2(){
+		$query =  $this->db->query("select count(id_inventaris_barang) as jml from inv_inventaris_barang where pilihan_keadaan_barang = 'RB'");
+
+		return $query->result();
+	}
+
 }
