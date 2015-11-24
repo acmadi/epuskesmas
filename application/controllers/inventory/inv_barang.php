@@ -39,8 +39,50 @@ class Inv_barang extends CI_Controller {
 		if($_POST) {
 			if($this->input->post('golongan_invetaris') != '') {
 				$this->session->set_userdata('filter_golongan_invetaris',$this->input->post('golongan_invetaris'));
+				$this->session->set_userdata('filterGIB','');
+				$this->session->set_userdata('filterHAPUS','');
 			}else{
 				$this->session->set_userdata('filter_golongan_invetaris','');
+				$this->session->set_userdata('filterGIB','');
+				$this->session->set_userdata('filterHAPUS','');
+			}
+		}
+	}
+	function filterGIB(){
+		if($_POST) {
+			if($this->input->post('filterGIB_') != '') {
+				$this->session->set_userdata('filterGIB',$this->input->post('filterGIB_'));
+				$this->session->set_userdata('filterHAPUS','');
+			}else{
+				$this->session->set_userdata('filterGIB','');
+			}
+		}
+	}
+	function filterpuskesmas(){
+		if($_POST) {
+			if($this->input->post('filterGIB_') != '') {
+				$this->session->set_userdata('filterpuskesmas',$this->input->post('filterGIB_'));
+			}else{
+				$this->session->set_userdata('filterpuskesmas','');
+			}
+		}
+	}
+	function filterruangan(){
+		if($_POST) {
+			if($this->input->post('filterGIB_') != '') {
+				$this->session->set_userdata('filterruangan',$this->input->post('filterGIB_'));
+			}else{
+				$this->session->set_userdata('filterGIB','');
+			}
+		}
+	}
+	function filterHAPUS(){
+		if($_POST) {
+			if($this->input->post('filterHAPUS_') != '') {
+				$this->session->set_userdata('filterHAPUS',$this->input->post('filterHAPUS_'));
+				$this->session->set_userdata('filterGIB','');
+			}else{
+				$this->session->set_userdata('filterHAPUS','');
 			}
 		}
 	}
@@ -140,8 +182,17 @@ class Inv_barang extends CI_Controller {
 			$this->db->like('code','P'.$kodepuskesmas);
 		}
 		$data['filter_golongan_invetaris'] = $this->session->userdata('filter_golongan_invetaris');
+		$data['filterHAPUS'] = $this->session->userdata('filterHAPUS');
+		$data['filterGIB'] = $this->session->userdata('filterGIB');
 		$data['datapuskesmas'] 	= $this->inv_barang_model->get_data_puskesmas();
-		$data['get_data_tanah'] 	= $this->inv_barang_model->get_data_tanah();
+		$data['get_data_tanah'] 	=  array(
+											array("0100000000" , "KIB A"),
+											array("0200000000" , "KIB B"),
+											array("0300000000" , "KIB C"),
+											array("0400000000" , "KIB D"),
+											array("0500000000" , "KIB E"),
+											array("0600000000" , "KIB F")
+											);
 		$data['content'] = $this->parser->parse("inventory/inv_barang/show",$data,true);
 		$this->template->show($data,"home");
 	}

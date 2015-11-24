@@ -105,7 +105,7 @@ class Inv_barang_model extends CI_Model {
         $query = $this->db->get($table,$limit,$start);
         return $query->result();
     }
-    function get_data_golongan_A($table=0,$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_A($where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                     satuan.value                                      AS satuan,
                                     hak.value                                         AS hak,
@@ -119,7 +119,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_a.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_a.id_mst_inv_barang )
+                                                       inv_inventaris_barang_a.id_mst_inv_barang
+                                                    ".$where." )
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_a.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS satuan
@@ -131,7 +132,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS penggunaan
                                               ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
                                                  AND penggunaan.tipe = 'penggunaan'
-                                     WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                     WHERE  inv_inventaris_barang.id_pengadaan = 0 
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
                                     (SELECT mst_inv_barang.uraian,
@@ -147,7 +148,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_a.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_a.id_mst_inv_barang )
+                                                       inv_inventaris_barang_a.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_a.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS satuan
@@ -164,6 +166,349 @@ class Inv_barang_model extends CI_Model {
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
+        return $query->result();
+    }
+    function get_filter_golongan_A($table=0,$start=0,$limit=999999,$options=array()){
+        $query = $this->db->query("        (SELECT mst_inv_barang.uraian,
+                                   inv_inventaris_distribusi.id_cl_phc,
+                                    satuan.value                                      AS satuan,
+                                    hak.value                                         AS hak,
+                                    penggunaan.value                                  AS penggunaan,
+                                    inv_inventaris_barang.barang_kembar_proc,
+                                    inv_inventaris_barang_a.*,
+                                    COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                    SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_a
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_a.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_a.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_a.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS satuan
+                                              ON inv_inventaris_barang_a.pilihan_satuan_barang = satuan.code
+                                                 AND satuan.tipe = 'satuan'
+                                            JOIN mst_inv_pilihan AS hak
+                                              ON inv_inventaris_barang_a.pilihan_status_hak = hak.code
+                                                 AND hak.tipe = 'status_hak'
+                                            JOIN mst_inv_pilihan AS penggunaan
+                                              ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
+                                                 AND penggunaan.tipe = 'penggunaan'
+                                            JOIN inv_inventaris_distribusi 
+                                      ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
+                                     AND inv_inventaris_distribusi.id_cl_phc = 'P3172100201')
+                                                 WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                                 GROUP  BY inv_inventaris_barang.barang_kembar_proc)
+                                                UNION
+                                                (SELECT mst_inv_barang.uraian,
+                                                inv_inventaris_distribusi.id_cl_phc,
+                                                        satuan.value                                      AS satuan,
+                                                        hak.value                                         AS hak,
+                                                        penggunaan.value                                  AS penggunaan,
+                                                        inv_inventaris_barang.barang_kembar_proc,
+                                                        inv_inventaris_barang_a.*,
+                                                        COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                                        SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                                 FROM   inv_inventaris_barang_a
+                                                        JOIN inv_inventaris_barang
+                                                          ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                                      inv_inventaris_barang_a.id_inventaris_barang
+                                                               AND inv_inventaris_barang.id_mst_inv_barang =
+                                                                   inv_inventaris_barang_a.id_mst_inv_barang )
+                                                        JOIN mst_inv_barang
+                                                          ON ( mst_inv_barang.code = inv_inventaris_barang_a.id_mst_inv_barang )
+                                                        JOIN mst_inv_pilihan AS satuan
+                                                          ON inv_inventaris_barang_a.pilihan_satuan_barang = satuan.code
+                                                             AND satuan.tipe = 'satuan'
+                                                        JOIN mst_inv_pilihan AS hak
+                                                          ON inv_inventaris_barang_a.pilihan_status_hak = hak.code
+                                                             AND hak.tipe = 'status_hak'
+                                                        JOIN mst_inv_pilihan AS penggunaan
+                                                          ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
+                                                             AND penggunaan.tipe = 'penggunaan'
+                                                        INNER JOIN inv_pengadaan
+                                                                ON inv_pengadaan.id_pengadaan =
+                                                                   inv_inventaris_barang.id_pengadaan
+                                                                   AND pilihan_status_pengadaan = 4
+                                                        JOIN inv_inventaris_distribusi 
+                                      ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
+                                      AND inv_inventaris_distribusi.id_cl_phc = 'P3172100201')
+                                                 GROUP  BY inv_inventaris_barang.barang_kembar_proc) ");
+        return $query->result();
+    }
+    
+    function get_data_golongan_B($table=0,$start=0,$limit=999999,$options=array()){
+        $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
+                                    satuan.value                                      AS satuan,
+                                    bahan.value                                  AS bahan,
+                                    inv_inventaris_barang.barang_kembar_proc,
+                                    inv_inventaris_barang_b.*,
+                                    COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                    SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_b
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_b.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_b.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_b.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS satuan
+                                              ON inv_inventaris_barang_b.pilihan_satuan = satuan.code
+                                                 AND satuan.tipe = 'satuan'
+                                            JOIN mst_inv_pilihan AS bahan
+                                              ON inv_inventaris_barang_b.pilihan_bahan = bahan.code
+                                                 AND bahan.tipe = 'bahan'
+                                     WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)
+                                    UNION
+                                    (SELECT mst_inv_barang.uraian,
+                                            satuan.value                                      AS satuan,
+                                            bahan.value                                  AS bahan,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_b.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_b
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_b.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_b.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_b.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS satuan
+                                              ON inv_inventaris_barang_b.pilihan_satuan = satuan.code
+                                                 AND satuan.tipe = 'satuan'
+                                            JOIN mst_inv_pilihan AS bahan
+                                              ON inv_inventaris_barang_b.pilihan_bahan = bahan.code
+                                                 AND bahan.tipe = 'bahan'
+                                            INNER JOIN inv_pengadaan
+                                                    ON inv_pengadaan.id_pengadaan =
+                                                       inv_inventaris_barang.id_pengadaan
+                                                       AND pilihan_status_pengadaan = 4
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
+        return $query->result();
+    }
+    function get_data_golongan_C($table=0,$start=0,$limit=999999,$options=array()){
+        $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
+                                            hak.value                                         AS hak,
+                                            tingkat.value                                     AS tingkat,
+                                            beton.value                                       AS beton,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_c.*,
+                                            Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            Sum(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_c
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_c.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_c.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_c.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS hak
+                                              ON inv_inventaris_barang_c.pillihan_status_hak = hak.code
+                                                 AND hak.tipe = 'status_hak'
+                                            JOIN mst_inv_pilihan AS tingkat
+                                              ON inv_inventaris_barang_c.pillihan_status_hak = tingkat.code
+                                                 AND tingkat.tipe = 'kons_tingkat'
+                                            JOIN mst_inv_pilihan AS beton
+                                              ON inv_inventaris_barang_c.pilihan_kons_beton = beton.code
+                                                 AND beton.tipe = 'kons_beton'
+                                     WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)
+                                    UNION
+                                    (SELECT mst_inv_barang.uraian,
+                                            hak.value                                         AS hak,
+                                            tingkat.value                                     AS tingkat,
+                                            beton.value                                       AS beton,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_c.*,
+                                            Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            Sum(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_c
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_c.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_c.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_c.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS hak
+                                              ON inv_inventaris_barang_c.pillihan_status_hak = hak.code
+                                                 AND hak.tipe = 'status_hak'
+                                            JOIN mst_inv_pilihan AS tingkat
+                                              ON inv_inventaris_barang_c.pilihan_kons_tingkat = tingkat.code
+                                                 AND tingkat.tipe = 'kons_tingkat'
+                                            JOIN mst_inv_pilihan AS beton
+                                              ON inv_inventaris_barang_c.pilihan_kons_beton = beton.code
+                                                 AND beton.tipe = 'kons_beton'
+                                            INNER JOIN inv_pengadaan
+                                                    ON inv_pengadaan.id_pengadaan =
+                                                       inv_inventaris_barang.id_pengadaan
+                                                       AND pilihan_status_pengadaan = 4
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
+        return $query->result();
+    }
+    function get_data_golongan_D($table=0,$start=0,$limit=999999,$options=array()){
+        $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
+                                            tanah.value                                      AS tanah,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_d.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_d
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_d.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_d.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_d.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS tanah
+                                              ON inv_inventaris_barang_d.pilihan_status_tanah = tanah.code
+                                                 AND tanah.tipe = 'status_hak'
+                                     WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)
+                                    UNION
+                                    (SELECT mst_inv_barang.uraian,
+                                            tanah.value                                      AS tanah,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_d.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_d
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_d.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_d.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_d.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS tanah
+                                              ON inv_inventaris_barang_d.pilihan_status_tanah = tanah.code
+                                                 AND tanah.tipe = 'status_hak'
+                                            INNER JOIN inv_pengadaan
+                                                    ON inv_pengadaan.id_pengadaan =
+                                                       inv_inventaris_barang.id_pengadaan
+                                                       AND pilihan_status_pengadaan = 4
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
+        return $query->result();
+    }
+     function get_data_golongan_E($table=0,$start=0,$limit=999999,$options=array()){
+        $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
+                                            bahan.value                                      AS bahan,
+                                            satuan.value                                      AS satuan,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_e.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_e
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_e.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_e.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_e.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS bahan
+                                              ON inv_inventaris_barang_e.pilihan_budaya_bahan = bahan.code
+                                                 AND bahan.tipe = 'bahan'
+                                            JOIN mst_inv_pilihan AS satuan
+                                              ON inv_inventaris_barang_e.pilihan_satuan = satuan.code
+                                                 AND satuan.tipe = 'satuan'
+                                     WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)
+                                    UNION
+                                    (SELECT mst_inv_barang.uraian,
+                                            bahan.value                                      AS bahan,
+                                            satuan.value                                      AS satuan,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_e.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_e
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_e.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_e.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_e.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS bahan
+                                              ON inv_inventaris_barang_e.pilihan_budaya_bahan = bahan.code
+                                                 AND bahan.tipe = 'bahan'
+                                            JOIN mst_inv_pilihan AS satuan
+                                              ON inv_inventaris_barang_e.pilihan_satuan = satuan.code
+                                                 AND satuan.tipe = 'satuan'
+                                            INNER JOIN inv_pengadaan
+                                                    ON inv_pengadaan.id_pengadaan =
+                                                       inv_inventaris_barang.id_pengadaan
+                                                       AND pilihan_status_pengadaan = 4
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc) ");
+        return $query->result();
+    }
+     function get_data_golongan_F($table=0,$start=0,$limit=999999,$options=array()){
+        $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
+                                            tingkat.value                                      AS tingkat,
+                                            beton.value                                      AS beton,
+                                            tanah.value                                      AS tanah,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_f.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_f
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_f.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_f.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_f.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS tingkat
+                                              ON inv_inventaris_barang_f.pilihan_konstruksi_bertingkat = tingkat.code
+                                                 AND tingkat.tipe = 'kons_tingkat'
+                                            JOIN mst_inv_pilihan AS beton
+                                              ON inv_inventaris_barang_f.pilihan_konstruksi_beton = beton.code
+                                                 AND beton.tipe = 'kons_beton'
+                                            JOIN mst_inv_pilihan AS tanah
+                                              ON inv_inventaris_barang_f.pilihan_status_tanah = tanah.code
+                                                 AND tanah.tipe = 'status_hak'
+                                     WHERE  inv_inventaris_barang.id_pengadaan = 0
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)
+                                    UNION
+                                    (SELECT mst_inv_barang.uraian,
+                                            tingkat.value                                      AS tingkat,
+                                            beton.value                                      AS beton,
+                                            tanah.value                                      AS tanah,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang_f.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_f
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_f.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_f.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_f.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS tingkat
+                                              ON inv_inventaris_barang_f.pilihan_konstruksi_bertingkat = tingkat.code
+                                                 AND tingkat.tipe = 'kons_tingkat'
+                                            JOIN mst_inv_pilihan AS beton
+                                              ON inv_inventaris_barang_f.pilihan_konstruksi_beton = beton.code
+                                                 AND beton.tipe = 'kons_beton'
+                                            JOIN mst_inv_pilihan AS tanah
+                                              ON inv_inventaris_barang_f.pilihan_status_tanah = tanah.code
+                                                 AND tanah.tipe = 'status_hak'
+                                            INNER JOIN inv_pengadaan
+                                                    ON inv_pengadaan.id_pengadaan =
+                                                       inv_inventaris_barang.id_pengadaan
+                                                       AND pilihan_status_pengadaan = 4
+                                     GROUP  BY inv_inventaris_barang.barang_kembar_proc)   ");
         return $query->result();
     }
  	function get_data_row($kode){
