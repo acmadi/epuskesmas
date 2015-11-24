@@ -166,7 +166,7 @@
   	</div><!-- /.box -->
     <div class="col-md-6">
       <!-- general form elements -->
-      <div class="box box-success">
+      <div class="box box-success" style="min-height:350px">
           <div class="box-footer pull-right">
             <button type="submit" class="btn btn-primary">Simpan</button>
             <button type="reset" class="btn btn-warning">Ulang</button>
@@ -184,7 +184,7 @@
           </div><!-- /.box-body -->
       </div><!-- /.box -->
       <?php if($action=="edit"){?>
-      <div class="box box-warning">
+      <div class="box box-warning" style="min-height:350px">
           <div class="box-body">
             <div class="form-group">
               <label>Pilih Nomor Penerima</label>
@@ -316,7 +316,7 @@
       width: '100%',
       selectionmode: 'singlerow',
       source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25'],
-      showfilterrow: false, filterable: false, sortable: true, autoheight: false, pageable: true, virtualmode: true, editable: false,
+      showfilterrow: false, filterable: false, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
       selectionmode: 'checkbox',
       rendergridrows: function(obj)
       {
@@ -394,7 +394,7 @@
       width: '100%',
       selectionmode: 'singlerow',
       source: dataadapter, theme: theme,columnsresize: true,showtoolbar: false, pagesizeoptions: ['10', '25'],
-      showfilterrow: true, filterable: true, sortable: true, autoheight: false, pageable: true, virtualmode: true, editable: false,
+      showfilterrow: true, filterable: true, sortable: true, autoheight: true, pageable: true, virtualmode: true, editable: false,
       selectionmode: 'checkbox',
 
       rendergridrows: function(obj)
