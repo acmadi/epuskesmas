@@ -150,8 +150,8 @@ class Permohonanbarang extends CI_Controller {
 	}
 	function index(){
 		$this->authentication->verify('inventory','edit');
-		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Daftar Permohonan Barang";
+		$data['title_group'] = "Inventory";
+		$data['title_form'] = "Daftar Permohonan Barang";
 		$data['statusdata'] = $this->permohonanbarang_model->get_data_status();
 		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
 

@@ -19,7 +19,7 @@
     <div class="box box-primary">
       <div class="box-body">
         <div class="form-group">
-          <label>Tanggal</label><?php if(isset($viewreadonly)){if($action='view'){ 
+          <label>Tanggal Pengadaan</label><?php if(isset($viewreadonly)){if($action='view'){ 
             echo "<br>".date("d-m-Y",strtotime($tgl_pengadaan)); }}else{ ?>
               <div id='tgl' name="tgl" disabled value="<?php
               echo $tgl_pengadaan;;//echo ($tgl_pengadaan!="") ? date("Y-m-d",strtotime($$tgl_pengadaan)) : "";
@@ -27,7 +27,7 @@
              <?php  }?>
         </div>
         <div class="form-group">
-          <label>Status<h1></h1></label>
+          <label>Status Pengadaan</label>
           <select  name="status" type="text" class="form-control" <?php if(isset($viewreadonly)){if($action='view'){echo "disabled"; }}?>>
               <option value="">Pilih Status</option>
               </option>
@@ -94,8 +94,13 @@
           </table>
       </div>
       <div class="box-footer">
-        <?php if(!isset($viewreadonly)){?><button type="submit" class="btn btn-primary">Simpan</button><?php } ?>
-        <button type="button" id="btn-kembali" class="btn btn-warning">Kembali</button>
+        <?php if(!isset($viewreadonly)){?>
+          <button type="submit" class="btn btn-primary"><i class='fa fa-floppy-o'></i> &nbsp; Simpan</button>
+        <?php }else{ ?>
+          <button type="button" id="btn-export" class="btn btn-primary"><i class='fa fa-save'></i> &nbsp; Export</button>
+          <button type="button" id="btn-edit" class="btn btn-success"><i class='fa fa-pencil-square-o'></i> &nbsp; Ubah Pengadaan</button>
+        <?php } ?>
+        <button type="button" id="btn-kembali" class="btn btn-warning"><i class='fa fa-reply'></i> &nbsp; Kembali</button>
       </div>
       </div>
     </form>        
@@ -117,10 +122,16 @@ $(function(){
         window.location.href="<?php echo base_url()?>inventory/pengadaanbarang";
     });
 
+    $('#btn-edit').click(function(){
+        window.location.href="<?php echo base_url()?>inventory/pengadaanbarang/edit/{kode}";
+    });
+
     $("#menu_inventory_pengadaanbarang").addClass("active");
     $("#menu_inventory").addClass("active");
 
-    $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme});
+    <?php if(!isset($viewreadonly)){?>
+      $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme});
+    <?php } ?>
 
 
   });

@@ -96,15 +96,22 @@
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
-                },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'jumlah ', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+                },
+				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Nama Barang ', editable: false,datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '22%'},
+				{ text: 'Jumlah ', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'Harga Satuan (Rp.)',editable: false, datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Total Harga (Rp.)', editable: false,datafield: 'totalharga', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Total Harga (Rp.)', editable: false,datafield: 'totalharga', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
+            <?php }else{ ?>
+				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Nama Barang ', editable: false,datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '27%'},
+				{ text: 'Jumlah ', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '8%'},
+				{ text: 'Harga Satuan (Rp.)',editable: false, datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
+				{ text: 'Total Harga (Rp.)', editable: false,datafield: 'totalharga', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
+            <?php } ?>
 				{ text: 'Keterangan ', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{
-                        text: 'Status', datafield: 'value', width: '7%', columntype: 'dropdownlist',
+                        text: 'Status', datafield: 'value', width: '8%', columntype: 'dropdownlist',
                         createeditor: function (row, column, editor) {
                             // assign a new data source to the dropdownlist.
                             var list = [<?php foreach ($kodestatus_inv as $key) {?>
@@ -225,7 +232,7 @@
 <div>
 	<div style="width:100%;">
 		<div style="padding:5px" class="pull-right">
-			<?php if(!isset($viewreadonly)){?><button class="btn btn-success" id='btn_add_barang' type='button'><i class='icon-copy'></i> Tambah Barang</button><?php } ?>
+			<?php if(!isset($viewreadonly)){?><button class="btn btn-success" id='btn_add_barang' type='button'><i class='fa fa-plus-square'></i> Tambah Barang</button><?php } ?>
 		</div>
         <div id="jqxgrid_barang"></div>
 	</div>
