@@ -1,4 +1,3 @@
-
 <?php if($this->session->flashdata('alert')!=""){ ?>
 <div class="alert alert-success alert-dismissable">
 	<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -126,7 +125,7 @@
 				return obj.data;    
 			},
 			columns: [
-				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='detail(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.code_cl_phc+"\");'></a></div>";
@@ -135,7 +134,7 @@
 					}
                  }
                 },
-				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.code_cl_phc+"\");'></a></div>";
@@ -144,7 +143,7 @@
 					}
                  }
                 },
-				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_inv_permohonan_barang+"\",\""+dataRecord.code_cl_phc+"\");'></a></div>";
@@ -153,27 +152,26 @@
 					}
                  }
                 },
-                { text: 'No', datafield: 'no',editable:false ,sortable: false, filtertype: 'none', width: '5%' },
-				{ text: 'Tanggal Permohonan',editable:false , datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
-				{ text: 'Puskesmas-Ruangan', editable:false ,datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Jumlah Barang', editable:false ,datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
-				//{ text: 'Status', datafield: 'value', columntype: 'dropdownlist', filtertype: 'textbox', width: '15%' }
+                { text: 'No', align: 'center', cellsalign: 'center',  datafield: 'no',editable:false ,sortable: false, filtertype: 'none', width: '4%' },
+				{ text: 'Tgl. Permohonan', align: 'center', cellsalign: 'center', editable:false , datafield: 'tanggal_permohonan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '12%' },
+				{ text: 'Lokasi / Ruangan', editable:false ,datafield: 'nama_ruangan', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
+				{ text: 'Jumlah Barang', align: 'center', cellsalign: 'center', editable:false ,datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '12%' },
 				{
-                        text: 'Status', datafield: 'value', width: 150, columntype: 'dropdownlist',
-                        createeditor: function (row, column, editor) {
-                            // assign a new data source to the dropdownlist.
-                            var list = [<?php foreach ($statusdata as $key) {?>
-							"<?=$key['value']?>",
-							<?php } ?>];
-                            editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
-                        },
-                        // update the editor's value before saving it.
-                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
-                            // return the old value, if the new value is empty.
-                            if (newvalue == "") return oldvalue;
-                        }
-                 }
+	                text: '<b><i class="fa fa-pencil-square-o"></i> Status </b>', align: 'center', cellsalign: 'center', datafield: 'value', width: '12%', columntype: 'dropdownlist',
+	                createeditor: function (row, column, editor) {
+	                    // assign a new data source to the dropdownlist.
+	                    var list = [<?php foreach ($statusdata as $key) {?>
+						"<?=$key['value']?>",
+						<?php } ?>];
+	                    editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
+	                },
+	                // update the editor's value before saving it.
+	                cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+	                    // return the old value, if the new value is empty.
+	                    if (newvalue == "") return oldvalue;
+	                }
+                },
+				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '28%' }
             ]
 		});
 

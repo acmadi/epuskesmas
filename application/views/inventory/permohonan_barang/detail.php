@@ -75,6 +75,7 @@
         </div>
       </div>
       <div class="box-footer">
+        <button type="button" id="btn-edit" class="btn btn-primary">Ubah Permohonan</button>
         <button type="button" id="btn-export" class="btn btn-success">Export</button>
         <button type="button" id="btn-kembali" class="btn btn-warning">Kembali</button>
       </div>
@@ -96,6 +97,10 @@
 <input type="hidden" value="<?=$code_cl_phc?>" id="code_cl_phc">
 <script type="text/javascript">
 $(function(){
+    $('#btn-edit').click(function(){
+        window.location.href="<?php echo base_url()?>inventory/permohonanbarang/edit/{kode}/{code_cl_phc}";
+    });
+
     $('#btn-kembali').click(function(){
         window.location.href="<?php echo base_url()?>inventory/permohonanbarang";
     });
