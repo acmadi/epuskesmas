@@ -53,9 +53,9 @@ var code_cl_phc = '<?php echo $code_cl_phc?>';
 
 			columns: [
 				
-				{ text: 'No', align: 'center', datafield: 'no', columntype: 'textbox', filtertype: 'none', width: '5%' },
-				{ text: 'Nama Barang', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '35%' },
-				{ text: 'Jumlah ', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '20%'},
+				{ text: 'No', align: 'center', cellsalign: 'center', datafield: 'no', columntype: 'textbox', filtertype: 'none', width: '5%' },
+				{ text: 'Nama Barang', datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '43%' },
+				{ text: 'Jumlah Barang', align: 'center', cellsalign: 'center', datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '12%'},
 				{ text: 'Keterangan',datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '40%'}
            ]
 		});

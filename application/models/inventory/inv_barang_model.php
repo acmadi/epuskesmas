@@ -33,7 +33,8 @@ class Inv_barang_model extends CI_Model {
         $query = $this->db->get('mst_inv_pilihan'); 
         return $query->result();    
     }
-    function get_data($filter_clphc='',$start=0,$limit=999999,$options=array())
+
+    function get_data($filter_clphc='',$where="",$start=0,$limit=999999,$options=array())
     {
         $query = $this->db->query(" (SELECT mst_inv_pilihan.value,
                                     inv_inventaris_barang.barang_kembar_proc,
@@ -45,6 +46,7 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang.pilihan_status_invetaris =
                                                  mst_inv_pilihan.code
                                                  AND tipe = 'status_inventaris'
+                                            ".$where."
                                             ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
@@ -63,47 +65,12 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang.pilihan_status_invetaris =
                                                  mst_inv_pilihan.code
                                                  AND tipe = 'status_inventaris'
+                                             ".$where."
                                             ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-    function get_data_A($filter_clphc='',$start=0,$limit=999999,$options=array())
-    {
-        $query = $this->db->query("  (
-                SELECT   mst_inv_pilihan.value,
-                inv_inventaris_barang.barang_kembar_proc,
-                inv_inventaris_barang.*,
-                Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
-                Sum(inv_inventaris_barang.harga)                  AS totalharga
-                FROM     inv_inventaris_barang
-                JOIN     mst_inv_pilihan
-                ON       inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code
-                AND      tipe='status_inventaris'
-                ".$filter_clphc."
-                WHERE    inv_inventaris_barang.id_pengadaan=0
-                AND      inv_inventaris_barang.pilihan_status_invetaris=3
-                GROUP BY inv_inventaris_barang.barang_kembar_proc)
-                UNION
-                (
-                SELECT     mst_inv_pilihan.value,
-                inv_inventaris_barang.barang_kembar_proc,
-                inv_inventaris_barang.*,
-                Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
-                Sum(inv_inventaris_barang.harga)                  AS totalharga
-                FROM       inv_inventaris_barang
-                INNER JOIN inv_pengadaan
-                ON         inv_pengadaan.id_pengadaan=inv_inventaris_barang.id_pengadaan
-                AND        pilihan_status_pengadaan=4
-                JOIN       mst_inv_pilihan
-                ON         inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code
-                AND        tipe='status_inventaris'
-                AND        inv_inventaris_barang.pilihan_status_invetaris=3
-                ".$filter_clphc."
-                GROUP BY   inv_inventaris_barang.barang_kembar_proc 
-        )");
-        $query = $this->db->get($this->tabel,$limit,$start);
-        return $query->result();
-    }
+    
     function get_data_golongan($table,$start=0,$limit=999999,$options=array()){
         $this->db->select("$table.*");
         $query = $this->db->get($table,$limit,$start);
@@ -115,6 +82,7 @@ class Inv_barang_model extends CI_Model {
                                     hak.value                                         AS hak,
                                     penggunaan.value                                  AS penggunaan,
                                     inv_inventaris_barang.barang_kembar_proc,
+                                    inv_inventaris_barang.id_pengadaan,
                                     inv_inventaris_barang_a.*,
                                     Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                     Sum(inv_inventaris_barang.harga)                  AS totalharga
@@ -145,6 +113,7 @@ class Inv_barang_model extends CI_Model {
                                             hak.value                                         AS hak,
                                             penggunaan.value                                  AS penggunaan,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_a.*,
                                             Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             Sum(inv_inventaris_barang.harga)                  AS totalharga
@@ -181,6 +150,7 @@ class Inv_barang_model extends CI_Model {
                                     hak.value                                         AS hak,
                                     penggunaan.value                                  AS penggunaan,
                                     inv_inventaris_barang.barang_kembar_proc,
+                                    inv_inventaris_barang.id_pengadaan,
                                     inv_inventaris_barang_a.*,
                                     COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                     SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -207,39 +177,40 @@ class Inv_barang_model extends CI_Model {
                                                  WHERE  inv_inventaris_barang.id_pengadaan = 0
                                                  GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                                 UNION
-                                                (SELECT mst_inv_barang.uraian,
-                                                inv_inventaris_distribusi.id_cl_phc,
-                                                        satuan.value                                      AS satuan,
-                                                        hak.value                                         AS hak,
-                                                        penggunaan.value                                  AS penggunaan,
-                                                        inv_inventaris_barang.barang_kembar_proc,
-                                                        inv_inventaris_barang_a.*,
-                                                        COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
-                                                        SUM(inv_inventaris_barang.harga)                  AS totalharga
-                                                 FROM   inv_inventaris_barang_a
-                                                        JOIN inv_inventaris_barang
-                                                          ON ( inv_inventaris_barang.id_inventaris_barang =
-                                                                      inv_inventaris_barang_a.id_inventaris_barang
-                                                               AND inv_inventaris_barang.id_mst_inv_barang =
-                                                                   inv_inventaris_barang_a.id_mst_inv_barang )
-                                                        JOIN mst_inv_barang
-                                                          ON ( mst_inv_barang.code = inv_inventaris_barang_a.id_mst_inv_barang )
-                                                        JOIN mst_inv_pilihan AS satuan
-                                                          ON inv_inventaris_barang_a.pilihan_satuan_barang = satuan.code
-                                                             AND satuan.tipe = 'satuan'
-                                                        JOIN mst_inv_pilihan AS hak
-                                                          ON inv_inventaris_barang_a.pilihan_status_hak = hak.code
-                                                             AND hak.tipe = 'status_hak'
-                                                        JOIN mst_inv_pilihan AS penggunaan
-                                                          ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
-                                                             AND penggunaan.tipe = 'penggunaan'
-                                                        INNER JOIN inv_pengadaan
-                                                                ON inv_pengadaan.id_pengadaan =
-                                                                   inv_inventaris_barang.id_pengadaan
-                                                                   AND pilihan_status_pengadaan = 4
-                                                        JOIN inv_inventaris_distribusi 
-                                      ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                      AND inv_inventaris_distribusi.id_cl_phc = 'P3172100201')
+                                    (SELECT mst_inv_barang.uraian,
+                                    inv_inventaris_distribusi.id_cl_phc,
+                                            satuan.value                                      AS satuan,
+                                            hak.value                                         AS hak,
+                                            penggunaan.value                                  AS penggunaan,
+                                            inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
+                                            inv_inventaris_barang_a.*,
+                                            COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
+                                            SUM(inv_inventaris_barang.harga)                  AS totalharga
+                                     FROM   inv_inventaris_barang_a
+                                            JOIN inv_inventaris_barang
+                                              ON ( inv_inventaris_barang.id_inventaris_barang =
+                                                          inv_inventaris_barang_a.id_inventaris_barang
+                                                   AND inv_inventaris_barang.id_mst_inv_barang =
+                                                       inv_inventaris_barang_a.id_mst_inv_barang )
+                                            JOIN mst_inv_barang
+                                              ON ( mst_inv_barang.code = inv_inventaris_barang_a.id_mst_inv_barang )
+                                            JOIN mst_inv_pilihan AS satuan
+                                              ON inv_inventaris_barang_a.pilihan_satuan_barang = satuan.code
+                                                 AND satuan.tipe = 'satuan'
+                                            JOIN mst_inv_pilihan AS hak
+                                              ON inv_inventaris_barang_a.pilihan_status_hak = hak.code
+                                                 AND hak.tipe = 'status_hak'
+                                            JOIN mst_inv_pilihan AS penggunaan
+                                              ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
+                                                 AND penggunaan.tipe = 'penggunaan'
+                                            INNER JOIN inv_pengadaan
+                                                    ON inv_pengadaan.id_pengadaan =
+                                                       inv_inventaris_barang.id_pengadaan
+                                                       AND pilihan_status_pengadaan = 4
+                                            JOIN inv_inventaris_distribusi 
+                                                  ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
+                                                    AND inv_inventaris_distribusi.id_cl_phc = 'P3172100201')
                                                  GROUP  BY inv_inventaris_barang.barang_kembar_proc) ");
         return $query->result();
     }
@@ -249,6 +220,7 @@ class Inv_barang_model extends CI_Model {
                                     satuan.value                                      AS satuan,
                                     bahan.value                                  AS bahan,
                                     inv_inventaris_barang.barang_kembar_proc,
+                                    inv_inventaris_barang.id_pengadaan,
                                     inv_inventaris_barang_b.*,
                                     COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                     SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -275,6 +247,7 @@ class Inv_barang_model extends CI_Model {
                                             satuan.value                                      AS satuan,
                                             bahan.value                                  AS bahan,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_b.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -307,6 +280,7 @@ class Inv_barang_model extends CI_Model {
                                             tingkat.value                                     AS tingkat,
                                             beton.value                                       AS beton,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_c.*,
                                             Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             Sum(inv_inventaris_barang.harga)                  AS totalharga
@@ -337,6 +311,7 @@ class Inv_barang_model extends CI_Model {
                                             tingkat.value                                     AS tingkat,
                                             beton.value                                       AS beton,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_c.*,
                                             Count(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             Sum(inv_inventaris_barang.harga)                  AS totalharga
@@ -370,6 +345,7 @@ class Inv_barang_model extends CI_Model {
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             tanah.value                                      AS tanah,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_d.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -392,6 +368,7 @@ class Inv_barang_model extends CI_Model {
                                     (SELECT mst_inv_barang.uraian,
                                             tanah.value                                      AS tanah,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_d.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -420,6 +397,7 @@ class Inv_barang_model extends CI_Model {
                                             bahan.value                                      AS bahan,
                                             satuan.value                                      AS satuan,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_e.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -446,6 +424,7 @@ class Inv_barang_model extends CI_Model {
                                             bahan.value                                      AS bahan,
                                             satuan.value                                      AS satuan,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_e.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -478,6 +457,7 @@ class Inv_barang_model extends CI_Model {
                                             beton.value                                      AS beton,
                                             tanah.value                                      AS tanah,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_f.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga
@@ -508,6 +488,7 @@ class Inv_barang_model extends CI_Model {
                                             beton.value                                      AS beton,
                                             tanah.value                                      AS tanah,
                                             inv_inventaris_barang.barang_kembar_proc,
+                                            inv_inventaris_barang.id_pengadaan,
                                             inv_inventaris_barang_f.*,
                                             COUNT(inv_inventaris_barang.id_inventaris_barang) AS jumlah,
                                             SUM(inv_inventaris_barang.harga)                  AS totalharga

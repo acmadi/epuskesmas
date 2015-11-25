@@ -343,8 +343,8 @@
         });        
       }
 
-      $("#jqxgrid_pilih").jqxGrid('clearfilters');
-      $("#jqxgrid_penerima").jqxGrid('clearfilters');
+      $("#jqxgrid_pilih").jqxGrid('updatebounddata', 'filter');
+      $("#jqxgrid_penerima").jqxGrid('updatebounddata', 'filter');
       $("#jqxgrid_penerima").jqxGrid('clearselection');
     });
 
@@ -421,8 +421,8 @@
         });        
       }
 
-      $("#jqxgrid_penerima").jqxGrid('clearfilters');
-      $("#jqxgrid_pilih").jqxGrid('clearfilters');
+      $("#jqxgrid_penerima").jqxGrid('updatebounddata', 'filter');
+      $("#jqxgrid_pilih").jqxGrid('updatebounddata', 'filter');
       $("#jqxgrid_pilih").jqxGrid('clearselection');
     });
 

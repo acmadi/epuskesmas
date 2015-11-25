@@ -42,11 +42,13 @@ class Inv_barang extends CI_Controller {
 				$this->session->set_userdata('filterGIB','');
 				$this->session->set_userdata('filterHAPUS','');
 				$this->session->set_userdata('filter_cl_phc','');
+				$this->session->set_userdata('filterruangan','');
 			}else{
 				$this->session->set_userdata('filter_golongan_invetaris','');
 				$this->session->set_userdata('filterGIB','');
 				$this->session->set_userdata('filterHAPUS','');
 				$this->session->set_userdata('filter_cl_phc','');
+				$this->session->set_userdata('filterruangan','');
 			}
 		}
 	}
@@ -60,12 +62,12 @@ class Inv_barang extends CI_Controller {
 			}
 		}
 	}
-	function filterruangan(){
+	function get_ruangan_puskesmas(){
 		if($_POST) {
-			if($this->input->post('filterGIB_') != '') {
-				$this->session->set_userdata('filterruangan',$this->input->post('filterGIB_'));
+			if($this->input->post('idmstinvruangan') != '') {
+				$this->session->set_userdata('filterruangan',$this->input->post('idmstinvruangan'));
 			}else{
-				$this->session->set_userdata('filterGIB','');
+				$this->session->set_userdata('filterruangan','');
 			}
 		}
 	}
@@ -171,6 +173,7 @@ class Inv_barang extends CI_Controller {
 	
 	function index(){
 		$this->authentication->verify('inventory','edit');
+
 		$data['title_group'] = "Parameter";
 		$data['title_form'] = "Master Data - Daftar Inventaris Barang";
 		$data['kodestatus_inv'] = $this->inv_barang_model->pilih_data_status('status_inventaris');
@@ -181,6 +184,8 @@ class Inv_barang extends CI_Controller {
 		}else {
 			$this->db->like('code','P'.$kodepuskesmas);
 		}
+		$this->session->set_userdata('filter_cl_phc','');
+		$this->session->set_userdata('filterruangan','');
 		$data['filter_golongan_invetaris'] = $this->session->userdata('filter_golongan_invetaris');
 		$data['filterHAPUS'] = $this->session->userdata('filterHAPUS');
 		$data['filterGIB'] = $this->session->userdata('filterGIB');
@@ -207,10 +212,12 @@ class Inv_barang extends CI_Controller {
 			
 			if($this->input->post('code_cl_phc') != '') {
 				$this->session->set_userdata('filter_cl_phc',$this->input->post('code_cl_phc'));
+				$this->session->set_userdata('filterruangan','');
 			}else{
 				$this->session->set_userdata('filter_cl_phc','');
+				$this->session->set_userdata('filterruangan','');
 			}
-			'<option value="">Pilih Ruangan</option>';
+			echo "<option value=\"\">Pilih Ruangan</option>";
 			foreach($kode as $kode) :
 				echo $select = $kode->id_mst_inv_ruangan == $id_mst_inv_ruangan ? 'selected' : '';
 				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
