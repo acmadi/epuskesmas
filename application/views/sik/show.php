@@ -214,7 +214,7 @@
             value: $row->nilai,
             color: \"#00a65a\",
             highlight: \"#00a65a\",
-            label: ".$row->value."
+            label: \"".$row->value."\"
             },";
             }
             ?>

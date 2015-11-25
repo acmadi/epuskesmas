@@ -94,7 +94,7 @@ class Admin_model extends CI_Model {
 
 	function get_nilai_aset()
 	{
-		$query = $this->db->query("SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml,SUM(harga) AS nilai FROM inv_inventaris_barang 
+		$query = $this->db->query("SELECT cl_phc.value,id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml,SUM(harga) AS nilai FROM inv_inventaris_barang 
 			INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
 			LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
 			GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
