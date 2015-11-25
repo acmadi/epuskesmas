@@ -103,6 +103,7 @@ class Pengadaanbarang extends CI_Controller {
 			$data[] = array(
 				'id_pengadaan' 				=> $act->id_pengadaan,
 				'tgl_pengadaan' 			=> $act->tgl_pengadaan,
+				'nomor_kontrak' 			=> $act->nomor_kontrak,
 				'pilihan_status_pengadaan' 	=> $act->pilihan_status_pengadaan,
 				'value' 					=> $act->value,
 				'jumlah_unit'				=> $act->jumlah_unit,
@@ -127,8 +128,8 @@ class Pengadaanbarang extends CI_Controller {
 	
 	function index(){
 		$this->authentication->verify('inventory','edit');
-		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Daftar Pengadaan Barang";
+		$data['title_group'] = "Inventory";
+		$data['title_form'] = "Daftar Pengadaan Barang";
 
 		$data['content'] = $this->parser->parse("inventory/pengadaan_barang/show",$data,true);
 		$this->template->show($data,"home");

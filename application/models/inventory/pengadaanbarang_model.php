@@ -228,7 +228,7 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
         $data['pilihan_status_pengadaan']   = $this->input->post('status');
         $data['keterangan']                 = $this->input->post('keterangan');
         $data['nomor_kontrak']              = $this->input->post('nomor_kontrak');
-        $data['terakhir_diubah']            = date('Y-m-d');
+        $data['terakhir_diubah']            = date('Y-m-d H:i:s');
 		$this->db->where('id_pengadaan',$kode);
 
 		if($this->db->update($this->tabel, $data)){

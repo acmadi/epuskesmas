@@ -19,9 +19,12 @@
 	    </div>
 
       	<div class="box-footer">
-	      <div class="col-md-9">
-		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/pengadaanbarang/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
+	      <div class="col-md-6">
+		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/pengadaanbarang/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Pengadaan Baru</button>
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+          <button type="button" id="btn-export" class="btn btn-warning"><i class='fa fa-save'></i> &nbsp; Export</button>
+	     </div>
+	      <div class="col-md-6">
 	     </div>
 		</div>
         <div class="box-body">
@@ -47,6 +50,7 @@
 			datafields: [
 			{ name: 'id_pengadaan', type: 'number'},
 			{ name: 'tgl_pengadaan', type: 'date'},
+			{ name: 'nomor_kontrak', type: 'string'},
 			{ name: 'pilihan_status_pengadaan', type: 'string'},
 			{ name: 'value', type: 'string'},
 			{ name: 'jumlah_unit', type: 'double'},
@@ -97,7 +101,7 @@
 				return obj.data;    
 			},
 			columns: [
-				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'View', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_view.gif' onclick='detail(\""+dataRecord.id_pengadaan+"\");'></a></div>";
@@ -106,7 +110,7 @@
 					}
                  }
                 },
-				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit(\""+dataRecord.id_pengadaan+"\");'></a></div>";
@@ -115,7 +119,7 @@
 					}
                  }
                 },
-				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
+				{ text: 'Del', align: 'center', filtertype: 'none', sortable: false, width: '4%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del(\""+dataRecord.id_pengadaan+"\",\""+dataRecord.jumlah_unit+"\");'></a></div>";
@@ -124,10 +128,11 @@
 					}
                  }
                 },
-				{ text: 'Tanggal Pengadaan',editable:false , datafield: 'tgl_pengadaan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '20%' },
-				{ text: 'Status Pengadaan', editable:false ,datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '20%' },
+				{ text: 'No. Kontrak', editable:false ,datafield: 'nomor_kontrak', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Tgl. Pengadaan',editable:false , datafield: 'tgl_pengadaan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '11%' },
+				{ text: 'Status Pengadaan', editable:false ,datafield: 'value', columntype: 'textbox', filtertype: 'textbox', width: '12%' },
 				{ text: 'Jumlah Unit', editable:false ,datafield: 'jumlah_unit', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Total Harga (Rp.)', editable:false ,datafield: 'nilai_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Total Harga (Rp.)', editable:false ,datafield: 'nilai_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
 				{ text: 'Keterangan', editable:false ,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '25%' }
             ]
 		});

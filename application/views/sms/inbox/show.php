@@ -178,7 +178,7 @@
                 },
 				{ text: 'Nomor Pengirim', align: 'center', cellsalign: 'center', datafield: 'SenderNumber', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
 				{ text: 'Isi Pesan', datafield: 'TextDecoded', columntype: 'textbox', filtertype: 'textbox', width: '45%' },
-				{ text: 'Di Proses', datafield: 'Processed', align: 'center', cellsalign: 'center', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Diproses', datafield: 'Processed', align: 'center', cellsalign: 'center', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Waktu Diterima', align: 'center', cellsalign: 'center', datafield: 'ReceivingDateTime', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy HH:mm:ss', width: '15%' }
             ]
 		});
