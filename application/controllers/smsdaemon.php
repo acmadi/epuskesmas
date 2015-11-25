@@ -172,5 +172,93 @@ class Smsdaemon extends CI_Controller {
 	function sms_broadcast($args = ""){
 		echo "sms.broadcast ...\n";
 
+		//sms_1x
+		$this->db->where("status","aktif");
+		$this->db->where("tgl_mulai <= ", date("Y-m-d"));
+		$this->db->where("tgl_akhir >= ", date("Y-m-d"));
+		$this->db->where("is_harian < ", date("H:i:s"));
+		$this->db->where("is_loop", "tidak");
+		$this->db->where("id_bc NOT IN (SELECT `id_bc` FROM `sms_bc_status`)");
+		$sms_1x = $this->db->get("sms_bc")->result();
+		foreach ($sms_1x as $rows) {
+			$this->db->where("id_sms_bc",$rows->id_bc);
+			$tujuan = $this->db->get("sms_bc_tujuan")->result();
+			foreach ($tujuan as $nmr) {
+				$this->sms_send( "+62".$nmr->nomor, $rows->pesan);
+			}
+
+			$status = array();
+			$status['id_bc'] = $rows->id_bc;
+			$status['tgl'] = date("Y-m-d");
+			$this->db->insert('sms_bc_status',$status);
+		}
+
+
+		//sms_harian
+		$this->db->where("status","aktif");
+		$this->db->where("tgl_mulai <= ", date("Y-m-d"));
+		$this->db->where("tgl_akhir >= ", date("Y-m-d"));
+		$this->db->where("is_harian < ", date("H:i:s"));
+		$this->db->where("is_loop", "harian");
+		$this->db->where("id_bc NOT IN (SELECT `id_bc` FROM `sms_bc_status` WHERE tgl='".date("Y-m-d")."')");
+		$sms_harian = $this->db->get("sms_bc")->result();
+		foreach ($sms_harian as $rows) {
+			$this->db->where("id_sms_bc",$rows->id_bc);
+			$tujuan = $this->db->get("sms_bc_tujuan")->result();
+			foreach ($tujuan as $nmr) {
+				$this->sms_send( "+62".$nmr->nomor, $rows->pesan);
+			}
+
+			$status = array();
+			$status['id_bc'] = $rows->id_bc;
+			$status['tgl'] = date("Y-m-d");
+			$this->db->insert('sms_bc_status',$status);
+		}
+
+
+		//sms_mingguan
+		$this->db->where("status","aktif");
+		$this->db->where("tgl_mulai <= ", date("Y-m-d"));
+		$this->db->where("tgl_akhir >= ", date("Y-m-d"));
+		$this->db->where("is_harian < ", date("H:i:s"));
+		$this->db->where("is_loop", "mingguan");
+		$this->db->where("is_mingguan", date("w"));
+		$this->db->where("id_bc NOT IN (SELECT `id_bc` FROM `sms_bc_status` WHERE tgl='".date("Y-m-d")."')");
+		$sms_harian = $this->db->get("sms_bc")->result();
+		foreach ($sms_harian as $rows) {
+			$this->db->where("id_sms_bc",$rows->id_bc);
+			$tujuan = $this->db->get("sms_bc_tujuan")->result();
+			foreach ($tujuan as $nmr) {
+				$this->sms_send( "+62".$nmr->nomor, $rows->pesan);
+			}
+
+			$status = array();
+			$status['id_bc'] = $rows->id_bc;
+			$status['tgl'] = date("Y-m-d");
+			$this->db->insert('sms_bc_status',$status);
+		}
+
+
+		//sms_bulanan
+		$this->db->where("status","aktif");
+		$this->db->where("tgl_mulai <= ", date("Y-m-d"));
+		$this->db->where("tgl_akhir >= ", date("Y-m-d"));
+		$this->db->where("is_harian < ", date("H:i:s"));
+		$this->db->where("is_loop", "bulanan");
+		$this->db->where("is_bulanan", date("d"));
+		$this->db->where("id_bc NOT IN (SELECT `id_bc` FROM `sms_bc_status` WHERE tgl='".date("Y-m-d")."')");
+		$sms_harian = $this->db->get("sms_bc")->result();
+		foreach ($sms_harian as $rows) {
+			$this->db->where("id_sms_bc",$rows->id_bc);
+			$tujuan = $this->db->get("sms_bc_tujuan")->result();
+			foreach ($tujuan as $nmr) {
+				$this->sms_send( "+62".$nmr->nomor, $rows->pesan);
+			}
+
+			$status = array();
+			$status['id_bc'] = $rows->id_bc;
+			$status['tgl'] = date("Y-m-d");
+			$this->db->insert('sms_bc_status',$status);
+		}
 	}
 }
