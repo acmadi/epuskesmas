@@ -238,7 +238,7 @@ class Inv_barang_model extends CI_Model {
         return $query->result();
     }
     
-    function get_data_golongan_B($table=0,$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_B($where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                     satuan.value                                      AS satuan,
                                     bahan.value                                  AS bahan,
@@ -251,7 +251,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_b.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_b.id_mst_inv_barang )
+                                                       inv_inventaris_barang_b.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_b.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS satuan
@@ -275,7 +276,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_b.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_b.id_mst_inv_barang )
+                                                       inv_inventaris_barang_b.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_b.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS satuan
@@ -291,7 +293,7 @@ class Inv_barang_model extends CI_Model {
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-    function get_data_golongan_C($table=0,$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_C($where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             hak.value                                         AS hak,
                                             tingkat.value                                     AS tingkat,
@@ -305,7 +307,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_c.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_c.id_mst_inv_barang )
+                                                       inv_inventaris_barang_c.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_c.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS hak
@@ -333,7 +336,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_c.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_c.id_mst_inv_barang )
+                                                       inv_inventaris_barang_c.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_c.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS hak
@@ -352,7 +356,7 @@ class Inv_barang_model extends CI_Model {
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-    function get_data_golongan_D($table=0,$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_D($where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             tanah.value                                      AS tanah,
                                             inv_inventaris_barang.barang_kembar_proc,
@@ -364,7 +368,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_d.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_d.id_mst_inv_barang )
+                                                       inv_inventaris_barang_d.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_d.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS tanah
@@ -384,7 +389,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_d.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_d.id_mst_inv_barang )
+                                                       inv_inventaris_barang_d.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_d.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS tanah
@@ -397,7 +403,7 @@ class Inv_barang_model extends CI_Model {
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-     function get_data_golongan_E($table=0,$start=0,$limit=999999,$options=array()){
+     function get_data_golongan_E($where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             bahan.value                                      AS bahan,
                                             satuan.value                                      AS satuan,
@@ -410,7 +416,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_e.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_e.id_mst_inv_barang )
+                                                       inv_inventaris_barang_e.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_e.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS bahan
@@ -434,7 +441,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_e.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_e.id_mst_inv_barang )
+                                                       inv_inventaris_barang_e.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_e.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS bahan
@@ -450,7 +458,7 @@ class Inv_barang_model extends CI_Model {
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc) ");
         return $query->result();
     }
-     function get_data_golongan_F($table=0,$start=0,$limit=999999,$options=array()){
+     function get_data_golongan_F($where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             tingkat.value                                      AS tingkat,
                                             beton.value                                      AS beton,
@@ -464,7 +472,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_f.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_f.id_mst_inv_barang )
+                                                       inv_inventaris_barang_f.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_f.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS tingkat
@@ -492,7 +501,8 @@ class Inv_barang_model extends CI_Model {
                                               ON ( inv_inventaris_barang.id_inventaris_barang =
                                                           inv_inventaris_barang_f.id_inventaris_barang
                                                    AND inv_inventaris_barang.id_mst_inv_barang =
-                                                       inv_inventaris_barang_f.id_mst_inv_barang )
+                                                       inv_inventaris_barang_f.id_mst_inv_barang 
+                                                    ".$where.")
                                             JOIN mst_inv_barang
                                               ON ( mst_inv_barang.code = inv_inventaris_barang_f.id_mst_inv_barang )
                                             JOIN mst_inv_pilihan AS tingkat
