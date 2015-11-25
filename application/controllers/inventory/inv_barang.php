@@ -41,10 +41,12 @@ class Inv_barang extends CI_Controller {
 				$this->session->set_userdata('filter_golongan_invetaris',$this->input->post('golongan_invetaris'));
 				$this->session->set_userdata('filterGIB','');
 				$this->session->set_userdata('filterHAPUS','');
+				$this->session->set_userdata('filter_cl_phc','');
 			}else{
 				$this->session->set_userdata('filter_golongan_invetaris','');
 				$this->session->set_userdata('filterGIB','');
 				$this->session->set_userdata('filterHAPUS','');
+				$this->session->set_userdata('filter_cl_phc','');
 			}
 		}
 	}
@@ -55,15 +57,6 @@ class Inv_barang extends CI_Controller {
 				$this->session->set_userdata('filterHAPUS','');
 			}else{
 				$this->session->set_userdata('filterGIB','');
-			}
-		}
-	}
-	function filterpuskesmas(){
-		if($_POST) {
-			if($this->input->post('filterGIB_') != '') {
-				$this->session->set_userdata('filterpuskesmas',$this->input->post('filterGIB_'));
-			}else{
-				$this->session->set_userdata('filterpuskesmas','');
 			}
 		}
 	}
@@ -110,8 +103,15 @@ class Inv_barang extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		
-		$rows_all = $this->inv_barang_model->get_data();
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$filter_clphc="JOIN inv_inventaris_distribusi 
+                                              ON (inv_inventaris_barang.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+		}else{
+			$filter_clphc='';
+		}
+		$rows_all = $this->inv_barang_model->get_data($filter_clphc);
 
 
 		if($_POST) {
@@ -135,7 +135,7 @@ class Inv_barang extends CI_Controller {
 			}
 		}
 		
-		$rows = $this->inv_barang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->inv_barang_model->get_data($filter_clphc,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -204,7 +204,12 @@ class Inv_barang extends CI_Controller {
 			$id_mst_inv_ruangan = $this->input->post('id_mst_inv_ruangan');
 
 			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$code_cl_phc)->result();
-
+			
+			if($this->input->post('code_cl_phc') != '') {
+				$this->session->set_userdata('filter_cl_phc',$this->input->post('code_cl_phc'));
+			}else{
+				$this->session->set_userdata('filter_cl_phc','');
+			}
 			'<option value="">Pilih Ruangan</option>';
 			foreach($kode as $kode) :
 				echo $select = $kode->id_mst_inv_ruangan == $id_mst_inv_ruangan ? 'selected' : '';

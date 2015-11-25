@@ -8,7 +8,14 @@ class Permohonanbarang_model extends CI_Model {
         parent::__construct();
 		$this->lang	  = $this->config->item('language');
     }
-    
+    function get_detail_ruang($id, $code_cl_phc){
+		$this->db->where('id_inv_permohonan_barang',$id);
+		$this->db->where('inv_permohonan_barang.code_cl_phc',$code_cl_phc);
+		#$this->db->join('cl_phc','inv_permohonan_barang.code_cl_phc = cl_phc.code');
+		$this->db->join('mst_inv_ruangan','inv_permohonan_barang.id_mst_inv_ruangan = mst_inv_ruangan.id_mst_inv_ruangan');
+		$q = $this->db->get('inv_permohonan_barang',1);		
+		return $q->result();
+	}
     function get_data_status()
     {	
     	$this->db->where("mst_inv_pilihan.tipe",'status_pengadaan');
