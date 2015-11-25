@@ -95,6 +95,7 @@ class Json extends CI_Controller {
 				'id_inventaris_barang'   		=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'   			=> $act->id_mst_inv_barang,
 				'id_pengadaan'		   			=> $act->id_pengadaan,
+				'barang_kembar_proc'		   	=> $act->barang_kembar_proc,
 				'nama_barang'					=> $act->nama_barang,
 				'jumlah'						=> $act->jumlah,
 				'harga'							=> number_format($act->harga,2),
@@ -139,6 +140,7 @@ class Json extends CI_Controller {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
 				}elseif($field != 'year') {
+
 					$this->db->like($field,$value);
 				}
 			}
@@ -220,6 +222,8 @@ class Json extends CI_Controller {
 				'id_inventaris_barang'   	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'			=> $act->id_mst_inv_barang,
 				'uraian'					=> $act->uraian,
+				'id_pengadaan'		   		=> $act->id_pengadaan,
+				'barang_kembar_proc'		=> $act->barang_kembar_proc,
 				'satuan'					=> $act->satuan,
 				'hak'						=> $act->hak,
 				'jumlah'					=> $act->jumlah,
@@ -331,6 +335,8 @@ class Json extends CI_Controller {
 				'id_inventaris_barang' 	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
+				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'merek_type' 			=> $act->merek_type,
 				'bahan'		 			=> $act->bahan,
 				'satuan'	 			=> $act->satuan,
@@ -445,6 +451,8 @@ class Json extends CI_Controller {
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
 				'hak' 					=> $act->hak,
+				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'tingkat' 				=> $act->tingkat,
 				'beton' 				=> $act->beton,
 				'luas_lantai' 			=> $act->luas_lantai,
@@ -557,6 +565,8 @@ class Json extends CI_Controller {
 				'uraian' 				=> $act->uraian,
 				'konstruksi' 			=> $act->konstruksi,
 				'tanah' 				=> $act->tanah,
+				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'panjang' 				=> $act->panjang,
 				'lebar' 				=> $act->lebar,
 				'luas' 					=> $act->luas,
@@ -666,6 +676,8 @@ class Json extends CI_Controller {
 				'uraian' 				=> $act->uraian,
 				'bahan' 				=> $act->bahan,
 				'satuan' 				=> $act->satuan,
+				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'buku_judul_pencipta' 	=> $act->buku_judul_pencipta,
 				'buku_spesifikasi' 		=> $act->buku_spesifikasi,
 				'budaya_asal_daerah' 	=> $act->budaya_asal_daerah,
@@ -779,6 +791,8 @@ class Json extends CI_Controller {
 				'tanah' 				=> $act->tanah,
 				'beton' 				=> $act->beton,
 				'tingkat' 				=> $act->tingkat,
+				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'bangunan' 				=> $act->bangunan,
 				'pilihan_konstruksi_bertingkat' 	=> $act->pilihan_konstruksi_bertingkat,
 				'pilihan_konstruksi_beton' 			=> $act->pilihan_konstruksi_beton,

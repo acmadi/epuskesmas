@@ -61,7 +61,7 @@ function edit_barang(id_barang,barang_kembar_proc,id_inventaris_barang){
                       $('#notice').hide();
                       $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
                       $('#notice').show();
-                      $("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+                     
                       close_popup();
                       var kode_          = res[1]; 
                       var kd_proc_       = res[2];

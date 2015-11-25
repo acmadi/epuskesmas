@@ -1,5 +1,9 @@
 
 <script type="text/javascript">
+	function close_popup(){
+		$("#popup_barang").jqxWindow('close');
+		filter_jqxgrid_inv_barang();
+	}
 	function filter_jqxgrid_inv_barang(){
 			<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ 
 							if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
@@ -83,6 +87,7 @@
 			{ name: 'id_inventaris_barang', type: 'number' },
 			{ name: 'id_mst_inv_barang', type: 'string' },
 			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'pilihan_keadaan_barang', type: 'string' },
 			{ name: 'nama_barang', type: 'string' },
 			{ name: 'pilihan_komponen', type: 'string' },
@@ -91,7 +96,6 @@
 			{ name: 'pilihan_status_invetaris', type: 'string' },
 			{ name: 'tanggal_pembelian', type: 'date' },
 			{ name: 'foto_barang', type: 'string' },
-			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'keterangan_inventory', type: 'string' },
 			{ name: 'tanggal_pengadaan', type: 'date' },
 			{ name: 'tanggal_diterima', type: 'date' },
@@ -255,6 +259,8 @@
 			datafields: [
 			{ name: 'id_inventaris_barang', type: 'number' },
 			{ name: 'id_mst_inv_barang', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'satuan', type: 'string' },
 			{ name: 'hak', type: 'string' },
 			{ name: 'penggunaan', type: 'string' },
@@ -276,10 +282,10 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$(".jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
+			$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
 		},
 		sort: function(){
-			$(".jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'sort');
+			$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'sort');
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -391,6 +397,8 @@
 			{ name: 'id_inventaris_barang', type: 'number' },
 			{ name: 'id_mst_inv_barang', type: 'string' },
 			{ name: 'uraian', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'merek_type', type: 'text' },
 			{ name: 'identitas_barang', type: 'text' },
 			{ name: 'bahan', type: 'string' },
@@ -525,6 +533,8 @@
 			{ name: 'id_inventaris_barang', type: 'number' },
 			{ name: 'id_mst_inv_barang', type: 'string' },
 			{ name: 'uraian', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'luas_lantai', type: 'string' },
 			{ name: 'hak', type: 'string' },
 			{ name: 'tingkat', type: 'string' },
@@ -658,6 +668,8 @@
 			{ name: 'id_mst_inv_barang', type: 'string' },
 			{ name: 'uraian', type: 'string' },
 			{ name: 'konstruksi', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'panjang', type: 'double' },
 			{ name: 'lebar', type: 'string' },
 			{ name: 'luas', type: 'string' },
@@ -789,6 +801,8 @@
 			{ name: 'id_mst_inv_barang', type: 'string' },
 			{ name: 'uraian', type: 'string' },
 			{ name: 'satuan', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'bahan', type: 'string' },
 			{ name: 'flora_ukuran_satuan', type: 'string' },
 			{ name: 'buku_judul_pencipta', type: 'string' },
@@ -926,6 +940,8 @@
 			{ name: 'pilihan_konstruksi_beton', type: 'double' },
 			{ name: 'luas', type: 'string' },
 			{ name: 'tanah', type: 'string' },
+			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'beton', type: 'string' },
 			{ name: 'tingkat', type: 'string' },
 			{ name: 'lokasi', type: 'string' },
@@ -1129,7 +1145,8 @@
 	     			 <option value="">Pilih KIB Inventaris </option>
 	     			 <?php 
 	     			 	for($baris=0;$baris<count($get_data_tanah);$baris++) {
-	     			 		echo "<option value=\"".$get_data_tanah[$baris][0]."\">";
+	     			 		 $select = $get_data_tanah[$baris][0] == $this->session->userdata('filter_golongan_invetaris') ? 'selected' : '';
+	     			 		echo "<option value=\"".$get_data_tanah[$baris][0]."\" $select>";
 	     			 			echo $get_data_tanah[$baris][1];
 	     			 		echo "</option>";
 	     			 	}
@@ -1141,7 +1158,6 @@
 	     		<select name="code_cl_phc" class="form-control" id="code_cl_phc">
 	     			<option value="">Pilih Puskesmas</option>
 					<?php foreach ($datapuskesmas as $row ) { ;?>
-					<?php $select = $row->code == $filter_golongan_invetaris ? 'selected' : '' ?>
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
 	     	</select>

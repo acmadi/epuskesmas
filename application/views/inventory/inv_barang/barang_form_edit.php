@@ -105,7 +105,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('tanggal_mulai', $('#tanggal_mulai').val());
                 data.append('pilihan_status_tanah', $('#pilihan_status_tanah1').val());
             }
-              alert($('#dokumen_tanggal2').val());
+             
 
             $.ajax({
                 cache : false,
@@ -121,28 +121,13 @@ if(isset($disable)){if($disable='disable'){?>
                       $('#notice').hide();
                       $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
                       $('#notice').show();
-                      $("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
-                      var kode_ = res[1].substring(0, 2);
-                      if (kode_==01) {
-                          $("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'cells');
-                      }else if (kode_==02) {
-                          $("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'cells');
-                      }else if (kode_==03) {
-                          $("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'cells');
-                      }else if (kode_==04) {
-                          $("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'cells');
-                      }else if (kode_==05) {
-                          $("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'cells');
-                      }else if (kode_==06) {
-                          $("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'cells');
-                      };
+                      
                       close_popup();
                   }
                   else if(res[0]=="Error"){
                       $('#notice').hide();
                       $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
                       $('#notice').show();
-                      alert('bawah pisan');
                   }
                   else{
                       $('#popup_content').html(response);
