@@ -1,6 +1,78 @@
 
-<script>
+<script type="text/javascript">
+	function filter_jqxgrid_inv_barang(){
+			<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ 
+							if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
+			?>
+				     		$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+					<?php 	}else if($this->session->userdata('filterHAPUS')){
+					?>
+				     		$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'cells');
+				    <?php   }	
+					?>
+			    <?php	}else  if(isset($filter_golongan_invetaris)){
+				    		if($filter_golongan_invetaris=='0100000000'){ 
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
+				?>
+									$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'cells');
+						<?php 	}else if($this->session->userdata('filterHAPUS')){
+						?>
+									$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
+						<?php   }	
+						?>
+				    <?php	}else if($filter_golongan_invetaris=='0200000000'){ 
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
+				    ?>
+									$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'cells');
+						<?php 	}else if($this->session->userdata('filterHAPUS')){
+						?>
+									$("#jqxgrid_Golongan_B_hapus").jqxGrid('updatebounddata', 'cells');
+						<?php   }	
+						?>		
+				    <?php	}else if($filter_golongan_invetaris=='0300000000'){ 
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){	
+				    ?>
+									$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'cells');
+						<?php 	}else if($this->session->userdata('filterHAPUS')){
+						?>
+									$("#jqxgrid_Golongan_C_hapus").jqxGrid('updatebounddata', 'cells');
+						<?php   }	
+						?>
+				    <?php	}else if($filter_golongan_invetaris=='0400000000'){ 
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
+				    ?>
+									$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'cells');
+						<?php 	}else if($this->session->userdata('filterHAPUS')){
+						?>
+									$("#jqxgrid_Golongan_D_hapus").jqxGrid('updatebounddata', 'cells');
+						<?php   }	
+						?>
+				    <?php	}else if($filter_golongan_invetaris=='0500000000'){ 
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
+				    ?>
+									$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'cells');
+						<?php 	}else if($this->session->userdata('filterHAPUS')){
+						?>
+									$("#jqxgrid_Golongan_E_hapus").jqxGrid('updatebounddata', 'cells');
+						<?php   }	
+						?>
+				    <?php	}else if($filter_golongan_invetaris=='0600000000'){ 
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
+				    ?>
+									$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'cells');
+						<?php 	}else if($this->session->userdata('filterHAPUS')){
+						?>
+									$("#jqxgrid_Golongan_F_hapus").jqxGrid('updatebounddata', 'cells');
+						<?php   }	
+						?>
+			    <?php		}	 
+						} 
+				?> 
 
+		}
+</script>
+
+<script>
 	$(function(){
 		
 	<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>		
@@ -1041,7 +1113,7 @@
 		});
 		<?php }} ?>
         $('#btn-refresh').click(function () {
-			$("#jqxgrid_barang").jqxGrid('clearfilters');
+			filter_jqxgrid_inv_barang();
 		});
 		$('#clearfilteringbutton').click(function () {
 			$("#jqxgrid_barang").jqxGrid('clearfilters');
@@ -1138,7 +1210,8 @@
 				<?php	} ;?>
 	     	</select>
 		  </div>
-		  <div class="col-md-3"><?php echo $this->session->userdata('filterGIB').'asdfsadfasdfasdf'.$this->session->userdata('filterHAPUS'); ?>
+		  <div class="col-md-3">
+		  	<?php echo 'session___'.'KIB =>'.$this->session->userdata('filterGIB').'   hapus =>'.$this->session->userdata('filterHAPUS').'   clphc =>'.$this->session->userdata('filter_cl_phc');; ?>
 	     		<select name="code_ruangan" class="form-control" id="code_ruangan">
 	     			<option value="">Pilih Ruangan</option>
 	     	</select>
@@ -1158,32 +1231,32 @@
 	    		if($filter_golongan_invetaris=='0100000000'){ ?>
 
 	            <li id="kibA">KIB A</li>
-	            <li id="hapusA">Barang Dihapus</li>
+	            <li id="hapusA">Barang Hapus A</li>
 
 	    <?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
 
 	            <li id="kibB">KIB B</li>
-	            <li id="hapusB">Barang Dihapus</li>
+	            <li id="hapusB">Barang Hapus B</li>
 
 	    <?php	}else if($filter_golongan_invetaris=='0300000000'){ ?>
 
 	            <li id="kibC">KIB C</li>
-	            <li id="hapusC">Barang Dihapus</li>
+	            <li id="hapusC">Barang Hapus C</li>
 
 	    <?php	}else if($filter_golongan_invetaris=='0400000000'){ ?>
 
 	            <li id="kibD">KIB D</li>
-	            <li id="hapusD">Barang Dihapus</li>
+	            <li id="hapusD">Barang Hapus D</li>
 
 	    <?php	}else if($filter_golongan_invetaris=='0500000000'){ ?>
 
 	            <li id="kibE">KIB E</li>
-	            <li id="hapusE">Barang Dihapus</li>
+	            <li id="hapusE">Barang Hapus E</li>
 
 	    <?php	}else if($filter_golongan_invetaris=='0600000000'){ ?>
 
 	            <li id="kibF">KIB F</li>
-	            <li id="hapusF">Barang Dihapus</li>
+	            <li id="hapusF">Barang Hapus F</li>
 	    <?php		}	 
 				} 
 		?> 
@@ -1237,7 +1310,18 @@
         
 <script type="text/javascript">
 $(function(){
-	$('#jqxtabs').jqxTabs({ width: "100%", });
+				<?php if(!isset($filterHAPUS) || $filterHAPUS !=''){ ?>
+						var indexxx = $.jqx.cookie.cookie("jqxTabs_jqxWidget__");
+				<?php }else{ ?>
+						var indexxx = 0;
+				<?php } ?>
+                
+                $('#jqxtabs').jqxTabs({selectedItem: indexxx, width: '100%',  position: 'top'});
+                // on to the select event.
+                $("#jqxtabs").on('selected', function (event) {
+                    // save the index in cookie.
+                    $.jqx.cookie.cookie("jqxTabs_jqxWidget__", event.args.item);
+                });
     $("#menu_inventory_inv_barang").addClass("active");
     $("#menu_inventory").addClass("active");
     $('#code_cl_phc').change(function(){
@@ -1249,6 +1333,7 @@ $(function(){
         data : 'code_cl_phc=' + code_cl_phc+'&id_mst_inv_ruangan=' + id_mst_inv_ruangan,
         success : function(data) {
           $('#code_ruangan').html(data);
+			filter_jqxgrid_inv_barang();
         }
       });
 
@@ -1259,102 +1344,102 @@ $(function(){
 			location.reload(); 
 		});
 	});
+			    <?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>	
+				     	$("#inventaris_").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#barang_hapus").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
 
+			    <?php	}else  if(isset($filter_golongan_invetaris)){
+			    		if($filter_golongan_invetaris=='0100000000'){ ?>
 
-    <?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>	
-	     	$("#inventaris_").click(function(){
-	     		alert('Inventaris_');
-	     	});
-	     	$("#barang_hapus").click(function(){
-	     		alert ('barang_hapus');
-	     	});
+			            $("#kibA").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#hapusA").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
+								$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
 
-    <?php	}else  if(isset($filter_golongan_invetaris)){
-    		if($filter_golongan_invetaris=='0100000000'){ ?>
+			    <?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
 
-            $("#kibA").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
-					$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-	     	$("#hapusA").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
-					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
+			            $("#kibB").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#hapusB").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
+								$("#jqxgrid_Golongan_B_hapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
 
-    <?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
+			    <?php	}else if($filter_golongan_invetaris=='0300000000'){ ?>
 
-            $("#kibB").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
-					$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-	     	$("#hapusB").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
-					$("#jqxgrid_Golongan_B_hapus").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
+			            $("#kibC").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#hapusC").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
+								$("#jqxgrid_Golongan_C_hapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
 
-    <?php	}else if($filter_golongan_invetaris=='0300000000'){ ?>
+			    <?php	}else if($filter_golongan_invetaris=='0400000000'){ ?>
 
-            $("#kibC").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
-					$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-	     	$("#hapusC").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
-					$("#jqxgrid_Golongan_C_hapus").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
+			            $("#kibD").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#hapusD").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
+								$("#jqxgrid_Golongan_D_hapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
 
-    <?php	}else if($filter_golongan_invetaris=='0400000000'){ ?>
+			    <?php	}else if($filter_golongan_invetaris=='0500000000'){ ?>
 
-            $("#kibD").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
-					$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-	     	$("#hapusD").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
-					$("#jqxgrid_Golongan_D_hapus").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
+			           $("#kibE").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#hapusE").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
+								$("#jqxgrid_Golongan_E_hapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
 
-    <?php	}else if($filter_golongan_invetaris=='0500000000'){ ?>
+			    <?php	}else if($filter_golongan_invetaris=='0600000000'){ ?>
 
-           $("#kibE").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
-					$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-	     	$("#hapusE").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
-					$("#jqxgrid_Golongan_E_hapus").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-
-    <?php	}else if($filter_golongan_invetaris=='0600000000'){ ?>
-
-            $("#kibF").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
-					$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-	     	$("#hapusF").click(function(){
-	     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
-					$("#jqxgrid_Golongan_F_hapus").jqxGrid('updatebounddata', 'cells');
-				});
-	     	});
-    <?php		}	 
-			} 
-		?> 
-
+			            $("#kibF").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+								$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+				     	$("#hapusF").click(function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+'0100000000',  function(){
+								$("#jqxgrid_Golongan_F_hapus").jqxGrid('updatebounddata', 'cells');
+							});
+				     	});
+			    <?php		}	 
+						} 
+					?> 
+		
 
   });
-
-
 </script>
     
 	

@@ -33,7 +33,7 @@ class Inv_barang_model extends CI_Model {
         $query = $this->db->get('mst_inv_pilihan'); 
         return $query->result();    
     }
-    function get_data($start=0,$limit=999999,$options=array())
+    function get_data($filter_clphc='',$start=0,$limit=999999,$options=array())
     {
         $query = $this->db->query(" (SELECT mst_inv_pilihan.value,
                                     inv_inventaris_barang.barang_kembar_proc,
@@ -45,6 +45,7 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang.pilihan_status_invetaris =
                                                  mst_inv_pilihan.code
                                                  AND tipe = 'status_inventaris'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -62,10 +63,11 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang.pilihan_status_invetaris =
                                                  mst_inv_pilihan.code
                                                  AND tipe = 'status_inventaris'
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-    function get_data_A($start=0,$limit=999999,$options=array())
+    function get_data_A($filter_clphc='',$start=0,$limit=999999,$options=array())
     {
         $query = $this->db->query("  (
                 SELECT   mst_inv_pilihan.value,
@@ -77,6 +79,7 @@ class Inv_barang_model extends CI_Model {
                 JOIN     mst_inv_pilihan
                 ON       inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code
                 AND      tipe='status_inventaris'
+                ".$filter_clphc."
                 WHERE    inv_inventaris_barang.id_pengadaan=0
                 AND      inv_inventaris_barang.pilihan_status_invetaris=3
                 GROUP BY inv_inventaris_barang.barang_kembar_proc)
@@ -95,6 +98,7 @@ class Inv_barang_model extends CI_Model {
                 ON         inv_inventaris_barang.pilihan_status_invetaris = mst_inv_pilihan.code
                 AND        tipe='status_inventaris'
                 AND        inv_inventaris_barang.pilihan_status_invetaris=3
+                ".$filter_clphc."
                 GROUP BY   inv_inventaris_barang.barang_kembar_proc 
         )");
         $query = $this->db->get($this->tabel,$limit,$start);
@@ -105,7 +109,7 @@ class Inv_barang_model extends CI_Model {
         $query = $this->db->get($table,$limit,$start);
         return $query->result();
     }
-    function get_data_golongan_A($where="",$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_A($filter_clphc='',$where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                     satuan.value                                      AS satuan,
                                     hak.value                                         AS hak,
@@ -132,6 +136,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS penggunaan
                                               ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
                                                  AND penggunaan.tipe = 'penggunaan'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0 
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -165,6 +170,7 @@ class Inv_barang_model extends CI_Model {
                                                     ON inv_pengadaan.id_pengadaan =
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
@@ -196,8 +202,8 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang_a.pilihan_penggunaan = penggunaan.code
                                                  AND penggunaan.tipe = 'penggunaan'
                                             JOIN inv_inventaris_distribusi 
-                                      ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                     AND inv_inventaris_distribusi.id_cl_phc = 'P3172100201')
+                                              ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
+                                                 AND inv_inventaris_distribusi.id_cl_phc = 'P3172100201')
                                                  WHERE  inv_inventaris_barang.id_pengadaan = 0
                                                  GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                                 UNION
@@ -238,7 +244,7 @@ class Inv_barang_model extends CI_Model {
         return $query->result();
     }
     
-    function get_data_golongan_B($where="",$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_B($filter_clphc='',$where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                     satuan.value                                      AS satuan,
                                     bahan.value                                  AS bahan,
@@ -261,6 +267,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS bahan
                                               ON inv_inventaris_barang_b.pilihan_bahan = bahan.code
                                                  AND bahan.tipe = 'bahan'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -290,10 +297,11 @@ class Inv_barang_model extends CI_Model {
                                                     ON inv_pengadaan.id_pengadaan =
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-    function get_data_golongan_C($where="",$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_C($filter_clphc='',$where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             hak.value                                         AS hak,
                                             tingkat.value                                     AS tingkat,
@@ -320,6 +328,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS beton
                                               ON inv_inventaris_barang_c.pilihan_kons_beton = beton.code
                                                  AND beton.tipe = 'kons_beton'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -353,10 +362,11 @@ class Inv_barang_model extends CI_Model {
                                                     ON inv_pengadaan.id_pengadaan =
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-    function get_data_golongan_D($where="",$start=0,$limit=999999,$options=array()){
+    function get_data_golongan_D($filter_clphc='',$where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             tanah.value                                      AS tanah,
                                             inv_inventaris_barang.barang_kembar_proc,
@@ -375,6 +385,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS tanah
                                               ON inv_inventaris_barang_d.pilihan_status_tanah = tanah.code
                                                  AND tanah.tipe = 'status_hak'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -400,10 +411,11 @@ class Inv_barang_model extends CI_Model {
                                                     ON inv_pengadaan.id_pengadaan =
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();
     }
-     function get_data_golongan_E($where="",$start=0,$limit=999999,$options=array()){
+     function get_data_golongan_E($filter_clphc='',$where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             bahan.value                                      AS bahan,
                                             satuan.value                                      AS satuan,
@@ -426,6 +438,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS satuan
                                               ON inv_inventaris_barang_e.pilihan_satuan = satuan.code
                                                  AND satuan.tipe = 'satuan'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -455,10 +468,11 @@ class Inv_barang_model extends CI_Model {
                                                     ON inv_pengadaan.id_pengadaan =
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc) ");
         return $query->result();
     }
-     function get_data_golongan_F($where="",$start=0,$limit=999999,$options=array()){
+     function get_data_golongan_F($filter_clphc='',$where="",$start=0,$limit=999999,$options=array()){
         $query = $this->db->query(" (SELECT mst_inv_barang.uraian,
                                             tingkat.value                                      AS tingkat,
                                             beton.value                                      AS beton,
@@ -485,6 +499,7 @@ class Inv_barang_model extends CI_Model {
                                             JOIN mst_inv_pilihan AS tanah
                                               ON inv_inventaris_barang_f.pilihan_status_tanah = tanah.code
                                                  AND tanah.tipe = 'status_hak'
+                                            ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
                                     UNION
@@ -518,6 +533,7 @@ class Inv_barang_model extends CI_Model {
                                                     ON inv_pengadaan.id_pengadaan =
                                                        inv_inventaris_barang.id_pengadaan
                                                        AND pilihan_status_pengadaan = 4
+                                            ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)   ");
         return $query->result();
     }
