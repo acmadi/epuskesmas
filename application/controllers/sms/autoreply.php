@@ -150,6 +150,8 @@ class Autoreply extends CI_Controller {
 			$data['title_group'] = "SMS Info";
 			$data['title_form']="Tambah Kata Kunci";
 			$data['action']="add";
+			$data['tgl_mulai'] 		= time();
+			$data['tgl_akhir'] 		= mktime(0,0,0,date("m")+1,date("d"),(date("Y")));
 
 			$data['menuoption'] 	= $this->autoreply_model->get_menu();
 			$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');
@@ -178,6 +180,8 @@ class Autoreply extends CI_Controller {
 			$data['title_form']	= "Ubah Kata Kunci";
 			$data['action']		= "edit";
 			$data['id']			= $id;
+			$data['tgl_mulai'] 		= strtotime($data['tgl_mulai'] );
+			$data['tgl_akhir'] 		= strtotime($data['tgl_akhir'] );
 
 			$data['menuoption'] 	= $this->autoreply_model->get_menu();
 			$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');

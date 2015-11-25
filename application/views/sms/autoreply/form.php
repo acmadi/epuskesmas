@@ -89,20 +89,18 @@
                   if(set_value('tgl_mulai')=="" && isset($tgl_mulai)){
                     $tgl_mulai = $tgl_mulai;
                   }else{
-                    $tgl_mulai = set_value('tgl_mulai');
+                    $tgl_mulai = strtotime(set_value('tgl_mulai'));
                   }
-                  ?>
-                  <div id='tgl_mulai' name="tgl_mulai" value="<?php echo date("Y-m-d",strtotime($tgl_mulai)); ?>"></div>
-                </div>
-                <div class="col-md-6">
-                   <?php 
                   if(set_value('tgl_akhir')=="" && isset($tgl_akhir)){
                     $tgl_akhir = $tgl_akhir;
                   }else{
-                    $tgl_akhir = set_value('tgl_akhir');
+                    $tgl_akhir = strtotime(set_value('tgl_akhir'));
                   }
                   ?>
-                  <div id='tgl_akhir' name="tgl_akhir" value="<?php echo date("Y-m-d",strtotime($tgl_akhir)); ?>"></div>
+                  <div id='tgl_mulai' name="tgl_mulai" value="<?php echo date("Y-m-d",$tgl_mulai); ?>"></div>
+                </div>
+                <div class="col-md-6">
+                  <div id='tgl_akhir' name="tgl_akhir" value="<?php echo date("Y-m-d",$tgl_akhir); ?>"></div>
                 </div>
               </div>
             </div>

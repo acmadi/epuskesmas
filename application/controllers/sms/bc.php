@@ -278,7 +278,7 @@ class Bc extends CI_Controller {
 
 			$data['harioption'] 	= array("0" => "Minggu", "1" => "Senin", "2" => "Selasa", "3" => "Rabu" ,"4" => "Kamis","5" => "Jumat","6" => "Sabtu");
 			$data['jenisoption'] 	= array("tidak" => "1x" ,"harian" => "Harian", "mingguan" => "Mingguan", "bulanan" => "Bulanan");
-			$data['statusoption'] 	= array("draft" => "Draft", "kirim" => "Kirim");
+			$data['statusoption'] 	= array("draft" => "Draft", "aktif" => "Aktif");
 			$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');
 
 			$data['tgl_mulai'] 		= time();
@@ -316,7 +316,7 @@ class Bc extends CI_Controller {
 			$data['is_harian'] 		= strtotime($data['is_harian'] );
 			$data['harioption'] 	= array("0" => "Minggu", "1" => "Senin", "2" => "Selasa", "3" => "Rabu" ,"4" => "Kamis","5" => "Jumat","6" => "Sabtu");
 			$data['jenisoption'] 	= array("tidak" => "1x" ,"harian" => "Harian", "mingguan" => "Mingguan", "bulanan" => "Bulanan");
-			$data['statusoption'] 	= array("draft" => "Draft", "kirim" => "Kirim");
+			$data['statusoption'] 	= array("draft" => "Draft", "aktif" => "Aktif");
 			$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');
 			$data['grupoption'] 	= $this->pbk_model->get_grupoption();
 
