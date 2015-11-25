@@ -21,10 +21,11 @@
       	<div class="box-footer">
 	      <div class="col-md-9">
 		 	<button type="button" class="btn btn-primary" onclick="document.location.href='<?php echo base_url()?>inventory/permohonanbarang/add'"><i class='fa fa-plus-square-o'></i> &nbsp; Tambah</button>
-		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+		 	<button type="button" class="btn btn-warning" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+		 	<button type="button" class="btn btn-success" id="btn-export"><i class='fa fa-file-excel-o'></i> &nbsp; Export</button>
 	     </div>
 	     <div class="col-md-3">
-	     		<select name="code_cl_phc" class="form-control">
+	     		<select name="code_cl_phc" id="puskesmas" class="form-control">
 	     			<option value="">Pilih Puskesmas</option>
 					<?php foreach ($datapuskesmas as $row ) { ;?>
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
@@ -203,4 +204,57 @@
 					$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 				});
             });
+			
+	$("#btn-export").click(function(){
+		
+		var post = "";
+		var filter = $("#jqxgrid").jqxGrid('getfilterinformation');
+		for(i=0; i < filter.length; i++){
+			var fltr 	= filter[i];
+			var value	= fltr.filter.getfilters()[0].value;
+			var condition	= fltr.filter.getfilters()[0].condition;
+			var filteroperation	= fltr.filter.getfilters()[0].operation;
+			var filterdatafield	= fltr.filtercolumn;
+			if(filterdatafield=="tgl"){
+				var d = new Date(value);
+				var day = d.getDate();
+				var month = d.getMonth();
+				var year = d.getYear();
+				value = year+'-'+month+'-'+day;
+				
+			}
+			post = post+'&filtervalue'+i+'='+value;
+			post = post+'&filtercondition'+i+'='+condition;
+			post = post+'&filteroperation'+i+'='+filteroperation;
+			post = post+'&filterdatafield'+i+'='+filterdatafield;
+			post = post+'&'+filterdatafield+'operator=and';
+		}
+		post = post+'&filterscount='+i;
+		
+		var sortdatafield = $("#jqxgrid").jqxGrid('getsortcolumn');
+		if(sortdatafield != "" && sortdatafield != null){
+			post = post + '&sortdatafield='+sortdatafield;
+		}
+		if(sortdatafield != null){
+			var sortorder = $("#jqxgrid").jqxGrid('getsortinformation').sortdirection.ascending ? "asc" : ($("#jqxgrid").jqxGrid('getsortinformation').sortdirection.descending ? "desc" : "");
+			post = post+'&sortorder='+sortorder;
+			
+		}
+		post = post+'&puskes='+$("#puskesmas option:selected").text();
+		
+		$.post("<?php echo base_url()?>inventory/permohonanbarang/permohonan_export",post,function(response	){
+			window.location.href=response;
+		});
+	});
 </script>
+
+
+
+
+
+
+
+
+
+
+
