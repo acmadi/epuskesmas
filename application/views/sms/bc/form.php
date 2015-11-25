@@ -29,6 +29,21 @@
         </div><!-- /.box-header -->
           <div class="box-body">
             <div class="form-group">
+              <label>Status</label>
+              <select name="status" class="form-control">
+                <?php 
+                if(set_value('status')=="" && isset($status)){
+                  $status = $status;
+                }else{
+                  $status = set_value('status');
+                }
+                ?>
+                <?php foreach ($statusoption as $row=>$val ) { ;?>
+                  <option value="<?php echo $row; ?>"  <?php echo ($status==$row ? "selected":"") ?>><?php echo $val; ?></option>
+                <?php }?>
+              </select>
+            </div>
+            <div class="form-group">
               <label>Kategori</label>
               <select name="id_sms_tipe" class="form-control">
                 <?php 
@@ -141,21 +156,6 @@
                           $str = $i<10 ? "0".$i : $i;
                       ?>
                         <option value="<?php echo $str; ?>"  <?php echo ($str==$is_bulanan ? "selected":"") ?>><?php echo $str; ?></option>
-                      <?php }?>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Status</label>
-                    <select name="status" class="form-control">
-                      <?php 
-                      if(set_value('status')=="" && isset($status)){
-                        $status = $status;
-                      }else{
-                        $status = set_value('status');
-                      }
-                      ?>
-                      <?php foreach ($statusoption as $row=>$val ) { ;?>
-                        <option value="<?php echo $row; ?>"  <?php echo ($status==$row ? "selected":"") ?>><?php echo $val; ?></option>
                       <?php }?>
                     </select>
                   </div>
