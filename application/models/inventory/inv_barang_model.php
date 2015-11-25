@@ -33,7 +33,7 @@ class Inv_barang_model extends CI_Model {
         $query = $this->db->get('mst_inv_pilihan'); 
         return $query->result();    
     }
-    function get_data($filter_clphc='',$start=0,$limit=999999,$options=array())
+    function get_data($filter_clphc='',$where="",$start=0,$limit=999999,$options=array())
     {
         $query = $this->db->query(" (SELECT mst_inv_pilihan.value,
                                     inv_inventaris_barang.barang_kembar_proc,
@@ -45,6 +45,7 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang.pilihan_status_invetaris =
                                                  mst_inv_pilihan.code
                                                  AND tipe = 'status_inventaris'
+                                            ".$where."
                                             ".$filter_clphc."
                                      WHERE  inv_inventaris_barang.id_pengadaan = 0
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)
@@ -63,6 +64,7 @@ class Inv_barang_model extends CI_Model {
                                               ON inv_inventaris_barang.pilihan_status_invetaris =
                                                  mst_inv_pilihan.code
                                                  AND tipe = 'status_inventaris'
+                                             ".$where."
                                             ".$filter_clphc."
                                      GROUP  BY inv_inventaris_barang.barang_kembar_proc)  ");
         return $query->result();

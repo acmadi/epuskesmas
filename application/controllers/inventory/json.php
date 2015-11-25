@@ -11,7 +11,7 @@ class Json extends CI_Controller {
 
 	
 
-	function Atanah(){
+	function json_barang(){
 		$this->authentication->verify('inventory','show');
 
 
@@ -35,15 +35,29 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
 		}else{
 			$filter_clphc='';
 		}
-		$rows_all = $this->inv_barang_model->get_data_A($filter_clphc);
+
+		if(($this->session->userdata('filterGIB') != '')) {
+			$rows_all = $this->inv_barang_model->get_data($filter_clphc,$where='');
+		}else if($this->session->userdata('filterHAPUS') != ''){
+			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
+			$rows_all = $this->inv_barang_model->get_data($filter_clphc,$where);
+		}else{
+			$rows_all = $this->inv_barang_model->get_data($filter_clphc,$where='');
+		}
 
 
 		if($_POST) {
@@ -66,8 +80,15 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if(($this->session->userdata('filterGIB') != '')) {
+			$rows = $this->inv_barang_model->get_data($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		}else if($this->session->userdata('filterHAPUS') != ''){
+			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
+			$rows = $this->inv_barang_model->get_data($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		}else{
+			$rows = $this->inv_barang_model->get_data($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		}
 		
-		$rows = $this->inv_barang_model->get_data_A($filter_clphc,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -84,7 +105,7 @@ class Json extends CI_Controller {
 				'tanggal_diterima'				=> $act->tanggal_diterima,
 				'waktu_dibuat'					=> $act->waktu_dibuat,
 				'terakhir_diubah'				=> $act->terakhir_diubah,
-				'value'				=> $act->value,
+				'value'							=> $act->value,
 				'edit'		=> 1,
 				'delete'	=> 1
 			);
@@ -102,7 +123,7 @@ class Json extends CI_Controller {
 	}
 
 
-	function Golongan_A(){
+	function golongan_a(){
 		$this->authentication->verify('inventory','show');
 
 
@@ -226,7 +247,7 @@ class Json extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-	function Golongan_B(){
+	function golongan_b(){
 		$this->authentication->verify('inventory','show');
 
 
@@ -338,7 +359,7 @@ class Json extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-	function Golongan_C(){
+	function golongan_c(){
 		$this->authentication->verify('inventory','show');
 
 
@@ -450,7 +471,7 @@ class Json extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-	function Golongan_D(){
+	function golongan_d(){
 		$this->authentication->verify('inventory','show');
 
 
@@ -559,7 +580,7 @@ class Json extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-	function Golongan_E(){
+	function golongan_e(){
 		$this->authentication->verify('inventory','show');
 
 
@@ -671,7 +692,7 @@ class Json extends CI_Controller {
 
 		echo json_encode(array($json));
 	}
-	function Golongan_F(){
+	function golongan_f(){
 		$this->authentication->verify('inventory','show');
 
 
