@@ -134,11 +134,17 @@ class Json extends CI_Controller {
 			$this->db->join('mst_inv_pilihan as hak',  "inv_inventaris_barang_a.pilihan_status_hak=hak.code AND hak.tipe='status_hak'"); 
 			$this->db->join('mst_inv_pilihan AS pengguna', "inv_inventaris_barang_a.pilihan_penggunaan=pengguna.code AND pengguna.tipe='penggunaan'" );
 		}*/
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan) ";
 		}else{
 			$filter_clphc='';
 		}
@@ -244,11 +250,17 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang_b.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
 		}else{
 			$filter_clphc='';
 		}
@@ -350,11 +362,17 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang_c.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
 		}else{
 			$filter_clphc='';
 		}
@@ -456,11 +474,17 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang_d.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
 		}else{
 			$filter_clphc='';
 		}
@@ -559,11 +583,17 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang_e.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
 		}else{
 			$filter_clphc='';
 		}
@@ -665,11 +695,17 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
+		}else{
+			$filter_ruangan='';
+		}
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
 			$filter_clphc="JOIN inv_inventaris_distribusi 
                                               ON (inv_inventaris_barang_f.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\")";
+                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
 		}else{
 			$filter_clphc='';
 		}

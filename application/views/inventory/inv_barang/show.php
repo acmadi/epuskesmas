@@ -75,7 +75,7 @@
 <script>
 	$(function(){
 		
-	<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>		
+	<?php 	if((!isset($filter_golongan_invetaris)) || ($filter_golongan_invetaris =='')){ ?>		
 	   var source = { 
 			datatype: "json",
 			type	: "POST",
@@ -1206,12 +1206,13 @@
 	     		<select name="code_cl_phc" class="form-control" id="code_cl_phc">
 	     			<option value="">Pilih Puskesmas</option>
 					<?php foreach ($datapuskesmas as $row ) { ;?>
+					<?php $select = $row->code == $filter_golongan_invetaris ? 'selected' : '' ?>
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
 	     	</select>
 		  </div>
 		  <div class="col-md-3">
-		  	<?php echo 'session___'.'KIB =>'.$this->session->userdata('filterGIB').'   hapus =>'.$this->session->userdata('filterHAPUS').'   clphc =>'.$this->session->userdata('filter_cl_phc');; ?>
+		  	<?php echo 'session___'.'filterruangan =>'.$this->session->userdata('filterruangan').'  filter_golongan_invetaris =>'.$this->session->userdata('filter_golongan_invetaris').'   KIB =>'.$this->session->userdata('filterGIB').'   hapus =>'.$this->session->userdata('filterHAPUS').'   clphc =>'.$this->session->userdata('filter_cl_phc');; ?>
 	     		<select name="code_ruangan" class="form-control" id="code_ruangan">
 	     			<option value="">Pilih Ruangan</option>
 	     	</select>
@@ -1335,8 +1336,20 @@ $(function(){
           $('#code_ruangan').html(data);
 			filter_jqxgrid_inv_barang();
         }
-      });
+    });
 
+      return false;
+    }).change();
+    $('#code_ruangan').change(function(){
+      var id_mst_inv_ruangan = $(this).val();
+      $.ajax({
+        url : '<?php echo site_url('inventory/inv_barang/get_ruangan_puskesmas') ?>',
+        type : 'POST',
+        data : 'idmstinvruangan=' + id_mst_inv_ruangan,
+        success : function(data) {
+			filter_jqxgrid_inv_barang();
+        }
+    });
       return false;
     }).change();
     $("#golongan_invetaris").change(function(){
@@ -1344,6 +1357,7 @@ $(function(){
 			location.reload(); 
 		});
 	});
+
 			    <?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>	
 				     	$("#inventaris_").click(function(){
 				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
@@ -1351,7 +1365,7 @@ $(function(){
 							});
 				     	});
 				     	$("#barang_hapus").click(function(){
-				     		$.post("<?php echo base_url().'inventory/inv_barang/filterGIB' ?>", 'filterGIB_='+ '0100000000',  function(){
+				     		$.post("<?php echo base_url().'inventory/inv_barang/filterHAPUS' ?>", 'filterHAPUS_='+ '0100000000',  function(){
 								$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'cells');
 							});
 				     	});
