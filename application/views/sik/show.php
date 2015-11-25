@@ -1,3 +1,4 @@
+<script type="text/javascript" language="javascript" src="<?php echo base_url()?>plugins/js/Chart.js"></script>
 <!-- Info boxes -->
 <div class="row">
   <div class="col-md-3 col-sm-6 col-xs-12">
@@ -55,8 +56,8 @@
     <div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Kondisi Aset per Puskesmas </h3>
-          <select name="bar_tipe" class="form-control" style="width:25%;float:right;margin-top:30px">
-            <option value="jml">Jumlah Aset</option>
+          <select name="bar_tipe" id="bar_tipe" class="form-control" style="width:25%;float:right;margin-top:30px">
+            <option value="jml" >Jumlah Aset</option>
             <option value="nilai">Nilai Aset</option>
           </select>
           <br>
@@ -91,8 +92,8 @@
       <div class="box-header with-border">
         <h3 class="box-title">Nilai Aset per Puskesmas </h3>        
           <select name="pie_tioe" class="form-control" style="width:40%;float:right;margin-top:10px">
-            <option value="jml">Jumlah Aset </option>
-            <option value="nilai">Nilai Aset</option>
+            <option value="jml" onchange="" >Jumlah Aset </option>
+            <option value="nilai" onchange="" >Nilai Aset</option>
           </select>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -132,8 +133,9 @@
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [<?php foreach ($j_barang_baik as $row) { echo $row->jml;  }?>,
-               59, 80, 81, 56, 55, 40]
+              data: [<?php foreach ($j_barang_baik as $row) { 
+                echo "\"".$row->jml."\",";  }
+              ?>]
             },
             {
               label: "Kurang Baik",
@@ -143,7 +145,7 @@
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [<?php foreach ($j_barang_rr as $row) { echo $row->jml;  }?>, 48, 40, 19, 86, 27, 20]
+              data: [<?php foreach ($j_barang_rr as $row) { echo "\"".$row->jml."\",";  }?>]
             },
             {
               label: "Rusak Berat",
@@ -153,7 +155,7 @@
               pointStrokeColor: "#c1c7d1",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [<?php foreach ($j_barang_rb as $row) { echo $row->jml;  }?>, 48, 40, 19, 36, 27, 40]
+              data: [<?php foreach ($j_barang_rb as $row)  { echo "\"".$row->jml."\",";  }?>]
             }
           ]
         };
@@ -205,48 +207,18 @@
         var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
         var pieChart = new Chart(pieChartCanvas);
         var PieData = [
-          {
-            value: 700,
-            color: "#00a65a",
-            highlight: "#00a65a",
-            label: "Matraman"
-          },
-          {
-            value: 700,
-            color: "#D00000",
-            highlight: "#D00000",
-            label: "Kayu Manis"
-          },
-          {
-            value: 700,
-            color: "#aaffcc",
-            highlight: "#aaffcc",
-            label: "Utan kayu utara"
-          },
-          {
-            value: 200,
-            color: "#eeddcc",
-            highlight: "#eeddcc",
-            label: "Utan Kayu Sel I"
-          },
-          {
-            value: 200,
-            color: "#aabbcc",
-            highlight: "#aabbcc",
-            label: "Utan Kayu Sel II"
-          },
-          {
-            value: 200,
-            color: "#aaaa00",
-            highlight: "#aaaa00",
-            label: "Pisang Baru"
-          },
-          {
-            value: 200,
-            color: "#ccff00",
-            highlight: "#ccff00",
-            label: "Palriem"
-          }
+          
+            <?php foreach ($nilai_aset as $row ) {
+              echo "
+            {
+            value: $row->nilai,
+            color: \"#00a65a\",
+            highlight: \"#00a65a\",
+            label: ".$row->value."
+            },";
+            }
+            ?>
+          
         ];
         var pieOptions = {
           //Boolean - Whether we should show a stroke on each segment
@@ -310,8 +282,17 @@
           maintainAspectRatio: false
         };
 
+
         barChartOptions.datasetFill = false;
         barChart.Bar(barChartData, barChartOptions);
+
+        $('#bar_tipe').change(function(){
+          $.post("<?php echo base_url().'morganisasi/filter' ?>", 'bar_tipe='+$(this).val(),  function(){
+            $("#barChart").barChartCanvas('updatebounddata', 'cells');
+            alert('x');
+
+          });
+            });
       });
     </script>
     <style type="text/css">
