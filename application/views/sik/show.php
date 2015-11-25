@@ -68,17 +68,20 @@
         <div class="box-body">
           <div class="chart">
             <canvas id="barChart" height="240" width="511" style="width: 511px; height: 240px;"></canvas>
-            <ul>
-              <li>
+           <!--  <ul>
+              <li class="bux">
+              Baik
+              </li>
+              <li class="bux1">
+                Rusak Ringan
+              </li>
+              <li class="bux2">
+                <div ></div>Rusak Berat
+              </li>
+            </ul> -->
               <div class="bux"></div>Baik
-              </li>
-              <li>
-                <div class="bux1"></div>Rusak Ringan
-              </li>
-              <li>
-                <div class="bux2"></div>Rusak Berat
-              </li>
-            </ul>
+              <div class="bux1"></div>Rusak Ringan
+              <div class="bux2"></div>Rusak Berat
           </div>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
@@ -313,31 +316,26 @@
     </script>
     <style type="text/css">
 
-    ul li{
-      list-style: none;
-      float: left;
-      margin-left: 10px;
-    }
       .bux{
         width: 10px;
         padding: 10px; 
-        margin-right: 20px;
+        margin-right: 40%;
         background-color: #20ad3a;
         margin: 0;
-        float: left;
+        /*float: left;*/
       }
       .bux1{
         width: 10px;
         padding: 10px;
         background-color: #ffb400;
         margin: 0;
-        float: left;
+        /*float: left;*/
       }
       .bux2{
         width: 10px;
         padding: 10px;
         background-color: #e02a11;
         margin: 0;
-        float: left;
+        /*float: left;*/
       }
     </style>
