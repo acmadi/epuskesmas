@@ -19,4 +19,13 @@ class Sms_model extends CI_Model {
 
         return $data;
     }
+
+    function get_sms_kategori()
+    {
+        $query = $this->db->query("SELECT sms_tipe.nama, COUNT(sms_opini.id_opini) AS jml FROM sms_opini 
+        INNER JOIN sms_tipe ON sms_opini.id_sms_tipe=sms_tipe.id_tipe 
+        GROUP BY sms_tipe.id_tipe ORDER BY 'nama' asc");
+
+        return $query->result();
+    }
 }

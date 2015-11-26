@@ -13,7 +13,12 @@ class Sms extends CI_Controller {
 		$data['title_group'] = "SMS";
 		$data['title_form'] = "Dashboard";
 
+		$data['sms_kategori'] = $this->sms_model->get_sms_kategori();
+		// var_dump($data['sms_kategori']);
+		// exit();
+
 		$data['content'] = $this->parser->parse("sms/show",$data,true);
 		$this->template->show($data,'home');
 	}
+
 }
