@@ -73,7 +73,7 @@
 
 <script>
 	$(function () {	
-		$("#menu_mst_inv_ruangan").addClass("active");
-		$("#menu_parameter").addClass("active");
+		$("#menu_inventory").addClass("active");
+		$("#menu_inventory_inv_ruangan").addClass("active");
 	});
 </script>

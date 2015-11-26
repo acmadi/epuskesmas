@@ -5,6 +5,7 @@ class Distribusibarang extends CI_Controller {
 		parent::__construct();
 		$this->load->model('mst/puskesmas_model');
 		$this->load->model('inventory/pengadaanbarang_model');
+		$this->load->model('inventory/distribusibarang_model');
 		$this->load->model('inventory/inv_barang_model');
 		$this->load->model('inventory/inv_ruangan_model');
 	}
@@ -34,7 +35,7 @@ class Distribusibarang extends CI_Controller {
 			}
 		}
 		
-		$rows_all = $this->pengadaanbarang_model->get_data();
+		$rows_all = $this->distribusibarang_model->get_data();
 
 
 		if($_POST) {
@@ -58,20 +59,17 @@ class Distribusibarang extends CI_Controller {
 			}
 		}
 		
-		$rows = $this->pengadaanbarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->distribusibarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
-				'id_pengadaan' 				=> $act->id_pengadaan,
-				'tgl_pengadaan' 			=> $act->tgl_pengadaan,
-				'pilihan_status_pengadaan' 	=> $act->pilihan_status_pengadaan,
-				'value' 					=> $act->value,
-				'jumlah_unit'				=> $act->jumlah_unit,
-				'nilai_pengadaan'			=> number_format($act->nilai_pengadaan,2),
-				'keterangan'				=> $act->keterangan,
-				'detail'					=> 1,
-				'edit'						=> 1,
-				'delete'					=> 1
+				'kode_barang' 		=> $act->id_inventaris_barang,
+				'register' 			=> $act->register,
+				'nama_barang' 		=> $act->nama_barang,
+				'harga' 			=> $act->harga,
+				'kondisi'			=> $act->pilihan_keadaan_barang." - ".$act->val,				
+				'edit'				=> $act->id_inventaris_barang,
+				'delete'			=> $act->id_inventaris_barang
 			);
 		}
 
@@ -86,6 +84,43 @@ class Distribusibarang extends CI_Controller {
 		echo json_encode(array($json));
 	}
 	
+	public function pop_add($data_barang)
+	{	
+		$data['action']			= "add";
+		
+		
+        $this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
+        $this->form_validation->set_rules('code_cl_phc2', 'Data Puskesmas', 'trim|required');
+        $this->form_validation->set_rules('code_ruangan2', 'Data Ruangan', 'trim|required');
+        $this->form_validation->set_rules('data_barang', 'Data Barang', 'trim|required');
+		
+		if($this->form_validation->run()== FALSE){
+			/*$data['kodebarang']		= $this->permohonanbarang_model->get_databarang();
+			$data['notice']			= validation_errors();
+			*/
+			
+			$kodepuskesmas = $this->session->userdata('puskesmas');
+			if(substr($kodepuskesmas, -2)=="01"){
+				$this->db->like('code','P'.substr($kodepuskesmas, 0,7));
+			}else {
+				$this->db->like('code','P'.$kodepuskesmas);
+			}
+			$data['datapuskesmas'] 	= $this->inv_barang_model->get_data_puskesmas();
+			$data['data_barang'] 	= $data_barang;
+			$data['notice']			= validation_errors();
+			die($this->parser->parse('inventory/distribusi_barang/pop_add', $data));
+		}else{
+
+			if($this->distribusibarang_model->add_distribusi()){			
+
+				die("OK|");
+			}else{
+				die("Error|Proses data gagal");
+			}
+			
+		}
+	}
+	
 	function index(){
 		$this->authentication->verify('inventory','edit');
 		$data['title_group'] = "Inventory";
@@ -98,7 +133,7 @@ class Distribusibarang extends CI_Controller {
 			$this->db->like('code','P'.$kodepuskesmas);
 		}
 		$data['datapuskesmas'] 	= $this->inv_barang_model->get_data_puskesmas();
-
+		$data['pilih_kondisi'] = $this->distribusibarang_model->get_pilihan_kondisi();
 		$data['content'] = $this->parser->parse("inventory/distribusi_barang/show",$data,true);
 		$this->template->show($data,"home");
 	}
@@ -124,6 +159,49 @@ class Distribusibarang extends CI_Controller {
 		}
 
 		show_404();
+	}
+	
+	function update_data(){
+		$this->form_validation->set_rules('kondisi', 'Kondisi Barang', 'trim|required');
+		$this->form_validation->set_rules('register', 'Register', 'trim|required');
+		
+		if($this->form_validation->run()== FALSE){
+			echo validation_errors();
+		}else{
+			$this->distribusibarang_model->update_register();
+			$this->distribusibarang_model->update_kondisi();
+		}
+		
+	}
+	
+	
+	public function get_ruangan_pop()
+	{
+		if($this->input->is_ajax_request()) {
+			$code_cl_phc = $this->input->post('code_cl_phc');
+			$id_mst_inv_ruangan = $this->input->post('id_mst_inv_ruangan');
+
+			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$code_cl_phc)->result();
+			
+			foreach($kode as $kode) :
+				echo $select = $kode->id_mst_inv_ruangan == $id_mst_inv_ruangan ? 'selected' : '';
+				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
+			endforeach;
+
+			return FALSE;
+		}
+
+		show_404();
+	}
+	
+	function set_filter(){
+		if(!empty($this->input->post('code_cl_phc'))){
+			$this->session->set_userdata('code_cl_phc',$this->input->post('code_cl_phc'));			
+		}
+		
+		if(!empty($this->input->post('code_ruangan'))){
+			$this->session->set_userdata('code_ruangan',$this->input->post('code_ruangan'));
+		}
 	}
 
 }
