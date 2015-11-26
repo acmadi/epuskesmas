@@ -12,6 +12,8 @@ class Pbk extends CI_Controller {
 		$data['title_group'] = "Buku Telepon";
 		$data['title_form'] = "Nomor Terdaftar";
 
+		$this->session->unset_userdata('filter_id_sms_grup');
+
 		$data['grupoption'] 	= $this->pbk_model->get_grupoption();
 		$data['content'] = $this->parser->parse("sms/pbk/show",$data,true);
 
@@ -33,6 +35,12 @@ class Pbk extends CI_Controller {
 				if($field == 'created_on') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->like("sms_pbk.created_on",$value);
+				}
+				elseif($field == 'nama') {
+					$this->db->like("sms_pbk.nama",$value);
+				}
+				elseif($field == 'nama_grup') {
+					$this->db->like("sms_grup.nama",$value);
 				}else{
 					$this->db->like($field,$value);
 				}
@@ -58,6 +66,12 @@ class Pbk extends CI_Controller {
 				if($field == 'created_on') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->like("sms_pbk.created_on",$value);
+				}
+				elseif($field == 'nama') {
+					$this->db->like("sms_pbk.nama",$value);
+				}
+				elseif($field == 'nama_grup') {
+					$this->db->like("sms_grup.nama",$value);
 				}else{
 					$this->db->like($field,$value);
 				}

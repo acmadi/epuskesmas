@@ -70,10 +70,10 @@ class Inbox extends CI_Controller {
 			$data[] = array(
 				'no'				=> $no++,
 				'ID'				=> $act->ID,
-				'SenderNumber'		=> $act->SenderNumber,
-				'TextDecoded'		=> $act->TextDecoded,
-				'Processed'			=> ucwords($act->Processed),
-				'ReceivingDateTime'	=> $act->ReceivingDateTime,
+				'SenderNumber'		=> ($act->Processed=="false" ? "<b>".$act->SenderNumber."</b>" : ucwords($act->SenderNumber)),
+				'TextDecoded'		=> ($act->Processed=="false" ? "<b>".$act->TextDecoded."</b>" : ucwords($act->TextDecoded)),
+				'Processed'			=> ($act->Processed=="false" ? "<b>".ucwords($act->Processed)."</b>" : ucwords($act->Processed)),
+				'ReceivingDateTime'	=> ($act->Processed=="false" ? "<b>".$act->ReceivingDateTime."</b>" : ucwords($act->ReceivingDateTime)),
 				'edit'				=> 1,
 				'delete'			=> 1
 			);

@@ -36,7 +36,7 @@
 			
 		}
 		function create_menu($posisi, $subid){
-			$query=$this->obj->db->query("select app_menus.id, app_files.id as idmenu, filename, module from ".$this->app_menus." inner join ".$this->app_files." on ".$this->app_menus.".file_id = ".$this->app_files.".id inner join ".$this->app_users_access." using(file_id) where level_id='".$this->obj->session->userdata('level')."' and position = ".$posisi." and sub_id =".$subid." and lang = '".$_SESSION['lang']."' order by sort asc");
+			$query=$this->obj->db->query("select app_menus.id, app_files.id as idmenu, filename, module from ".$this->app_menus." inner join ".$this->app_files." on ".$this->app_menus.".file_id = ".$this->app_files.".id inner join ".$this->app_users_access." using(file_id) where level_id='".$this->obj->session->userdata('level')."' and position = ".$posisi." and sub_id =".$subid." and lang = '".$_SESSION['lang']."'  and doshow=1 order by sort asc");
 			$icon = array(
 				"menus" => "fa fa-cogs",
 				"submenu" => "fa fa-circle-o",
