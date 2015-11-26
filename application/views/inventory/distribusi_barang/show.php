@@ -21,7 +21,7 @@
       	<div class="box-footer">
 		  <div class="col-md-3">
      		<select name="code_cl_phc" class="form-control" id="code_cl_phc">
-     			<option value="">Pilih Puskesmas</option>
+     			<option value="none">Pilih Puskesmas</option>
 				<?php foreach ($datapuskesmas as $row ) { ;?>
 					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
 				<?php	} ;?>
@@ -29,12 +29,12 @@
 		  </div>
 		  <div class="col-md-3">
 	     		<select name="code_ruangan" class="form-control" id="code_ruangan">
-     				<option value="">Pilih Ruangan</option>
+     				<option value="0">Pilih Ruangan</option>
 	     		</select>
 		  </div>
 	      <div class="col-md-6" style="text-align:right">
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
-		 	<button type="button" class="btn btn-primary" id="btn-warning"><i class='fa fa-sign-in'></i> &nbsp; Alokasikan Aset	</button>
+		 	<button type="button" onclick="doList()" class="btn btn-primary" id="btn-warning"><i class='fa fa-sign-in'></i> &nbsp; Alokasikan Aset	</button>
 	     </div>
 		</div>
         <div class="box-body">
@@ -50,10 +50,16 @@
 
 <script type="text/javascript">
 	$(function () {	
+		
 	    $("#menu_inventory").addClass("active");
 	    $("#menu_inventory_distribusibarang").addClass("active");
-
+		
+		
+		
+		
 	    $('#code_cl_phc').change(function(){
+			
+			
 	      var code_cl_phc = $(this).val();
 	      $.ajax({
 	        url : '<?php echo site_url('inventory/distribusibarang/get_ruangan') ?>',
@@ -63,28 +69,65 @@
 	          $('#code_ruangan').html(data);
 	        }
 	      });
+			var selects = document.getElementById("code_ruangan");
+			var selectedValue = selects.options[selects.selectedIndex].value;
+		  $.ajax({
+	        url : '<?php echo site_url('inventory/distribusibarang/set_filter') ?>',
+	        type : 'POST',
+	        data : 'code_cl_phc=' + code_cl_phc+'&code_ruangan='+selectedValue,
+	        success : function(data) {
+	          $("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+	        }
+	      });
 
 	      return false;
 	    }).change();
+		
+		$('#code_ruangan').change(function(){
+	      var code_ruangan = $(this).val();
+	      $.ajax({
+	        url : '<?php echo site_url('inventory/distribusibarang/set_filter') ?>',
+	        type : 'POST',
+	        data : 'code_ruangan=' + code_ruangan,
+	        success : function(data) {
+	          $("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+	        }
+	      });
+
+	      return false;
+	    }).change();
+		
+		
 	});
 
 	   var source = {
 			datatype: "json",
 			type	: "POST",
 			datafields: [
-			{ name: 'id_pengadaan', type: 'number'},
-			{ name: 'tgl_pengadaan', type: 'date'},
-			{ name: 'pilihan_status_pengadaan', type: 'string'},
-			{ name: 'value', type: 'string'},
-			{ name: 'jumlah_unit', type: 'double'},
-			{ name: 'total_harga', type: 'double'},
-			{ name: 'nilai_pengadaan', type: 'double'},
-			{ name: 'keterangan', type: 'text'},
+			{ name: 'kode_barang', type: 'string'},
+			{ name: 'register', type: 'string'},
+			{ name: 'nama_barang', type: 'string'},
+			{ name: 'harga', type: 'number'},
+			{ name: 'kondisi', type: 'string'},
+			{ name: 'id', type: 'number'},
+			{ name: 'delete', type: 'number'}
         ],
-		url: "<?php echo site_url('inventory/pengadaanbarang/json'); ?>",
+		url: "<?php echo site_url('inventory/distribusibarang/json'); ?>",		
 		cache: false,
-			updateRow: function (rowID, rowData, commit) {
-             
+		updateRow: function (rowID, rowData, commit) {
+			 commit(true);
+             var arr = $.map(rowData, function(el) { return el });																														
+				//alert(arr);
+			var id_ruang = document.getElementById('code_ruangan').value;
+			var code_cl_phc = document.getElementById('code_cl_phc').value;
+			$.post( '<?php echo base_url()?>inventory/distribusibarang/update_data', {id_ruang:id_ruang, code_cl_phc:code_cl_phc, id_barang:arr[0], register:arr[1], kondisi:arr[4]},function( data ) {
+					if(!empty(data)){
+						alert(data);									
+						$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+					}
+					
+			});
+					
          },
 		filter: function(){
 			$("#jqxgrid").jqxGrid('updatebounddata', 'filter');
@@ -123,14 +166,77 @@
 			columns: [
 				{ text: 'Pilih', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-					return "<div style='width:100%;padding-top:2px;text-align:center'><input type='checkbox' name='aset' id='aset_"+dataRecord.id_pengadaan+"'></div>";
+					return "<div style='width:100%;padding-top:2px;text-align:center'><input type='checkbox' name='aset[]' value="+dataRecord.kode_barang+"_td_"+dataRecord.nama_barang+"_td_"+dataRecord.kondisi+" ></div>";
                  }
                 },
-				{ text: 'Kode Barang',editable:false , columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Register',editable:false , columntype: 'textbox', filtertype: 'textbox', width: '10%' },
-				{ text: 'Nama Barang',editable:false , columntype: 'textbox', filtertype: 'textbox', width: '40%' },
-				{ text: 'Harga Satuan (Rp.)', editable:false ,columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Kondisi Barang', editable:false ,columntype: 'textbox', filtertype: 'textbox', width: '15%' }
+				{ text: 'Kode Barang',editable:false , datafield: 'kode_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register',editable:true ,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Nama Barang',editable:false , datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '40%' },
+				{ text: 'Harga Satuan (Rp.)', editable:false , datafield: 'harga',columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				//{ text: 'Kondisi Barang', editable:false ,columntype: 'textbox', datafield: 'kondisi', filtertype: 'textbox', width: '15%' },
+				{
+                        text: 'Kondisi Barang', datafield: 'kondisi', width: '15%', columntype: 'dropdownlist',
+                        createeditor: function (row, column, editor) {
+                            // assign a new data source to the dropdownlist.
+                            var list = [<?php foreach ($pilih_kondisi as $r) {?>
+							//"<?php echo $r->id." - ".$r->val; ?>",
+							"<?php echo $r->id." - ".$r->val; ?>",
+							<?php } ?>];
+                            editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
+                        },
+                        // update the editor's value before saving it.
+                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                            // return the old value, if the new value is empty.
+                            if (newvalue == "") return oldvalue;
+                        }
+                 }
             ]
 		});
+		
+	function close_popup(){
+		$("#popup_barang").jqxWindow('close');
+	}
+
+	function add_barang(data_barang){
+		$("#popup_barang #popup_content").html("<div style='text-align:center'><br><br><br><br><img src='<?php echo base_url();?>media/images/indicator.gif' alt='loading content.. '><br>loading</div>");
+		$.get("<?php echo base_url().'inventory/distribusibarang/pop_add'; ?>"+data_barang ,  function(data) {
+			$("#popup_content").html(data);
+		});
+		$("#popup_barang").jqxWindow({
+			theme: theme, resizable: false,
+			width: 700,
+			height: 600,
+			isModal: true, autoOpen: false, modalOpacity: 0.2
+		});
+		$("#popup_barang").jqxWindow('open');
+	}
+	
+	function doList(){				
+		var values = new Array();	
+		var	data_barang = "/";
+		$.each($("input[name='aset[]']:checked"), function() {
+		  values.push($(this).val());		
+		});
+		//alert(values);
+		
+		if(values.length > 0){
+			for(i=0; i<values.length; i++){
+				data_barang = data_barang+values[i]+"_tr_";
+			}
+			add_barang(data_barang);
+		}else{
+			alert('Silahkan Pilih Barang Terlebih Dahulu');
+		}
+		//alert(data_barang);
+		
+		
+		
+		
+		
+	}
 </script>
+
+<div id="popup_barang" style="display:none">
+	<div id="popup_title">Distribusi Barang</div>
+	<div id="popup_content">&nbsp;</div>
+</div>
