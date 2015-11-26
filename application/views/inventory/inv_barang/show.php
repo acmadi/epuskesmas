@@ -7,9 +7,9 @@
 	function filter_jqxgrid_inv_barang(){
 			<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ 
 							if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
-				     		$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+				     			$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
 					<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
-				     		$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'cells');
+				     			$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'cells');
 				    <?php   }	?>
 		    <?php	}else  if(isset($filter_golongan_invetaris)){
 				    		if($filter_golongan_invetaris=='0100000000'){ 
@@ -19,51 +19,36 @@
 									$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
 						<?php   }	?>
 				    <?php	}else if($filter_golongan_invetaris=='0200000000'){ 
-				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
-				    ?>
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){?>
 									$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'cells');
-						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){
-						?>
+						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){?>
 									$("#jqxgrid_Golongan_B_hapus").jqxGrid('updatebounddata', 'cells');
-						<?php   }	
-						?>		
+						<?php   }?>		
 				    <?php	}else if($filter_golongan_invetaris=='0300000000'){ 
-				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){	
-				    ?>
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){	?>
 									$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'cells');
-						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){
-						?>
+						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){?>
 									$("#jqxgrid_Golongan_C_hapus").jqxGrid('updatebounddata', 'cells');
-						<?php   }	
-						?>
+						<?php   }	?>
 				    <?php	}else if($filter_golongan_invetaris=='0400000000'){ 
-				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
-				    ?>
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){?>
 									$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'cells');
-						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){
-						?>
+						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){?>
 									$("#jqxgrid_Golongan_D_hapus").jqxGrid('updatebounddata', 'cells');
-						<?php   }	
-						?>
+						<?php   }	?>
 				    <?php	}else if($filter_golongan_invetaris=='0500000000'){ 
-				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
-				    ?>
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){?>
 									$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'cells');
-						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){
-						?>
+						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){?>
 									$("#jqxgrid_Golongan_E_hapus").jqxGrid('updatebounddata', 'cells');
-						<?php   }	
-						?>
+						<?php   }	?>
 				    <?php	}else if($filter_golongan_invetaris=='0600000000'){ 
-				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){
-				    ?>
+				    			if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){?>
 									$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'cells');
-						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){
-						?>
+						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){?>
 									$("#jqxgrid_Golongan_F_hapus").jqxGrid('updatebounddata', 'cells');
 						<?php   }	
-						?>
-			    <?php		}	 
+			    			}	 
 						} 
 				?> 
 
@@ -257,15 +242,21 @@
 			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'satuan', type: 'string' },
 			{ name: 'hak', type: 'string' },
-			{ name: 'penggunaan', type: 'string' },
 			{ name: 'uraian', type: 'string' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'penggunaan', type: 'string' },
+			{ name: 'asal_usul', type: 'string' },
+			{ name: 'keterangan_pengadaan', type: 'text' },
+			{ name: 'register', type: 'string' },
+			{ name: 'id_ruangan', type: 'string' },
 			{ name: 'luas', type: 'double' },
 			{ name: 'jumlah', type: 'double' },
 			{ name: 'jumlah_satuan', type: 'string' },
+			{ name: 'harga', type: 'string' },
 			{ name: 'alamat', type: 'text' },
 			{ name: 'pilihan_satuan_barang', type: 'string' },
 			{ name: 'pilihan_status_hak', type: 'number' },
-			{ name: 'status_sertifikat_tanggal', type: 'double' },
+			{ name: 'status_sertifikat_tanggal', type: 'date' },
 			{ name: 'status_sertifikat_nomor', type: 'string' },
 			{ name: 'pilihan_penggunaan', type: 'number' },
 			{ name: 'edit', type: 'number'},
@@ -276,10 +267,21 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
+		<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+					$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
+		<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
+		<?php   }	?>
+
 		},
 		sort: function(){
-			$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'sort');
+
+		<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+					$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
+		<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
+		<?php   }	?>
+
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -307,7 +309,7 @@
 			},
 
 			columns: [
-			<?php if(!isset($viewreadonly)){?>	{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
+			{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_Golongan_A").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
@@ -324,19 +326,28 @@
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
-                },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Luas ', editable: false,datafield: 'luas', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Alamat',editable: false, datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Jumlah Barang',editable: false, datafield: 'jumlah_satuan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Hak', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Tanggal Sertifikat',editable: false,datafield: 'status_sertifikat_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
-				{ text: 'Nomor Sertifikat', editable: false,datafield: 'status_sertifikat_nomor', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Pilihan Penggunaan', editable: false,datafield: 'penggunaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
-
+                },
+				{ text: 'Kode Barang',columngroup: 'nomor', editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
+				{ text: 'Register ', columngroup: 'nomor', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Nama/Jenis Barang ', columngroup: 'spesifikasi',editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Luas ',columngroup: 'spesifikasi', editable: false,datafield: 'luas', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Satuan',columngroup: 'spesifikasi',editable: false, datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Alamat',columngroup: 'spesifikasi',editable: false, datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Hak',columngroup: 'statustanah', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Tanggal Sertifikat',columngroup: 'statustanah',editable: false,datafield: 'status_sertifikat_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Nomor Sertifikat',columngroup: 'statustanah', editable: false,datafield: 'status_sertifikat_nomor', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Penggunaan', editable: false,datafield: 'penggunaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Harga (Rp.)', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
 				
-           ]
+				],
+				 columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Spesifikasi Barang', align: 'center', name: 'spesifikasi' },
+                  { text: 'Status Tanah',align: 'center', name: 'statustanah' },
+                ]
 		});
 		$("#jqxgrid_Golongan_A_hapus").jqxGrid(
 		{	
@@ -350,7 +361,7 @@
 			},
 
 			columns: [
-			<?php if(!isset($viewreadonly)){?>	{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
+			{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_Golongan_A_hapus").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
@@ -367,19 +378,28 @@
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
-                },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Luas ', editable: false,datafield: 'luas', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Alamat',editable: false, datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Jumlah Barang',editable: false, datafield: 'jumlah_satuan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Hak', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Tanggal Sertifikat',editable: false,datafield: 'status_sertifikat_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
-				{ text: 'Nomor Sertifikat', editable: false,datafield: 'status_sertifikat_nomor', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Pilihan Penggunaan', editable: false,datafield: 'penggunaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
-
+                },
+				{ text: 'Kode Barang',columngroup: 'nomor', editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '8%' },
+				{ text: 'Register ', columngroup: 'nomor', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Nama/Jenis Barang ', columngroup: 'spesifikasi',editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Luas',columngroup: 'spesifikasi', editable: false,datafield: 'luas', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Satuan',columngroup: 'spesifikasi',editable: false, datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Alamat',columngroup: 'spesifikasi',editable: false, datafield: 'alamat', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Hak',columngroup: 'statustanah', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Tanggal Sertifikat',columngroup: 'statustanah',editable: false,datafield: 'status_sertifikat_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Nomor Sertifikat',columngroup: 'statustanah', editable: false,datafield: 'status_sertifikat_nomor', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Penggunaan', editable: false,datafield: 'penggunaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Harga (Rp.)', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
 				
-           ]
+				],
+				 columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Spesifikasi Barang', align: 'center', name: 'spesifikasi' },
+                  { text: 'Status Tanah',align: 'center', name: 'statustanah' },
+                ]
 		});
 
 		<?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
@@ -394,6 +414,13 @@
 			{ name: 'id_pengadaan', type: 'number' },
 			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'merek_type', type: 'text' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'penggunaan', type: 'string' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'register', type: 'string' },
+			{ name: 'harga', type: 'string' },
+			{ name: 'asal_usul', type: 'string' },
+			{ name: 'keterangan_pengadaan', type: 'string' },
 			{ name: 'identitas_barang', type: 'text' },
 			{ name: 'bahan', type: 'string' },
 			{ name: 'satuan', type: 'string' },
@@ -462,17 +489,31 @@
 					}
                  }
                 },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Merek Tipe ', editable: false,datafield: 'merek_type', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Identitas Barang',editable: false, datafield: 'identitas_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Kode Barang',columngroup: 'nomor',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ', columngroup: 'nomor',editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Nama/Jenis Barang ',columngroup: 'spesifikasi', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Merek Tipe ', columngroup: 'spesifikasi',editable: false,datafield: 'merek_type', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'No. Sertifikat /No.Pabrik/No.Chasis/No.Mesin',columngroup: 'spesifikasi',editable: false, datafield: 'identitas_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Pilihan Bahan', editable: false,datafield: 'bahan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Ukuran Barang ', editable: false,datafield: 'ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Asal/Cara Perolehan Barang', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Tahun Pembelian',editable: false,datafield: 'tanggal_perolehan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Ukuran Barang / Konstruksi (P, S, D) ', editable: false,datafield: 'ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Satuan', editable: false,datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Keadaan Barang (B/KB/RB)', editable: false,datafield: 'keadaan_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Jumlah', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Harga', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Tanggal BPKB',editable: false,datafield: 'tanggal_bpkb', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
 				{ text: 'Nomor BPKB ', editable: false,datafield: 'nomor_bpkb', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'No Polisi ', editable: false,datafield: 'no_polisi', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Perolehan',editable: false,datafield: 'tanggal_perolehan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
-           ]
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
+				],
+				columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Spesifikasi Barang', align: 'center', name: 'spesifikasi' },
+                  { text: 'Jumlah',align: 'center', name: 'jumlah' },
+                ]
+           
 		});
 		
 		$("#jqxgrid_Golongan_B_hapus").jqxGrid(
@@ -505,17 +546,30 @@
 					}
                  }
                 },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Merek Tipe ', editable: false,datafield: 'merek_type', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Identitas Barang',editable: false, datafield: 'identitas_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Kode Barang',columngroup: 'nomor',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ', columngroup: 'nomor',editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Nama/Jenis Barang ',columngroup: 'spesifikasi', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Merek Tipe ', columngroup: 'spesifikasi',editable: false,datafield: 'merek_type', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'No. Sertifikat /No.Pabrik/No.Chasis/No.Mesin',columngroup: 'spesifikasi',editable: false, datafield: 'identitas_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Pilihan Bahan', editable: false,datafield: 'bahan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Ukuran Barang ', editable: false,datafield: 'ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Asal/Cara Perolehan Barang', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Tahun Pembelian',editable: false,datafield: 'tanggal_perolehan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Ukuran Barang / Konstruksi (P, S, D) ', editable: false,datafield: 'ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Satuan', editable: false,datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Keadaan Barang (B/KB/RB)', editable: false,datafield: 'keadaan_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Jumlah', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Harga', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Tanggal BPKB',editable: false,datafield: 'tanggal_bpkb', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
 				{ text: 'Nomor BPKB ', editable: false,datafield: 'nomor_bpkb', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'No Polisi ', editable: false,datafield: 'no_polisi', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Perolehan',editable: false,datafield: 'tanggal_perolehan', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
-           ]
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
+				],
+				columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Spesifikasi Barang', align: 'center', name: 'spesifikasi' },
+                  { text: 'Jumlah',align: 'center', name: 'jumlah' },
+                ]
 		});
 		
 		<?php	}else if($filter_golongan_invetaris=='0300000000'){ ?>
@@ -531,7 +585,13 @@
 			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'luas_lantai', type: 'string' },
 			{ name: 'hak', type: 'string' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'register', type: 'string' },
+			{ name: 'keterangan_pengadaan', type: 'string' },
+			{ name: 'asal_usul', type: 'string' },
+			{ name: 'id_ruangan', type: 'string' },
 			{ name: 'tingkat', type: 'string' },
+			{ name: 'harga', type: 'string' },
 			{ name: 'beton', type: 'string' },
 			{ name: 'letak_lokasi_alamat', type: 'text' },
 			{ name: 'pillihan_status_hak', type: 'string' },
@@ -579,7 +639,7 @@
 			},
 
 			columns: [
-			<?php if(!isset($viewreadonly)){?>	{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
+			{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_Golongan_C").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
@@ -596,18 +656,28 @@
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
-                },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Luas Lantai ', editable: false,datafield: 'luas_lantai', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Lokasi Alamat',editable: false, datafield: 'letak_lokasi_alamat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Status Hak', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Kontruksi Tingkat ', editable: false,datafield: 'tingkat', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Kontruksi Beton ', editable: false,datafield: 'beton', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+                },
+				{ text: 'Kode Barang',columngroup: 'nomor',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ',columngroup: 'nomor', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Nama Barang ', columngroup: 'spesifikasi',editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Luas Lantai ', columngroup: 'spesifikasi',editable: false,datafield: 'luas_lantai', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Lokasi Alamat',columngroup: 'spesifikasi',editable: false, datafield: 'letak_lokasi_alamat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Status Tanah', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'No. Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Tingkat / Tidak', columngroup: 'kontruksibangunan',editable: false,datafield: 'tingkat', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Beton / Tidak ', columngroup: 'kontruksibangunan',editable: false,datafield: 'beton', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Harga (Rp.)', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Nomor Dokumen', editable: false,datafield: 'dokumen_nomor', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
-           ]
+				{ text: 'Tanggal Dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'}
+           		],
+				columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Spesifikasi Barang', align: 'center', name: 'spesifikasi' },
+                  { text: 'Kontruksi Bangunan',align: 'center', name: 'kontruksibangunan' },
+                ]
 		});
 		$("#jqxgrid_Golongan_C_hapus").jqxGrid(
 		{	
@@ -621,7 +691,7 @@
 			},
 
 			columns: [
-			<?php if(!isset($viewreadonly)){?>	{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
+			{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid_Golongan_C").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
@@ -638,18 +708,28 @@
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_lock.gif'></a></div>";
 					}
                  }
-                },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Luas Lantai ', editable: false,datafield: 'luas_lantai', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Lokasi Alamat',editable: false, datafield: 'letak_lokasi_alamat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Status Hak', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Kontruksi Tingkat ', editable: false,datafield: 'tingkat', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Kontruksi Beton ', editable: false,datafield: 'beton', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+                },
+				{ text: 'Kode Barang',columngroup: 'nomor',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ',columngroup: 'nomor', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Nama Barang ', columngroup: 'spesifikasi',editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Luas Lantai ', columngroup: 'spesifikasi',editable: false,datafield: 'luas_lantai', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Lokasi Alamat',columngroup: 'spesifikasi',editable: false, datafield: 'letak_lokasi_alamat', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Status Tanah', editable: false,datafield: 'hak', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'No. Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Tingkat / Tidak', columngroup: 'kontruksibangunan',editable: false,datafield: 'tingkat', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Beton / Tidak ', columngroup: 'kontruksibangunan',editable: false,datafield: 'beton', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Harga (Rp.)', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Nomor Dokumen', editable: false,datafield: 'dokumen_nomor', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
-           ]
+				{ text: 'Tanggal Dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'}
+           		],
+				columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Spesifikasi Barang', align: 'center', name: 'spesifikasi' },
+                  { text: 'Kontruksi Bangunan',align: 'center', name: 'kontruksibangunan' },
+                ]
 		});
 		
 		<?php	}else if($filter_golongan_invetaris=='0400000000'){ ?>
@@ -663,11 +743,18 @@
 			{ name: 'uraian', type: 'string' },
 			{ name: 'konstruksi', type: 'string' },
 			{ name: 'id_pengadaan', type: 'number' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'register', type: 'string' },
+			{ name: 'id_ruangan', type: 'string' },
+			{ name: 'keterangan_pengadaan', type: 'string' },
+			{ name: 'asal_usul', type: 'string' },
+			{ name: 'harga', type: 'string' },
 			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'panjang', type: 'double' },
 			{ name: 'lebar', type: 'string' },
 			{ name: 'luas', type: 'string' },
 			{ name: 'tanah', type: 'tanah' },
+			{ name: 'letak_lokasi_alamat', type: 'text' },
 			{ name: 'dokumen_tanggal', type: 'date' },
 			{ name: 'dokumen_nomor', type: 'string' },
 			{ name: 'pilihan_status_tanah', type: 'string' },
@@ -729,17 +816,27 @@
 					}
                  }
                 },<?php } ?>
-				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang',editable: false, datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Nama /Jenis Barang',editable: false, datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Kode Barang',columngroup: 'nomor',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ', columngroup: 'nomor',editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
 				{ text: 'Kontruksi ', editable: false,datafield: 'konstruksi', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Panjang ', editable: false,datafield: 'panjang', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Panjang (km)', editable: false,datafield: 'panjang', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'Lebar',editable: false, datafield: 'lebar', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Luas', editable: false,datafield: 'luas', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Nomor Dokumen ', editable: false,datafield: 'dokumen_nomor', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Lokasi', editable: false,datafield: 'letak_lokasi_alamat', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Nomor Dokumen ', columngroup: 'dokumen',editable: false,datafield: 'dokumen_nomor', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Tanggal Dokumen',columngroup: 'dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
 				{ text: 'Status Tanah ', editable: false,datafield: 'tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Nomor Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'}
-           ]
+				{ text: 'Nomor Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Asal Usul ', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Harga', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '15%'}
+           		],
+				columngroups: 
+                [
+                  { text: 'Nomor', align: 'center', name: 'nomor' },
+                  { text: 'Dokumen',align: 'center', name: 'dokumen' },
+                ]
 		});
 		$("#jqxgrid_Golongan_D_hapus").jqxGrid(
 		{	
@@ -771,8 +868,9 @@
 					}
                  }
                 },<?php } ?>
+                { text: 'Nama Barang',editable: false, datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
 				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang',editable: false, datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
 				{ text: 'Kontruksi ', editable: false,datafield: 'konstruksi', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Panjang ', editable: false,datafield: 'panjang', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'Lebar',editable: false, datafield: 'lebar', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
@@ -780,7 +878,8 @@
 				{ text: 'Nomor Dokumen ', editable: false,datafield: 'dokumen_nomor', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Tanggal Dokumen',editable: false,datafield: 'dokumen_tanggal', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
 				{ text: 'Status Tanah ', editable: false,datafield: 'tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Nomor Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'}
+				{ text: 'Nomor Kode Tanah ', editable: false,datafield: 'nomor_kode_tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Harga', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
            ]
 		});
 		
@@ -799,6 +898,12 @@
 			{ name: 'barang_kembar_proc', type: 'string' },
 			{ name: 'bahan', type: 'string' },
 			{ name: 'flora_ukuran_satuan', type: 'string' },
+			{ name: 'jumlah', type: 'string' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'register', type: 'string' },
+			{ name: 'keterangan_pengadaan', type: 'text' },
+			{ name: 'asal_usul', type: 'string' },
+			{ name: 'harga', type: 'string' },
 			{ name: 'buku_judul_pencipta', type: 'string' },
 			{ name: 'buku_spesifikasi', type: 'double' },
 			{ name: 'budaya_asal_daerah', type: 'string' },
@@ -865,16 +970,21 @@
 					}
                  }
                 },<?php } ?>
+                { text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Judul Pencipta Buku ', editable: false,datafield: 'buku_judul_pencipta', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Spesifikasi Buku',editable: false, datafield: 'buku_spesifikasi', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
-				{ text: 'Asal Budaya Daerah', editable: false,datafield: 'budaya_asal_daerah', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
-				{ text: 'Budaya Pencipta ', editable: false,datafield: 'budaya_pencipta', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Bahan Budaya ', editable: false,datafield: 'pilihan_budaya_bahan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Jenis Flora Fauna ', editable: false,datafield: 'flora_fauna_jenis', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Ukuran Flora Fauna ', editable: false,datafield: 'flora_ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Cetak Beli',editable: false,datafield: 'tahun_cetak_beli', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
+				{ text: 'Register ', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
+				{ text: 'Judul Pencipta ', editable: false,datafield: 'buku_judul_pencipta', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Spesifikasi ',editable: false, datafield: 'buku_spesifikasi', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
+				{ text: 'Asal Daerah', editable: false,datafield: 'budaya_asal_daerah', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
+				{ text: 'Pencipta ', editable: false,datafield: 'budaya_pencipta', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Bahan ', editable: false,datafield: 'pilihan_budaya_bahan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Jenis ', editable: false,datafield: 'flora_fauna_jenis', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Ukuran ', editable: false,datafield: 'flora_ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Jumlah ', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Tanggal Cetak/ Beli',editable: false,datafield: 'tahun_cetak_beli', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
+				{ text: 'Harga', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan_pengadaan', columntype: 'textbox', filtertype: 'textbox', width: '13%'}
            ]
 		});
 		$("#jqxgrid_Golongan_E_hapus").jqxGrid(
@@ -933,6 +1043,10 @@
 			{ name: 'bangunan', type: 'string' },
 			{ name: 'pilihan_konstruksi_beton', type: 'double' },
 			{ name: 'luas', type: 'string' },
+			{ name: 'jumlah', type: 'string' },
+			{ name: 'id_pl_phc', type: 'string' },
+			{ name: 'register', type: 'string' },
+			{ name: 'harga', type: 'string' },
 			{ name: 'tanah', type: 'string' },
 			{ name: 'id_pengadaan', type: 'number' },
 			{ name: 'barang_kembar_proc', type: 'string' },
@@ -1001,16 +1115,20 @@
                  }
                 },<?php } ?>
 				{ text: 'Kode Barang',editable: false, datafield: 'id_mst_inv_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register ', editable: false,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
 				{ text: 'Nama Barang ', editable: false,datafield: 'uraian', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Bangunan', editable: false,datafield: 'bangunan', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Kontruksi Tingkat', editable: false,datafield: 'tingkat', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
-				{ text: 'Kontruksi Beton', editable: false,datafield: 'beton', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Bertingkat/Titak', editable: false,datafield: 'tingkat', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
+				{ text: 'Beton/Tidak', editable: false,datafield: 'beton', columntype: 'textbox', filtertype: 'textbox', width: '5%'},
 				{ text: 'Luas',editable: false, datafield: 'luas', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Lokasi', editable: false,datafield: 'lokasi', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Tanggal Dokumen', editable: false,datafield: 'dokumen_tanggal', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Nomor Dokumen', editable: false,datafield: 'dokumen_nomor', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Tanggal Mulai',editable: false,datafield: 'tanggal_mulai', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'},
 				{ text: 'Status Tanah ', editable: false,datafield: 'tanah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Tanggal Mulai',editable: false,datafield: 'tanggal_mulai', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
+				{ text: 'Asal Usul ', editable: false,datafield: 'status_asal', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Nilai Kontrak ', editable: false,datafield: 'harga', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Keterangan', editable: false,datafield: 'keterangan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
            ]
 		});
 		$("#jqxgrid_Golongan_F_hapus").jqxGrid(

@@ -37,27 +37,19 @@ class Json extends CI_Controller {
 		}
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
-		}
-		if($this->session->userdata('filter_cl_phc') != ''){
-			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_ruangan",$filter);
 		}
 
-		if(($this->session->userdata('filterGIB') != '')) {
-			$rows_all = $this->inv_barang_model->get_data($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data($filter_clphc,$where='');
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
+
+		if($this->session->userdata('filterHAPUS') != '') {
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+
+		$rows_all = $this->inv_barang_model->get_data();
 
 
 		if($_POST) {
@@ -80,15 +72,22 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		if(($this->session->userdata('filterGIB') != '')) {
-			$rows = $this->inv_barang_model->get_data($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
 		}
-		
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != '') {
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+
+		$rows = $this->inv_barang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -97,6 +96,7 @@ class Json extends CI_Controller {
 				'id_pengadaan'		   			=> $act->id_pengadaan,
 				'barang_kembar_proc'		   	=> $act->barang_kembar_proc,
 				'nama_barang'					=> $act->nama_barang,
+				
 				'jumlah'						=> $act->jumlah,
 				'harga'							=> number_format($act->harga,2),
 				'totalharga'					=> number_format($act->totalharga,2),
@@ -149,36 +149,22 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		/*if($this->session->userdata('filter_golongan_invetaris') != '') {
-			$table = 'inv_inventaris_barang_a';
-			$this->db->select("mst_inv_barang.uraian,satuan.value AS satuan,hak.value AS hak,pengguna.value as pengguna");
-			$this->db->join('mst_inv_barang',"mst_inv_barang.code=inv_inventaris_barang_a.id_mst_inv_barang");
-			$this->db->join('mst_inv_pilihan AS satuan', "inv_inventaris_barang_a.pilihan_satuan_barang=satuan.code AND satuan.tipe='satuan'"); 
-			$this->db->join('mst_inv_pilihan as hak',  "inv_inventaris_barang_a.pilihan_status_hak=hak.code AND hak.tipe='status_hak'"); 
-			$this->db->join('mst_inv_pilihan AS pengguna', "inv_inventaris_barang_a.pilihan_penggunaan=pengguna.code AND pengguna.tipe='penggunaan'" );
-		}*/
+		
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
+			$this->db->where("id_ruangan",$filter);
 		}
+
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang_a.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan) ";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
-		if(($this->session->userdata('filterGIB') != '')) {
-			$rows_all = $this->inv_barang_model->get_data_golongan_A($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data_golongan_A($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data_golongan_A($filter_clphc,$where='');
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
 		}
+			
+		$rows_all = $this->inv_barang_model->get_data_golongan_A();
 
 		if($_POST) {
 			$fil = $this->input->post('filterscount');
@@ -200,22 +186,22 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		/*if($this->session->userdata('filter_golongan_invetaris') != '') {
-			$table = 'inv_inventaris_barang_a';
-			$this->db->select("mst_inv_barang.uraian,satuan.value AS satuan,hak.value AS hak,pengguna.value as pengguna");
-			$this->db->join('mst_inv_barang',"mst_inv_barang.code=inv_inventaris_barang_a.id_mst_inv_barang");
-			$this->db->join('mst_inv_pilihan AS satuan', "inv_inventaris_barang_a.pilihan_satuan_barang=satuan.code AND satuan.tipe='satuan'"); 
-			$this->db->join('mst_inv_pilihan as hak',  "inv_inventaris_barang_a.pilihan_status_hak=hak.code AND hak.tipe='status_hak'"); 
-			$this->db->join('mst_inv_pilihan AS pengguna', "inv_inventaris_barang_a.pilihan_penggunaan=pengguna.code AND pengguna.tipe='penggunaan'" );
-		}*/
-		if($this->session->userdata(('filterGIB') != '')) {
-			$rows = $this->inv_barang_model->get_data_golongan_A($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data_golongan_A($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data_golongan_A($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
 		}
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		$rows = $this->inv_barang_model->get_data_golongan_A($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -225,7 +211,13 @@ class Json extends CI_Controller {
 				'id_pengadaan'		   		=> $act->id_pengadaan,
 				'barang_kembar_proc'		=> $act->barang_kembar_proc,
 				'satuan'					=> $act->satuan,
+				'id_ruangan'				=> $act->id_ruangan,
 				'hak'						=> $act->hak,
+				'id_cl_phc'					=> $act->id_cl_phc,
+				'register'					=> $act->register,
+				'asal_usul'					=> $act->asal_usul,
+				'keterangan_pengadaan'		=> $act->keterangan_pengadaan,
+				'harga'						=> number_format($act->harga,2),
 				'jumlah'					=> $act->jumlah,
 				'jumlah_satuan'				=> $act->jumlah.' '.$act->satuan,
 				'penggunaan'				=> $act->penggunaan,
@@ -233,7 +225,7 @@ class Json extends CI_Controller {
 				'alamat' 					=> $act->alamat,
 				'pilihan_satuan_barang' 	=> $act->pilihan_satuan_barang,
 				'pilihan_status_hak' 		=> $act->pilihan_status_hak,
-				'status_sertifikat_tanggal' => $act->status_sertifikat_tanggal,
+				'status_sertifikat_tanggal' => date("d-m-Y",strtotime($act->status_sertifikat_tanggal)),
 				'status_sertifikat_nomor'	=> $act->status_sertifikat_nomor,
 				'pilihan_penggunaan' 		=> $act->pilihan_penggunaan,
 				'edit'		=> 1,
@@ -263,7 +255,46 @@ class Json extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				if($field == 'tgl_pengadaan') {
+				if(($field == 'tanggal_bpkb')||($field == 'tanggal_perolehan')) {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
+		}
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		$rows_all = $this->inv_barang_model->get_data_golongan_B();
+		
+		
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if(($field == 'tanggal_bpkb')||($field == 'tanggal_perolehan')) {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
 				}elseif($field != 'year') {
@@ -277,57 +308,18 @@ class Json extends CI_Controller {
 		}
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
+			$this->db->where("id_ruangan",$filter);
 		}
+
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang_b.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows_all = $this->inv_barang_model->get_data_golongan_B($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data_golongan_B($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data_golongan_B($filter_clphc,$where='');
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
 		}
-		
-
-
-		if($_POST) {
-			$fil = $this->input->post('filterscount');
-			$ord = $this->input->post('sortdatafield');
-
-			for($i=0;$i<$fil;$i++) {
-				$field = $this->input->post('filterdatafield'.$i);
-				$value = $this->input->post('filtervalue'.$i);
-
-				if($field == 'tgl_pengadaan') {
-					$value = date("Y-m-d",strtotime($value));
-					$this->db->where($field,$value);
-				}elseif($field != 'year') {
-					$this->db->like($field,$value);
-				}
-			}
-
-			if(!empty($ord)) {
-				$this->db->order_by($ord, $this->input->post('sortorder'));
-			}
-		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows = $this->inv_barang_model->get_data_golongan_B($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data_golongan_B($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data_golongan_B($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}
+		$rows = $this->inv_barang_model->get_data_golongan_B($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
 		foreach($rows as $act) {
@@ -338,17 +330,21 @@ class Json extends CI_Controller {
 				'id_pengadaan'		   	=> $act->id_pengadaan,
 				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'merek_type' 			=> $act->merek_type,
+				'keterangan_pengadaan'		=> $act->keterangan_pengadaan,
 				'bahan'		 			=> $act->bahan,
+				'id_cl_phc'				=> $act->id_cl_phc,
+				'register'				=> $act->register,
+				'harga'					=> number_format($act->harga,2),
 				'satuan'	 			=> $act->satuan,
 				'ukuran_satuan' 		=> $act->ukuran_barang.'  '.$act->satuan,
 				'identitas_barang' 		=> $act->identitas_barang,
 				'pilihan_bahan' 		=> $act->pilihan_bahan,
 				'ukuran_barang' 		=> $act->ukuran_barang,
 				'pilihan_satuan' 		=> $act->pilihan_satuan,
-				'tanggal_bpkb'			=> $act->tanggal_bpkb,
+				'tanggal_bpkb'			=> date("d-m-Y",strtotime($act->tanggal_bpkb)),
 				'nomor_bpkb'		 	=> $act->nomor_bpkb,
 				'no_polisi'		 		=> $act->no_polisi,
-				'tanggal_perolehan'	 	=> $act->tanggal_perolehan,
+				'tanggal_perolehan'	 	=> date("d-m-Y",strtotime($act->tanggal_perolehan)),
 				'edit'		=> 1,
 				'delete'	=> 1
 			);
@@ -391,27 +387,19 @@ class Json extends CI_Controller {
 		}
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
+			$this->db->where("id_ruangan",$filter);
 		}
+
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang_c.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows_all = $this->inv_barang_model->get_data_golongan_C($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data_golongan_C($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data_golongan_C($filter_clphc,$where='');
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
 		}
 		
+		$rows_all = $this->inv_barang_model->get_data_golongan_C();
 
 
 		if($_POST) {
@@ -434,16 +422,21 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		
-		if($this->session->userdata('filterGIB') != '') {
-			$rows = $this->inv_barang_model->get_data_golongan_C($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data_golongan_C($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data_golongan_C($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
 		}
-		
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		$rows = $this->inv_barang_model->get_data_golongan_C($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -452,9 +445,17 @@ class Json extends CI_Controller {
 				'uraian' 				=> $act->uraian,
 				'hak' 					=> $act->hak,
 				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'id_cl_phc'				=> $act->id_cl_phc,
+				'register'				=> $act->register,
+				'harga'					=> number_format($act->harga,2),
 				'barang_kembar_proc'	=> $act->barang_kembar_proc,
+				'keterangan_pengadaan'		=> $act->keterangan_pengadaan,
+				'asal_usul'				=> $act->asal_usul,
 				'tingkat' 				=> $act->tingkat,
 				'beton' 				=> $act->beton,
+				'id_cl_phc'				=> $act->id_cl_phc,
+				'register'				=> $act->register,
+				'harga'					=> $act->harga,
 				'luas_lantai' 			=> $act->luas_lantai,
 				'letak_lokasi_alamat' 	=> $act->letak_lokasi_alamat,
 				'pillihan_status_hak' 	=> $act->pillihan_status_hak,
@@ -505,27 +506,18 @@ class Json extends CI_Controller {
 		}
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
+			$this->db->where("id_ruangan",$filter);
 		}
+
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang_d.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows_all = $this->inv_barang_model->get_data_golongan_D($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data_golongan_D($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data_golongan_D($filter_clphc,$where='');
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
 		}
-		
+		$rows_all = $this->inv_barang_model->get_data_golongan_D();
 
 
 		if($_POST) {
@@ -548,15 +540,20 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows = $this->inv_barang_model->get_data_golongan_D($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data_golongan_D($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data_golongan_D($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
 		}
-		
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		$rows = $this->inv_barang_model->get_data_golongan_D($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
@@ -565,10 +562,16 @@ class Json extends CI_Controller {
 				'uraian' 				=> $act->uraian,
 				'konstruksi' 			=> $act->konstruksi,
 				'tanah' 				=> $act->tanah,
+				'id_cl_phc'				=> $act->id_cl_phc,
+				'register'				=> $act->register,
+				'harga'					=> number_format($act->harga,2),
+				'keterangan_pengadaan'		=> $act->keterangan_pengadaan,
+				'asal_usul'				=> $act->asal_usul,
 				'id_pengadaan'		   	=> $act->id_pengadaan,
 				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'panjang' 				=> $act->panjang,
 				'lebar' 				=> $act->lebar,
+				'letak_lokasi_alamat' 	=> $act->letak_lokasi_alamat,
 				'luas' 					=> $act->luas,
 				'dokumen_tanggal'		=> $act->dokumen_tanggal,
 				'dokumen_nomor'			=> $act->dokumen_nomor,
@@ -616,26 +619,18 @@ class Json extends CI_Controller {
 		}
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
+			$this->db->where("id_ruangan",$filter);
 		}
+
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang_e.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows_all = $this->inv_barang_model->get_data_golongan_E($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data_golongan_E($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data_golongan_E($filter_clphc,$where='');
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
 		}
+		$rows_all = $this->inv_barang_model->get_data_golongan_E();
 		
 
 
@@ -659,14 +654,20 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows = $this->inv_barang_model->get_data_golongan_E($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data_golongan_E($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data_golongan_E($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
 		}
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		$rows = $this->inv_barang_model->get_data_golongan_E($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
 		foreach($rows as $act) {
@@ -677,6 +678,10 @@ class Json extends CI_Controller {
 				'bahan' 				=> $act->bahan,
 				'satuan' 				=> $act->satuan,
 				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'id_cl_phc'				=> $act->id_cl_phc,
+				'register'				=> $act->register,
+				'harga'					=> $act->harga,
+				'jumlah'				=> $act->jumlah,
 				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'buku_judul_pencipta' 	=> $act->buku_judul_pencipta,
 				'buku_spesifikasi' 		=> $act->buku_spesifikasi,
@@ -730,26 +735,18 @@ class Json extends CI_Controller {
 		}
 		if($this->session->userdata('filterruangan') != ''){
 			$filter = $this->session->userdata('filterruangan');
-			$filter_ruangan="AND inv_inventaris_distribusi.id_ruangan = \"".$filter."\"";
-		}else{
-			$filter_ruangan='';
+			$this->db->where("id_ruangan",$filter);
 		}
+
 		if($this->session->userdata('filter_cl_phc') != ''){
 			$kodeplch = $this->session->userdata('filter_cl_phc');
-			$filter_clphc="JOIN inv_inventaris_distribusi 
-                                              ON (inv_inventaris_barang_f.id_inventaris_barang = inv_inventaris_distribusi.id_inventaris_barang
-                                                 AND inv_inventaris_distribusi.id_cl_phc = \"".$kodeplch."\" $filter_ruangan)";
-		}else{
-			$filter_clphc='';
+			$this->db->where("id_cl_phc",$kodeplch);
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows_all = $this->inv_barang_model->get_data_golongan_F($filter_clphc,$where='');
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows_all = $this->inv_barang_model->get_data_golongan_F($filter_clphc,$where);
-		}else{
-			$rows_all = $this->inv_barang_model->get_data_golongan_F($filter_clphc,$where='');
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
 		}
+		$rows_all = $this->inv_barang_model->get_data_golongan_F();
 		
 
 
@@ -773,14 +770,19 @@ class Json extends CI_Controller {
 				$this->db->order_by($ord, $this->input->post('sortorder'));
 			}
 		}
-		if($this->session->userdata('filterGIB') != '') {
-			$rows = $this->inv_barang_model->get_data_golongan_F($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else if($this->session->userdata('filterHAPUS') != ''){
-			$where="AND inv_inventaris_barang.pilihan_status_invetaris=3";
-			$rows = $this->inv_barang_model->get_data_golongan_F($filter_clphc,$where,$this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		}else{
-			$rows = $this->inv_barang_model->get_data_golongan_F($filter_clphc,$where='',$this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
 		}
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}$rows = $this->inv_barang_model->get_data_golongan_F($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
 		foreach($rows as $act) {
@@ -792,6 +794,10 @@ class Json extends CI_Controller {
 				'beton' 				=> $act->beton,
 				'tingkat' 				=> $act->tingkat,
 				'id_pengadaan'		   	=> $act->id_pengadaan,
+				'id_cl_phc'				=> $act->id_cl_phc,
+				'register'				=> $act->register,
+				'harga'					=> $act->harga,
+				'jumlah'				=> $act->jumlah,
 				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'bangunan' 				=> $act->bangunan,
 				'pilihan_konstruksi_bertingkat' 	=> $act->pilihan_konstruksi_bertingkat,

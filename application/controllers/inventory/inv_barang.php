@@ -385,7 +385,7 @@ class Inv_barang extends CI_Controller {
 	   			$data['pilihan_konstruksi_beton_']	= $this->inv_barang_model->get_data_pilihan('kons_beton');
 	   			$data['pilihan_status_tanah_']		= $this->inv_barang_model->get_data_pilihan('status_hak');
    			}
-   			
+   			$data['pilihan_asal_usul_']		= $this->inv_barang_model->get_data_pilihan('asal_usul');
    			$data['kodebarang']		= $this->inv_barang_model->get_databarang();
    			$data['kodestatus_inv'] = $this->inv_barang_model->pilih_data_status('status_inventaris');
 			$data['action']			= "edit";
@@ -405,6 +405,7 @@ class Inv_barang extends CI_Controller {
 			$kode_proc = $this->inv_barang_model->barang_kembar_proc($id_barang);
 			$tanggal_diterima = $tanggalterima[2].'-'.$tanggalterima[1].'-'.$tanggalterima[0];
 			$simpan = $this->dodelpermohonan($id_barang,$kd_proc);
+			$pilihan_tanah =$this->input->post('pilihan_asal_usul');
 			for($i=1;$i<=$jumlah;$i++){
 				$id = $this->inv_barang_model->insert_data_from($id_barang,$kode_proc,$tanggal_diterima,$id_pengadaan);
 					/*simpan pada bedadatabase*/

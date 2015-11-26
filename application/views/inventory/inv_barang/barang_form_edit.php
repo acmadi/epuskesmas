@@ -55,6 +55,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('status_sertifikat_tanggal', $('#status_sertifikat_tanggal').val());
                 data.append('pilihan_penggunaan', $('#pilihan_penggunaan').val());
                 data.append('status_sertifikat_nomor', $('#status_sertifikat_nomor').val());
+                data.append('pilihan_asal_usul', $('#pilihan_asal_usul').val());
             }else if(kd_barang=="02"){
                 data.append('merek_type', $('#merek_type').val());
                 data.append('identitas_barang', $('#identitas_barang').val());
@@ -65,6 +66,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('nomor_bpkb', $('#nomor_bpkb').val());
                 data.append('no_polisi', $('#no_polisi').val());
                 data.append('tanggal_perolehan', $('#tanggal_perolehan').val());
+                data.append('pilihan_asal_usul', $('#pilihan_asal_usul1').val());
             }else if(kd_barang=="03"){
                 data.append('luas_lantai', $('#luas_lantai').val());
                 data.append('letak_lokasi_alamat', $('#letak_lokasi_alamat').val());
@@ -74,6 +76,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('pilihan_kons_beton', $('#pilihan_kons_beton').val());
                 data.append('dokumen_tanggal', $('#dokumen_tanggal').val());
                 data.append('dokumen_nomor', $('#dokumen_nomor').val());
+                data.append('pilihan_asal_usul', $('#pilihan_asal_usul2').val());
             }else if(kd_barang=="04"){
                 data.append('konstruksi', $('#konstruksi').val());
                 data.append('panjang', $('#panjang').val());
@@ -84,6 +87,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('dokumen_nomor', $('#dokumen_nomor1').val());
                 data.append('pilihan_status_tanah', $('#pilihan_status_tanah').val());
                 data.append('nomor_kode_tanah', $('#nomor_kode_tanah1').val());
+                data.append('pilihan_asal_usul', $('#pilihan_asal_usul3').val());
             }else if(kd_barang=="05"){
                 data.append('buku_judul_pencipta', $('#buku_judul_pencipta').val());
                 data.append('buku_spesifikasi', $('#buku_spesifikasi').val());
@@ -94,6 +98,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('flora_fauna_ukuran', $('#flora_fauna_ukuran').val());
                 data.append('pilihan_satuan', $('#pilihan_satuan1').val());
                 data.append('tahun_cetak_beli', $('#tahun_cetak_beli').val());
+                data.append('pilihan_asal_usul', $('#pilihan_asal_usul4').val());
             }else if(kd_barang=="06"){
                 data.append('bangunan', $('#bangunan').val());
                 data.append('pilihan_konstruksi_bertingkat', $('#pilihan_konstruksi_bertingkat').val());
@@ -104,6 +109,7 @@ if(isset($disable)){if($disable='disable'){?>
                 data.append('dokumen_nomor', $('#dokumen_nomor2').val());
                 data.append('tanggal_mulai', $('#tanggal_mulai').val());
                 data.append('pilihan_status_tanah', $('#pilihan_status_tanah1').val());
+                data.append('pilihan_asal_usul', $('#pilihan_asal_usul5').val());
             }
              
 
@@ -121,7 +127,7 @@ if(isset($disable)){if($disable='disable'){?>
                       $('#notice').hide();
                       $('#notice-content').html('<div class="alert">'+res[1]+'</div>');
                       $('#notice').show();
-                      
+                      filter_jqxgrid_inv_barang();
                       close_popup();
                   }
                   else if(res[0]=="Error"){
@@ -382,7 +388,17 @@ if(isset($disable)){if($disable='disable'){?>
             <?php endforeach ?>
         </select>
       </div>
-
+      <div class="form-group">
+        <label>Pilihan Asal Usul</label>
+        <select  name="pilihan_asal_usul" type="text" class="form-control" id="pilihan_asal_usul">
+            <option value="">Pilihan Asal Usul</option>
+            </option>
+            <?php foreach($pilihan_asal_usul_ as $asal) : ?>
+              <?php $select = $asal->code == $pilihan_asal ? 'selected' : '' ?>
+              <option value="<?php echo $asal->code ?>" <?php echo $select ?>><?php echo $asal->value ?></option>
+            <?php endforeach ?>
+        </select>
+      </div>
       <?php  }else if($kodebarang_=='02') {?>
 
       <div class="form-group">
@@ -469,8 +485,18 @@ if(isset($disable)){if($disable='disable'){?>
         echo (!empty($tanggal_perolehan)) ? date("Y-m-d",strtotime($tanggal_perolehan)) :  date("d-m-Y");
       ?>"></div>
       </div>
-
-
+      <div class="form-group">
+        <label>Pilihan Asal Usul</label>
+        <select  name="pilihan_asal_usul" type="text" class="form-control" id="pilihan_asal_usul1">
+            <option value="">Pilihan Asal Usul</option>
+            </option>
+            <?php foreach($pilihan_asal_usul_ as $asal) : ?>
+              <?php $select = $asal->code == $pilihan_asal ? 'selected' : '' ?>
+              <option value="<?php echo $asal->code ?>" <?php echo $select ?>><?php echo $asal->value ?></option>
+            <?php endforeach ?>
+        </select>
+      </div>
+      
       <?php  }else if($kodebarang_=='03') {?>
         
       <div class="form-group">
@@ -553,7 +579,17 @@ if(isset($disable)){if($disable='disable'){?>
           ?>">
       </div>
 
-
+      <div class="form-group">
+        <label>Pilihan Asal Usul</label>
+        <select  name="pilihan_asal_usul" type="text" class="form-control" id="pilihan_asal_usul2">
+            <option value="">Pilihan Asal Usul</option>
+            </option>
+            <?php foreach($pilihan_asal_usul_ as $asal) : ?>
+              <?php $select = $asal->code == $pilihan_asal ? 'selected' : '' ?>
+              <option value="<?php echo $asal->code ?>" <?php echo $select ?>><?php echo $asal->value ?></option>
+            <?php endforeach ?>
+        </select>
+      </div>
       <?php  }else if($kodebarang_=='04') {?>
       
       <div class="form-group">
@@ -644,7 +680,17 @@ if(isset($disable)){if($disable='disable'){?>
           ?>">
       </div>
 
-
+      <div class="form-group">
+        <label>Pilihan Asal Usul</label>
+        <select  name="pilihan_asal_usul" type="text" class="form-control" id="pilihan_asal_usul3">
+            <option value="">Pilihan Asal Usul</option>
+            </option>
+            <?php foreach($pilihan_asal_usul_ as $asal) : ?>
+              <?php $select = $asal->code == $pilihan_asal ? 'selected' : '' ?>
+              <option value="<?php echo $asal->code ?>" <?php echo $select ?>><?php echo $asal->value ?></option>
+            <?php endforeach ?>
+        </select>
+      </div>
       <?php  }else if($kodebarang_=='05') {?>
       
       <div class="form-group">
@@ -735,7 +781,17 @@ if(isset($disable)){if($disable='disable'){?>
         echo (!empty($tahun_cetak_beli)) ? date("Y-m-d",strtotime($tahun_cetak_beli)) :  date("d-m-Y");
       ?>"></div>
       </div>
-
+      <div class="form-group">
+        <label>Pilihan Asal Usul</label>
+        <select  name="pilihan_asal_usul" type="text" class="form-control" id="pilihan_asal_usul4">
+            <option value="">Pilihan Asal Usul</option>
+            </option>
+            <?php foreach($pilihan_asal_usul_ as $asal) : ?>
+              <?php $select = $asal->code == $pilihan_asal ? 'selected' : '' ?>
+              <option value="<?php echo $asal->code ?>" <?php echo $select ?>><?php echo $asal->value ?></option>
+            <?php endforeach ?>
+        </select>
+      </div>
 
       <?php  }else if($kodebarang_=='06') {?>
       
@@ -822,7 +878,17 @@ if(isset($disable)){if($disable='disable'){?>
             <?php endforeach ?>
         </select>
       </div>
-
+      <div class="form-group">
+        <label>Pilihan Asal Usul</label>
+        <select  name="pilihan_asal_usul" type="text" class="form-control" id="pilihan_asal_usul5">
+            <option value="">Pilihan Asal Usul</option>
+            </option>
+            <?php foreach($pilihan_asal_usul_ as $asal) : ?>
+              <?php $select = $asal->code == $pilihan_asal ? 'selected' : '' ?>
+              <option value="<?php echo $asal->code ?>" <?php echo $select ?>><?php echo $asal->value ?></option>
+            <?php endforeach ?>
+        </select>
+      </div>
       <?php } ?>
 <!--end from edit-->
     </div>
