@@ -254,17 +254,20 @@ class Admin_users_model extends CI_Model {
 		return $data;    	
     }
     
-    function get_user_id($username=0){
-        $options = array('app_users_list.username'=>$username,'app_users_list.code'=>$this->session->userdata('puskesmas'));
+    function get_user_id($username=0,$code=""){
+    	$data = array();
+        $options = array('app_users_list.username'=>$username,'app_users_list.code'=>$code);
         $this->db->select("app_users_profile.*,app_users_list.level");
-        $this->db->join($this->tabel,"app_users_list.username=app_users_profile.username","inner");
+        $this->db->join($this->tabel,"app_users_list.code=app_users_profile.code","inner");
         // $this->db->where('username',$username);
     	// $this->db->where('code',$code);
         $query = $this->db->get_where($this->tabel2,$options,1);
         if($query->num_rows() > 0){
             $data=$query->row_array();
         }
-        return $query->free_result();
+
+        $query->result();
+        return $data;
     }
   
      function get_user_profile($username=0){

@@ -35,10 +35,13 @@ class Morganisasi extends CI_Controller {
 		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
 		$data['j_puskesmas'] = count($this->inv_ruangan_model->get_data_puskesmas());
 		$data['j_barang_baik'] = $this->admin_model->get_jum_aset();
-		
+		$data['j_barang_baik1'] = $this->admin_model->get_nilai_aset();
 		$data['j_barang_rr'] = $this->admin_model->get_jum_aset1();
+		$data['j_barang_rr1'] = $this->admin_model->get_nilai_aset1();
 		$data['j_barang_rb'] = $this->admin_model->get_jum_aset2();
-		$data['nilai_aset'] = $this->admin_model->get_nilai_aset();
+		$data['j_barang_rb1'] = $this->admin_model->get_nilai_aset2();
+		$data['nilai_aset'] = $this->admin_model->get_jum_nilai_aset();
+		$data['nilai_aset1'] = $this->admin_model->get_jum_nilai_aset2();
 		// var_dump($data['nilai_aset']);
 		// exit();
 		$data['content']=$this->parser->parse("sik/show",$data,true);

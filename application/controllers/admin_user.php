@@ -89,7 +89,7 @@ class Admin_user extends CI_Controller {
 		}
 	}
     
-    function edit($username=0){
+    function edit($username=0,$code=""){
 		$this->load->model('morganisasi_model');
         $this->authentication->verify('admin','edit');
 
@@ -99,9 +99,11 @@ class Admin_user extends CI_Controller {
       
         $this->form_validation->set_rules('name','Full Name','trim|required');
 
-        $data = $this->admin_users_model->get_user_id($username);
+        $data = $this->admin_users_model->get_user_id($username,$code);
+        // var_dump($data);
+        // exit();
         // $data = $this->admin_users_model->get_user_profile($username);
-		$data['code']			= $this->session->userdata('puskesmas');
+		$data['code']			= $code;
         $data['username']		= $username;
 		$data['title_group']	= "Admin Panel";
 		$data['title_form']		= "User Profile";

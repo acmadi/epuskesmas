@@ -33,68 +33,73 @@ class Admin_model extends CI_Model {
 	}
 
 	function get_jum_aset(){
-		$q1 = '';
+		$query =  $this->db->query("SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
+		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
+		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
+		WHERE pilihan_keadaan_barang = 'B' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
 
-		if ($this->session->userdata('bar_tipe') == 'jml'  ){
-			$q1 = "SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
+		return $query->result();
+	}
+
+	function get_nilai_aset(){
+		$query =  $this->db->query("SELECT id_cl_phc, SUM(harga) AS nilai FROM inv_inventaris_barang 
 		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
 		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
-		WHERE pilihan_keadaan_barang = 'B' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc";
-		} else {
-			$q1 = "SELECT id_cl_phc, SUM(harga) AS jml FROM inv_inventaris_barang 
-		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
-		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
-		WHERE pilihan_keadaan_barang = 'B' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc";
-		}
- 
-		$query =  $this->db->query($q1);
+		WHERE pilihan_keadaan_barang = 'B' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
 
 		return $query->result();
 	}
 
 	function get_jum_aset1(){
-		$q1 = '';
-
-		if ($this->session->userdata('bar_tipe') == 'jml'   ){
-			$q1 = "SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
+		$query =  $this->db->query("SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
 		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
 		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
-		WHERE pilihan_keadaan_barang = 'RR' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc";
-		} else {
-			$q1 = "SELECT id_cl_phc, SUM(harga) AS jml FROM inv_inventaris_barang 
-		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
-		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
-		WHERE pilihan_keadaan_barang = 'RR' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc";
-		}
- 
-		$query =  $this->db->query($q1);
+		WHERE pilihan_keadaan_barang = 'RR' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
 
 		return $query->result();
 	}
+
+	function get_nilai_aset1(){
+		$query =  $this->db->query("SELECT id_cl_phc, SUM(harga) AS nilai FROM inv_inventaris_barang 
+		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
+		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
+		WHERE pilihan_keadaan_barang = 'RR' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
+
+		return $query->result();
+	}
+
 
 	function get_jum_aset2(){
-		$q1 = '';
-
-		if ($this->session->userdata('bar_tipe') == 'jml'   ){
-			$q1 = "SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
+		$query =  $this->db->query("SELECT id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
 		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
 		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
-		WHERE pilihan_keadaan_barang = 'RB' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc";
-		} else {
-			$q1 = "SELECT id_cl_phc, SUM(harga) AS jml FROM inv_inventaris_barang 
-		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
-		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
-		WHERE pilihan_keadaan_barang = 'RB' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc";
-		}
- 
-		$query =  $this->db->query($q1);
+		WHERE pilihan_keadaan_barang = 'RB' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
 
 		return $query->result();
 	}
 
-	function get_nilai_aset()
+	function get_nilai_aset2(){
+		$query =  $this->db->query("SELECT id_cl_phc, SUM(harga) AS nilai FROM inv_inventaris_barang 
+		INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
+		LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
+		WHERE pilihan_keadaan_barang = 'RB' GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
+
+		return $query->result();
+	}
+
+	function get_jum_nilai_aset()
 	{
-		$query = $this->db->query("SELECT cl_phc.value,id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml,SUM(harga) AS nilai FROM inv_inventaris_barang 
+		$query = $this->db->query("SELECT cl_phc.value,id_cl_phc, COUNT(inv_inventaris_barang.id_inventaris_barang) AS jml FROM inv_inventaris_barang 
+			INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
+			LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
+			GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
+
+		return $query->result();
+	}
+
+	function get_jum_nilai_aset2()
+	{
+		$query = $this->db->query("SELECT cl_phc.value,id_cl_phc, SUM(harga) AS nilai FROM inv_inventaris_barang 
 			INNER JOIN inv_inventaris_distribusi ON inv_inventaris_barang.id_inventaris_barang=inv_inventaris_distribusi.id_inventaris_barang 
 			LEFT JOIN cl_phc ON inv_inventaris_distribusi.id_cl_phc=cl_phc.code
 			GROUP BY inv_inventaris_distribusi.id_cl_phc ORDER BY 'value' asc");
