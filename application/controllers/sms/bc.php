@@ -17,6 +17,9 @@ class Bc extends CI_Controller {
 		$data['jenisoption'] 	= array("bulanan" => "Bulanan", "mingguan" => "Mingguan" ,"harian" => "Harian", "tidak" => "1x");
 		$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');
 
+		$this->session->unset_userdata('filter_tipe');
+		$this->session->unset_userdata('filter_is_loop');
+
 		$data['content'] = $this->parser->parse("sms/bc/show",$data,true);
 		$this->template->show($data,'home');
 	}

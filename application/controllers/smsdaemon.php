@@ -62,9 +62,18 @@ class Smsdaemon extends CI_Controller {
 				$key[]= $rows->code;
 				$tmpt   = $rows->code;
 			}
-			$pesan .= implode(",", $key)."\ncontoh:".$menu."<spasi>".$tmpt;
-			$pesan .= "\natau kirim masukan dengan format:\nopini<spasi>kalimat pesan";
+			$pesan .= "\n".implode(",", $key);
 
+			$this->db->where("jenis", "terima");
+			$opini = $this->db->get("sms_tipe")->result();
+			$key = array();
+			foreach ($opini as $rows) {
+				$key[]= $rows->nama;
+				$tmpt   = $rows->nama;
+			}
+			$pesan .= "\n\natau kirim opini dengan kata kunci: ";
+			$pesan .= "\n".implode(",", $key);
+			$pesan .= "\ncontoh:\n".$tmpt."<spasi>kalimat pesan";
 		}else{
 			$this->db->where("code_sms_menu", $menu);
 			$this->db->where("tgl_mulai <= ", date("Y-m-d"));
@@ -88,14 +97,14 @@ class Smsdaemon extends CI_Controller {
 	function sms_reply($args = ""){
 		echo "\nsms.sms_reply ...\n";
 
-		//$operator = "'*123#','*111#','V-Tri','+3'";
-		$operator = "'*123#'";
+		$operator = "'*123#','*111#','V-Tri','+3'";
+		//$operator = "'*123#'";
 
 		//jika sms blm di proses, bukan operator, kata pertama menu 
 		$this->db->where("Processed","false");
 		$this->db->where("REPLACE(SenderNumber,'+62','') NOT IN (".$operator.")");
 		$this->db->where("SUBSTRING_INDEX(TextDecoded,' ',1) NOT IN (SELECT `code` FROM `sms_info_menu`)");
-		$this->db->where("SUBSTRING_INDEX(TextDecoded,' ',1) !='opini'");
+		$this->db->where("SUBSTRING_INDEX(TextDecoded,' ',1) NOT IN (SELECT `nama` FROM `sms_tipe` WHERE jenis='terima')");
 		$inbox = $this->db->get("inbox")->result();
 		foreach ($inbox as $rows) {
 
@@ -112,8 +121,8 @@ class Smsdaemon extends CI_Controller {
 	function sms_autoreply($args = ""){
 		echo "sms.autoteply ...\n";
 
-		//$operator = "'*123#','*111#','V-Tri','+3'";
-		$operator = "'*123#'";
+		$operator = "'*123#','*111#','V-Tri','+3'";
+		//$operator = "'*123#'";
 
 		//jika sms blm di proses, bukan operator, kata pertama menu 
 		$this->db->where("Processed","false");
@@ -149,18 +158,22 @@ class Smsdaemon extends CI_Controller {
 	function sms_opini($args = ""){
 		echo "sms.opini ...\n";
 
-		//$operator = "'*123#','*111#','V-Tri','+3'";
-		$operator = "'*123#'";
+		$operator = "'*123#','*111#','V-Tri','+3'";
+		//$operator = "'*123#'";
 
 		//jika sms blm di proses, bukan operator, kata pertama opini, 
+		$this->db->select('ID, SUBSTRING_INDEX(`TextDecoded`," ",1) as `Kategori`,`SenderNumber`,`TextDecoded`,`sms_tipe`.`id_tipe`',false);
 		$this->db->where("Processed","false");
 		$this->db->where("REPLACE(SenderNumber,'+62','') NOT IN (".$operator.")");
-		$this->db->where("SUBSTRING_INDEX(TextDecoded,' ',1) ='opini'");
+		$this->db->where('SUBSTRING_INDEX(`TextDecoded`," ",1) IN (SELECT `nama` FROM `sms_tipe` WHERE jenis="terima")');
+		$this->db->join('sms_tipe','sms_tipe.nama=SUBSTRING_INDEX(`TextDecoded`," ", 1)','inner');
 		$inbox = $this->db->get("inbox")->result();
 		foreach ($inbox as $rows) {
+			$num_kategori = strlen($rows->Kategori)+1;
+
 			$opini = array();
-			$opini['id_sms_tipe'] = '11';
-			$opini['pesan'] = substr($rows->TextDecoded,6);
+			$opini['id_sms_tipe'] = $rows->id_tipe;
+			$opini['pesan'] = substr($rows->TextDecoded,$num_kategori);
 			$opini['nomor'] = $rows->SenderNumber;
 			if($this->db->insert("sms_opini",$opini)){
 				$this->db->where('ID',$rows->ID);

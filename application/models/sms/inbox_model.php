@@ -36,6 +36,9 @@ class Inbox_model extends CI_Model {
 		$query = $this->db->get($this->tabel)->row_array();
 
 		if(!empty($query)){
+			$this->db->where("ID",$id);
+			$this->db->update($this->tabel,array('Processed'=>'true'));
+
 			return $query;
 		}else{
 			return $data;

@@ -21,7 +21,6 @@
           <div class="box-footer">
             <button type="button" class="btn btn-primary" onclick="document.location.href='<?php  echo base_url()?>index.php/admin_user/add'">Tambah</button>
             <button type="submit" class="btn btn-danger" onClick="if(!confirm('Hapus semua data yang dipilih?'))return false;">Hapus</button>
-            <button type="button" class="btn btn-info" onClick="document.location.href='<?php  echo base_url()?>admin_user/excel'">Excel Export</button>
           </div>
 	    </div>
 

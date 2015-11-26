@@ -15,6 +15,9 @@ class Autoreply extends CI_Controller {
 		$data['tipeoption'] 	= $this->opini_model->get_tipe('kirim');
 		$data['menuoption'] 	= $this->autoreply_model->get_menu();
 
+		$this->session->unset_userdata('filter_tipe');
+		$this->session->unset_userdata('filter_menu');
+
 		$data['content'] = $this->parser->parse("sms/autoreply/show",$data,true);
 		$this->template->show($data,'home');
 	}

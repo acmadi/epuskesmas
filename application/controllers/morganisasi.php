@@ -12,7 +12,10 @@ class Morganisasi extends CI_Controller {
 	}
 	
 	function index(){
-		$this->authentication->verify('morganisasi','show');		
+		if($this->session->userdata('level')=="sms"){
+			redirect(base_url()."sms/sms");
+		}
+		$this->authentication->verify('morganisasi','show');
 		$data = array();
 		$data['title_group'] = "Dashboard";
 		$data['title_form'] = "Home";

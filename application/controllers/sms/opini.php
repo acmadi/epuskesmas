@@ -20,6 +20,7 @@ class Opini extends CI_Controller {
 									'balas'=>'Balasan'
 								);
 		$this->session->set_userdata('filter_status','terima-baru');
+		$this->session->unset_userdata('filter_tipe');
 		$data['statusoption_active'] = $this->session->userdata('filter_status');
 
 		$data['content'] = $this->parser->parse("sms/opini/show",$data,true);

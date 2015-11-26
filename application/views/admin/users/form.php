@@ -79,12 +79,9 @@
           <option value="inventory" <?php 
                 if(isset($level) && $level=="inventory")  echo "selected";
                 ?>>Inventory</option>
-          <option value="kepegewaian" <?php 
-                if(isset($level) && $level=="kepegewaian")  echo "selected";
-                ?>>Kepegawaian</option>
-          <option value="keuangan" <?php 
-                if(isset($level) && $level=="keuangan")  echo "selected";
-                ?>>Keuangan</option>
+          <option value="sms" <?php 
+                if(isset($level) && $level=="sms")  echo "selected";
+                ?>>Sms</option>
         </select>
       </div>
       <br>

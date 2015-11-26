@@ -40,7 +40,7 @@
           </div>
           <div class="box-footer pull-right">
             <button type="button" id="btn-reply" class="btn btn-primary">Reply</button>
-            <button type="button" id="btn-move" class="btn btn-success">Pidah</button>
+            <button type="button" id="btn-move" class="btn btn-success">Pindah</button>
             <button type="button" id="btn-close" class="btn btn-warning">Tutup</button>
           </div>
       </div><!-- /.box -->
