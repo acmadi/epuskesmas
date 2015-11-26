@@ -103,6 +103,30 @@ class Inv_ruangan extends CI_Controller {
 		$this->template->show($data,"home");
 	}
 
+	function detail($kode=0,$id="")
+	{
+		$this->authentication->verify('inventory','edit');
+
+		$data = $this->inv_ruangan_model->get_data_row($kode,$id); 
+
+		$data['title_group'] = "Inventory";
+		$data['title_form']="Detail Inventaris Ruangan";
+		$data['kode']= $kode;
+		$data['id'] = $id;
+
+		$kodepuskesmas = $this->session->userdata('puskesmas');
+		if(substr($kodepuskesmas, -2)=="01"){
+			$this->db->like('code','P'.substr($kodepuskesmas,0,7));
+		}else{
+			$this->db->like('code','P'.$kodepuskesmas);
+		}
+		$data['kodepuskesmas'] = $this->puskesmas_model->get_data();
+
+	
+		$data['content'] = $this->parser->parse("inventory/inv_ruangan/detail",$data,true);
+		$this->template->show($data,"home");
+	}
+
 
 	function add(){
 		$this->load->model('inventory/inv_ruangan_model');
@@ -138,9 +162,7 @@ class Inv_ruangan extends CI_Controller {
 			$this->session->set_flashdata('alert_form', 'Save data failed...');
 			redirect(base_url()."inventory/inv_ruangan/add");
 		}
-	
-
-}
+	}
 
 	function edit($kode=0,$id="")
 	{
