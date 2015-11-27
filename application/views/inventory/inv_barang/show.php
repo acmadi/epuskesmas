@@ -98,15 +98,28 @@
 			alert(arr);
 
 				$.post( '<?php echo base_url()?>inventory/inv_barang/updatestatus_barang', {kode_proc:arr[6],pilihan_inv:arr[8]},function( data ) {
-						$("#jqxgrid_DataHapus").jqxGrid('updateBoundData');
+						<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+									$("#jqxgrid_barang").jqxGrid('updatebounddata', 'filter');
+						<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+									$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'filter');
+						<?php   }	?>
 						
 				 });
          },
 		filter: function(){
-			$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'filter');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_barang").jqxGrid('updatebounddata', 'filter');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'filter');
+			<?php   }	?>
+			
 		},
 		sort: function(){
-			$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'sort');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_barang").jqxGrid('updatebounddata', 'sort');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_DataHapus").jqxGrid('updatebounddata', 'sort');
+			<?php   }	?>
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -121,8 +134,7 @@
 				alert(error);
 			}
 		});
-     	
-		$("#jqxgrid_DataHapus").jqxGrid(
+		$("#jqxgrid_barang").jqxGrid(
 		{	
 			width: '99%',
 			selectionmode: 'singlerow',
@@ -135,7 +147,7 @@
 
 			columns: [
 			<?php if(!isset($viewreadonly)){?>	{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid_DataHapus").jqxGrid('getrowdata', row);
+				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
 					}else{
@@ -144,7 +156,7 @@
                  }
                 },
 				{ text: 'Del', align: 'center', editable: false,filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid_DataHapus").jqxGrid('getrowdata', row);
+				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\");'></a></div>";
 					}else{
@@ -176,7 +188,7 @@
 				{ text: 'Tanggal di terima',editable: false,datafield: 'tanggal_diterima', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '10%'}
            ]
 		});
-		$("#jqxgrid_barang").jqxGrid(
+		$("#jqxgrid_DataHapus").jqxGrid(
 		{	
 			width: '99%',
 			selectionmode: 'singlerow',
@@ -189,7 +201,7 @@
 
 			columns: [
 			<?php if(!isset($viewreadonly)){?>	{ text: 'Edit', align: 'center', filtertype: 'none', sortable: false,editable: false, width: '5%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
+				    var dataRecord = $("#jqxgrid_DataHapus").jqxGrid('getrowdata', row);
 				    if(dataRecord.edit==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_edit.gif' onclick='edit_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\",\""+dataRecord.id_inventaris_barang+"\",\""+dataRecord.id_pengadaan+"\");'></a></div>";
 					}else{
@@ -198,7 +210,7 @@
                  }
                 },
 				{ text: 'Del', align: 'center', editable: false,filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
-				    var dataRecord = $("#jqxgrid_barang").jqxGrid('getrowdata', row);
+				    var dataRecord = $("#jqxgrid_DataHapus").jqxGrid('getrowdata', row);
 				    if(dataRecord.delete==1){
 						return "<div style='width:100%;padding-top:2px;text-align:center'><a href='javascript:void(0);'><a href='javascript:void(0);'><img border=0 src='<?php echo base_url(); ?>media/images/16_del.gif' onclick='del_barang(\""+dataRecord.id_mst_inv_barang+"\",\""+dataRecord.barang_kembar_proc+"\");'></a></div>";
 					}else{
@@ -270,16 +282,16 @@
 		<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
 					$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
 		<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
-					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
+					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'filter');
 		<?php   }	?>
 
 		},
 		sort: function(){
 
 		<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
-					$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'filter');
+					$("#jqxgrid_Golongan_A").jqxGrid('updatebounddata', 'sort');
 		<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
-					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'cells');
+					$("#jqxgrid_Golongan_A_hapus").jqxGrid('updatebounddata', 'sort');
 		<?php   }	?>
 
 		},
@@ -440,10 +452,20 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'filter');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'filter');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_B_hapus").jqxGrid('updatebounddata', 'filter');
+			<?php   }	?>
+			
 		},
 		sort: function(){
-			$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'sort');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_B").jqxGrid('updatebounddata', 'sort');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_B_hapus").jqxGrid('updatebounddata', 'sort');
+			<?php   }	?>
+			
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -608,10 +630,19 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'filter');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'filter');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_C_hapus").jqxGrid('updatebounddata', 'filter');
+			<?php   }	?>
+
 		},
 		sort: function(){
-			$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'sort');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_C").jqxGrid('updatebounddata', 'sort');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_C_hapus").jqxGrid('updatebounddata', 'sort');
+			<?php   }	?>
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -767,10 +798,19 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'filter');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'filter');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_D_hapus").jqxGrid('updatebounddata', 'filter');
+			<?php   }	?>
+
 		},
 		sort: function(){
-			$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'sort');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_D").jqxGrid('updatebounddata', 'sort');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_D_hapus").jqxGrid('updatebounddata', 'sort');
+			<?php   }	?>
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -929,10 +969,18 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'filter');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'filter');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_E_hapus").jqxGrid('updatebounddata', 'filter');
+			<?php   }	?>
 		},
 		sort: function(){
-			$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'sort');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'sort');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_E").jqxGrid('updatebounddata', 'sort');
+			<?php   }	?>
 		},
 		root: 'Rows',
         pagesize: 10,
@@ -1094,10 +1142,19 @@
 		updateRow: function (rowID, rowData, commit) {
          },
 		filter: function(){
-			$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'filter');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'filter');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_F_hapus").jqxGrid('updatebounddata', 'filter');
+			<?php   }	?>
+
 		},
 		sort: function(){
-			$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'sort');
+			<?php 	if(($this->session->userdata('filterGIB')!='')||($this->session->userdata('filterGIB')=='')){ ?>
+						$("#jqxgrid_Golongan_F").jqxGrid('updatebounddata', 'sort');
+			<?php 	}else if($this->session->userdata('filterHAPUS')!=''){ ?>
+						$("#jqxgrid_Golongan_F_hapus").jqxGrid('updatebounddata', 'sort');
+			<?php   }	?>
 		},
 		root: 'Rows',
         pagesize: 10,
