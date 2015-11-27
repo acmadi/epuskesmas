@@ -1357,7 +1357,9 @@
 	      <div class="col-md-9">
 			<button class="btn btn-primary" id='btn_add_barang' type='button'><i class='fa fa-plus-square-o'></i> &nbsp;Tambah Barang</button>
 			<button type="button " class="btn btn-warning" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
+			<?php 	if(!empty($filter_golongan_invetaris) || $filter_golongan_invetaris !=''){  ?>
 			<button type="button" class="btn btn-success" id="btn-export"><i class='fa fa-file-excel-o'></i> &nbsp; Export</button>	
+			<?php } ?>
 		  </div>
 		</div>
 		<div class="box-header">
@@ -1384,7 +1386,7 @@
 	     	</select>
 		  </div>
 		  <div class="col-md-3">
-		  	<?php echo 'session___'.'filterruangan =>'.$this->session->userdata('filterruangan').'  filter_golongan_invetaris =>'.$this->session->userdata('filter_golongan_invetaris').'   KIB =>'.$this->session->userdata('filterGIB').'   hapus =>'.$this->session->userdata('filterHAPUS').'   clphc =>'.$this->session->userdata('filter_cl_phc');; ?>
+		  	
 	     		<select name="code_ruangan" class="form-control" id="code_ruangan">
 	     			<option value="">Pilih Ruangan</option>
 	     		</select>
@@ -1709,7 +1711,7 @@
 		}
 		post = post+'&puskes='+$("#code_cl_phc option:selected").text();
 		post = post+'&ruang='+$("#code_ruangan option:selected").text();
-		
+
 		<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>
 					$.post("<?php echo base_url()?>inventory/export/permohonan_export_inventori",post,function(response	){
 						window.location.href=response;
