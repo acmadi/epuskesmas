@@ -49,6 +49,9 @@ class Json extends CI_Controller {
 			$this->db->where("pilihan_status_invetaris","3");
 		}
 
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows_all = $this->inv_barang_model->get_data();
 
 
@@ -85,7 +88,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != '') {
 			$this->db->where("pilihan_status_invetaris","3");
 		}
-
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows = $this->inv_barang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 
 		$data = array();
@@ -163,7 +168,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
-			
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}	
 		$rows_all = $this->inv_barang_model->get_data_golongan_A();
 
 		if($_POST) {
@@ -200,6 +207,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows = $this->inv_barang_model->get_data_golongan_A($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
@@ -281,6 +291,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows_all = $this->inv_barang_model->get_data_golongan_B();
 		
 		
@@ -319,6 +332,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows = $this->inv_barang_model->get_data_golongan_B($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
@@ -398,7 +414,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
-		
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows_all = $this->inv_barang_model->get_data_golongan_C();
 
 
@@ -436,6 +454,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows = $this->inv_barang_model->get_data_golongan_C($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
@@ -517,6 +538,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows_all = $this->inv_barang_model->get_data_golongan_D();
 
 
@@ -553,6 +577,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows = $this->inv_barang_model->get_data_golongan_D($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
@@ -630,6 +657,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows_all = $this->inv_barang_model->get_data_golongan_E();
 		
 
@@ -667,6 +697,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows = $this->inv_barang_model->get_data_golongan_E($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
@@ -748,6 +781,9 @@ class Json extends CI_Controller {
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
 		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
 		$rows_all = $this->inv_barang_model->get_data_golongan_F();
 		
 
@@ -784,7 +820,11 @@ class Json extends CI_Controller {
 
 		if($this->session->userdata('filterHAPUS') != ''){
 			$this->db->where("pilihan_status_invetaris","3");
-		}$rows = $this->inv_barang_model->get_data_golongan_F($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris","1");
+			}
+		$rows = $this->inv_barang_model->get_data_golongan_F($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		
 		$data = array();
 		foreach($rows as $act) {
