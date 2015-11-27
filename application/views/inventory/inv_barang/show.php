@@ -1333,8 +1333,8 @@
 		if(confirms == true){
 			$.post("<?php echo base_url().'inventory/inv_barang/dodelpermohonan/'; ?>" + id_barang+'/'+barang_kembar_proc,  function(){
 				alert('Data berhasil dihapus');
-
-				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+				filter_jqxgrid_inv_barang();
+				
 			});
 		
 		}
