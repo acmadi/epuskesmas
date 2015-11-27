@@ -23,7 +23,7 @@
 					<div class="col-md-12" style="min-height:196px">
 						<div class="form-group">
 							<label>Puskesmas</label>
-							<div>
+							<div id="view_puskesmas">
 							<?php foreach($kodepuskesmas as $pus) : ?>
 								<?php echo $pus->code == $code_cl_phc ? $pus->value : '' ?>
 							<?php endforeach ?>
@@ -31,11 +31,11 @@
 						</div>
 						<div class="form-group">
 							<label>Nama Ruangan</label>
-							<div >{nama_ruangan}</div>
+							<div id="view_ruang" >{nama_ruangan}</div>
 						</div>
 						<div class="form-group">
 							<label>Keterangan</label>
-							<div>{keterangan}</div>
+							<div id="view_keterangan">{keterangan}</div>
 						</div>
 					</div>
 				</div>
@@ -72,7 +72,13 @@
 				  		</div>
 				  	</div>
 				  	<div class="col-md-12">
+						<div class="form-group pull-left">
+						<label>Group </label>
+							<input type="checkbox" name="group" id="filter_group" value="1"> 
+						</div>
 						<div class="form-group pull-right">
+							
+            				<button onClick="doFilter();" type="button" class="btn btn-info">Filter</button>
             				<button type="button" class="btn btn-warning">Ekspor</button>
             				<button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan'">Kembali</button>
 						</div>
@@ -82,19 +88,29 @@
 		</div><!-- /.box -->
 	</div><!-- /.box -->
 </div><!-- /.box -->
-<div class="row">
 
-</div><!-- /.box -->
+
+<div class="box box-success">
+  <div class="box-body">
+    <div class="div-grid">
+        <div id="jqxTabs">
+          <?php echo $barang;?>
+        </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
 	$(function () {	
 		$("#menu_inventory").addClass("active");
 		$("#menu_inventory_inv_ruangan").addClass("active");
-
-	    $('#code_cl_phc').change(function(){
+		
+		$('#code_cl_phc').change(function(){
 	      	var code_cl_phc = $(this).val();
-	      	var id_mst_inv_ruangan = '<?php echo set_value('code_ruangan')?>';
+	      	var id_mst_inv_ruangan = document.getElementById("code_ruangan").value;
 	      	$.ajax({
-		        url : '<?php echo site_url('inventory/inv_barang/get_ruangan') ?>',
+		        url : '<?php echo site_url('inventory/inv_ruangan/get_ruangan') ?>',
 		        type : 'POST',
 		        data : 'code_cl_phc=' + code_cl_phc+'&id_mst_inv_ruangan=' + id_mst_inv_ruangan,
 		        success : function(data) {
@@ -102,18 +118,101 @@
 					filter_ruangan();
         		}
 	    	});
+			
+			
+	      	return false;
+	    }).change();
+		/*
+	    $('#code_cl_phc').change(function(){
+	      	var code_cl_phc = $(this).val();
+	      	var id_mst_inv_ruangan = document.getElementById("code_ruangan").value;
+	      	$.ajax({
+		        url : '<?php echo site_url('inventory/inv_ruangan/get_ruangan') ?>',
+		        type : 'POST',
+		        data : 'code_cl_phc=' + code_cl_phc+'&id_mst_inv_ruangan=' + id_mst_inv_ruangan,
+		        success : function(data) {
+		          	$('#code_ruangan').html(data);
+					filter_ruangan();
+        		}
+	    	});
+			
+			$.ajax({
+		        url : '<?php echo site_url('inventory/inv_ruangan/set_detail_filter') ?>',
+		        type : 'POST',
+		        data : 'filter_code_cl_phc=' + code_cl_phc+'&filter_id_ruang=' + id_mst_inv_ruangan,
+		        success : function(data) {
+		          	$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+        		}
+	    	});
+			
 	      	return false;
 	    }).change();
 
 	    $('#code_ruangan').change(function(){
 	      	var id_mst_inv_ruangan = $(this).val();
+			var code_cl_phc = document.getElementById("code_cl_phc").value;
 			filter_ruangan(id_mst_inv_ruangan);
+			$.ajax({
+		        url : '<?php echo site_url('inventory/inv_ruangan/set_detail_filter') ?>',
+		        type : 'POST',
+		        data : 'filter_code_cl_phc=' + code_cl_phc+'&filter_id_ruang=' + id_mst_inv_ruangan,
+		        success : function(data) {
+		          	$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+        		}
+	    	});
 	      	return false;
 	    }).change();
+		
+		$('#inputtgl').change(function(){
+	      	var tgl = $(this).val();
+			
+			$.ajax({
+		        url : '<?php echo site_url('inventory/inv_ruangan/set_detail_filter') ?>',
+		        type : 'POST',
+		        data : 'filter_tanggal=' + tgl ,
+		        success : function(data) {
+		          	$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+        		}
+	    	});
+	      	return false;
+	    }).change();
+		*/
     	$("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme, height: '31px'});
 
 	});
-
+	function doFilter(){
+		var code_cl_phc = document.getElementById("code_cl_phc").value;
+		var id_mst_inv_ruangan = document.getElementById("code_ruangan").value;
+		var tanggal = document.getElementById("inputtgl").value;
+		if (document.getElementById('filter_group').checked){
+			var group = document.getElementById("filter_group").value;
+			if(group == '1'){
+				group = '1';
+			}else{
+				group = '0';
+			}
+		}else{
+			group = '0';
+		}
+		
+		//alert(group);
+		var t = tanggal.split('-');
+		var tgl = t[2]+'-'+t[1]+'-'+t[0];
+		$.ajax({
+		        url : '<?php echo site_url('inventory/inv_ruangan/set_detail_filter') ?>',
+		        type : 'POST',
+		        data : 'filter_code_cl_phc=' + code_cl_phc+'&filter_id_ruang=' + id_mst_inv_ruangan +'&filter_tanggal='+tgl+'&filter_group='+group,
+		        success : function(data) {
+					if(data != ""){
+						var d = data.split('_data_');
+						document.getElementById("view_puskesmas").innerHTML = d[0];
+						document.getElementById("view_ruang").innerHTML = d[1];
+						document.getElementById("view_keterangan").innerHTML = d[2];
+					}
+		          	$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+        		}
+	    	});
+	}
 	function filter_ruangan(id_mst_inv_ruangan){
 	}
 </script>

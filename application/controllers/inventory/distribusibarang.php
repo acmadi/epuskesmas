@@ -63,13 +63,12 @@ class Distribusibarang extends CI_Controller {
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
-				'kode_barang' 		=> $act->id_inventaris_barang,
+				'kode_barang' 		=> chunk_split($act->id_mst_inv_barang, 2, '.'),
 				'register' 			=> $act->register,
 				'nama_barang' 		=> $act->nama_barang,
 				'harga' 			=> $act->harga,
 				'kondisi'			=> $act->pilihan_keadaan_barang." - ".$act->val,				
-				'edit'				=> $act->id_inventaris_barang,
-				'delete'			=> $act->id_inventaris_barang
+				'id_barang'			=> $act->id_inventaris_barang				
 			);
 		}
 
@@ -87,11 +86,9 @@ class Distribusibarang extends CI_Controller {
 	public function pop_add($data_barang)
 	{	
 		$data['action']			= "add";
-		
-		
+
         $this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
-        $this->form_validation->set_rules('code_cl_phc2', 'Data Puskesmas', 'trim|required');
-        $this->form_validation->set_rules('code_ruangan2', 'Data Ruangan', 'trim|required');
+        $this->form_validation->set_rules('code_cl_phc2', 'Data Puskesmas', 'trim|required');        
         $this->form_validation->set_rules('data_barang', 'Data Barang', 'trim|required');
 		
 		if($this->form_validation->run()== FALSE){
@@ -182,7 +179,7 @@ class Distribusibarang extends CI_Controller {
 			$id_mst_inv_ruangan = $this->input->post('id_mst_inv_ruangan');
 
 			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$code_cl_phc)->result();
-			
+			echo '<option>-- Pilih Ruangan --</option>';
 			foreach($kode as $kode) :
 				echo $select = $kode->id_mst_inv_ruangan == $id_mst_inv_ruangan ? 'selected' : '';
 				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';

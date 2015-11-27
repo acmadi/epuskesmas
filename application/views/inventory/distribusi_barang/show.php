@@ -109,8 +109,7 @@
 			{ name: 'nama_barang', type: 'string'},
 			{ name: 'harga', type: 'number'},
 			{ name: 'kondisi', type: 'string'},
-			{ name: 'id', type: 'number'},
-			{ name: 'delete', type: 'number'}
+			{ name: 'id_barang', type: 'string'}			
         ],
 		url: "<?php echo site_url('inventory/distribusibarang/json'); ?>",		
 		cache: false,
@@ -166,13 +165,13 @@
 			columns: [
 				{ text: 'Pilih', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-					return "<div style='width:100%;padding-top:2px;text-align:center'><input type='checkbox' name='aset[]' value="+dataRecord.kode_barang+"_td_"+dataRecord.nama_barang+"_td_"+dataRecord.kondisi+" ></div>";
+					return "<div style='width:100%;padding-top:2px;text-align:center'><input type='checkbox' name='aset[]' value="+dataRecord.id_barang+"_td_"+dataRecord.kode_barang+"_td_"+dataRecord.nama_barang+"_td_"+dataRecord.kondisi+" ></div>";
                  }
                 },
 				{ text: 'Kode Barang',editable:false , datafield: 'kode_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
 				{ text: 'Register',editable:true ,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Nama Barang',editable:false , datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '40%' },
-				{ text: 'Harga Satuan (Rp.)', editable:false , datafield: 'harga',columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Harga Satuan (Rp.)', editable:false , datafield: 'harga',columntype: 'textbox', filtertype: 'textbox', width: '15%', cellsalign: 'right', cellsformat: 'f'  },
 				//{ text: 'Kondisi Barang', editable:false ,columntype: 'textbox', datafield: 'kondisi', filtertype: 'textbox', width: '15%' },
 				{
                         text: 'Kondisi Barang', datafield: 'kondisi', width: '15%', columntype: 'dropdownlist',

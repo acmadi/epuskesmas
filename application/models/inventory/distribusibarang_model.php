@@ -9,7 +9,7 @@ class Distribusibarang_model extends CI_Model {
 	function get_data($start=0,$limit=999999,$options=array())
     {
 		$this->db->distinct();
-        $this->db->select('inv_inventaris_barang.id_inventaris_barang, register, nama_barang, harga, pilihan_keadaan_barang, value as val');
+        $this->db->select('inv_inventaris_barang.id_inventaris_barang, id_mst_inv_barang, register, nama_barang, harga, pilihan_keadaan_barang, value as val');
 		$this->db->join('mst_inv_pilihan','mst_inv_pilihan.code=inv_inventaris_barang.pilihan_keadaan_barang');
 		if(!empty($this->session->userdata('code_cl_phc')) and $this->session->userdata('code_cl_phc') != 'none'){		
 			$this->db->where('inv_inventaris_distribusi.id_cl_phc',$this->session->userdata('code_cl_phc'));
@@ -17,7 +17,7 @@ class Distribusibarang_model extends CI_Model {
 			
 			if(!empty($this->session->userdata('code_ruangan')) and $this->session->userdata('code_ruangan') != '0'){
 				if($this->session->userdata('code_ruangan') == 'none'){
-					$this->db->where('inv_inventaris_distribusi.id_ruangan');
+					$this->db->where('inv_inventaris_distribusi.id_ruangan','0');
 				}else if($this->session->userdata('code_ruangan') == 'all'){
 					
 				}else{
@@ -128,7 +128,7 @@ class Distribusibarang_model extends CI_Model {
 	
 	function update_register(){
 		$data=array(
-			'register' => $this->input->post('register')
+			'register' => $result_reg = str_pad($this->input->post('register'), 4, '0', STR_PAD_LEFT)
 		);
 		$this->db->where('id_ruangan', $this->input->post('id_ruang'));
 		$this->db->where('id_cl_phc', $this->input->post('code_cl_phc'));

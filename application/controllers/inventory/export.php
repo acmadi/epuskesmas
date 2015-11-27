@@ -1,17 +1,21 @@
 <?php
-class Json extends CI_Controller {
+class Export extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
+		$this->load->add_package_path(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/demo/tbs_class.php');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/tbs_plugin_opentbs.php');
 		$this->load->model('inventory/inv_barang_model');
 		$this->load->model('mst/puskesmas_model');
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
 	}
-
-	
-
-	function json_barang(){
+	function permohonan_export_inventori(){
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -117,19 +121,37 @@ class Json extends CI_Controller {
 			);
 		}
 
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibinventaris.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_Inventaris_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_Inventaris_'.$code.'.xlsx' ;
 	}
-
-
-	function golongan_a(){
+	function permohonan_export_kiba(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -210,11 +232,13 @@ class Json extends CI_Controller {
 		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
 				$this->db->where("pilihan_status_invetaris !=","3");
 			}
-		$rows = $this->inv_barang_model->get_data_golongan_A($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->inv_barang_model->get_data_golongan_A();
 		
-		$data = array();
+		$data_tabel = array();
+		$no=1;
 		foreach($rows as $act) {
-			$data[] = array(
+			$data_tabel[] = array(
+				'no'						=> $no++,
 				'id_inventaris_barang'   	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'			=> $act->id_mst_inv_barang,
 				'uraian'					=> $act->uraian,
@@ -243,17 +267,38 @@ class Json extends CI_Controller {
 			);
 		}
 
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kiba.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_KibA_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_KibA_'.$code.'.xlsx' ;
+		
 	}
-	function golongan_b(){
+	function permohonan_export_kibb(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -335,23 +380,24 @@ class Json extends CI_Controller {
 		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
 				$this->db->where("pilihan_status_invetaris !=","3");
 			}
-		$rows = $this->inv_barang_model->get_data_golongan_B($this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		
-		$data = array();
+		$rows = $this->inv_barang_model->get_data_golongan_B();
+		$no=1;
+		$data_tabel = array();
 		foreach($rows as $act) {
-			$data[] = array(
+			$data_tabel[] = array(
+				'no' 					=> $no++,
 				'id_inventaris_barang' 	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
 				'id_pengadaan'		   	=> $act->id_pengadaan,
 				'barang_kembar_proc'	=> $act->barang_kembar_proc,
 				'merek_type' 			=> $act->merek_type,
-				'keterangan_pengadaan'		=> $act->keterangan_pengadaan,
+				'keterangan_pengadaan'	=> $act->keterangan_pengadaan,
 				'bahan'		 			=> $act->bahan,
-				'asal_usul'				=> $act->asal_usul,
 				'id_cl_phc'				=> $act->id_cl_phc,
 				'register'				=> $act->register,
-				'keadaan_barang'				=> $act->keadaan_barang,
+				'asal_usul'				=> $act->asal_usul,
+				'keadaan_barang'		=> $act->keadaan_barang,
 				'jumlah'				=> $act->jumlah,
 				'harga'					=> number_format($act->harga,2),
 				'satuan'	 			=> $act->satuan,
@@ -369,18 +415,38 @@ class Json extends CI_Controller {
 			);
 		}
 
-
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibb.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_KibB_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_KibB_'.$code.'.xlsx' ;
+		
 	}
-	function golongan_c(){
+	function permohonan_export_kibc(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -460,10 +526,12 @@ class Json extends CI_Controller {
 		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
 				$this->db->where("pilihan_status_invetaris !=","3");
 			}
-		$rows = $this->inv_barang_model->get_data_golongan_C($this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		$data = array();
+		$rows = $this->inv_barang_model->get_data_golongan_C();
+		$no=1;
+		$data_tabel = array();
 		foreach($rows as $act) {
-			$data[] = array(
+			$data_tabel[] = array(
+				'no'					=> $no++,
 				'id_inventaris_barang' 	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
@@ -493,18 +561,38 @@ class Json extends CI_Controller {
 			);
 		}
 
-
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibc.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_KibC_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_KibC_'.$code.'.xlsx' ;
+		
 	}
-	function golongan_d(){
+	function permohonan_export_kibd(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -583,10 +671,12 @@ class Json extends CI_Controller {
 		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
 				$this->db->where("pilihan_status_invetaris !=","3");
 			}
-		$rows = $this->inv_barang_model->get_data_golongan_D($this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		$data = array();
+		$no=1;
+		$rows = $this->inv_barang_model->get_data_golongan_D();
+		$data_tabel = array();
 		foreach($rows as $act) {
-			$data[] = array(
+			$data_tabel[] = array(
+				'no'					=> $no++,
 				'id_inventaris_barang' 	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
@@ -613,17 +703,38 @@ class Json extends CI_Controller {
 		}
 
 
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibd.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_KibD_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_KibD_'.$code.'.xlsx' ;
+		
 	}
-	function golongan_e(){
+	function permohonan_export_kibe(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -703,11 +814,12 @@ class Json extends CI_Controller {
 		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
 				$this->db->where("pilihan_status_invetaris !=","3");
 			}
-		$rows = $this->inv_barang_model->get_data_golongan_E($this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		
-		$data = array();
+		$rows = $this->inv_barang_model->get_data_golongan_E();
+		$no=1;
+		$data_tabel = array();
 		foreach($rows as $act) {
-			$data[] = array(
+			$data_tabel[] = array(
+				'no'					=> $no++,
 				'id_inventaris_barang' 	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
@@ -736,18 +848,38 @@ class Json extends CI_Controller {
 			);
 		}
 
-
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibe.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_KIBE_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_KIBE_'.$code.'.xlsx' ;
+		
 	}
-	function golongan_f(){
+	function permohonan_export_kibf(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
 		$this->authentication->verify('inventory','show');
 
 
@@ -827,11 +959,12 @@ class Json extends CI_Controller {
 		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
 				$this->db->where("pilihan_status_invetaris !=","3");
 			}
-		$rows = $this->inv_barang_model->get_data_golongan_F($this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		
-		$data = array();
+		$rows = $this->inv_barang_model->get_data_golongan_F();
+		$no=1;
+		$data_tabel = array();
 		foreach($rows as $act) {
-			$data[] = array(
+			$data_tabel[] = array(
+				'no'					=> $no++,
 				'id_inventaris_barang' 	=> $act->id_inventaris_barang,
 				'id_mst_inv_barang'		=> $act->id_mst_inv_barang,
 				'uraian' 				=> $act->uraian,
@@ -860,18 +993,31 @@ class Json extends CI_Controller {
 			);
 		}
 
-
-
 		
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibf.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
-		echo json_encode(array($json));
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_KIBF_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_KIBF_'.$code.'.xlsx' ;
+		
 	}
 	
-	
-
 }

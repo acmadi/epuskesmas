@@ -54,9 +54,9 @@
 					?>
                     <tr>
                       <td><?=$no?>.</td>
-                      <td><?=$data2[0]?></td>
-                      <td><?=$data2[1]?></td>                      
+                      <td><?=$data2[1]?></td>
                       <td><?=$data2[2]?></td>                      
+                      <td><?=$data2[3]?></td>                      
                     </tr>
 					<?php
 					$no++;
