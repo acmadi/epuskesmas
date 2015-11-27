@@ -3,12 +3,161 @@ class Inv_barang extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
+		$this->load->add_package_path(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/demo/tbs_class.php');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/tbs_plugin_opentbs.php');
 		$this->load->model('inventory/inv_barang_model');
 		$this->load->model('mst/puskesmas_model');
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
 	}
+	function permohonan_export(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
+		$this->authentication->verify('inventory','show');
 
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'status_sertifikat_tanggal') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
+		}
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris !=","3");
+			}	
+		$rows_all = $this->inv_barang_model->get_data_golongan_A();
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'status_sertifikat_tanggal') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		if($this->session->userdata('filterruangan') != ''){
+			$filter = $this->session->userdata('filterruangan');
+			$this->db->where("id_ruangan",$filter);
+		}
+
+		if($this->session->userdata('filter_cl_phc') != ''){
+			$kodeplch = $this->session->userdata('filter_cl_phc');
+			$this->db->where("id_cl_phc",$kodeplch);
+		}
+
+		if($this->session->userdata('filterHAPUS') != ''){
+			$this->db->where("pilihan_status_invetaris","3");
+		}
+		if (($this->session->userdata('filterHAPUS') == '') ||($this->session->userdata('filterGIB') != '')) {
+				$this->db->where("pilihan_status_invetaris !=","3");
+			}
+		$rows = $this->inv_barang_model->get_data_golongan_A();
+		
+		$data_tabel = array();
+		$no=1;
+		foreach($rows as $act) {
+			$data_tabel[] = array(
+				'no'						=> $no++,
+				'id_inventaris_barang'   	=> $act->id_inventaris_barang,
+				'id_mst_inv_barang'			=> $act->id_mst_inv_barang,
+				'uraian'					=> $act->uraian,
+				'id_pengadaan'		   		=> $act->id_pengadaan,
+				'barang_kembar_proc'		=> $act->barang_kembar_proc,
+				'satuan'					=> $act->satuan,
+				'id_ruangan'				=> $act->id_ruangan,
+				'hak'						=> $act->hak,
+				'id_cl_phc'					=> $act->id_cl_phc,
+				'register'					=> $act->register,
+				'asal_usul'					=> $act->asal_usul,
+				'keterangan_pengadaan'		=> $act->keterangan_pengadaan,
+				'harga'						=> number_format($act->harga,2),
+				'jumlah'					=> $act->jumlah,
+				'jumlah_satuan'				=> $act->jumlah.' '.$act->satuan,
+				'penggunaan'				=> $act->penggunaan,
+				'luas' 						=> $act->luas,
+				'alamat' 					=> $act->alamat,
+				'pilihan_satuan_barang' 	=> $act->pilihan_satuan_barang,
+				'pilihan_status_hak' 		=> $act->pilihan_status_hak,
+				'status_sertifikat_tanggal' => date("d-m-Y",strtotime($act->status_sertifikat_tanggal)),
+				'status_sertifikat_nomor'	=> $act->status_sertifikat_nomor,
+				'pilihan_penggunaan' 		=> $act->pilihan_penggunaan,
+				'edit'		=> 1,
+				'delete'	=> 1
+			);
+		}
+
+		
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$namapus = 'Semua Data Puskesmas';
+		}else{
+			$namapus = $this->input->post('puskes');
+		}
+		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
+			$namaruang = 'Semua Data Ruangan';
+		}else{
+			$namaruang = $this->input->post('ruang');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kiba.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
+
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_'.$code.'.xlsx' ;
+		
+	}
 	function autocomplite_barang(){
 		$search = explode("&",$this->input->server('QUERY_STRING'));
 		$search = str_replace("query=","",$search[0]);
