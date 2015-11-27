@@ -28,4 +28,47 @@ class Sms_model extends CI_Model {
 
         return $query->result();
     }
+
+    function get_sms_diterima($bln)
+    {
+        // $data = array();
+        $qr = $this->db->query("SELECT bln,SUM(jml) AS jml FROM 
+        ((SELECT SUBSTR(ReceivingDateTime,1,7) AS bln,COUNT(*) AS jml FROM inbox GROUP BY SUBSTR(ReceivingDateTime,1,7))
+          UNION 
+          (SELECT SUBSTR(created_on,1,7) AS bln,COUNT(*) AS jml FROM sms_opini GROUP BY SUBSTR(created_on,1,7))
+        ) AS jml where bln='".$bln."' GROUP BY bln");
+
+        $data = $qr->row();
+        if(!empty($data->jml)){
+            return $data->jml;            
+        }else{
+            return 0;
+        }
+    }
+
+    function get_sms_dikirim($bln)
+    {
+        $qr = $this->db->query("SELECT SUBSTR(SendingDateTime,1,7) AS bln,COUNT(*) AS jml FROM sentitems WHERE STATUS = 'SendingOK' AND SUBSTR(SendingDateTime,1,7)='".$bln."' GROUP BY SUBSTR(SendingDateTime,1,7)   ");
+
+        $data = $qr->row();
+        if(!empty($data->jml)){
+            return $data->jml;            
+        }else{
+            return 0;
+        }
+    } 
+
+    function get_sms_error($bln)
+    {
+        $qr = $this->db->query("SELECT SUBSTR(SendingDateTime,1,7) AS bln,COUNT(*) AS jml FROM sentitems WHERE STATUS != 'SendingOK' AND SUBSTR(SendingDateTime,1,7)='".$bln."' GROUP BY SUBSTR(SendingDateTime,1,7)   ");
+
+        $data = $qr->row();
+        if(!empty($data->jml)){
+            return $data->jml;            
+        }else{
+            return 0;
+        }
+    } 
+
+    
 }
