@@ -17,14 +17,21 @@ class Morganisasi extends CI_Controller {
 		}
 		$this->authentication->verify('morganisasi','show');
 		$data = array();
-		$data['title_group'] = "Dashboard";
-		$data['title_form'] = "Home";
+		$data['title_group'] 	= "Dashboard";
+		$data['title_form'] 	= "Home";
 
 		$BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 		$bln = (int) date('m');
 		$thn = date('Y');
 		$data['j_asset'] = $this->admin_model->get_inv_barang();
 		$data['j_ruangan'] = $this->admin_model->get_inv_barang1();
+
+		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
+		$data['j_puskesmas'] = count($this->inv_ruangan_model->get_data_puskesmas());
+
+		$bar = array();
+		$color = array('#f56954','#00a65a','#f39c12','#00c0ef','#8d16c5','#d2d6de','#3c8dbc','#69d856','#eb75e4');
+
 		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
 		$kodepuskesmas = $this->session->userdata('puskesmas');
 		if(substr($kodepuskesmas, -2)=="01"){
@@ -32,22 +39,58 @@ class Morganisasi extends CI_Controller {
 		}else {
 			$this->db->like('code','P'.$kodepuskesmas);
 		}
+		$datapuskesmas = $this->inv_ruangan_model->get_data_puskesmas();
+		foreach ($datapuskesmas as $row) {
+			$bar[$row->code]['puskesmas'] = $row->value;
+		}
 
-		$data['datapuskesmas'] 	= $this->inv_ruangan_model->get_data_puskesmas();
-		
-		$this->db->like('code','p'.substr($this->session->userdata('puskesmas'),0,7));
-		$data['j_puskesmas'] = count($this->inv_ruangan_model->get_data_puskesmas());
-		$data['j_barang_baik'] = $this->admin_model->get_jum_aset();
-		$data['j_barang_baik1'] = $this->admin_model->get_nilai_aset();
-		$data['j_barang_rr'] = $this->admin_model->get_jum_aset1();
-		$data['j_barang_rr1'] = $this->admin_model->get_nilai_aset1();
-		$data['j_barang_rb'] = $this->admin_model->get_jum_aset2();
-		$data['j_barang_rb1'] = $this->admin_model->get_nilai_aset2();
-		$data['nilai_aset'] = $this->admin_model->get_jum_nilai_aset();
-		$data['nilai_aset1'] = $this->admin_model->get_jum_nilai_aset2();
-		// var_dump($data['nilai_aset']);
-		// exit();
-		$data['content']=$this->parser->parse("sik/show",$data,true);
+
+		$j_barang_baik = $this->admin_model->get_jum_aset();
+		foreach ($j_barang_baik as $row) {
+			$bar[$row->id_cl_phc]['j_barang_baik'] = $row->jml;
+		}
+
+		$j_barang_baik1 = $this->admin_model->get_nilai_aset();
+		foreach ($j_barang_baik1 as $row) {
+			$bar[$row->id_cl_phc]['j_barang_baik1'] = $row->nilai;
+		}
+
+
+		$j_barang_rr = $this->admin_model->get_jum_aset1();
+		foreach ($j_barang_rr as $row) {
+			$bar[$row->id_cl_phc]['j_barang_rr'] = $row->jml;
+		}
+
+		$j_barang_rr1 = $this->admin_model->get_nilai_aset1();
+		foreach ($j_barang_rr1 as $row) {
+			$bar[$row->id_cl_phc]['j_barang_rr1'] = $row->nilai;
+		}
+
+
+		$j_barang_rb = $this->admin_model->get_jum_aset2();
+		foreach ($j_barang_rb as $row) {
+			$bar[$row->id_cl_phc]['j_barang_rb'] = $row->jml;
+		}
+
+		$j_barang_rb1 = $this->admin_model->get_nilai_aset2();
+		foreach ($j_barang_rb1 as $row) {
+			$bar[$row->id_cl_phc]['j_barang_rb1'] = $row->nilai;
+		}
+
+
+		$nilai_aset = $this->admin_model->get_jum_nilai_aset();
+		foreach ($nilai_aset as $row) {
+			$bar[$row->id_cl_phc]['nilai_aset'] = $row->jml;
+		}
+
+		$nilai_aset1 = $this->admin_model->get_jum_nilai_aset2();
+		foreach ($nilai_aset1 as $row) {
+			$bar[$row->id_cl_phc]['nilai_aset1'] = $row->nilai;
+		}
+
+		$data['bar']	= $bar;
+		$data['color']	= $color;
+		$data['content']= $this->parser->parse("sik/show",$data,true);
 		
 		$this->template->show($data,'home');
 	}
@@ -60,20 +103,6 @@ class Morganisasi extends CI_Controller {
 		}
 	}
 
-	function example1()
-	{
-		$image_crud = new image_CRUD();
-		
-		$image_crud->set_primary_key_field('id');
-		$image_crud->set_url_field('url');
-		$image_crud->set_table('example_1')
-			->set_image_path('assets/uploads');
-			
-		$output = $image_crud->render();
-		
-		$this->load->view('example.php',$output);
-	}
-	
 	function profile()
 	{
 		$this->authentication->verify('morganisasi','edit');		
@@ -90,26 +119,26 @@ class Morganisasi extends CI_Controller {
 	}
 
 	function profile_doupdate() {
-		        $this->form_validation->set_rules('email', 'Email', 'trim|required|callback_check_email2');
-		        $this->form_validation->set_rules('nama', 'Nama Lengkap', 'trim|required');
-		        $this->form_validation->set_rules('phone_number', 'Nama Pendaftar', 'trim');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|callback_check_email2');
+        $this->form_validation->set_rules('nama', 'Nama Lengkap', 'trim|required');
+        $this->form_validation->set_rules('phone_number', 'Nama Pendaftar', 'trim');
 
-				if($this->form_validation->run()== FALSE){
-					// echo "0";
-					echo validation_errors();
-					// $this->session->set_flashdata('alert', "".validation_errors());
-					// redirect(base_url()."sik/profile");
-				}elseif($username=$this->morganisasi_model->update_profile()){
-					// $this->session->set_flashdata('alert', 'Save data successful...');
-					// echo "1";
-					echo "Data berhasil disimpan";
-					// redirect(base_url()."sik/profile");
-				}else{
-					// $this->session->set_flashdata('alert_form', 'Save data failed...');
-					// echo "0";
-					// redirect(base_url()."sik/profile");
-					echo "Penyimpanan data gagal dilakukan";
-				}
+		if($this->form_validation->run()== FALSE){
+			// echo "0";
+			echo validation_errors();
+			// $this->session->set_flashdata('alert', "".validation_errors());
+			// redirect(base_url()."sik/profile");
+		}elseif($username=$this->morganisasi_model->update_profile()){
+			// $this->session->set_flashdata('alert', 'Save data successful...');
+			// echo "1";
+			echo "Data berhasil disimpan";
+			// redirect(base_url()."sik/profile");
+		}else{
+			// $this->session->set_flashdata('alert_form', 'Save data failed...');
+			// echo "0";
+			// redirect(base_url()."sik/profile");
+			echo "Penyimpanan data gagal dilakukan";
+		}
 	}
 
 	function profile_dosave()
