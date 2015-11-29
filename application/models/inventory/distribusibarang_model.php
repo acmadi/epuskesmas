@@ -42,6 +42,30 @@ class Distribusibarang_model extends CI_Model {
         return $query->result();
     }
 	
+	function get_count($id_cl_phc="",$id_ruangan=""){
+		if($id_cl_phc=="none"){
+			return " ";
+		}else{
+			if($id_ruangan!="" && $id_cl_phc!=""){
+				$this->db->where('id_cl_phc', $id_cl_phc);
+				$this->db->where('id_ruangan', $id_ruangan);
+				$this->db->where('status', 1);
+		        $count = $this->db->get('inv_inventaris_distribusi')->num_rows();
+				return "(".$count.")";
+			}elseif($id_cl_phc!=""){
+				$this->db->where('id_cl_phc', $id_cl_phc);
+				$this->db->where('status', 1);
+		        $count = $this->db->get('inv_inventaris_distribusi')->num_rows();
+				return "(".$count.")";
+			}
+			else{
+				$this->db->where('inv_inventaris_barang.id_inventaris_barang NOT IN (SELECT DISTINCT id_inventaris_barang FROM inv_inventaris_distribusi) ');
+        		$count = $query = $this->db->get('inv_inventaris_barang')->num_rows();
+				return "(".$count.")";
+			}
+		}
+	}
+
 	function get_kembar_id($id){
 		$this->db->select('barang_kembar_proc');
 		$this->db->where('id_inventaris_barang', $id);
@@ -54,6 +78,7 @@ class Distribusibarang_model extends CI_Model {
 		return $result;
 		
 	}
+
 	function get_register($id_barang, $id_ruangan, $code_cl_phc){
 		$id_kembar = $this->get_kembar_id($id_barang);
 		$this->db->select('register');

@@ -4,67 +4,79 @@
     <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
     <h4>
     <i class="icon fa fa-check"></i>
-    Information! Haha
+    Information! 
     </h4>
     <div id="notice-content">{notice}</div>
   </div>
 	<div class="row">
     <?php echo form_open(current_url(), 'id="form-ss"') ?>
           <div class="box-body">
-           
-            <div class="form-group">
-              <label>Tanggal</label>
-              <div id='tgl' name="tgl" value="<?php echo date('d-m-Y')?>"></div>
-              <!--<input type="text" class="form-control" id="tanggal" name="tanggal" value="<?php echo date('d-m-Y')?>"  placeholder="Tanggal" >-->
+           <div class="row">
+            <div class="col-md-6">
+  			
+  			     <div class="form-group">
+                <label>Puskesmas tujuan</label>
+                <select name="code_cl_phc2" class="form-control" id="code_cl_phc2">
+                  <option value="0">Pilih Puskesmas</option>
+                    <?php foreach ($datapuskesmas as $row ) { ;?>
+                    <option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
+                    <?php	} ;?>
+                  </select>
+              </div>
             </div>
-			
-			<div class="form-group">
-              <label>Puskesmas</label>
-              <select name="code_cl_phc2" class="form-control" id="code_cl_phc2">
-     			<option value="0">Pilih Puskesmas</option>
-				<?php foreach ($datapuskesmas as $row ) { ;?>
-					<option value="<?php echo $row->code; ?>" onchange="" ><?php echo $row->value; ?></option>
-				<?php	} ;?>
-	     	</select>
+            <div class="col-md-6">
+  			     <div class="form-group">
+                <label>Ruangan tujuan (opsional)</label>
+                <select name="code_ruangan2" class="form-control" id="code_ruangan2">
+                  <option value="0">Pilih Ruangan</option>
+                </select>
+              </div>
             </div>
-            
-			<div class="form-group">
-              <label>Ruangan</label>
-              <select name="code_ruangan2" class="form-control" id="code_ruangan2">
-     				<option value="0">Pilih Ruangan</option>
-	     		</select>
+  			   </div>
+           <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tanggal pemindahan</label>
+                <div id='tgl' name="tgl" value="<?php echo date('d-m-Y')?>"></div>
+                <!--<input type="text" class="form-control" id="tanggal" name="tanggal" value="<?php echo date('d-m-Y')?>"  placeholder="Tanggal" >-->
+              </div>
             </div>
-			
-			<label>Data Barang</label>
-          <table class="table table-bordered">
-            <tr>
-              <th style="width: 10px">#</th>
-              <th>Kode Barang</th>
-              <th>Nama Barang</th>
-              <th>Kondisi</th>
-              
-            </tr>
-					<input type="hidden" name="data_barang" value="<?php echo $data_barang?>" id="data_barang" >
-					<?php
-					$no = 1;
-					$data = explode("_tr_",$data_barang);
-					for($i=0; $i<count($data)-1; $i++ ){
-						$data2 = explode("_td_",$data[$i]);
-					?>
-            <tr>
-              <td><?php echo $no?>.</td>
-              <td><?php echo $data2[1]?></td>
-              <td><?php echo str_replace("_", " ", $data2[2])?></td>                      
-              <td><?php echo $data2[3]?></td>                      
-            </tr>
-					<?php
-					$no++;
-					} ?>
-          </table>
-        </div>
-        <div class="box-footer pull-right">           
-            <button type="button" id="btn-close" class="btn btn-warning">Batal</button>
-			<button type="submit" class="btn btn-primary">Simpan</button>
+            <div class="col-md-6">
+              <div class="form-group ">           
+                <label>Pindahkan Barang?</label><br>
+                   <button type="button" id="btn-close" class="btn btn-primary">Batal</button>
+                   <button type="submit" class="btn btn-danger">Pindah <i class='fa fa-sign-in'></i> </button>
+              </div>
+             </div>
+           </div>
+            <br>
+			     <label>Daftar barang yang akan dipindahkan:</label>
+            <table class="table table-bordered">
+              <tr>
+                <th align="center" width="5%">#</th>
+                <th align="center" width="16%">Kode Barang</th>
+                <th width="69%">Nama Barang</th>
+                <th align="center" width="10%">Kondisi</th>
+                
+              </tr>
+  					<input type="hidden" name="data_barang" value="<?php echo $data_barang?>" id="data_barang" >
+  					<?php
+  					$no = 1;
+  					$data = explode("_tr_",$data_barang);
+  					for($i=0; $i<count($data)-1; $i++ ){
+  						$data2 = explode("_td_",$data[$i]);
+              $kode = substr(chunk_split($data2[1], 2, '.'), 0,14);
+  					?>
+              <tr>
+                <td align="center"><?php echo $no?>.</td>
+                <td align="center"><?php echo $kode?></td>
+                <td><?php echo str_replace("_", " ", $data2[2])?></td>                      
+                <td align="center"><?php echo $data2[3]?></td>                      
+              </tr>
+  					<?php
+  					$no++;
+  					} ?>
+            </table>
         </div>
     </div>
 </form>
@@ -121,6 +133,7 @@ $(function () {
 
                       $("#jqxgrid").jqxGrid('updatebounddata', 'cells');
                       close_popup();
+                      $('#code_cl_phc').change();
                   }
                   else if(res[0]=="Error"){
                       $('#notice').hide();

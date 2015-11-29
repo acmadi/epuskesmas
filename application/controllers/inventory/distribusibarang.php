@@ -153,13 +153,16 @@ class Distribusibarang extends CI_Controller {
 
 			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$code_cl_phc)->result();
 
-			echo '<option value="all">-- Seluruh Ruangan --</option>';
+			$all = $this->distribusibarang_model->get_count($code_cl_phc);
+			echo '<option value="all">-- Seluruh Ruangan '.$all.' --</option>';
 			if(substr($code_cl_phc, -2)=="01"){
-				echo '<option value="none">-- Belum Distribusi --</option>';
+				$none = $this->distribusibarang_model->get_count();
+				echo '<option value="none">-- Belum Distribusi '.$none.' --</option>';
 			}
 			foreach($kode as $kode) :
+				$ruangan = $this->distribusibarang_model->get_count($code_cl_phc,$kode->id_mst_inv_ruangan);
 				echo $select = $kode->id_mst_inv_ruangan == $id_mst_inv_ruangan ? 'selected' : '';
-				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
+				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . ' '.$ruangan.' </option>';
 			endforeach;
 
 			return FALSE;
