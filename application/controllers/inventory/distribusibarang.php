@@ -78,7 +78,7 @@ class Distribusibarang extends CI_Controller {
 				'harga' 			=> $act->harga,
 				'kondisi'			=> $act->pilihan_keadaan_barang." - ".$act->val,		
 				'id_barang'			=> $act->id_inventaris_barang,				
-				'nama' 				=> str_replace(" ","_", $act->nama_barang)
+				'nama' 				=> preg_replace('/[^A-Za-z0-9\-]/', '_', $act->nama_barang)
 			);
 		}
 
