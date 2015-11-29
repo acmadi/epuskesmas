@@ -25,7 +25,11 @@ class Distribusibarang extends CI_Controller {
 				if($field == 'tgl_pengadaan') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
-				}elseif($field != 'year') {
+				}
+				elseif($field == 'kode') {
+					$this->db->like('inv_inventaris_barang.id_mst_inv_barang',$value);
+				}
+				elseif($field != 'year') {
 					$this->db->like($field,$value);
 				}
 			}
@@ -49,7 +53,11 @@ class Distribusibarang extends CI_Controller {
 				if($field == 'tgl_pengadaan') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
-				}elseif($field != 'year') {
+				}
+				elseif($field == 'kode') {
+					$this->db->like('inv_inventaris_barang.id_mst_inv_barang',$value);
+				}
+				elseif($field != 'year') {
 					$this->db->like($field,$value);
 				}
 			}
@@ -63,12 +71,14 @@ class Distribusibarang extends CI_Controller {
 		$data = array();
 		foreach($rows as $act) {
 			$data[] = array(
-				'kode_barang' 		=> chunk_split($act->id_mst_inv_barang, 2, '.'),
+				'kode' 				=> substr(chunk_split($act->id_mst_inv_barang, 2, '.'), 0,14),
+				'kode_barang' 		=> $act->id_mst_inv_barang,
 				'register' 			=> $act->register,
 				'nama_barang' 		=> $act->nama_barang,
 				'harga' 			=> $act->harga,
-				'kondisi'			=> $act->pilihan_keadaan_barang." - ".$act->val,				
-				'id_barang'			=> $act->id_inventaris_barang				
+				'kondisi'			=> $act->pilihan_keadaan_barang." - ".$act->val,		
+				'id_barang'			=> $act->id_inventaris_barang,				
+				'nama' 				=> str_replace(" ","_", $act->nama_barang)
 			);
 		}
 
@@ -143,10 +153,10 @@ class Distribusibarang extends CI_Controller {
 
 			$kode 	= $this->inv_ruangan_model->getSelectedData('mst_inv_ruangan',$code_cl_phc)->result();
 
+			echo '<option value="all">-- Seluruh Ruangan --</option>';
 			if(substr($code_cl_phc, -2)=="01"){
 				echo '<option value="none">-- Belum Distribusi --</option>';
 			}
-			echo '<option value="all">-- Seluruh Ruangan --</option>';
 			foreach($kode as $kode) :
 				echo $select = $kode->id_mst_inv_ruangan == $id_mst_inv_ruangan ? 'selected' : '';
 				echo '<option value="'.$kode->id_mst_inv_ruangan.'" '.$select.'>' . $kode->nama_ruangan . '</option>';
@@ -194,10 +204,14 @@ class Distribusibarang extends CI_Controller {
 	function set_filter(){
 		if(!empty($this->input->post('code_cl_phc'))){
 			$this->session->set_userdata('code_cl_phc',$this->input->post('code_cl_phc'));			
+		}else{
+			$this->session->unset_userdata('code_ruangan');
 		}
 		
 		if(!empty($this->input->post('code_ruangan'))){
 			$this->session->set_userdata('code_ruangan',$this->input->post('code_ruangan'));
+		}else{
+			$this->session->set_userdata('code_ruangan','all');
 		}
 	}
 

@@ -14,7 +14,8 @@
            
             <div class="form-group">
               <label>Tanggal</label>
-              <input type="text" class="form-control" id="tanggal" name="tanggal" value="<?=date('d-m-Y')?>"  placeholder="Tanggal" >
+              <div id='tgl' name="tgl" value="<?php echo date('d-m-Y')?>"></div>
+              <!--<input type="text" class="form-control" id="tanggal" name="tanggal" value="<?php echo date('d-m-Y')?>"  placeholder="Tanggal" >-->
             </div>
 			
 			<div class="form-group">
@@ -35,36 +36,31 @@
             </div>
 			
 			<label>Data Barang</label>
-                  <table class="table table-bordered">
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Kode Barang</th>
-                      <th>Nama Barang</th>
-                      <th>Kondisi</th>
-                      
-                    </tr>
-					<input type="hidden" name="data_barang" value="<?=$data_barang?>" id="data_barang" >
+          <table class="table table-bordered">
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Kode Barang</th>
+              <th>Nama Barang</th>
+              <th>Kondisi</th>
+              
+            </tr>
+					<input type="hidden" name="data_barang" value="<?php echo $data_barang?>" id="data_barang" >
 					<?php
-					
 					$no = 1;
 					$data = explode("_tr_",$data_barang);
 					for($i=0; $i<count($data)-1; $i++ ){
 						$data2 = explode("_td_",$data[$i]);
-						
 					?>
-                    <tr>
-                      <td><?=$no?>.</td>
-                      <td><?=$data2[1]?></td>
-                      <td><?=$data2[2]?></td>                      
-                      <td><?=$data2[3]?></td>                      
-                    </tr>
+            <tr>
+              <td><?php echo $no?>.</td>
+              <td><?php echo $data2[1]?></td>
+              <td><?php echo str_replace("_", " ", $data2[2])?></td>                      
+              <td><?php echo $data2[3]?></td>                      
+            </tr>
 					<?php
 					$no++;
 					} ?>
-                    
-                  </table>
-               
-			
+          </table>
         </div>
         <div class="box-footer pull-right">           
             <button type="button" id="btn-close" class="btn btn-warning">Batal</button>
@@ -77,8 +73,9 @@
 <script type="text/javascript">
 
 $(function () {	
-		$("#tanggalz").datepicker({dateFormat: 'dd-mm-yy'});
-		
+    $("#tgl").jqxDateTimeInput({ formatString: 'dd-MM-yyyy', theme: theme, height: '  31px'});
+		//$("#tanggal").datepicker( "option", "dateFormat","dd-mm-yy");
+
 		$('#btn-close').click(function(){
 			close_popup();
 		  });	
@@ -102,7 +99,7 @@ $(function () {
             $('#notice-content').html('<div class="alert">Mohon tunggu, proses simpan data....</div>');
             $('#notice').show();
 
-            data.append('tanggal', $('#tanggal').val());
+            data.append('tanggal', $('#tgl').val());
             data.append('code_cl_phc2', $('#code_cl_phc2').val());
             data.append('code_ruangan2', $('#code_ruangan2').val());
             data.append('data_barang', $('#data_barang').val());

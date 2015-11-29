@@ -11,26 +11,32 @@ class Distribusibarang_model extends CI_Model {
 		$this->db->distinct();
         $this->db->select('inv_inventaris_barang.id_inventaris_barang, id_mst_inv_barang, register, nama_barang, harga, pilihan_keadaan_barang, value as val');
 		$this->db->join('mst_inv_pilihan','mst_inv_pilihan.code=inv_inventaris_barang.pilihan_keadaan_barang');
-		if(!empty($this->session->userdata('code_cl_phc')) and $this->session->userdata('code_cl_phc') != 'none'){		
+
+		if($this->session->userdata('code_ruangan') == 'none'){
+			$kodepuskesmas = $this->session->userdata('code_cl_phc');
+			if(substr($kodepuskesmas, -2)=="01"){
+				$this->db->where('inv_inventaris_barang.id_inventaris_barang NOT IN (SELECT DISTINCT id_inventaris_barang FROM inv_inventaris_distribusi) ');
+	        	$this->db->join('inv_inventaris_distribusi','inv_inventaris_distribusi.id_inventaris_barang = inv_inventaris_barang.id_inventaris_barang','left');
+			}else {
+				$this->db->where('inv_inventaris_distribusi.id_cl_phc',$this->session->userdata('code_cl_phc'));
+	        	$this->db->join('inv_inventaris_distribusi','inv_inventaris_distribusi.id_inventaris_barang = inv_inventaris_barang.id_inventaris_barang','inner');
+			}
+		}
+		elseif(!empty($this->session->userdata('code_cl_phc'))){		
 			$this->db->where('inv_inventaris_distribusi.id_cl_phc',$this->session->userdata('code_cl_phc'));
 			$this->db->where('status','1');
 			
-			if(!empty($this->session->userdata('code_ruangan')) and $this->session->userdata('code_ruangan') != '0'){
-				if($this->session->userdata('code_ruangan') == 'none'){
-					$this->db->where('inv_inventaris_distribusi.id_ruangan','0');
-				}else if($this->session->userdata('code_ruangan') == 'all'){
-					
-				}else{
-					$this->db->where('inv_inventaris_distribusi.id_ruangan',$this->session->userdata('code_ruangan'));
-				}
-					
-			}						
+			if(!empty($this->session->userdata('code_ruangan')) and $this->session->userdata('code_ruangan') == 'all'){
+			}else{
+				$this->db->where('inv_inventaris_distribusi.id_ruangan',$this->session->userdata('code_ruangan'));
+			}			
+        	$this->db->join('inv_inventaris_distribusi','inv_inventaris_distribusi.id_inventaris_barang = inv_inventaris_barang.id_inventaris_barang','inner');
 			
 		}else{
-			$this->db->where('inv_inventaris_distribusi.id_ruangan');
+			$this->db->where('inv_inventaris_distribusi.id_ruangan > 0');
+        	$this->db->join('inv_inventaris_distribusi','inv_inventaris_distribusi.id_inventaris_barang = inv_inventaris_barang.id_inventaris_barang','inner');
 		}
 		
-        $this->db->join('inv_inventaris_distribusi','inv_inventaris_distribusi.id_inventaris_barang = inv_inventaris_barang.id_inventaris_barang','left');
         
         $query = $this->db->get('inv_inventaris_barang',$limit,$start);
         return $query->result();
@@ -161,21 +167,13 @@ class Distribusibarang_model extends CI_Model {
 		);
 		$this->db->where('id_inventaris_barang', $this->input->post('id_barang'));
 		$this->db->update('inv_inventaris_barang',$data_update);
-		//update keadaan_barang
-		$data_update=array(
-			'status' => 0
-		);		
-		$this->db->where('id_inventaris_barang', $this->input->post('id_barang'));
-		$this->db->update('inv_keadaan_barang',$data_update);
-		
 		
 		//input keadaan_barang
 		$data_input=array(
 			'id_keadaan_barang'=>$this->get_id_keadaan('id_barang'),
 			'id_inventaris_barang'=>$this->input->post('id_barang'),
 			'pilihan_keadaan_barang'=>$kondisi,
-			'tanggal'=>date('Y-m-d'),
-			'status'=>1
+			'tanggal'=>date('Y-m-d')
 		);
 		
 		return $this->db->insert('inv_keadaan_barang', $data_input);		

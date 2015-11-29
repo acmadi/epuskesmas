@@ -34,7 +34,7 @@
 		  </div>
 	      <div class="col-md-6" style="text-align:right">
 		 	<button type="button" class="btn btn-success" id="btn-refresh"><i class='fa fa-refresh'></i> &nbsp; Refresh</button>
-		 	<button type="button" onclick="doList()" class="btn btn-primary" id="btn-warning"><i class='fa fa-sign-in'></i> &nbsp; Alokasikan Aset	</button>
+		 	<button type="button" onclick="doList()" class="btn btn-danger" id="btn-warning"><i class='fa fa-sign-in'></i> &nbsp; Alokasikan Aset	</button>
 	     </div>
 		</div>
         <div class="box-body">
@@ -55,10 +55,7 @@
 	    $("#menu_inventory_distribusibarang").addClass("active");
 		
 		
-		
-		
 	    $('#code_cl_phc').change(function(){
-			
 			
 	      var code_cl_phc = $(this).val();
 	      $.ajax({
@@ -74,9 +71,9 @@
 		  $.ajax({
 	        url : '<?php echo site_url('inventory/distribusibarang/set_filter') ?>',
 	        type : 'POST',
-	        data : 'code_cl_phc=' + code_cl_phc+'&code_ruangan='+selectedValue,
+	        data : 'code_cl_phc=' + code_cl_phc+'&code_ruangan=all',
 	        success : function(data) {
-	          $("#jqxgrid").jqxGrid('updatebounddata', 'cells');
+	          	$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
 	        }
 	      });
 
@@ -105,11 +102,13 @@
 			type	: "POST",
 			datafields: [
 			{ name: 'kode_barang', type: 'string'},
+			{ name: 'kode', type: 'string'},
 			{ name: 'register', type: 'string'},
 			{ name: 'nama_barang', type: 'string'},
 			{ name: 'harga', type: 'number'},
 			{ name: 'kondisi', type: 'string'},
-			{ name: 'id_barang', type: 'string'}			
+			{ name: 'id_barang', type: 'string'},	
+			{ name: 'nama', type: 'string'}
         ],
 		url: "<?php echo site_url('inventory/distribusibarang/json'); ?>",		
 		cache: false,
@@ -119,11 +118,7 @@
 				//alert(arr);
 			var id_ruang = document.getElementById('code_ruangan').value;
 			var code_cl_phc = document.getElementById('code_cl_phc').value;
-			$.post( '<?php echo base_url()?>inventory/distribusibarang/update_data', {id_ruang:id_ruang, code_cl_phc:code_cl_phc, id_barang:arr[0], register:arr[1], kondisi:arr[4]},function( data ) {
-					if(!empty(data)){
-						alert(data);									
-						$("#jqxgrid").jqxGrid('updatebounddata', 'cells');
-					}
+			$.post( '<?php echo base_url()?>inventory/distribusibarang/update_data', {id_ruang:id_ruang, code_cl_phc:code_cl_phc, id_barang:arr[6], register:arr[2], kondisi:arr[5]},function( data ) {
 					
 			});
 					
@@ -165,16 +160,15 @@
 			columns: [
 				{ text: 'Pilih', align: 'center', filtertype: 'none', sortable: false, width: '5%', cellsrenderer: function (row) {
 				    var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-					return "<div style='width:100%;padding-top:2px;text-align:center'><input type='checkbox' name='aset[]' value="+dataRecord.id_barang+"_td_"+dataRecord.kode_barang+"_td_"+dataRecord.nama_barang+"_td_"+dataRecord.kondisi+" ></div>";
+					return "<div style='width:100%;padding-top:2px;text-align:center'><input type='checkbox' name='aset[]' value="+dataRecord.id_barang+"_td_"+dataRecord.kode_barang+"_td_"+dataRecord.nama+"_td_"+dataRecord.kondisi+" ></div>";
                  }
                 },
-				{ text: 'Kode Barang',editable:false , datafield: 'kode_barang', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
-				{ text: 'Register',editable:true ,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
+				{ text: 'Kode Barang', align: 'center', cellsalign: 'center' , sortable: false,editable:false , datafield: 'kode', columntype: 'textbox', filtertype: 'textbox', width: '15%' },
+				{ text: 'Register', align: 'center', cellsalign: 'center',editable:true ,datafield: 'register', columntype: 'textbox', filtertype: 'textbox', width: '10%' },
 				{ text: 'Nama Barang',editable:false , datafield: 'nama_barang', columntype: 'textbox', filtertype: 'textbox', width: '40%' },
-				{ text: 'Harga Satuan (Rp.)', editable:false , datafield: 'harga',columntype: 'textbox', filtertype: 'textbox', width: '15%', cellsalign: 'right', cellsformat: 'f'  },
-				//{ text: 'Kondisi Barang', editable:false ,columntype: 'textbox', datafield: 'kondisi', filtertype: 'textbox', width: '15%' },
+				{ text: 'Harga Satuan (Rp.)', align: 'center', editable:false , datafield: 'harga',columntype: 'textbox', filtertype: 'textbox', width: '15%', cellsalign: 'right', cellsformat: 'f'  },
 				{
-                        text: 'Kondisi Barang', datafield: 'kondisi', width: '15%', columntype: 'dropdownlist',
+                        text: 'Kondisi Barang', filtertype: 'none', sortable: false, align: 'center', cellsalign: 'center', datafield: 'kondisi', width: '15%', columntype: 'dropdownlist',
                         createeditor: function (row, column, editor) {
                             // assign a new data source to the dropdownlist.
                             var list = [<?php foreach ($pilih_kondisi as $r) {?>
