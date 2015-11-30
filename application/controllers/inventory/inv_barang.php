@@ -323,8 +323,8 @@ class Inv_barang extends CI_Controller {
 	function index(){
 		$this->authentication->verify('inventory','edit');
 
-		$data['title_group'] = "Parameter";
-		$data['title_form'] = "Master Data - Daftar Inventaris Barang";
+		$data['title_group'] = "Inventory";
+		$data['title_form'] = "Daftar Inventaris Barang";
 		$data['kodestatus_inv'] = $this->inv_barang_model->pilih_data_status('status_inventaris');
 
 		$kodepuskesmas = $this->session->userdata('puskesmas');

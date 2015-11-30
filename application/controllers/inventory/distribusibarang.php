@@ -133,6 +133,9 @@ class Distribusibarang extends CI_Controller {
 		$data['title_group'] = "Inventory";
 		$data['title_form'] = "Distribusi Barang";
 
+		$this->session->set_userdata('code_cl_phc',$this->session->userdata('puskesmas'));
+		$this->session->unset_userdata('code_ruangan');
+
 		$kodepuskesmas = $this->session->userdata('puskesmas');
 		if(substr($kodepuskesmas, -2)=="01"){
 			$this->db->like('code','P'.substr($kodepuskesmas, 0,7));

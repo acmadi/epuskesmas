@@ -370,9 +370,15 @@ WHERE inv_inventaris_barang.barang_kembar_proc = (SELECT barang_kembar_proc FROM
 	function delete_entryitem($id_barang,$kd_proc)
 	{   $id = $this->db->query("SELECT id_inventaris_barang FROM inv_inventaris_barang WHERE barang_kembar_proc =$kd_proc")->result(); 
         foreach ($id as $key) {
-              $key->id_inventaris_barang;
-              $this->db->where('id_inventaris_barang',$key->id_inventaris_barang);
-              $this->db->delete('inv_inventaris_barang');
+            $key->id_inventaris_barang;
+            $this->db->where('id_inventaris_barang',$key->id_inventaris_barang);
+            $this->db->delete('inv_inventaris_barang');
+
+                $this->db->where('id_inventaris_barang',$key->id_inventaris_barang);
+                $this->db->delete('inv_inventaris_distribusi');
+                $this->db->where('id_inventaris_barang',$key->id_inventaris_barang);
+                $this->db->delete('inv_keadaan_barang');
+
                 $kodebarang_ = substr($id_barang, 0,2);
                 if($kodebarang_=='01') {
                     $this->db->where('id_inventaris_barang',$key->id_inventaris_barang);
