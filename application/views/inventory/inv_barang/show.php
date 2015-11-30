@@ -1708,7 +1708,8 @@
 			post = post+'&sortorder='+sortorder;
 			
 		}
-		post = post+'&puskes='+$("#code_cl_phc option:selected").text();
+		post = post+'&puskes='+$("#code_cl_phc option:selected").val();
+		post = post+'&namepuskes='+$("#code_cl_phc option:selected").text();
 		post = post+'&ruang='+$("#code_ruangan option:selected").text();
 
 		<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>

@@ -23,7 +23,7 @@ class Json extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				if($field == 'tgl_pengadaan') {
+				if($field == 'tanggal_diterima') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
 				}elseif($field != 'year') {
@@ -63,7 +63,7 @@ class Json extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				if($field == 'tgl_pengadaan') {
+				if($field == 'tanggal_diterima') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
 				}elseif($field != 'year') {

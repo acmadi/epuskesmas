@@ -27,7 +27,7 @@ class Export extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				if($field == 'tgl_pengadaan') {
+				if($field == 'tanggal_diterima') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
 				}elseif($field != 'year') {
@@ -67,7 +67,7 @@ class Export extends CI_Controller {
 				$field = $this->input->post('filterdatafield'.$i);
 				$value = $this->input->post('filtervalue'.$i);
 
-				if($field == 'tgl_pengadaan') {
+				if($field == 'tanggal_diterima') {
 					$value = date("Y-m-d",strtotime($value));
 					$this->db->where($field,$value);
 				}elseif($field != 'year') {
@@ -268,17 +268,26 @@ class Export extends CI_Controller {
 		}
 
 		
-		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
-			$namapus = 'Semua Data Puskesmas';
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){	
+				$kode='P '.$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode, 2,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode, 2,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
+				$kd_upb  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
 		}else{
-			$namapus = $this->input->post('puskes');
+				$kode_sess=$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode_sess, 0,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode_sess, 0,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode_sess, 0,7));
+				$kd_upb  = $this->input->post('namepuskes');
+				$kode = $this->input->post('puskes');
 		}
 		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
 			$namaruang = 'Semua Data Ruangan';
 		}else{
 			$namaruang = $this->input->post('ruang');
 		}
-		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$data_puskesmas[] = array('kode' => $kode,'namaruang' => $namaruang,'kd_prov' => $kd_prov,'kd_kab' => $kd_kab,'kd_kec' => $kd_kec,'kd_upb' => $kd_upb);
 		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kiba.xlsx';		
 		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
@@ -416,17 +425,26 @@ class Export extends CI_Controller {
 		}
 
 		
-		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
-			$namapus = 'Semua Data Puskesmas';
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){	
+				$kode='P '.$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode, 2,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode, 2,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
+				$kd_upb  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
 		}else{
-			$namapus = $this->input->post('puskes');
+				$kode_sess=$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode_sess, 0,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode_sess, 0,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode_sess, 0,7));
+				$kd_upb  = $this->input->post('namepuskes');
+				$kode = $this->input->post('puskes');
 		}
 		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
 			$namaruang = 'Semua Data Ruangan';
 		}else{
 			$namaruang = $this->input->post('ruang');
 		}
-		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$data_puskesmas[] = array('kode' => $kode,'namaruang' => $namaruang,'kd_prov' => $kd_prov,'kd_kab' => $kd_kab,'kd_kec' => $kd_kec,'kd_upb' => $kd_upb);
 		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibb.xlsx';		
 		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
@@ -562,17 +580,26 @@ class Export extends CI_Controller {
 		}
 
 		
-		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
-			$namapus = 'Semua Data Puskesmas';
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){	
+				$kode='P '.$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode, 2,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode, 2,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
+				$kd_upb  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
 		}else{
-			$namapus = $this->input->post('puskes');
+				$kode_sess=$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode_sess, 0,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode_sess, 0,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode_sess, 0,7));
+				$kd_upb  = $this->input->post('namepuskes');
+				$kode = $this->input->post('puskes');
 		}
 		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
 			$namaruang = 'Semua Data Ruangan';
 		}else{
 			$namaruang = $this->input->post('ruang');
 		}
-		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$data_puskesmas[] = array('kode' => $kode,'namaruang' => $namaruang,'kd_prov' => $kd_prov,'kd_kab' => $kd_kab,'kd_kec' => $kd_kec,'kd_upb' => $kd_upb);
 		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibc.xlsx';		
 		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
@@ -704,17 +731,26 @@ class Export extends CI_Controller {
 
 
 		
-		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
-			$namapus = 'Semua Data Puskesmas';
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){	
+				$kode='P '.$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode, 2,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode, 2,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
+				$kd_upb  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
 		}else{
-			$namapus = $this->input->post('puskes');
+				$kode_sess=$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode_sess, 0,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode_sess, 0,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode_sess, 0,7));
+				$kd_upb  = $this->input->post('namepuskes');
+				$kode = $this->input->post('puskes');
 		}
 		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
 			$namaruang = 'Semua Data Ruangan';
 		}else{
 			$namaruang = $this->input->post('ruang');
 		}
-		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$data_puskesmas[] = array('kode' => $kode,'namaruang' => $namaruang,'kd_prov' => $kd_prov,'kd_kab' => $kd_kab,'kd_kec' => $kd_kec,'kd_upb' => $kd_upb);
 		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibd.xlsx';		
 		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
@@ -849,17 +885,26 @@ class Export extends CI_Controller {
 		}
 
 		
-		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
-			$namapus = 'Semua Data Puskesmas';
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){	
+				$kode='P '.$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode, 2,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode, 2,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
+				$kd_upb  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
 		}else{
-			$namapus = $this->input->post('puskes');
+				$kode_sess=$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode_sess, 0,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode_sess, 0,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode_sess, 0,7));
+				$kd_upb  = $this->input->post('namepuskes');
+				$kode = $this->input->post('puskes');
 		}
 		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
 			$namaruang = 'Semua Data Ruangan';
 		}else{
 			$namaruang = $this->input->post('ruang');
 		}
-		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$data_puskesmas[] = array('kode' => $kode,'namaruang' => $namaruang,'kd_prov' => $kd_prov,'kd_kab' => $kd_kab,'kd_kec' => $kd_kec,'kd_upb' => $kd_upb);
 		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibe.xlsx';		
 		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 
@@ -994,17 +1039,26 @@ class Export extends CI_Controller {
 		}
 
 		
-		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
-			$namapus = 'Semua Data Puskesmas';
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){	
+				$kode='P '.$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode, 2,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode, 2,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
+				$kd_upb  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode, 2,7));
 		}else{
-			$namapus = $this->input->post('puskes');
+				$kode_sess=$this->session->userdata('puskesmas');
+				$kd_prov = $this->inv_barang_model->get_nama('value','cl_province','code',substr($kode_sess, 0,2));
+				$kd_kab  = $this->inv_barang_model->get_nama('value','cl_district','code',substr($kode_sess, 0,4));
+				$kd_kec  = 'KEC. '.$this->inv_barang_model->get_nama('nama','cl_kec','code',substr($kode_sess, 0,7));
+				$kd_upb  = $this->input->post('namepuskes');
+				$kode = $this->input->post('puskes');
 		}
 		if(empty($this->input->post('ruang')) or $this->input->post('ruang') == 'Pilih Ruangan'){
 			$namaruang = 'Semua Data Ruangan';
 		}else{
 			$namaruang = $this->input->post('ruang');
 		}
-		$data_puskesmas[] = array('nama_puskesmas' => $namapus,'nama_puskesmas' => $namaruang);
+		$data_puskesmas[] = array('kode' => $kode,'namaruang' => $namaruang,'kd_prov' => $kd_prov,'kd_kab' => $kd_kab,'kd_kec' => $kd_kec,'kd_upb' => $kd_upb);
 		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\kibf.xlsx';		
 		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
 

@@ -8,7 +8,14 @@ class Inv_barang_model extends CI_Model {
         parent::__construct();
 		$this->lang	  = $this->config->item('language');
     }
-    
+    function get_nama($kolom_sl,$tabel,$kolom_wh,$kond){
+       $this->db->where($kolom_wh,$kond);
+        $this->db->select($kolom_sl);
+        $query = $this->db->get($tabel)->result();
+        foreach ($query as $key) {
+            return $key->$kolom_sl;
+        }
+    }
     function get_data_status()
     {	
     	$this->db->where("mst_inv_pilihan.tipe",'status_pengadaan');
