@@ -1683,14 +1683,66 @@
 			var condition	= fltr.filter.getfilters()[0].condition;
 			var filteroperation	= fltr.filter.getfilters()[0].operation;
 			var filterdatafield	= fltr.filtercolumn;
-			if(filterdatafield=="tgl"){
-				var d = new Date(value);
-				var day = d.getDate();
-				var month = d.getMonth();
-				var year = d.getYear();
-				value = year+'-'+month+'-'+day;
-				
-			}
+	<?php  if(isset($filter_golongan_invetaris)){
+	if($filter_golongan_invetaris=='0100000000'){ ?> 
+				if(filterdatafield=="status_sertifikat_tanggal"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+				}
+	<?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
+				if(filterdatafield=="tanggal_bpkb"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+				}
+	<?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
+				if(filterdatafield=="tanggal_bpkb"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+				}
+    <?php	}else if($filter_golongan_invetaris=='0300000000'){ ?>
+					if(filterdatafield=="dokumen_tanggal"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+					}
+    <?php	}else if($filter_golongan_invetaris=='0400000000'){ ?>
+					if(filterdatafield=="dokumen_tanggal"){
+						var d = new Date(value);
+						var day = d.getDate();
+						var month = d.getMonth()+1;
+						var year = d.getFullYear();
+						value =  year+'-'+month+'-'+day;
+					}
+    <?php	}else if($filter_golongan_invetaris=='0500000000'){ ?>
+					if(filterdatafield=="tahun_cetak_beli"){
+						var d = new Date(value);
+						var day = d.getDate();
+						var month = d.getMonth()+1;
+						var year = d.getFullYear();
+						value =  year+'-'+month+'-'+day;
+					}
+    <?php	}else if($filter_golongan_invetaris=='0600000000'){ ?>
+					if(filterdatafield=="tanggal_mulai"){
+						var d = new Date(value);
+						var day = d.getDate();
+						var month = d.getMonth()+1;
+						var year = d.getFullYear();
+						value =  year+'-'+month+'-'+day;
+					}
+	<?php	}	 
+		} 
+			?> 	
 			post = post+'&filtervalue'+i+'='+value;
 			post = post+'&filtercondition'+i+'='+condition;
 			post = post+'&filteroperation'+i+'='+filteroperation;
