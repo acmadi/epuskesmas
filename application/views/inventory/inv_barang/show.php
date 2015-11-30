@@ -520,7 +520,7 @@
 				{ text: 'Pilihan Bahan', editable: false,datafield: 'bahan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Asal/Cara Perolehan Barang', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '17%'},
 				{ text: 'Thn Pembelian', align: 'center', cellsalign: 'center',editable: false,datafield: 'tanggal_perolehan', columntype: 'date', filtertype: 'date', cellsformat: 'yyyy', width: '9%'},
-				{ text: 'Ukuran Barang / Konstruksi (P, S, D) ', editable: false,datafield: 'ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Ukuran Barang / Konstruksi (P, S, D) ', editable: false,datafield: 'ukuran_barang', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Satuan', align: 'center', cellsalign: 'center', editable: false,datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Keadaan Barang', align: 'center', cellsalign: 'center',editable: false,datafield: 'keadaan_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Jumlah', align: 'center', cellsalign: 'right',editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
@@ -577,7 +577,7 @@
 				{ text: 'Pilihan Bahan', editable: false,datafield: 'bahan', columntype: 'textbox', filtertype: 'textbox', width: '15%'},
 				{ text: 'Asal/Cara Perolehan Barang', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '17%'},
 				{ text: 'Thn Pembelian', align: 'center', cellsalign: 'center',editable: false,datafield: 'tanggal_perolehan', columntype: 'date', filtertype: 'date', cellsformat: 'yyyy', width: '9%'},
-				{ text: 'Ukuran Barang / Konstruksi (P, S, D) ', editable: false,datafield: 'ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Ukuran Barang / Konstruksi (P, S, D) ', editable: false,datafield: 'ukuran_barang', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Satuan', align: 'center', cellsalign: 'center', editable: false,datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Keadaan Barang', align: 'center', cellsalign: 'center',editable: false,datafield: 'keadaan_barang', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
 				{ text: 'Jumlah', align: 'center', cellsalign: 'right',editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '10%'},
@@ -1036,7 +1036,8 @@
 				{ text: 'Pencipta ',columngroup: 'budaya', editable: false,datafield: 'budaya_pencipta', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Bahan ', columngroup: 'budaya',editable: false,datafield: 'pilihan_budaya_bahan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Jenis ',align: 'center', cellsalign: 'center', columngroup: 'hewan',editable: false,datafield: 'flora_fauna_jenis', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Ukuran ',align: 'center', cellsalign: 'right', columngroup: 'hewan',editable: false,datafield: 'flora_ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Ukuran ',align: 'center', cellsalign: 'right', columngroup: 'hewan',editable: false,datafield: 'flora_fauna_ukuran', columntype: 'textbox', filtertype: 'textbox', width: '6%'},
+				{ text: 'Satuan ',align: 'center', cellsalign: 'right', columngroup: 'hewan',editable: false,datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
 				{ text: 'Jumlah ',align: 'center', cellsalign: 'right', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Tgl Cetak/ Beli',align: 'center', cellsalign: 'center', editable: false,datafield: 'tahun_cetak_beli', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '9%'},
 				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
@@ -1090,7 +1091,8 @@
 				{ text: 'Pencipta ',columngroup: 'budaya', editable: false,datafield: 'budaya_pencipta', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Bahan ', columngroup: 'budaya',editable: false,datafield: 'pilihan_budaya_bahan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Jenis ',align: 'center', cellsalign: 'center', columngroup: 'hewan',editable: false,datafield: 'flora_fauna_jenis', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
-				{ text: 'Ukuran ',align: 'center', cellsalign: 'right', columngroup: 'hewan',editable: false,datafield: 'flora_ukuran_satuan', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
+				{ text: 'Ukuran ',align: 'center', cellsalign: 'right', columngroup: 'hewan',editable: false,datafield: 'flora_fauna_ukuran', columntype: 'textbox', filtertype: 'textbox', width: '6%'},
+				{ text: 'Satuan ',align: 'center', cellsalign: 'right', columngroup: 'hewan',editable: false,datafield: 'satuan', columntype: 'textbox', filtertype: 'textbox', width: '7%'},
 				{ text: 'Jumlah ',align: 'center', cellsalign: 'right', editable: false,datafield: 'jumlah', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
 				{ text: 'Tgl Cetak/ Beli',align: 'center', cellsalign: 'center', editable: false,datafield: 'tahun_cetak_beli', columntype: 'date', filtertype: 'date', cellsformat: 'dd-MM-yyyy', width: '9%'},
 				{ text: 'Asal Usul', editable: false,datafield: 'asal_usul', columntype: 'textbox', filtertype: 'textbox', width: '13%'},
@@ -1683,14 +1685,66 @@
 			var condition	= fltr.filter.getfilters()[0].condition;
 			var filteroperation	= fltr.filter.getfilters()[0].operation;
 			var filterdatafield	= fltr.filtercolumn;
-			if(filterdatafield=="tgl"){
-				var d = new Date(value);
-				var day = d.getDate();
-				var month = d.getMonth();
-				var year = d.getYear();
-				value = year+'-'+month+'-'+day;
-				
-			}
+	<?php  if(isset($filter_golongan_invetaris)){
+	if($filter_golongan_invetaris=='0100000000'){ ?> 
+				if(filterdatafield=="status_sertifikat_tanggal"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+				}
+	<?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
+				if(filterdatafield=="tanggal_bpkb"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+				}
+	<?php	}else if($filter_golongan_invetaris=='0200000000'){ ?>
+				if(filterdatafield=="tanggal_bpkb"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+				}
+    <?php	}else if($filter_golongan_invetaris=='0300000000'){ ?>
+					if(filterdatafield=="dokumen_tanggal"){
+					var d = new Date(value);
+					var day = d.getDate();
+					var month = d.getMonth()+1;
+					var year = d.getFullYear();
+					value =  year+'-'+month+'-'+day;
+					}
+    <?php	}else if($filter_golongan_invetaris=='0400000000'){ ?>
+					if(filterdatafield=="dokumen_tanggal"){
+						var d = new Date(value);
+						var day = d.getDate();
+						var month = d.getMonth()+1;
+						var year = d.getFullYear();
+						value =  year+'-'+month+'-'+day;
+					}
+    <?php	}else if($filter_golongan_invetaris=='0500000000'){ ?>
+					if(filterdatafield=="tahun_cetak_beli"){
+						var d = new Date(value);
+						var day = d.getDate();
+						var month = d.getMonth()+1;
+						var year = d.getFullYear();
+						value =  year+'-'+month+'-'+day;
+					}
+    <?php	}else if($filter_golongan_invetaris=='0600000000'){ ?>
+					if(filterdatafield=="tanggal_mulai"){
+						var d = new Date(value);
+						var day = d.getDate();
+						var month = d.getMonth()+1;
+						var year = d.getFullYear();
+						value =  year+'-'+month+'-'+day;
+					}
+	<?php	}	 
+		} 
+			?> 	
 			post = post+'&filtervalue'+i+'='+value;
 			post = post+'&filtercondition'+i+'='+condition;
 			post = post+'&filteroperation'+i+'='+filteroperation;
@@ -1708,7 +1762,8 @@
 			post = post+'&sortorder='+sortorder;
 			
 		}
-		post = post+'&puskes='+$("#code_cl_phc option:selected").text();
+		post = post+'&puskes='+$("#code_cl_phc option:selected").val();
+		post = post+'&namepuskes='+$("#code_cl_phc option:selected").text();
 		post = post+'&ruang='+$("#code_ruangan option:selected").text();
 
 		<?php 	if(!isset($filter_golongan_invetaris) || $filter_golongan_invetaris ==''){ ?>

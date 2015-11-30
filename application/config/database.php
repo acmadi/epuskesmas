@@ -5,7 +5,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
-$db['default']['password'] = "triadpass";
+$db['default']['password'] = "";
 $db['default']['database'] = "epus_prog";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";
@@ -23,7 +23,7 @@ $db['default']['stricton'] = FALSE;
 
 $db['3172010']['hostname'] = "localhost";
 $db['3172010']['username'] = "root";
-$db['3172010']['password'] = "triadpass";
+$db['3172010']['password'] = "";
 $db['3172010']['database'] = "epus_org_3172010";
 $db['3172010']['dbdriver'] = "mysql";
 $db['3172010']['dbprefix'] = "";
@@ -41,7 +41,7 @@ $db['3172010']['stricton'] = FALSE;
 
 $db['3172020']['hostname'] = "localhost";
 $db['3172020']['username'] = "root";
-$db['3172020']['password'] = "triadpass";
+$db['3172020']['password'] = "";
 $db['3172020']['database'] = "epus_org_3172020";
 $db['3172020']['dbdriver'] = "mysql";
 $db['3172020']['dbprefix'] = "";
@@ -59,7 +59,7 @@ $db['3172020']['stricton'] = FALSE;
 
 $db['3172030']['hostname'] = "localhost";
 $db['3172030']['username'] = "root";
-$db['3172030']['password'] = "triadpass";
+$db['3172030']['password'] = "";
 $db['3172030']['database'] = "epus_org_3172030";
 $db['3172030']['dbdriver'] = "mysql";
 $db['3172030']['dbprefix'] = "";
@@ -77,7 +77,7 @@ $db['3172030']['stricton'] = FALSE;
 
 $db['3172040']['hostname'] = "localhost";
 $db['3172040']['username'] = "root";
-$db['3172040']['password'] = "triadpass";
+$db['3172040']['password'] = "";
 $db['3172040']['database'] = "epus_org_3172040";
 $db['3172040']['dbdriver'] = "mysql";
 $db['3172040']['dbprefix'] = "";
@@ -95,7 +95,7 @@ $db['3172040']['stricton'] = FALSE;
 
 $db['3172050']['hostname'] = "localhost";
 $db['3172050']['username'] = "root";
-$db['3172050']['password'] = "triadpass";
+$db['3172050']['password'] = "";
 $db['3172050']['database'] = "epus_org_3172050";
 $db['3172050']['dbdriver'] = "mysql";
 $db['3172050']['dbprefix'] = "";
@@ -113,7 +113,7 @@ $db['3172050']['stricton'] = FALSE;
 
 $db['3172060']['hostname'] = "localhost";
 $db['3172060']['username'] = "root";
-$db['3172060']['password'] = "triadpass";
+$db['3172060']['password'] = "";
 $db['3172060']['database'] = "epus_org_3172060";
 $db['3172060']['dbdriver'] = "mysql";
 $db['3172060']['dbprefix'] = "";
@@ -131,7 +131,7 @@ $db['3172060']['stricton'] = FALSE;
 
 $db['3172070']['hostname'] = "localhost";
 $db['3172070']['username'] = "root";
-$db['3172070']['password'] = "triadpass";
+$db['3172070']['password'] = "";
 $db['3172070']['database'] = "epus_org_3172070";
 $db['3172070']['dbdriver'] = "mysql";
 $db['3172070']['dbprefix'] = "";
@@ -149,7 +149,7 @@ $db['3172070']['stricton'] = FALSE;
 
 $db['3172080']['hostname'] = "localhost";
 $db['3172080']['username'] = "root";
-$db['3172080']['password'] = "triadpass";
+$db['3172080']['password'] = "";
 $db['3172080']['database'] = "epus_org_3172080";
 $db['3172080']['dbdriver'] = "mysql";
 $db['3172080']['dbprefix'] = "";
@@ -167,7 +167,7 @@ $db['3172080']['stricton'] = FALSE;
 
 $db['3172090']['hostname'] = "localhost";
 $db['3172090']['username'] = "root";
-$db['3172090']['password'] = "triadpass";
+$db['3172090']['password'] = "";
 $db['3172090']['database'] = "epus_org_3172090";
 $db['3172090']['dbdriver'] = "mysql";
 $db['3172090']['dbprefix'] = "";
@@ -185,7 +185,7 @@ $db['3172090']['stricton'] = FALSE;
 
 $db['3172100']['hostname'] = "localhost";
 $db['3172100']['username'] = "root";
-$db['3172100']['password'] = "triadpass";
+$db['3172100']['password'] = "";
 $db['3172100']['database'] = "epus_org_3172100";
 $db['3172100']['dbdriver'] = "mysql";
 $db['3172100']['dbprefix'] = "";

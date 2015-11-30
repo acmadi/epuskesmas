@@ -3,6 +3,10 @@ class Inv_ruangan extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
+		$this->load->add_package_path(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/demo/tbs_class.php');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/tbs_plugin_opentbs.php');		
+		
 		$this->load->model('inventory/inv_ruangan_model');
 		//$this->load->model('inventory/permohonanbarang_model');
 		$this->load->model('mst/puskesmas_model');
@@ -60,6 +64,7 @@ class Inv_ruangan extends CI_Controller {
 		if($this->session->userdata('filter_code_cl_phc') != '') {
 			$this->db->where('code_cl_phc',$this->session->userdata('filter_code_cl_phc'));
 		}
+		
 		$rows = $this->inv_ruangan_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
 		$data = array();
 		foreach($rows as $act) {
@@ -129,41 +134,68 @@ class Inv_ruangan extends CI_Controller {
 			$this->db->where('code_cl_phc',$this->session->userdata('filter_code_cl_phc'));
 		}
 		*/
-		$rows = $this->inv_ruangan_model->get_data_detail($this->input->post('recordstartindex'), $this->input->post('pagesize'));
-		$kondisi = $this->inv_ruangan_model->get_pilihan_kondisi()->result();
-		
-		$data = array();
-		$x = '';
-		$n = 0;
-		$jml =1;
-		$tem = array();
-		foreach($rows as $r) {
-			$data_kondisi = array();
-			$col = array();
-			$i=0;
-			$real_kondisi = $r->pilihan_keadaan_barang;
-			if(!empty($this->session->userdata('filter_tanggal')) and $this->session->userdata('filter_tanggal') != '0' ){
-				$tgl = $this->session->userdata('filter_tanggal');
-				if($this->inv_ruangan_model->get_detail_kondisi($r->id_inventaris_barang, $tgl) != '0'){
-					$real_kondisi = $this->inv_ruangan_model->get_detail_kondisi($r->id_inventaris_barang, $tgl);
-				}else{
-					$real_kondisi = $r->pilihan_keadaan_barang;
-				}
-			}else{
-				$real_kondisi = $r->pilihan_keadaan_barang;
-			}
+		if(!empty($this->session->userdata('filter_group')) and $this->session->userdata('filter_group') == '1'){
+			$rows = $this->inv_ruangan_model->get_data_detail_group($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+			$kondisi = $this->inv_ruangan_model->get_pilihan_kondisi()->result();			
 			
-			if(!empty($this->session->userdata('filter_group')) and $this->session->userdata('filter_group') == '1'){
+			$data = array();			
+			$cek = "0";
+			$n = 0;
+			for($index = 0; $index < count($rows); $index++){										
 				
+				$col = array();
+				$i=0;															
+				
+				$col = array(
+					'id_mst_inv_barang' 		=> substr(chunk_split($rows[$index]['id_mst_inv_barang'], 2, '.'),0,14),
+					'nama_barang' 				=>$rows[$index]['nama_barang'],
+					'register' 					=>'-',
+					'tahun' 					=>$rows[$index]['tahun'],					
+					'harga' 					=>$rows[$index]['harga']
+				);				
+					
 				foreach($kondisi as $k){
-						$data_kondisi[$i]=$k->id;
-						if($real_kondisi == $k->id){
-							$jml=$jml + 1;
-							$tem[$k->id]=$jml;							
-						}				
-						
+					
+					$col[$k->id]=$this->inv_ruangan_model->get_jumlah_kondisi($k->id, $rows[$index]['barang_kembar_proc']);
+					#$col[$k->id] = 2;
+					
+				}
+				$data[] = $col;
+												
+			}
+			$rows_all = $this->inv_ruangan_model->get_data_detail_group();
+			
+			$size = count($rows_all);
+			$json = array(
+				'TotalRows' => (int) $size,
+				'Rows' => $data
+			);
+		}else{
+			
+			$rows = $this->inv_ruangan_model->get_data_detail($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+			$kondisi = $this->inv_ruangan_model->get_pilihan_kondisi()->result();
+			
+			$data = array();
+			$x = '';
+			$n = 0;
+			$jml =1;
+			$tem = array();
+			foreach($rows as $r) {
+				$data_kondisi = array();
+				$col = array();
+				$i=0;
+				$real_kondisi = $r->kondisi;
+				if(!empty($this->session->userdata('filter_tanggal')) and $this->session->userdata('filter_tanggal') != '0' ){
+					$tgl = $this->session->userdata('filter_tanggal');
+					if($this->inv_ruangan_model->get_detail_kondisi($r->id_inventaris_barang, $tgl) != '0'){
+						$real_kondisi = $this->inv_ruangan_model->get_detail_kondisi($r->id_inventaris_barang, $tgl);
+					}else{
+						$real_kondisi = $r->kondisi;
 					}
-				if($x != $r->barang_kembar_inv){
+				}else{
+					$real_kondisi = $r->kondisi;
+				}
+	
 					$col = array(
 						'id_mst_inv_barang' 		=> chunk_split($r->id_mst_inv_barang, 2, '.'),
 						'nama_barang' 				=>$r->nama_barang,
@@ -171,62 +203,32 @@ class Inv_ruangan extends CI_Controller {
 						'tahun' 					=>$r->tahun,
 						'pilihan_keadaan_barang' 	=>$real_kondisi,
 						'harga' 					=>$r->harga
-					);
+					);				
+					
 					foreach($kondisi as $k){
 						$data_kondisi[$i]=$k->id;
 						if($real_kondisi == $k->id){
-							$col[$k->id]=$tem[$k->id];							
+							$col[$k->id]='1';
+						}else{
+							$col[$k->id]='0';
 						}				
 						$i++;
 					}
 					
-					$x = $r->barang_kembar_inv;
-					
-					$n++;
-				}
-				
-				$data[] = $col;
-			}else{
-				
-				$col = array(
-					'id_mst_inv_barang' 		=> chunk_split($r->id_mst_inv_barang, 2, '.'),
-					'nama_barang' 				=>$r->nama_barang,
-					'register' 					=>$r->register,
-					'tahun' 					=>$r->tahun,
-					'pilihan_keadaan_barang' 	=>$real_kondisi,
-					'harga' 					=>$r->harga
-				);				
-				
-				foreach($kondisi as $k){
-					$data_kondisi[$i]=$k->id;
-					if($real_kondisi == $k->id){
-						$col[$k->id]='1';
-					}else{
-						$col[$k->id]='0';
-					}				
-					$i++;
-				}
-				
-				$data[] = $col;
-			}
-			
-			
-			
-			
+					$data[] = $col;
 									
-						
+			}
+			if($n > 0){
+				$rows_all = $n;
+			}else{
+				$rows_all = $this->inv_ruangan_model->get_data_detail();
+			}
+			$size = sizeof($rows_all);
+			$json = array(
+				'TotalRows' => (int) $size,
+				'Rows' => $data
+			);
 		}
-		if($n > 0){
-			$rows_all = $n;
-		}else{
-			$rows_all = $this->inv_ruangan_model->get_data_detail();
-		}
-		$size = sizeof($rows_all);
-		$json = array(
-			'TotalRows' => (int) $size,
-			'Rows' => $data
-		);
-
 		echo json_encode(array($json));
 	}
 	
@@ -413,5 +415,64 @@ class Inv_ruangan extends CI_Controller {
 			$this->session->set_flashdata('alert', 'Delete data error');
 			redirect(base_url()."inventory/inv_ruangan");
 		}
+	}
+	
+	function export_detail(){
+		
+		$TBS = new clsTinyButStrong;		
+		$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+		//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
+		$this->authentication->verify('inventory','show');
+		
+		$activity = $this->inv_ruangan_model->get_data_detail();
+		$kondisi = $this->inv_ruangan_model->get_pilihan_kondisi();
+		
+		$data_tabel = array();
+		foreach($activity as $act) {
+			$data_tabel[] = array(
+				'kode_barang'							=> $no++,				
+				'nama_barang'   				=> $act->nama_barang,
+				'register'						=> $act->jumlah,
+				'tahun'					=> $act->keterangan				
+			);
+		}
+
+		
+		if(empty($this->input->post('nama_puskesmas')) or $this->input->post('nama_puskesmas') == 'Pilih Puskesmas'){
+			$nama = 'Semua Data Puskesmas';
+		}else{
+			$nama = $this->input->post('nama_puskesmas');
+		}
+		$tanggal = $this->input->post('tanggal');
+		$keterangan = $this->input->post('keterangan');
+		$ruang = $this->input->post('ruang');
+		$puskesmas = $nama;
+		
+		#$data_puskesmas[] = array('nama_puskesmas' => $nama, 'tanggal'=> $tanggal, 'keterangan'=>$keterangan, 'ruang'=>$ruang);
+		$data_puskesmas['nama_puskesmas'] = $nama;
+		$data_puskesmas['tanggal'] = $tanggal;
+		$data_puskesmas['ruang'] = $ruang;
+		$data_puskesmas['keterangan'] = $keterangan;
+		
+		$TBS->ResetVarRef(false);
+		$TBS->VarRef =  &$data_puskesmas;	
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\permohonan_barang_detail.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
+
+		
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		#$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = date('Y-m-d-H-i-s');
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_detail_export_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_detail_export_'.$code.'.xlsx' ;
+		
+	
+		
+		echo "http://google.com";
 	}
 }
