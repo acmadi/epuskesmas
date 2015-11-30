@@ -3,10 +3,237 @@ class Pengadaanbarang extends CI_Controller {
 
     public function __construct(){
 		parent::__construct();
+		$this->load->add_package_path(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/demo/tbs_class.php');
+		require_once(APPPATH.'third_party/tbs_plugin_opentbs_1.8.0/tbs_plugin_opentbs.php');
+
 		$this->load->model('inventory/pengadaanbarang_model');
 		$this->load->model('mst/puskesmas_model');
 		$this->load->model('inventory/inv_ruangan_model');
 		$this->load->model('mst/invbarang_model');
+	}
+
+	function pengadaan_export(){
+		
+	$TBS = new clsTinyButStrong;		
+	$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+	//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
+	$this->authentication->verify('inventory','show');
+
+
+	if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'tgl_pengadaan') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		$rows_all = $this->pengadaanbarang_model->get_data();
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'tgl_pengadaan') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		$rows = $this->pengadaanbarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->pengadaanbarang_model->get_data();
+		$data = array();
+		$no=1;
+		
+
+		$data_tabel = array();
+		foreach($rows as $act) {
+			$data_tabel[] = array(
+				'tgl_pengadaan' 			=> $act->tgl_pengadaan,
+				'nomor_kontrak' 			=> $act->nomor_kontrak,
+				'pilihan_status_pengadaan' 	=> $act->pilihan_status_pengadaan,
+				'jumlah_unit'				=> $act->jumlah_unit,
+				'nilai_pengadaan'			=> $act->nilai_pengadaan,
+				'keterangan'				=> $act->keterangan,
+				'detail'					=> 1,
+				'edit'						=> 1,
+				'delete'					=> 1
+			);
+		}
+
+		
+		
+		/*
+		$data_tabel[] = array('no'=> '1', 'tgl'=>'10/10/2010' , 'ruangan'=>'Hill'      , 'jumlah'=>'19', 'keterangan'=>'bagus', 'status'=>'bagus');
+		$data_tabel[] = array('no'=> '2', 'tgl'=>'10/10/2010' , 'ruangan'=>'Hill'      , 'jumlah'=>'19', 'keterangan'=>'bagus', 'status'=>'bagus');
+		$data_tabel[] = array('no'=> '3', 'tgl'=>'10/10/2010' , 'ruangan'=>'Hill'      , 'jumlah'=>'19', 'keterangan'=>'bagus', 'status'=>'bagus');
+		$data_tabel[] = array('no'=> '4', 'tgl'=>'10/10/2010' , 'ruangan'=>'Hill'      , 'jumlah'=>'19', 'keterangan'=>'bagus', 'status'=>'bagus');
+		*/
+		if(empty($this->input->post('puskes')) or $this->input->post('puskes') == 'Pilih Puskesmas'){
+			$nama = 'Semua Data Puskesmas';
+		}else{
+			$nama = $this->input->post('puskes');
+		}
+		$data_puskesmas[] = array('nama_puskesmas' => $nama);
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\pengadaan_barang.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
+
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = uniqid();
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_export_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_export_'.$code.'.xlsx' ;
+		
+	}
+
+	function pengadaan_detail_export(){
+		$tgl_pengadaan = $this->input->post('tgl_pengadaan');
+		$id = $this->input->post('kode');
+		$TBS = new clsTinyButStrong;		
+	$TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
+	//[data_tabel.no;block=tbs:row]	[data_tabel.tgl]	[data_tabel.ruangan]	[data_tabel.jumlah]	[data_tabel.keterangan]	[data_tabel.status]
+		
+	$this->authentication->verify('inventory','show');
+
+
+	if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'tgl_pengadaan') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		$rows_all = $this->pengadaanbarang_model->get_data();
+
+
+		if($_POST) {
+			$fil = $this->input->post('filterscount');
+			$ord = $this->input->post('sortdatafield');
+
+			for($i=0;$i<$fil;$i++) {
+				$field = $this->input->post('filterdatafield'.$i);
+				$value = $this->input->post('filtervalue'.$i);
+
+				if($field == 'tgl_pengadaan') {
+					$value = date("Y-m-d",strtotime($value));
+					$this->db->where($field,$value);
+				}elseif($field != 'year') {
+					$this->db->like($field,$value);
+				}
+			}
+
+			if(!empty($ord)) {
+				$this->db->order_by($ord, $this->input->post('sortorder'));
+			}
+		}
+		
+		$rows = $this->pengadaanbarang_model->get_data($this->input->post('recordstartindex'), $this->input->post('pagesize'));
+		$rows = $this->pengadaanbarang_model->get_data();
+		$data = array();
+		$no=1;
+		
+
+		$data_tabel = array();
+		foreach($rows as $act) {
+			$data_tabel[] = array(
+				'tgl_pengadaan' 			=> $act->tgl_pengadaan,
+				'nomor_kontrak' 			=> $act->nomor_kontrak,
+				'pilihan_status_pengadaan' 	=> $act->pilihan_status_pengadaan,
+				'jumlah_unit'				=> $act->jumlah_unit,
+				'nilai_pengadaan'			=> $act->nilai_pengadaan,
+				'keterangan'				=> $act->keterangan,
+				'detail'					=> 1,
+				'edit'						=> 1,
+				'delete'					=> 1
+			);
+		}
+
+		
+		if(empty($this->input->post('tgl_pengadaan')) or $this->input->post('tgl_pengadaan') == 'Pilih Puskesmas'){
+			$nama = 'Semua Data Puskesmas';
+		}else{
+			$nama = $this->input->post('tgl_pengadaan');
+		}
+		$pilihan_status_pengadaan = $this->input->post('pilihan_status_pengadaan');
+		$nomor_kontrak = $this->input->post('nomor_kontrak');
+		$keterangan = $this->input->post('keterangan');
+		$jumlah_unit = $this->input->post('jumlah_unit');
+		$nilai_pengadaan = $this->input->post('nilai_pengadaan');
+		$waktu_dibuat = $this->input->post('waktu_dibuat');
+		$terakhir_diubah = $this->input->post('terakhir_diubah');
+		// $puskesmas = $nama;
+		
+		#$data_puskesmas[] = array('nama_puskesmas' => $nama, 'tanggal'=> $tanggal, 'keterangan'=>$keterangan, 'ruang'=>$ruang);
+		$data_puskesmas['pilihan_status_pengadaan'] = $pilihan_status_pengadaan;
+		$data_puskesmas['nomor_kontrak'] = $nomor_kontrak;
+		$data_puskesmas['keterangan'] = $keterangan;
+		$data_puskesmas['jumlah_unit'] = $jumlah_unit;
+		$data_puskesmas['nilai_pengadaan'] = $nilai_pengadaan;
+		$data_puskesmas['waktu_dibuat'] = $waktu_dibuat;
+		$data_puskesmas['terakhir_diubah'] = $terakhir_diubah;
+		
+		$TBS->ResetVarRef(false);
+		$TBS->VarRef =  &$data_puskesmas;	
+		$template = dirname(__FILE__).'\..\..\..\public\files\template\inventory\pengadaan_barang_detail.xlsx';		
+		$TBS->LoadTemplate($template, OPENTBS_ALREADY_UTF8);
+
+		
+		
+		// Merge data in the first sheet
+		$TBS->MergeBlock('a', $data_tabel);
+		#$TBS->MergeBlock('b', $data_puskesmas);
+		
+		$code = date('Y-m-d-H-i-s');
+		$output_file_name = dirname(__FILE__).'\..\..\..\public\files\hasil\hasil_detail_export_'.$code.'.xlsx';
+		$TBS->Show(OPENTBS_FILE, $output_file_name); // Also merges all [onshow] automatic fields.
+		
+		echo base_url().'public/files/hasil/hasil_detail_export_'.$code.'.xlsx' ;
+		
 	}
 
 	function autocomplite_barang(){

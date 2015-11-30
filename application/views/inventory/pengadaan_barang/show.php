@@ -163,4 +163,46 @@
 		}
 		}
 	}
+
+	$("#btn-export").click(function(){
+		
+		var post = "";
+		var filter = $("#jqxgrid").jqxGrid('getfilterinformation');
+		for(i=0; i < filter.length; i++){
+			var fltr 	= filter[i];
+			var value	= fltr.filter.getfilters()[0].value;
+			var condition	= fltr.filter.getfilters()[0].condition;
+			var filteroperation	= fltr.filter.getfilters()[0].operation;
+			var filterdatafield	= fltr.filtercolumn;
+			if(filterdatafield=="tgl"){
+				var d = new Date(value);
+				var day = d.getDate();
+				var month = d.getMonth();
+				var year = d.getYear();
+				value = year+'-'+month+'-'+day;
+				
+			}
+			post = post+'&filtervalue'+i+'='+value;
+			post = post+'&filtercondition'+i+'='+condition;
+			post = post+'&filteroperation'+i+'='+filteroperation;
+			post = post+'&filterdatafield'+i+'='+filterdatafield;
+			post = post+'&'+filterdatafield+'operator=and';
+		}
+		post = post+'&filterscount='+i;
+		
+		var sortdatafield = $("#jqxgrid").jqxGrid('getsortcolumn');
+		if(sortdatafield != "" && sortdatafield != null){
+			post = post + '&sortdatafield='+sortdatafield;
+		}
+		if(sortdatafield != null){
+			var sortorder = $("#jqxgrid").jqxGrid('getsortinformation').sortdirection.ascending ? "asc" : ($("#jqxgrid").jqxGrid('getsortinformation').sortdirection.descending ? "desc" : "");
+			post = post+'&sortorder='+sortorder;
+			
+		}
+		post = post+'&puskes='+$("#puskesmas option:selected").text();
+		
+		$.post("<?php echo base_url()?>inventory/pengadaanbarang/pengadaan_export",post,function(response	){
+			window.location.href=response;
+		});
+	});
 </script>

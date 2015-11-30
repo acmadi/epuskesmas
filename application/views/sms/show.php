@@ -56,6 +56,17 @@
           <div class="chart">
             <canvas id="barChart" height="240" width="511" style="width: 511px; height: 240px;"></canvas>
           </div>
+          <div class="row">
+          <div class="col-md-2">
+              <div class="bux"></div> &nbsp; <label>SMS Diterima</label>
+          </div>
+          <div class="col-md-3">
+              <div class="bux1"></div> &nbsp; <label>SMS Dikirim</label>
+          </div>
+          <div class="col-md-3">
+              <div class="bux2"></div> &nbsp; <label>SMS Error</label>
+          </div>
+        </div>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
   </div><!-- /.col -->
@@ -94,7 +105,7 @@
           pointColor: "#ffb400",
           pointStrokeColor: "#c1c7d1",
           pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
+          pointHighlightStroke: "rgba(220,220,220,1)", 
           data: [{str_diterima}]
         },
         {
@@ -104,7 +115,7 @@
           pointColor: "#ffb400",
           pointStrokeColor: "#c1c7d1",
           pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
+          pointHighlightStroke: "rgba(220,220,220,1)", 
           data: [{str_dikirim}]
         },
         {
@@ -121,24 +132,24 @@
     };
 
     var areaChartOptions = {
-      showScale: true,
-      scaleShowGridLines: false,
-      scaleGridLineColor: "rgba(0,0,0,.05)",
-      scaleGridLineWidth: 1,
-      scaleShowHorizontalLines: true,
-      scaleShowVerticalLines: true,
-      bezierCurve: true,
-      bezierCurveTension: 0.3,
-      pointDot: false,
-      pointDotRadius: 4,
-      pointDotStrokeWidth: 1,
-      pointHitDetectionRadius: 20,
-      datasetStroke: true,
-      datasetStrokeWidth: 2,
-      datasetFill: true,
-      legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
-      maintainAspectRatio: false,
-      responsive: true
+        showScale: true,
+        scaleShowGridLines: false,
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleGridLineWidth: 1,
+        scaleShowHorizontalLines: true,
+        scaleShowVerticalLines: true,
+        bezierCurve: true,
+        bezierCurveTension: 0.3,
+        pointDot: false,
+        pointDotRadius: 4,
+        pointDotStrokeWidth: 1,
+        pointHitDetectionRadius: 20,
+        datasetStroke: true,
+        datasetStrokeWidth: 2,
+        datasetFill: true,
+        legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+        maintainAspectRatio: false,
+        responsive: true
     };
 
 
@@ -219,3 +230,32 @@
         barChart.Bar(barChartData, barChartOptions);
       });
     </script>
+
+    <style type="text/css">
+
+      .bux{
+        width: 10px;
+        padding: 10px; 
+        margin-right: 40%;
+        background-color: #ffb400;
+        margin: 0;
+        float: left;
+      }
+      .bux1{
+        width: 10px;
+        padding: 10px;
+        background-color: #00a65a;
+        margin: 0;
+        float: left;
+      }
+      .bux2{
+        width: 10px;
+        padding: 10px;
+        background-color: #e02a11;
+        margin: 0;
+        float: left;
+      }
+      .col-md-2{
+        width: 25%;
+      }
+    </style>

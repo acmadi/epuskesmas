@@ -276,6 +276,20 @@ class Drh extends CI_Controller {
 		echo json_encode($data);
 		exit;
 	}
+// Alamat
+	function get_urut_alamat($id="")
+    {
+    	$this->db->select('max(urut) as id');
+    	$this->db->where('nip_nit',$id);
+    	$jum = $this->db->get('pegawai_alamat')->row();
+    	
+    	if (empty($jum)){
+    		return 1;
+    	}else {
+			return $jum->id+1;
+    	}
+
+	}
 
 	function add_alamat($id="")
 	{
@@ -287,7 +301,7 @@ class Drh extends CI_Controller {
 		$data['action']="add_alamat";
 
 		
-		// $this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
+		$this->form_validation->set_rules('nip_nit', 'NIP / NIT', 'trim|required');
 		// $this->form_validation->set_rules('urut', 'No Urut Alamat', 'trim|required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
 		$this->form_validation->set_rules('rt', 'RT', 'trim|required');
@@ -320,8 +334,8 @@ class Drh extends CI_Controller {
 			die($this->parser->parse('kepegawaian/drh/form_alamat', $data,true));
 		}else{
 			$values = array(
-				// 'nip_nit'=>$id,
-				// 'urut' => $this->input->post('urut'),
+				'nip_nit'=>$id,
+				'urut' => $this->get_urut_alamat($this->input->post('nip_nit')),
 				'alamat' => $this->input->post('alamat'),
 				'rt' => $this->input->post('rt'),
 				'rw' => $this->input->post('rw'),
@@ -593,7 +607,7 @@ class Drh extends CI_Controller {
 				'pimpin' => $this->input->post('pimpin'),
 				'prakarsa' => $this->input->post('prakarsa'),
 				'jumlah' => $this->input->post('setia')+$this->input->post('prestasi')+$this->input->post('tanggungjawab')+$this->input->post('taat')+$this->input->post('jujur')+$this->input->post('kerjasama')+$this->input->post('pimpin')+$this->input->post('prakarsa'),
-				'ratarata' => ($this->input->post('tahun')+$this->input->post('setia')+$this->input->post('prestasi')+$this->input->post('tanggungjawab')+$this->input->post('taat')+$this->input->post('jujur')+$this->input->post('kerjasama')+$this->input->post('pimpin')+$this->input->post('prakarsa'))/8,
+				'ratarata' => ($this->input->post('tahun')+$this->input->post('setia')+$this->input->post('prestasi')+$this->input->post('tanggungjawab')+$this->input->post('taat')+$this->input->post('jujur')+$this->input->post('kerjasama')+$this->input->post('pimpin')+$this->input->post('prakarsa'))*2,
 			);
 			if($this->db->insert('pegawai_dp3', $values)){
 				$key['nip_nit'] = $id;
