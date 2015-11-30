@@ -79,7 +79,7 @@
 						<div class="form-group pull-right">
 							
             				<button onClick="doFilter();" type="button" class="btn btn-info">Filter</button>
-            				<button type="button" class="btn btn-warning">Ekspor</button>
+            				<button onClick="doExport();" type="button"  class="btn btn-warning">Export</button>
             				<button type="button" class="btn btn-success" onClick="document.location.href='<?php echo base_url()?>inventory/inv_ruangan'">Kembali</button>
 						</div>
 				  	</div>
@@ -212,6 +212,55 @@
 		          	$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
         		}
 	    	});
+	}
+	
+	function doExport(){
+		alert('export ?');
+		var code_cl_phc = document.getElementById("code_cl_phc").value;
+		var id_mst_inv_ruangan = document.getElementById("code_ruangan").value;
+		var tanggal = document.getElementById("inputtgl").value;
+		if (document.getElementById('filter_group').checked){
+			var group = document.getElementById("filter_group").value;
+			if(group == '1'){
+				group = '1';
+			}else{
+				group = '0';
+			}
+		}else{
+			group = '0';
+		}
+		
+		//alert(group);
+		var t = tanggal.split('-');
+		var tgl = t[2]+'-'+t[1]+'-'+t[0];
+		$.ajax({
+			url : '<?php echo site_url('inventory/inv_ruangan/set_detail_filter') ?>',
+			type : 'POST',
+			data : 'filter_code_cl_phc=' + code_cl_phc+'&filter_id_ruang=' + id_mst_inv_ruangan +'&filter_tanggal='+tgl+'&filter_group='+group,
+			success : function(data) {
+				if(data != ""){
+					var d = data.split('_data_');
+					document.getElementById("view_puskesmas").innerHTML = d[0];
+					document.getElementById("view_ruang").innerHTML = d[1];
+					document.getElementById("view_keterangan").innerHTML = d[2];
+				}
+				$("#jqxgrid_barang").jqxGrid('updatebounddata', 'cells');
+			}
+		});
+		
+		$.ajax({
+			url : '<?php echo site_url('inventory/inv_ruangan/export_detail') ?>',
+			type : 'POST',
+			data : 'filter_code_cl_phc=' + code_cl_phc+'&filter_id_ruang=' + id_mst_inv_ruangan +'&filter_tanggal='+tgl+'&filter_group='+group,
+			success : function(data) {
+				if(data != ""){
+					location.href = data;
+					
+				}
+
+			}
+		});
+			
 	}
 	function filter_ruangan(id_mst_inv_ruangan){
 	}
